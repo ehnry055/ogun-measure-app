@@ -1,4 +1,4 @@
-# Racism-Data-System
+# racism-data-system
 Jason Chae, Henry Choi, Brendon Wan, Stephen Yoon
 
 Technology Stack:
