@@ -5,4 +5,5 @@ Technology Stack:
 React
 Bootstrap
 MySQL
-EJS
+Highcharts
+Node.js
