@@ -4,6 +4,11 @@ import 'bootstrap/dist/js/bootstrap.bundle.min'; // Import Bootstrap JS
 import { render } from 'react-dom';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
+import { useAuth0 } from "@auth0/auth0-react";
+import LoginButton from './components/login';
+import LogoutButton from './components/logout';
+import Profile from './components/profile';
+
 
 const options = {
   chart: {
@@ -71,8 +76,20 @@ series: [{
 };
 
 const App = () => {
+  const { isLoading, error } = useAuth0();
+
   return (
     <div className="container">
+      {error && <p>Authentication Error</p>}
+      {!error && isLoading && <p>Loading...</p>}
+      {!error && !isLoading && (
+        <>
+          <LoginButton />
+          <LogoutButton />
+          <Profile />
+        </>
+      )}
+
       <h1 className="my-4">Hello, Henry! Data Visualization</h1>
       <button className="btn btn-primary">Click Me</button>
     
