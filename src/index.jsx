@@ -6,12 +6,21 @@ import reportWebVitals from './reportWebVitals';
 import { render } from 'react-dom';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
+import { createRoot } from 'react-dom/client';
+import { Auth0Provider } from '@auth0/auth0-react';
 
+
+const domain = process.env.REACT_APP_AUTH0_domain;
+const clientId = process.env.REACT_APP_AUTH0_clientId;
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  <Auth0Provider
+    domain={domain}
+    clientId={clientId}
+    redirectUri={window.location.origin}
+  >
     <App />
-  </React.StrictMode>
+  </Auth0Provider>,
 );
 
 const options = {
