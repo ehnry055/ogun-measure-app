@@ -80,20 +80,14 @@ const App = () => {
 
   return (
     <div className="container">
-      {error && <p>Authentication Error</p>}
-      {!error && isLoading && <p>Loading...</p>}
-      {!error && !isLoading && (
-        <>
-          <LoginButton />
-          <LogoutButton />
-          <Profile />
-        </>
-      )}
+        <LoginButton />
+        <LogoutButton />
+        <Profile />
 
-      <h1 className="my-4">Hello, Henry! Data Visualization</h1>
-      <button className="btn btn-primary">Click Me</button>
+        <h1 className="my-4">Hello, Henry! Data Visualization</h1>
+        <button className="btn btn-primary">Click Me</button>
     
-      <HighchartsReact highcharts={Highcharts} options={options} />
+        <HighchartsReact highcharts={Highcharts} options={options} />
     </div>
   );
 };
