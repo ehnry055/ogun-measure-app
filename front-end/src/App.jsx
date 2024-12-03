@@ -1,4 +1,5 @@
 import React from 'react';
+import NotesList from './components/NotesList';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import 'bootstrap/dist/js/bootstrap.bundle.min'; // Import Bootstrap JS
 import { render } from 'react-dom';
@@ -88,6 +89,7 @@ const App = () => {
         <button className="btn btn-primary">Click Me</button>
     
         <HighchartsReact highcharts={Highcharts} options={options} />
+        <NotesList />
     </div>
   );
 };
