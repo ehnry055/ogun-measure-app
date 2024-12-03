@@ -7,9 +7,14 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.7.8",
+    "body-parser": "^1.20.3",
     "bootstrap": "^5.3.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
     "highcharts": "^11.4.8",
     "highcharts-react-official": "^3.2.1",
+    "mysql2": "^3.11.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-scripts": "5.0.1",
@@ -45,5 +50,10 @@
   "extends": [
     "@babel/plugin-transform-private-property-in-object",
     "next/core-web-vitals"
-  ]
+  ],
+  "description": "Jason Chae, Henry Choi, Brendon Wan, Stephen Yoon",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
