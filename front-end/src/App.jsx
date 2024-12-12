@@ -40,6 +40,11 @@ plotOptions: {
         }
     }
 },
+
+credits: {
+    enabled: false
+},
+
 series: [{
     name: 'Brands',
     colorByPoint: true,
@@ -93,5 +98,7 @@ const App = () => {
     </div>
   );
 };
+
+
 
 export default App;
