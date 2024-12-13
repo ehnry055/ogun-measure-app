@@ -85,12 +85,12 @@ series: [{
 
 const map = {
     chart: { type: 'area' },
-    title: { text: 'US and USSR nuclear stockpiles' },
+    title: { text: 'AZ and NJ data comparison' },
     xAxis: { allowDecimals: false },
-    yAxis: { title: { text: 'Nuclear weapon states' } },
+    yAxis: { title: { text: 'text' } },
     series: [
-      { name: 'USA', data: [2, 9, 13, 50, 170, 299] },
-      { name: 'USSR/Russia', data: [null, null, 1, 5, 25, 50] }
+      { name: 'AZ', data: [2, 1, 1, 1, 0, 1] },
+      { name: 'NJ', data: [-999, -999, 1, 0, 1, 1] }
     ]
   };
 
