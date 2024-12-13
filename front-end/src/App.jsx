@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import 'bootstrap/dist/js/bootstrap.bundle.min'; // Import Bootstrap JS
 import { render } from 'react-dom';
 import HighchartsMap from 'highcharts/modules/map';
-import Highcharts from 'highcharts';
+import Highcharts, { chart } from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { useAuth0 } from "@auth0/auth0-react";
 import LoginButton from './components/login';
@@ -83,6 +83,17 @@ series: [{
 }]
 };
 
+const map = {
+    chart: { type: 'area' },
+    title: { text: 'US and USSR nuclear stockpiles' },
+    xAxis: { allowDecimals: false },
+    yAxis: { title: { text: 'Nuclear weapon states' } },
+    series: [
+      { name: 'USA', data: [2, 9, 13, 50, 170, 299] },
+      { name: 'USSR/Russia', data: [null, null, 1, 5, 25, 50] }
+    ]
+  };
+
 HighchartsMap(Highcharts);
 
 const App = () => {
@@ -99,6 +110,7 @@ const App = () => {
         <button className="btn btn-primary">Click Me</button>
     
         <HighchartsReact highcharts={Highcharts} options={options} />
+        <HighchartsReact highcharts={Highcharts} options={map} />
         <NotesList />
     </div>
     </div>
