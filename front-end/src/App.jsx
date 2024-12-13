@@ -3,12 +3,14 @@ import NotesList from './components/NotesList';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import 'bootstrap/dist/js/bootstrap.bundle.min'; // Import Bootstrap JS
 import { render } from 'react-dom';
+import HighchartsMap from 'highcharts/modules/map';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { useAuth0 } from "@auth0/auth0-react";
 import LoginButton from './components/login';
 import LogoutButton from './components/logout';
 import Profile from './components/profile';
+import USMapData from '@highcharts/map-collection/countries/us/us-all-all.geo.json';
 
 
 const options = {
@@ -81,10 +83,13 @@ series: [{
 }]
 };
 
+HighchartsMap(Highcharts);
+
 const App = () => {
   const { isLoading, error } = useAuth0();
 
   return (
+    <div>
     <div className="container">
         <LoginButton />
         <LogoutButton />
@@ -95,6 +100,7 @@ const App = () => {
     
         <HighchartsReact highcharts={Highcharts} options={options} />
         <NotesList />
+    </div>
     </div>
   );
 };

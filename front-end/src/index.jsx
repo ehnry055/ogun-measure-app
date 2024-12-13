@@ -14,30 +14,23 @@ const domain = process.env.REACT_APP_AUTH0_domain;
 const clientId = process.env.REACT_APP_AUTH0_clientId;
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <Auth0Provider
+  <div>
+    <Auth0Provider
     domain={domain}
     clientId={clientId}
     authorizationParams={{
       redirect_uri: window.location.origin
     }}
   >
+    
     <App />
-  </Auth0Provider>,
+    </Auth0Provider>,
+
+    
+  </div>
+  
 );
 
-const options = {
-  chart: {
-    type: 'spline'
-  },
-  title: {
-    text: 'My chart'
-  },
-  series: [
-    {
-      data: [1, 2, 1, 4, 3, 6]
-    }
-  ]
-};
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
