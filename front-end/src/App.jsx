@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import 'bootstrap/dist/js/bootstrap.bundle.min'; // Import Bootstrap JS
 import { render } from 'react-dom';
 import HighchartsMap from 'highcharts/modules/map';
-import Highcharts, { chart } from 'highcharts';
+import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
 import { useAuth0 } from "@auth0/auth0-react";
 import LoginButton from './components/login';
@@ -92,7 +92,19 @@ const map = {
       { name: 'AZ', data: [2, 1, 1, 1, 0, 1] },
       { name: 'NJ', data: [-999, -999, 1, 0, 1, 1] }
     ]
-  };
+};
+
+const highstock = {
+    title: {
+      text: 'My stock chart'
+    },
+    series: [
+      {
+        data: [1, 2, 1, 4, 3, 6, 7, 3, 8, 6, 9]
+      }
+    ]
+};
+
 
 HighchartsMap(Highcharts);
 
@@ -111,6 +123,7 @@ const App = () => {
     
         <HighchartsReact highcharts={Highcharts} options={options} />
         <HighchartsReact highcharts={Highcharts} options={map} />
+        <HighchartsReact highcharts={Highcharts} constructorType={'stockChart'} options={highstock} />
         <NotesList />
     </div>
     </div>
