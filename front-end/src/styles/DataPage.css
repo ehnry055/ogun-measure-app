@@ -2,7 +2,7 @@
     padding: 20px;
     font-family: Arial, sans-serif;
     background-color: #e6f0fa;
-    border: 1px solid #ccc;
+    height: 100%;
   }
   
   .data-header {
@@ -21,41 +21,57 @@
     border-radius: 5px;
   }
   
-  .compare-button {
+  .data-button.active {
     background-color: #79a7eb;
     color: #0033a0;
   }
   
   .data-content {
-    display: flex;
-    gap: 20px;
+    display: flex; 
+    align-items: flex-start; 
+    gap: 30px;
   }
   
-  .data-table {
-    width: 40%;
+  .compare-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 30%;
+  }
+  
+  .field-selector {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     background-color: white;
     border: 1px solid #ddd;
     border-radius: 5px;
+    padding: 5px 10px;
   }
   
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  th,
-  td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+  select {
+    flex: 1;
+    padding: 5px 10px;
     font-size: 1rem;
+    border: none;
+    outline: none;
   }
   
-  th {
-    font-weight: bold;
+  .eye-icon,
+  .remove-icon {
+    font-size: 1.2rem;
+    cursor: pointer;
   }
   
   .data-chart {
-    width: 60%;
+    flex: 1; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    height: 400px; 
   }
   

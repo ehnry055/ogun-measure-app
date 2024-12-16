@@ -1,13 +1,13 @@
 import React from 'react';
-import '../styles/Navbar.css'; // Import Navbar styles
-import columbiaLogo from '../assets/columbia-logo.png'; // Import the image
+import '../styles/Navbar.css'; 
+import columbiaLogo from '../assets/columbia-logo.png'; 
 
 const Navbar = () => {
   return (
     <div className="top-navbar">
       <div className="navbar-left">
         <img
-          src={columbiaLogo} // Replace with your Columbia logo path
+          src={columbiaLogo} 
           alt="Columbia Logo"
           className="logo"
         />

@@ -1,6 +1,6 @@
 .sidebar {
-  background-color: #2b7cd8; /* Sidebar background */
-  color: white; /* Text color */
+  background-color: #2b7cd8;
+  color: white;
   width: 250px;
   height: 100vh;
   display: flex;
@@ -10,9 +10,9 @@
 }
 
 .welcome-message {
-  background-color: #79a7eb; /* Light blue background */
+  background-color: #79a7eb;
   padding: 10px;
-  color: #0033a0; /* Darker blue text */
+  color: #0033a0; 
   font-size: 1.1rem;
   margin-bottom: 20px;
   text-align: center;
