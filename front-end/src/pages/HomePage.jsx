@@ -4,7 +4,7 @@ import '../styles/HomePage.css';
 const HomePage = () => {
   return (
     <div className="home-container">
-      <h2 className="about-title">About Us</h2>
+      <h2 className="about-title">Home</h2>
       <div className="about-content">
         <p>
           Our goal is to provide an easy-to-use way of accessing a wealth of data about historial instances of racism throughout US counties. 
