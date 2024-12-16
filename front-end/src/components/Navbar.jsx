@@ -12,11 +12,11 @@ function Navbar() {
     <div className="top-navbar">
       <div className="navbar-left">
         <img
-          src={columbiaLogo} 
-          alt="Columbia Logo"
+          //src=
+          alt="Logo"
           className="logo"
         />
-        <span className="title">Columbia</span>
+        <span className="title">Placeholder</span>
         <span className="subtitle">Racism Data System</span>
       </div>
       <div className="navbar-center">

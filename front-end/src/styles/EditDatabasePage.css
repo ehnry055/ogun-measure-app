@@ -28,7 +28,7 @@
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    background-color: #004aa8; 
+    background-color: #474E9E; 
     margin: 10px auto;
   }
   
@@ -43,7 +43,7 @@
   }
   
   .section-title {
-    color: #004aa8;
+    color: #474E9E;
     font-size: 1.5rem;
     margin-bottom: 10px;
   }
@@ -57,7 +57,7 @@
   
   .data-item h3 {
     font-size: 1.2rem;
-    color: #004aa8;
+    color: #474E9E;
   }
   
   .action-buttons {
@@ -66,7 +66,7 @@
   
   .delete-button,
   .edit-button {
-    background-color: #004aa8;
+    background-color: #474E9E;
     color: white;
     border: none;
     padding: 5px 10px;
@@ -87,7 +87,7 @@
   }
   
   .saved-graph h3 {
-    color: #004aa8;
+    color: #474E9E;
     font-size: 1.2rem;
   }
 

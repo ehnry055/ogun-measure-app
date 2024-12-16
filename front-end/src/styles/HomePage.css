@@ -4,7 +4,7 @@
   }
   
   .about-title {
-    color: #2b7cd8;
+    color: #474E9E;
     font-size: 2.5rem;
     font-weight: bold;
     margin-bottom: 20px;
@@ -13,7 +13,7 @@
   .about-content {
     font-size: 1.1rem;
     line-height: 1.6;
-    color: #333;
+    color: rgb(196, 196, 196);
     margin-bottom: 40px;
   }
   
@@ -32,7 +32,7 @@
     width: 50%;
     padding: 20px;
     font-size: 1rem;
-    color: #333;
+    color: rgb(196, 196, 196);
   }
   
   .placeholder-box {
@@ -41,4 +41,3 @@
     background-color: #d9d9d9;
     border: 1px solid #ccc;
   }
-  
