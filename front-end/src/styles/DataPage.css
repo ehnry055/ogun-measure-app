@@ -12,7 +12,7 @@
   }
   
   .data-button {
-    background-color: #0033a0;
+    background-color: #004aa8;
     color: white;
     border: none;
     padding: 8px 20px;
@@ -22,8 +22,8 @@
   }
   
   .data-button.active {
-    background-color: #79a7eb;
-    color: #0033a0;
+    background-color: #6ab3e7;
+    color: #004aa8;
   }
   
   .data-content {

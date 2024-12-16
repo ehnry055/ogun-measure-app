@@ -19,14 +19,13 @@ import DataPage from './pages/DataPage';
 
 import './styles/App.css';
 
-const App = () => {
+function App() {
   const { isLoading, error } = useAuth0();
 
   return (
     <Router>
       <div className="app-container">
         <Navbar />
-        <div className="welcome-banner">Welcome : John Doe</div>
         <div className="main-layout">
           <Sidebar />
           <div className="content">
@@ -37,9 +36,6 @@ const App = () => {
             </Routes>
 
             <div className="container">
-              <LoginButton />
-              <LogoutButton />
-              <Profile />
               <NotesList />
             </div>
           </div>

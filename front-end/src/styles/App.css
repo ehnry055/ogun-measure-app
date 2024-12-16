@@ -4,9 +4,9 @@
 }
 
 .welcome-banner {
-  background-color: #79a7eb;
+  background-color: #6ab3e7;
   padding: 10px;
-  color: #0033a0;
+  color: #004aa8;
   text-align: center;
   font-size: 1.2rem;
   font-weight: bold;
@@ -18,7 +18,7 @@
 }
 
 .sidebar {
-  background-color: #2b7cd8;
+  background-color: #6ab3e7;
   color: white;
   width: 250px;
   padding: 20px 10px;
