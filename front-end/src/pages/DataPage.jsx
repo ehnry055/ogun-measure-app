@@ -1,16 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import '../styles/DataPage.css'; // Import the CSS file for this page
+import '../styles/DataPage.css'; 
 
 const DataPage = () => {
-  const chartOptions = {
-    chart: {
-      type: 'pie',
-    },
-    title: {
-      text: '',
-    },
+  const [isCompareMode, setIsCompareMode] = useState(false);
+
+  const pieChartOptions = {
+    chart: { type: 'pie' },
+    title: { text: '' },
     series: [
       {
         name: 'Data',
@@ -25,50 +23,65 @@ const DataPage = () => {
     credits: { enabled: false },
   };
 
+  const barChartOptions = {
+    chart: { type: 'column' },
+    title: { text: '' },
+    xAxis: {
+      categories: ['Field 1', 'Field 2', 'Field 3'],
+      title: { text: 'Data Fields' },
+    },
+    yAxis: { title: { text: 'Values' } },
+    series: [
+      { name: 'Field A', data: [30, 20, 40], color: '#f0ad4e' },
+      { name: 'Field B', data: [10, 50, 30], color: '#5cb85c' },
+      { name: 'Field C', data: [20, 30, 10], color: '#f49ac1' },
+    ],
+    credits: { enabled: false },
+  };
+
   return (
     <div className="data-container">
-      {/* Header */}
       <div className="data-header">
-        <button className="data-button view-button">View</button>
-        <button className="data-button compare-button">Compare</button>
+        <button
+          className={`data-button ${!isCompareMode ? 'active' : ''}`}
+          onClick={() => setIsCompareMode(false)}
+        >
+          View
+        </button>
+        <button
+          className={`data-button ${isCompareMode ? 'active' : ''}`}
+          onClick={() => setIsCompareMode(true)}
+        >
+          Compare
+        </button>
       </div>
 
-      {/* Content Layout */}
       <div className="data-content">
-        {/* Table */}
-        <div className="data-table">
-          <table>
-            <thead>
-              <tr>
-                <th>Data Field</th>
-                <th>#</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style={{ color: '#5cb85c' }}>Gov_Attn</td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td style={{ color: '#f49ac1' }}>Geo_Dist</td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td style={{ color: '#f0ad4e' }}>Pub_Fund</td>
-                <td></td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        {/* Large Chart */}
-        <div className="data-chart">
-          <HighchartsReact highcharts={Highcharts} options={chartOptions} />
-        </div>
+        {isCompareMode ? (
+          <div className="compare-section">
+            <div className="field-selectors">
+              {[1, 2, 3, 4].map((_, index) => (
+                <div className="field-selector" key={index}>
+                  <select>
+                    <option>Select Field</option>
+                    <option>Field A</option>
+                    <option>Field B</option>
+                    <option>Field C</option>
+                  </select>
+                  <span className="eye-icon">👁</span>
+                  <span className="remove-icon">✖</span>
+                </div>
+              ))}
+            </div>
+            <div className="data-chart">
+              <HighchartsReact highcharts={Highcharts} options={barChartOptions} />
+            </div>
+          </div>
+        ) : (
+          <div className="data-chart">
+            <HighchartsReact highcharts={Highcharts} options={pieChartOptions} />
+          </div>
+        )}
       </div>
     </div>
   );

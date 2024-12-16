@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/EditDatabasePage.css'; // Import the CSS file for this page
+import '../styles/EditDatabasePage.css'; 
 
 const EditDatabasePage = () => {
   return (

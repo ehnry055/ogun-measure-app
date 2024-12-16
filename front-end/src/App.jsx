@@ -17,7 +17,7 @@ import HomePage from './pages/HomePage';
 import EditDatabasePage from './pages/EditDatabasePage';
 import DataPage from './pages/DataPage';
 
-import './styles/App.css'; // Keep your existing styles
+import './styles/App.css';
 
 const App = () => {
   const { isLoading, error } = useAuth0();
