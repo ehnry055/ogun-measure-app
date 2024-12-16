@@ -1,0 +1,61 @@
+.data-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #e6f0fa;
+    border: 1px solid #ccc;
+  }
+  
+  .data-header {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .data-button {
+    background-color: #0033a0;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .compare-button {
+    background-color: #79a7eb;
+    color: #0033a0;
+  }
+  
+  .data-content {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .data-table {
+    width: 40%;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th,
+  td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 1rem;
+  }
+  
+  th {
+    font-weight: bold;
+  }
+  
+  .data-chart {
+    width: 60%;
+  }
+  

@@ -1,135 +1,52 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NotesList from './components/NotesList';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
-import 'bootstrap/dist/js/bootstrap.bundle.min'; // Import Bootstrap JS
-import { render } from 'react-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 import HighchartsMap from 'highcharts/modules/map';
 import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
-import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0 } from '@auth0/auth0-react';
 import LoginButton from './components/login';
 import LogoutButton from './components/logout';
 import Profile from './components/profile';
-import USMapData from '@highcharts/map-collection/countries/us/us-all-all.geo.json';
 
+import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
+import HomePage from './pages/HomePage';
+import EditDatabasePage from './pages/EditDatabasePage';
+import DataPage from './pages/DataPage';
 
-const options = {
-  chart: {
-    plotBackgroundColor: null,
-    plotBorderWidth: null,
-    plotShadow: false,
-    type: 'pie'
-},
-title: {
-    text: 'Browser market shares in May, 2020',
-    align: 'left'
-},
-tooltip: {
-    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-},
-accessibility: {
-    point: {
-        valueSuffix: '%'
-    }
-},
-plotOptions: {
-    pie: {
-        allowPointSelect: true,
-        cursor: 'pointer',
-        dataLabels: {
-            enabled: true,
-            format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-        }
-    }
-},
-
-credits: {
-    enabled: false
-},
-
-series: [{
-    name: 'Brands',
-    colorByPoint: true,
-    data: [{
-        name: 'Chrome',
-        y: 70.67,
-        sliced: true,
-        selected: true
-    }, {
-        name: 'Edge',
-        y: 14.77
-    },  {
-        name: 'Firefox',
-        y: 4.86
-    }, {
-        name: 'Safari',
-        y: 2.63
-    }, {
-        name: 'Internet Explorer',
-        y: 1.53
-    },  {
-        name: 'Opera',
-        y: 1.40
-    }, {
-        name: 'Sogou Explorer',
-        y: 0.84
-    }, {
-        name: 'QQ',
-        y: 0.51
-    }, {
-        name: 'Other',
-        y: 2.6
-    }]
-}]
-};
-
-const map = {
-    chart: { type: 'area' },
-    title: { text: 'AZ and NJ data comparison' },
-    xAxis: { allowDecimals: false },
-    yAxis: { title: { text: 'text' } },
-    series: [
-      { name: 'AZ', data: [2, 1, 1, 1, 0, 1] },
-      { name: 'NJ', data: [-999, -999, 1, 0, 1, 1] }
-    ]
-};
-
-const highstock = {
-    title: {
-      text: 'My stock chart'
-    },
-    series: [
-      {
-        data: [1, 2, 1, 4, 3, 6, 7, 3, 8, 6, 9]
-      }
-    ]
-};
-
-
-HighchartsMap(Highcharts);
+import './styles/App.css'; // Keep your existing styles
 
 const App = () => {
   const { isLoading, error } = useAuth0();
 
   return (
-    <div>
-    <div className="container">
-        <LoginButton />
-        <LogoutButton />
-        <Profile />
+    <Router>
+      <div className="app-container">
+        <Navbar />
+        <div className="welcome-banner">Welcome : John Doe</div>
+        <div className="main-layout">
+          <Sidebar />
+          <div className="content">
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/edit-database" element={<EditDatabasePage />} />
+              <Route path="/data" element={<DataPage />} />
+            </Routes>
 
-        <h1 className="my-4">Hello, Henry! Data Visualization</h1>
-        <button className="btn btn-primary">Click Me</button>
-    
-        <HighchartsReact highcharts={Highcharts} options={options} />
-        <HighchartsReact highcharts={Highcharts} options={map} />
-        <HighchartsReact highcharts={Highcharts} constructorType={'stockChart'} options={highstock} />
-        <NotesList />
-    </div>
-    </div>
+            <div className="container">
+              <LoginButton />
+              <LogoutButton />
+              <Profile />
+              <NotesList />
+            </div>
+          </div>
+        </div>
+      </div>
+    </Router>
   );
 };
-
-
 
 export default App;
