@@ -1,5 +1,5 @@
 .sidebar {
-  background-color: #2b7cd8;
+  background-color: #6ab3e7;
   color: white;
   width: 250px;
   height: 100vh;
@@ -10,9 +10,9 @@
 }
 
 .welcome-message {
-  background-color: #79a7eb;
+  background-color: #6ab3e7;
   padding: 10px;
-  color: #0033a0; 
+  color: #004aa8; 
   font-size: 1.1rem;
   margin-bottom: 20px;
   text-align: center;

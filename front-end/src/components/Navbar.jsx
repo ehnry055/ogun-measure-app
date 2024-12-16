@@ -1,8 +1,11 @@
 import React from 'react';
 import '../styles/Navbar.css'; 
 import columbiaLogo from '../assets/columbia-logo.png'; 
+import { useAuth0 } from '@auth0/auth0-react';
+import LoginButton from './login';
+import LogoutButton from './logout';
 
-const Navbar = () => {
+function Navbar() {
   return (
     <div className="top-navbar">
       <div className="navbar-left">
@@ -12,7 +15,7 @@ const Navbar = () => {
           className="logo"
         />
         <span className="title">Columbia</span>
-        <span className="subtitle">Racial Disparities Analytics Platform</span>
+        <span className="subtitle">Racism Data System</span>
       </div>
       <div className="navbar-center">
         <nav className="nav-links">
@@ -24,7 +27,8 @@ const Navbar = () => {
       </div>
       <div className="navbar-right">
         <input type="text" className="search-bar" placeholder="Search..." />
-        <span className="sort">SORT ▾</span>
+        <LoginButton />
+        <LogoutButton />
       </div>
     </div>
   );
