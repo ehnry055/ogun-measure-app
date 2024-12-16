@@ -1,0 +1,44 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.welcome-banner {
+  background-color: #79a7eb;
+  padding: 10px;
+  color: #0033a0;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.main-layout {
+  display: flex;
+  height: calc(100vh - 60px); /* Adjust for the navbar height */
+}
+
+.sidebar {
+  background-color: #2b7cd8;
+  color: white;
+  width: 250px;
+  padding: 20px 10px;
+  font-family: Arial, sans-serif;
+}
+
+.sidebar-link {
+  display: block;
+  color: white;
+  text-decoration: none;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+}
+
+.sidebar-link:hover {
+  text-decoration: underline;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #fff;
+}

@@ -1,0 +1,35 @@
+.sidebar {
+  background-color: #2b7cd8; /* Sidebar background */
+  color: white; /* Text color */
+  width: 250px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 10px;
+  font-family: Arial, sans-serif;
+}
+
+.welcome-message {
+  background-color: #79a7eb; /* Light blue background */
+  padding: 10px;
+  color: #0033a0; /* Darker blue text */
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.sidebar-links {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sidebar-link {
+  color: white;
+  text-decoration: none;
+  font-size: 1.2rem;
+}
+
+.sidebar-link:hover {
+  text-decoration: underline;
+}
