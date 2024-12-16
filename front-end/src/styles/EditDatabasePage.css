@@ -90,4 +90,7 @@
     color: #004aa8;
     font-size: 1.2rem;
   }
-  
+
+  .noteslist p {
+    position: relative;
+  }
