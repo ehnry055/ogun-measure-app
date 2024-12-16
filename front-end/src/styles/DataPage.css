@@ -13,7 +13,7 @@
   
   .data-button {
     background-color: #004aa8;
-    color: white;
+    color: rgba(255, 255, 255, 0.649);
     border: none;
     padding: 8px 20px;
     font-size: 1rem;
@@ -23,7 +23,7 @@
   
   .data-button.active {
     background-color: #6ab3e7;
-    color: #004aa8;
+    color: #474E9E;
   }
   
   .data-content {
@@ -43,7 +43,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.649);
     border: 1px solid #ddd;
     border-radius: 5px;
     padding: 5px 10px;
@@ -68,7 +68,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.649);
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 10px;

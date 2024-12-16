@@ -4,9 +4,9 @@
 }
 
 .welcome-banner {
-  background-color: #6ab3e7;
+  background-color: #906ED4;
   padding: 10px;
-  color: #004aa8;
+  color: #474E9E;
   text-align: center;
   font-size: 1.2rem;
   font-weight: bold;
@@ -18,8 +18,8 @@
 }
 
 .sidebar {
-  background-color: #6ab3e7;
-  color: white;
+  background-color: #906ED4;
+  color: rgba(255, 255, 255, 0.649);
   width: 250px;
   padding: 20px 10px;
   font-family: Arial, sans-serif;
@@ -27,7 +27,7 @@
 
 .sidebar-link {
   display: block;
-  color: white;
+  color: rgba(255, 255, 255, 0.649);
   text-decoration: none;
   margin-bottom: 15px;
   font-size: 1.1rem;
@@ -40,5 +40,6 @@
 .content {
   flex-grow: 1;
   padding: 20px;
-  background-color: #fff;
+  background-color: #222222;
+  color: white;  
 }
