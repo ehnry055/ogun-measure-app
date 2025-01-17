@@ -5,7 +5,7 @@ import Profile from '../components/profile'
 function Users() {
     return (
         <div>
-            <div>User stuff picture should show up, not working :/</div>
+            <div>User profile picture should show up, not working on firefox :/</div>
             <Profile />
         </div>
     );

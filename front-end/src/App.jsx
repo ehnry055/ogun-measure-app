@@ -22,7 +22,6 @@ import EditUsers from "./pages/EditUsers";
 import './styles/App.css';
 
 function App() {
-  const { isLoading, error } = useAuth0();
 
   return (
     <Router>
