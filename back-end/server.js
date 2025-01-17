@@ -1,46 +1,52 @@
 require('dotenv').config();
-
-// back-end/server.js
 const express = require('express');
-const mysql = require('mysql2');
 const cors = require('cors');
+const { Sequelize, DataTypes } = require('sequelize');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
-
-// Enable CORS to allow requests from your React frontend
 app.use(cors());
 
-// Create MySQL connection
-const db = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+  host: process.env.DB_HOST,
+  dialect: 'mysql',
 });
 
-db.connect((err) => {
-  if (err) {
-    console.error('Error connecting to MySQL:', err);
-    return;
+const Note = sequelize.define('Note', {
+  id: {
+    type: DataTypes.STRING,
+    primaryKey: true, 
+  },
+  title: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  content: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+}, {
+  tableName: 'notes',
+  timestamps: false, 
+});
+
+sequelize.authenticate()
+  .then(() => console.log('Connected to MySQL using Sequelize'))
+  .catch(err => console.error('Error connecting to MySQL:', err));
+
+sequelize.sync();
+
+app.get('/api/notes', async (req, res) => {
+  try {
+    const notes = await Note.findAll(); 
+    console.log(notes)
+    res.json(notes);
+  } catch (err) {
+    console.error('Error fetching notes:', err);
+    res.status(500).send('Error fetching notes');
   }
-  console.log('Connected to MySQL');
 });
 
-// API endpoint to fetch all notes
-app.get('/api/notes', (req, res) => {
-    console.log("hello world")
-    db.query('SELECT * FROM notes', (err, results) => {
-        if (err) {
-            console.error('Error fetching notes:', err);
-            return res.status(500).send('Error fetching notes');
-        }
-        res.json(results);
-        console.log(results);
-    });
-});
-
-// Start the server
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
