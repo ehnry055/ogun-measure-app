@@ -8,6 +8,7 @@ import LogoutButton from './logout';
 //CURRENT BUG: the log out button disappears when navigating to another page, i think isauthenticated isn't updated every time? confusing
 
 function Navbar() {
+  const { isLoading, error } = useAuth0();
   return (
     <div className="top-navbar">
       <div className="navbar-left">
@@ -30,8 +31,15 @@ function Navbar() {
       <div className="navbar-right">
         <input type="text" className="search-bar" placeholder="Search..." />
         <div className="tba">
-          <LoginButton />
-          <LogoutButton />
+          {error && <p>Authentication Error</p>}
+          {!error && isLoading &&  <p>Loading</p>}  
+          {/* loading is a placeholder, replace with an animation! */}
+          {!error && !isLoading && (
+            <>
+              <LoginButton />
+              <LogoutButton />
+            </>
+          )}
         </div>
       </div>
     </div>
