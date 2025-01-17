@@ -3,9 +3,16 @@ import HighchartsMap from 'highcharts/modules/map';
 import Highcharts from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
 import '../styles/DataPage.css'; 
+import { useAuth0 } from "@auth0/auth0-react";
+import { useNavigate } from "react-router-dom";
 
 const DataPage = () => {
   const [isCompareMode, setIsCompareMode] = useState(false);
+  const { isAuthenticated, user, loginWithRedirect, logout } = useAuth0();
+  const navigate = useNavigate();
+  if (!isAuthenticated) {
+    navigate("/unauthorized");
+  }
 
   const pieChartOptions = {
     chart: { type: 'pie' },

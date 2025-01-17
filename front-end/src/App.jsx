@@ -18,6 +18,7 @@ import EditDatabasePage from "./pages/EditDatabasePage";
 import DataPage from "./pages/DataPage";
 import Users from "./pages/Users";
 import EditUsers from "./pages/EditUsers";
+import UnAuthorized from './pages/UnAuthorized';
 
 import './styles/App.css';
 
@@ -36,6 +37,7 @@ function App() {
               <Route path="/graphs" element={<DataPage />} />
               <Route path="/users" element={<EditUsers />} />
               <Route path="/profile" element={<Users />} />
+              <Route path="/unauthorized" element={<UnAuthorized />} />
             </Routes>
           </div>
         </div>
