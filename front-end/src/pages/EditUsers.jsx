@@ -20,6 +20,7 @@ const EditUsers = () => {
               <li>Jason Chae: jascha25@bergen.org</li>
               <li>Henry Choi: hencho25@bergen.org</li>
               <li>Stephen Yoon: steyoo25@bergen.org</li>
+              <li>Brendon Wan: brewan25@bergen.org</li>
           </ul>
       </div>
       <div>
