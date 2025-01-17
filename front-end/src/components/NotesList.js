@@ -6,10 +6,9 @@ const NotesList = () => {
   const [notes, setNotes] = useState([]);
 
   useEffect(() => {
-    // Make GET request to fetch notes from backend
     axios.get('http://localhost:4000/api/notes')
       .then((response) => {
-        setNotes(response.data); // Store data in state
+        setNotes(response.data);
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
