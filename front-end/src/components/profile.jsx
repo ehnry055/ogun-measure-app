@@ -1,6 +1,5 @@
 import { useAuth0, useEffect, useState } from "@auth0/auth0-react";
 import React from "react";
-import { jwtDecode } from "jwt-decode";
 
 const Profile = () => {
   console.log("test");

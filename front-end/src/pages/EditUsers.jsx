@@ -2,6 +2,8 @@ import React from 'react';
 import '../styles/EditDatabasePage.css'; 
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from 'jwt-decode';
+import Token from "../components/token"
 
 const EditUsers = () => {
   const { isAuthenticated, user, loginWithRedirect, logout } = useAuth0();
@@ -9,6 +11,7 @@ const EditUsers = () => {
   if (!isAuthenticated) {
     navigate("/unauthorized");
   }
+
   return (
     <div className="edit-database-container">
       <div className="saved-section">
@@ -21,6 +24,9 @@ const EditUsers = () => {
       </div>
       <div>
           <h>this is where user editing will occur</h>
+          <h1>
+            place a ^token /^ here later
+          </h1>
       </div>
     </div>
   );
