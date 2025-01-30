@@ -3,13 +3,16 @@ import '../styles/EditDatabasePage.css';
 import NotesList from '../components/NotesList';
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from 'jwt-decode';
 
 const EditDatabasePage = () => {
-  const { isAuthenticated, user, loginWithRedirect, logout } = useAuth0();
+  const { isAuthenticated, user, loginWithRedirect, logout, getAccessTokenSilently} = useAuth0();
+  //const [userMetadata, setUserMetadata] = useState(null);
   const navigate = useNavigate();
   if (!isAuthenticated) {
     navigate("/unauthorized");
   }
+
   return (
     <div className="edit-database-container">
 
