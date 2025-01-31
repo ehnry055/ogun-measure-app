@@ -11,21 +11,26 @@ const NotesList = () => {
         setNotes(response.data);
       })
       .catch((error) => {
-        console.error('Error fetching data:', error);
+        console.error('error fetching data:', error);
       });
   }, []);
 
   return (
     <div>
       <h1>Notes</h1>
-      <ul>
-        {notes.map((note) => (
-          <li key={note.id}>
-            <h2>{note.title}</h2>
-            <p>{note.contents}</p>
-            <small>Created: {new Date(note.created).toLocaleString()}</small>
+      <ul>  
+        {notes.map((entry) => (
+          <li key={entry.GISJOIN}> 
+            <h2>{entry.STATE}, {entry.ALLCOUNTIES}</h2> 
+            <p>STATEICP: {entry.STATEICP}</p>
+            <p>STATEFIPS: {entry.STATEFIPS}</p>
+            <p>COUNTYFIPS: {entry.COUNTYFIPS}</p>
+            <p>RSG_SV1: {entry.RSG_SV1}</p>
+            <p>GR_SV1: {entry.GR_SV1}</p>
+            <p>HFA_SV2: {entry.HFA_SV2}</p>
+            <p>MM_LRA1: {entry.MM_LRA1}</p>
           </li>
-        ))}
+      ))}
       </ul>
     </div>
   );
