@@ -1,0 +1,67 @@
+.topNavbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #4E2D76;
+  color: white;
+  padding: 10px 20px;
+  font-family: Arial, sans-serif;
+}
+
+.navbarLeft {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 40px;
+  margin-right: 10px;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.subtitle {
+  font-size: 1rem;
+  font-weight: lighter;
+}
+
+.navbarCenter {
+  display: flex;
+}
+
+.navLinks {
+  display: flex;
+  gap: 20px;
+}
+
+.navLink {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.navLink:hover {
+  text-decoration: underline;
+}
+
+.navbarRight {
+  display: flex;
+  align-items: center;
+}
+
+.searchBar {
+  border: none;
+  padding: 5px 10px;
+  border-radius: 20px;
+  margin-right: 10px;
+  outline: none;
+}
+
+.sort {
+  font-size: 0.9rem;
+  cursor: pointer;
+}
