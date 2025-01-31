@@ -1,0 +1,95 @@
+.editDatabaseContainer {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .leftSection {
+    width: 25%;
+    text-align: center;
+  }
+  
+  .profileCircle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: #c0c0c0;
+    margin: 0 auto 10px;
+  }
+  
+  .profileName {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #6ab3e7;
+  }
+  
+  .pieChart {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #474E9E; 
+    margin: 10px auto;
+  }
+  
+  .chartLabel {
+    font-weight: bold;
+    color: #6ab3e7;
+  }
+  
+  .dataSection {
+    flex: 1;
+  }
+  
+  .sectionTitle {
+    color: #474E9E;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .dataItem {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .dataItem h3 {
+    font-size: 1.2rem;
+    color: #474E9E;
+  }
+  
+  .actionButtons {
+    margin-top: 10px;
+  }
+  
+  .deleteButton,
+  .editButton {
+    background-color: #474E9E;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin-right: 10px;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  
+  .savedUsers li {
+    list-style: none;
+    font-size: 1rem;
+    margin: 5px 0;
+  }
+  
+  .savedGraph {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .savedGraph h3 {
+    color: #474E9E;
+    font-size: 1.2rem;
+  }
+
+  .notesList p {
+    position: relative;
+  }
