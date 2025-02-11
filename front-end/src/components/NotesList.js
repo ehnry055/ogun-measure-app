@@ -1,26 +1,24 @@
-// front-end/src/components/NotesList.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const NotesList = () => {
+const NotesList = ({ limit }) => {
   const [notes, setNotes] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:4000/api/notes')
+    axios.get(`http://localhost:4000/api/notes?limit=${limit}`) // passing limit to the API
       .then((response) => {
         setNotes(response.data);
       })
       .catch((error) => {
         console.error('error fetching data:', error);
       });
-  }, []);
+  }, [limit]);
 
   return (
     <div>
-      <h1>Notes</h1>
-      <ul>  
+      <ul>
         {notes.map((entry) => (
-          <li key={entry.GISJOIN}> 
+          <li key={entry.GISJOIN}>
             <h2>{entry.STATE}, {entry.ALLCOUNTIES}</h2> 
             <p>STATEICP: {entry.STATEICP}</p>
             <p>STATEFIPS: {entry.STATEFIPS}</p>
@@ -30,7 +28,7 @@ const NotesList = () => {
             <p>HFA_SV2: {entry.HFA_SV2}</p>
             <p>MM_LRA1: {entry.MM_LRA1}</p>
           </li>
-      ))}
+        ))}
       </ul>
     </div>
   );
