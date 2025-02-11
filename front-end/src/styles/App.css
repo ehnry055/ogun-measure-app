@@ -3,6 +3,10 @@
   flex-direction: column;
 }
 
+body{
+  background-color: #222222;
+}
+
 .welcome-banner {
   background-color: #906ED4;
   padding: 10px;
