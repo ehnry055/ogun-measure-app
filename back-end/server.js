@@ -3,9 +3,32 @@ const express = require('express');
 const cors = require('cors');
 const { Sequelize, DataTypes } = require('sequelize');
 
+
 const app = express();
+const { auth } = require('express-oauth2-jwt-bearer');
 const PORT = process.env.PORT || 4000;
 app.use(cors());
+
+
+const jwtCheck = auth({
+  audience: 'https://racism-data-system.com/api',
+  issuerBaseURL: 'https://dev-mqfq6kte0qw3b36u.us.auth0.com/',
+  tokenSigningAlg: 'RS256'
+});
+
+// enforce on all endpoints
+app.use(jwtCheck);
+
+app.get('/authorized', function (req, res) {
+    res.send('Secured Resource');
+});
+
+app.listen(port);
+
+console.log('Running on port ', port);
+
+
+
 
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
   host: process.env.DB_HOST,
