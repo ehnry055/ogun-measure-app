@@ -75,8 +75,9 @@ sequelize.sync();
 
 app.get('/api/notes', async (req, res) => {
   try {
-    const notes = await Note.findAll(); 
-    console.log(notes)
+    const limit = parseInt(req.query.limit) || 10; // default: 10 entries
+    const notes = await Note.findAll({ limit }); // adding LIMIT keyword to the query
+    console.log(notes);
     res.json(notes);
   } catch (err) {
     console.error('Error fetching notes:', err);
