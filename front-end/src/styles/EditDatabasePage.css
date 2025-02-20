@@ -6,7 +6,7 @@
 .entry-limit-container label {
   margin-right: 10px;
   font-weight: bold;
-  color: #474E9E; 
+  color: #2cd7ce;
 }
 
 .limit-input {
@@ -73,6 +73,7 @@
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
+  font-size: 0.8rem;
 }
 
 .data-item h3 {
