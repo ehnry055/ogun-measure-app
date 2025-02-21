@@ -3,7 +3,8 @@
   flex-direction: column;
 }
 
-body{
+html, body{
+  height:100%;
   background-color: #222222;
 }
 

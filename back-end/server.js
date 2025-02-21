@@ -2,23 +2,28 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { Sequelize, DataTypes } = require('sequelize');
+const { auth } = require('express-oauth2-jwt-bearer');
+const axios = require('axios');
+const qs = require('qs');
 
 const app = express();
-const { auth } = require('express-oauth2-jwt-bearer');
 const PORT = process.env.PORT || 4000;
+
 app.use(cors());
+app.use(express.json()); // Middleware to parse JSON bodies
 
-// const jwtCheck = auth({
-//   audience: 'https://racism-data-system.com/api',
-//   issuerBaseURL: 'https://dev-mqfq6kte0qw3b36u.us.auth0.com/',
-//   tokenSigningAlg: 'RS256'
-// });
+const jwtCheck = auth({
+  audience: 'https://racism-data-system.com/api',
+  issuerBaseURL: 'https://dev-mqfq6kte0qw3b36u.us.auth0.com/',
+  tokenSigningAlg: 'RS256'
+});
 
-// // enforce on all endpoints
-// app.use(jwtCheck);
+// enforce on all endpoints
+app.use(jwtCheck);
 
-//     res.send('Secured Resource');
-// });
+app.get('/authorized', function (req, res) {
+    res.send('Secured Resource');
+});
 
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
   host: process.env.DB_HOST,
@@ -52,7 +57,7 @@ const Note = sequelize.define('Entry', {
   HFA_SV3: { type: DataTypes.INTEGER },
   HFA_LRA3: { type: DataTypes.INTEGER },
   MM_LRA1: { type: DataTypes.INTEGER }
-}, {
+  }, {
   tableName: 'AggregatedData',
   timestamps: false
 });
