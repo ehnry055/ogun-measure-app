@@ -14,6 +14,35 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 const { Parser } = require('json2csv');
 
+
+//const jwtCheck = auth({
+//  audience: 'https://racism-data-system.com/api',
+//  issuerBaseURL: 'https://dev-mqfq6kte0qw3b36u.us.auth0.com/',
+//  tokenSigningAlg: 'RS256'
+//});
+
+// enforce on all endpoints
+//app.use(jwtCheck);
+
+//app.get('/authorized', function (req, res) {
+//    res.send('Secured Resource');
+//});
+
+//const config = {
+//  authRequired: false,
+//  auth0Logout: true,
+//  clientID: process.env.REACT_APP_AUTH0_clientId,
+//  domain: process.env.REACT_APP_AUTH0_domain,
+//  secret: process.env.REACT_APP_AUTH0_SECRET, 
+
+//  authorizationParams: {
+//    response_type: "code",
+//    scope: "openid profile email adminView",
+//    audience: "https://racism-data-system.com/api",
+//  },
+//};
+
+
 app.use(cors());
 app.use(express.json());
 
