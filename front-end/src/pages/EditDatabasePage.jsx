@@ -3,11 +3,13 @@ import '../styles/EditDatabasePage.css';
 import NotesList from '../components/NotesList';
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 const EditDatabasePage = () => {
   const { isAuthenticated, user, loginWithRedirect, logout, getAccessTokenSilently } = useAuth0();
   const navigate = useNavigate();
   const [entryLimit, setEntryLimit] = useState(10); // default: 10 entries
+  const [selectedFile, setSelectedFile] = useState(null);
 
   if (!isAuthenticated) {
     navigate("/unauthorized");
@@ -17,6 +19,50 @@ const EditDatabasePage = () => {
     const value = parseInt(e.target.value, 10);
     if (!isNaN(value)) {
       setEntryLimit(value >= 1 ? value : 1); // value must be at least 1
+    }
+  };
+
+  const handleFileUpload = async () => {
+    if (!selectedFile) {
+      alert('No file chosen');
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append('csv', selectedFile);
+  
+    try {
+      const token = await getAccessTokenSilently(); // checks if the session is valid
+      await axios.post('http://localhost:4000/api/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // can take any type of form
+          Authorization: `Bearer ${token}` // passes the access token (added security)
+        }
+      });
+      alert('File uploaded successfully!');
+    } catch (error) {
+      console.error('Upload failed:', error);
+      alert('File upload failed');
+    }
+  };
+
+  const handleExport = async () => {
+    try {
+      const token = await getAccessTokenSilently();
+      const response = await axios.get('http://localhost:4000/api/export-csv', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        responseType: 'text'
+      });
+  
+      const newWindow = window.open();
+      newWindow.document.write(`<pre>${response.data}</pre>`);
+      newWindow.document.title = 'CSV Preview';
+      
+    } catch (error) {
+      console.error('Export failed:', error);
+      alert('CSV export failed. Possible reasons: empty data/incorrect format');
     }
   };
 
@@ -36,12 +82,21 @@ const EditDatabasePage = () => {
       <div className="data-section">
         <h2 className="section-title">Your Data</h2>
         <div className="data-item">
-          <h3>Aggregated Data</h3>
+          <h3>Uploaded Data</h3>
           <NotesList limit={entryLimit} />
           <div className="action-buttons">
             <button className="delete-button">Delete</button>
             <button className="edit-button">Edit</button>
           </div>
+        </div>
+      </div>
+
+      <div className="upload-section">
+        <h2 className="section-title">Upload CSV</h2>
+        <div className="upload-controls">
+          <input type="file" accept=".csv" onChange={(e) => setSelectedFile(e.target.files[0])}/>
+          <button className="upload-button" onClick={handleFileUpload}> Upload to Database </button>
+          <button className="export-button" onClick={handleExport}> View as CSV </button>
         </div>
       </div>
 
