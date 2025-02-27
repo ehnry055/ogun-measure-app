@@ -115,3 +115,41 @@
 .noteslist p {
   position: relative;
 }
+
+.upload-section {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.upload-controls {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+}
+
+.upload-button {
+  padding: 0.5rem 1rem;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.upload-button:hover {
+  background: #850196;
+}
+
+.export-button {
+  padding: 0.5rem 1rem;
+  background: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.export-button:hover {
+  background: #850196;
+}
