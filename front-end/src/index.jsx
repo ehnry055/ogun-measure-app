@@ -13,9 +13,14 @@ root.render(
   <Auth0Provider
     domain={domain}
     clientId={clientId}
-    authorizationParams={{
-      redirect_uri: window.location.origin
-    }}
+    authorizationParams={
+      {
+        audience: "https://racism-data-system.com/api",
+        redirect_uri: window.location.origin
+      }
+    }
+    audience="https://racism-data-system.com/api"
+    scope="openid profile email adminView"
   >
     <App />
   </Auth0Provider>
