@@ -4,7 +4,7 @@
   }
   
   .about-title {
-    color: #474E9E;
+    color: #AC5180;
     font-size: 2.5rem;
     font-weight: bold;
     margin-bottom: 20px;
@@ -15,6 +15,7 @@
     line-height: 1.6;
     color: rgb(196, 196, 196);
     margin-bottom: 40px;
+    margin-top: 70px;
   }
   
   .about-grid {

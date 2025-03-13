@@ -29,10 +29,10 @@ const HomePage = () => {
             </ol> 
           </p>
         </div>
-        <div className="placeholder-box"></div>
+        {/* <div className="placeholder-box"></div> */}
       </div>
-      <div className="about-grid reverse">
-        <div className="placeholder-box"></div>
+      <div className="about-grid">
+        {/*<div className="placeholder-box"></div>*/}
         <div className="text-box">
           <p>
           2 pathways:
