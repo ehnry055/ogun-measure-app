@@ -21,7 +21,7 @@ const EditDatabasePage = () => {
         const decodedToken = jwtDecode(token);
         //console.log("Decoded token:", decodedToken);
 
-        const hasPermission = decodedToken.permissions && decodedToken.permissions.includes(process.env.REACT_APP_AUTH0ADMIN);
+        const hasPermission = decodedToken.permissions && decodedToken.permissions.includes("adminView");
         //console.log("Has permission:", hasPermission);
 
         if (!hasPermission) {
