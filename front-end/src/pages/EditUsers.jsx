@@ -11,10 +11,6 @@ const EditUsers = () => {
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
   const navigate = useNavigate();
 
-  if (!isAuthenticated) {
-    navigate("/unauthorized");
-  }
-
   useEffect(() => {
     const checkPermissions = async () => {
       try {
@@ -48,6 +44,7 @@ const EditUsers = () => {
 //  if (!hasPermission) {
 //    navigate("/unauthorized");
 //  }
+
 
 console.log("printing the edit users page");
   return (

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/EditDatabasePage.css';
 import NotesList from '../components/NotesList';
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 
 const EditDatabasePage = () => {
@@ -11,9 +12,28 @@ const EditDatabasePage = () => {
   const [entryLimit, setEntryLimit] = useState(10); // default: 10 entries
   const [selectedFile, setSelectedFile] = useState(null);
 
-  if (!isAuthenticated) {
-    navigate("/unauthorized");
-  }
+  useEffect(() => {
+    const checkPermissions = async () => {
+      try {
+        const token = await getAccessTokenSilently();
+        console.log("Access token:", token); // Log the token for debugging
+        const decodedToken = jwtDecode(token);
+        //console.log("Decoded token:", decodedToken);
+
+        const hasPermission = decodedToken.permissions && decodedToken.permissions.includes(process.env.REACT_APP_AUTH0ADMIN);
+        //console.log("Has permission:", hasPermission);
+
+        if (!hasPermission) {
+         // console.log("User does not have the required permission");
+        }
+      } catch (error) {
+        console.error('Error checking permissions:', error);
+        navigate("/unauthorized");
+      }
+    };
+
+    checkPermissions();
+  }, [isAuthenticated, getAccessTokenSilently, navigate]);
 
   const handleEntryLimitChange = (e) => {
     const value = parseInt(e.target.value, 10);
