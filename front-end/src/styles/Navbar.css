@@ -65,3 +65,49 @@
   font-size: 0.9rem;
   cursor: pointer;
 }
+
+.navbar-gradient {
+  background: linear-gradient(90deg, #AC5180, #371D33); /* Purple gradient */
+}
+
+.navbar-brand {
+  color: #ffffff;
+  font-weight: bold;
+  font-family: 'Courier New', Courier, monospace
+}
+
+.navbar-nav .nav-link {
+  text-decoration: none; /* Removes underline */
+}
+
+.navbar-nav .nav-link:hover {
+  text-decoration: none; /* Ensures no underline on hover */
+}
+
+.navbar.sticky-top {
+  position: sticky;
+  top: 0;
+  z-index: 1000;  /* Ensure it stays above other content */
+  background-color: #371D33;  /* Make sure the background is solid */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Optional: Add some shadow for better visibility */
+}
+
+
+/* Style for the navbar links */
+
+.nav-link {
+  display: block;
+  align-items: center;
+  padding: 0rem 1.5rem;      
+  line-height: 4rem;
+  height: 100%;
+  color: white;          
+  text-decoration: none;   
+}
+
+.navbar a:not(.navbar-brand):hover {
+  background-color: rgba(172, 81, 128, 0.5); 
+  color: #371D33;     
+  transition: .3s ease;
+}
+

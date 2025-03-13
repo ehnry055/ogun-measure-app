@@ -1,0 +1,80 @@
+.btn-primary {
+    padding: 0.75rem 1.5rem; /* Adjust button padding */
+    border-radius: 0.5rem;   /* Adjust button border radius */
+    background-color: #222222;
+    border-color: #AC5180;
+    color: #AC5180;
+  }
+
+.btn-primary:hover {
+    background-color: transparent;
+    border-color: #AC5180;
+    color: #AC5180;
+}
+
+.btn:focus,
+.btn:active {
+  outline: 0 !important; /* Removes the default focus outline */
+  outline-color: transparent;
+  outline-style: none;
+  box-shadow: none !important; /* Removes the box-shadow */
+  border: none; /* Ensure there's no border appearing during click */
+}
+
+.btn-secondary {
+    padding: 0.75rem 1.5rem; /* Adjust button padding */
+    border-radius: 0.5rem;   /* Adjust button border radius */
+    background-color: #222222;
+    border-color: #F1A5AD;
+    color: #F1A5AD;
+  }
+
+.btn-secondary:hover {
+    background-color: transparent;
+    border-color: #F1A5AD;
+    color: #F1A5AD;
+}
+
+#dropdown-profile {
+    background-color: transparent;
+    border-color: #AC5180
+}
+
+#dropdown-profile:focus,
+#dropdown-profile:active {
+    border-color: #AC5180;
+    box-shadow: none; /* Remove any box shadow */
+}
+
+.custom-dropdown-toggle {
+    background-color: #AC5180;  /* Set background color */
+    color: #fff;                /* Set text color to white */
+    /* border-color: #AC5180; */
+    padding: 8px 16px;          /* Adjust padding */
+    border-radius: 5px;         /* Rounded corners */
+    border: 1px solid #AC5180;  /* Ensure the border is solid */
+  }
+  
+ /* Add focus and active outline to ensure the border is maintained */
+.custom-dropdown-toggle:focus,
+.custom-dropdown-toggle:active {
+    border-color: #AC5180; /* Add a colored outline when focused or active */
+    box-shadow: none;      /* Remove any box shadow */
+}
+  .custom-dropdown-menu {
+    background-color: #3a3a3a !important;  /* Set background color of the dropdown menu */
+    border-radius: 5px !important;         /* Rounded corners */
+    min-width: 200px !important;           /* Optional: Set minimum width for the dropdown */
+
+  }
+  
+  .custom-dropdown-item {
+    color: white !important;                /* Set text color of the items */
+
+  }
+  
+  .custom-dropdown-item:hover {
+    background-color: #3a3a3a !important;  /* Change background color on hover */
+    color: #AC5180 !important;             /* Change text color on hover */
+  }
+

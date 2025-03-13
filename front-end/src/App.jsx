@@ -12,7 +12,6 @@ import LogoutButton from './components/logout';
 import Profile from './components/profile';
 
 import Navbar from "./components/Navbar";
-import Sidebar from "./components/Sidebar";
 import HomePage from "./pages/HomePage";
 import EditDatabasePage from "./pages/EditDatabasePage";
 import DataPage from "./pages/DataPage";
@@ -29,7 +28,6 @@ function App() {
       <div className="app-container">
         <Navbar />
         <div className="main-layout">
-          <Sidebar />
           <div className="content">
             <Routes>
               <Route path="/" element={<HomePage />} />

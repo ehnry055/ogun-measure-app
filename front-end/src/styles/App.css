@@ -22,13 +22,13 @@ html, body{
   height: calc(100vh - 60px);
 }
 
-.sidebar {
+/* .sidebar {
   background-color: #906ED4;
   color: rgba(255, 255, 255, 0.649);
   width: 250px;
   padding: 20px 10px;
   font-family: Arial, sans-serif;
-}
+} */
 
 .sidebar-link {
   display: block;
