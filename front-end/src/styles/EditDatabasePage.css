@@ -81,6 +81,11 @@
   color: #474E9E;
 }
 
+.data-item h2 {
+  color: rgb(53, 232, 160);
+  text-align: center;
+}
+
 .action-buttons {
   margin-top: 10px;
 }
@@ -152,4 +157,30 @@
 
 .export-button:hover {
   background: #850196;
+}
+
+.select-button {
+  padding: 0.5rem 1rem;
+  background: #bdb325;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.select-button:hover {
+  background: #70f2c3;
+}
+
+.delete-table-button {
+  padding: 0.5rem 1rem;
+  background: #93b62c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete-table-button:hover {
+  background: #f087a6;
 }
