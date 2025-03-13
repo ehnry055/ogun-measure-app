@@ -23,6 +23,7 @@ import './styles/App.css';
 
 import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
+import Requests from './pages/RequestsPage';
 
 function App() {
 
@@ -38,6 +39,7 @@ function App() {
               <Route path="/graphs" element={<PrivateRoute Component = {DataPage} />} />
               <Route path="/users" element={<PrivateRoute Component= {EditUsers} />} />
               <Route path="/profile" element={<PrivateRoute Component = {ProfilePage} />} />
+              <Route path="/requests" element={<PrivateRoute Component = {Requests} />} />
               <Route path="/unauthorized" element={<UnAuthorized />} />
             </Routes>
           </div>

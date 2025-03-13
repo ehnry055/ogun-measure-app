@@ -15,34 +15,6 @@ const PORT = process.env.PORT || 4000;
 const { Parser } = require('json2csv');
 
 
-//const jwtCheck = auth({
-//  audience: 'https://racism-data-system.com/api',
-//  issuerBaseURL: 'https://dev-mqfq6kte0qw3b36u.us.auth0.com/',
-//  tokenSigningAlg: 'RS256'
-//});
-
-// enforce on all endpoints
-//app.use(jwtCheck);
-
-//app.get('/authorized', function (req, res) {
-//    res.send('Secured Resource');
-//});
-
-//const config = {
-//  authRequired: false,
-//  auth0Logout: true,
-//  clientID: process.env.REACT_APP_AUTH0_clientId,
-//  domain: process.env.REACT_APP_AUTH0_domain,
-//  secret: process.env.REACT_APP_AUTH0_SECRET, 
-
-//  authorizationParams: {
-//    response_type: "code",
-//    scope: "openid profile email adminView",
-//    audience: "https://racism-data-system.com/api",
-//  },
-//};
-
-
 app.use(cors());
 app.use(express.json());
 
@@ -190,6 +162,30 @@ app.post('/api/upload', upload.single('csv'), async (req, res) => {
     res.status(500).send('Error processing file');
   }
 });
+
+/*
+import { ManagementClient } from 'auth0';
+
+var management = new ManagementClient({
+  domain: process.env.REACT_APP_AUTH0_domain + '.auth0.com',
+  clientId: process.env.REACT_APP_AUTH0_clientId,
+  clientSecret: process.env.REACT_APP_AUTH0_SECRET,
+});
+
+const allUsers = [];
+let page = 0;
+while (true) {
+  const {
+    data: { users, total },
+  } = await management.users.getAll({
+    include_totals: true,
+    page: page++,
+  });
+  allUsers.push(...users);
+  if (allUsers.length === total) {
+    break;
+  }
+} */
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);

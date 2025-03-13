@@ -10,9 +10,6 @@ const DataPage = () => {
   const [isCompareMode, setIsCompareMode] = useState(false);
   const { isAuthenticated, user, loginWithRedirect, logout } = useAuth0();
   const navigate = useNavigate();
-  if (!isAuthenticated) {
-    navigate("/unauthorized");
-  }
 
   const pieChartOptions = {
     chart: { type: 'pie' },
