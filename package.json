@@ -1,6 +1,8 @@
 {
   "dependencies": {
-    "concurrently": "^9.1.2"
+    "bootstrap": "^3.4.1",
+    "concurrently": "^9.1.2",
+    "react-bootstrap": "^2.10.9"
   },
   "scripts": {
     "server": "cd back-end && node server.js",
