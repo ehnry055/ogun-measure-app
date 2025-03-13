@@ -7,6 +7,8 @@ import Token from "../components/token"
 import { useState, useEffect } from 'react';
 
 const EditUsers = () => {
+
+
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
   const navigate = useNavigate();
 
@@ -22,7 +24,7 @@ const EditUsers = () => {
         const decodedToken = jwtDecode(token);
         //console.log("Decoded token:", decodedToken);
 
-        const hasPermission = decodedToken.permissions && decodedToken.permissions.includes('adminView');
+        const hasPermission = decodedToken.permissions && decodedToken.permissions.includes(process.env.REACT_APP_AUTH0ADMIN);
         //console.log("Has permission:", hasPermission);
 
         if (!hasPermission) {
@@ -47,7 +49,7 @@ const EditUsers = () => {
 //  if (!hasPermission) {
 //    navigate("/unauthorized");
 //  }
-
+console.log("printing the edit users page");
   return (
     <div className="edit-database-container">
       <div className="saved-section">

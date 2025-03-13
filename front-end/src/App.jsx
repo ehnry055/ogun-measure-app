@@ -15,11 +15,14 @@ import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
 import EditDatabasePage from "./pages/EditDatabasePage";
 import DataPage from "./pages/DataPage";
-import Users from "./pages/Users";
+import ProfilePage from "./pages/ProfilePage";
 import EditUsers from "./pages/EditUsers";
 import UnAuthorized from './pages/UnAuthorized';
 
 import './styles/App.css';
+
+import PrivateRoute from './components/PrivateRoute';
+import AdminRoute from './components/AdminRoute';
 
 function App() {
 
@@ -31,10 +34,10 @@ function App() {
           <div className="content">
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/data" element={<EditDatabasePage />} />
-              <Route path="/graphs" element={<DataPage />} />
-              <Route path="/users" element={<EditUsers />} />
-              <Route path="/profile" element={<Users />} />
+              <Route path="/data" element={<PrivateRoute Component = {EditDatabasePage} />} />
+              <Route path="/graphs" element={<PrivateRoute Component = {DataPage} />} />
+              <Route path="/users" element={<PrivateRoute Component= {EditUsers} />} />
+              <Route path="/profile" element={<PrivateRoute Component = {ProfilePage} />} />
               <Route path="/unauthorized" element={<UnAuthorized />} />
             </Routes>
           </div>
