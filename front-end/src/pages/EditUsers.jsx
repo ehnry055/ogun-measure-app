@@ -8,7 +8,6 @@ import { useState, useEffect } from 'react';
 
 const EditUsers = () => {
 
-
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
   const navigate = useNavigate();
 
@@ -49,6 +48,7 @@ const EditUsers = () => {
 //  if (!hasPermission) {
 //    navigate("/unauthorized");
 //  }
+
 console.log("printing the edit users page");
   return (
     <div className="edit-database-container">
