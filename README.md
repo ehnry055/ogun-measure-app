@@ -7,4 +7,3 @@ Bootstrap
 MySQL
 Highcharts
 Node.js
-Next.js
