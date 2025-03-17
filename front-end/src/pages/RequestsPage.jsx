@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/App.css'; 
 
 const RequestsPage = () => {
+
   return (
     <div>
       <iframe
