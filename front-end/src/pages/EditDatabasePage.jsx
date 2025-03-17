@@ -12,8 +12,6 @@ const EditDatabasePage = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [tableName, setTableName] = useState("Default Table");
 
-  if (!isAuthenticated) navigate("/unauthorized");
-
   const handleEntryLimitChange = (e) => {
     const value = parseInt(e.target.value, 10);
     if (!isNaN(value)) {
