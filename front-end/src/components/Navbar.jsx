@@ -31,7 +31,10 @@ function Navbar() {
             <a class="nav-link" href="/descriptions">Descriptions</a>
           </li> */}
           <li class="nav-item">
-            <a class="nav-link" href="/data">Data</a>
+            <a class="nav-link" href="/viewdata">View Data</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/editdata">Edit Data</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/graphs">Graphs</a>
