@@ -4,13 +4,21 @@ import '../styles/HomePage.css';
 const HomePage = () => {
   return (
     <div className="home-container">
-      <h2 className="about-title">Home</h2>
+      <h2 className="about-title">The Story</h2>
       <div className="about-content">
         <p>
-          Our goal is to provide an easy-to-use way of accessing a wealth of data about historial instances of racism throughout US counties. 
-          The data is based on the Ogun measure, a method of capturing structural racism through 10 facets, 2 pathways, spanning across 3 historical periods. 
+        In 2023, after developing and testing previous models of anti-Black structural racism,
+Dr. Paris B. Adkins-Jackson developed the Multifaceted Life Course Measure of Anti-
+Black Structural Racism, also referred to as the Ogun Measure. In close collaboration
+with Drs. Justina F. Avila-Rieger and Tanisha G. Hill-Jarrett, the Ogun measure was
+refined over the course of one year and presented to collaborators that would
+become item developers (see below). In 2024, under the management of Ms. Muriel
+Taks Calle, the Ogun measure underwent a rigorous data quality assurance process.
+In 2025, the measure was psychometrically validated and provided to the scientific
+community at-large. For more information on this measure, please read the manual
+and the seminal article. 
         </p>
-      </div>
+      {/* </div>
       <div className="about-grid">
         <div className="text-box">
           <p>
@@ -28,11 +36,11 @@ const HomePage = () => {
               <li>Media and Marketing (MM)</li>
             </ol> 
           </p>
-        </div>
-        {/* <div className="placeholder-box"></div> */}
+        </div> 
+        {/* <div className="placeholder-box"></div> 
       </div>
       <div className="about-grid">
-        {/*<div className="placeholder-box"></div>*/}
+        <div className="placeholder-box"></div>
         <div className="text-box">
           <p>
           2 pathways:
@@ -45,7 +53,7 @@ const HomePage = () => {
           <li>Modern Times (2000-present) (Time Period 3)</li>
 
           </p>
-        </div>
+        </div> */}
       </div>
     </div>
   );
