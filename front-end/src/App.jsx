@@ -24,6 +24,7 @@ import './styles/App.css';
 import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
 import Requests from './pages/RequestsPage';
+import ViewDatabasePage from './pages/ViewDatabasePage';
 
 function App() {
 
@@ -35,7 +36,8 @@ function App() {
           <div className="content">
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/data" element={<PrivateRoute Component = {EditDatabasePage} />} />
+              <Route path="/viewdata" element={<PrivateRoute Component = {ViewDatabasePage} />} />
+              <Route path="/editdata" element={<PrivateRoute Component = {EditDatabasePage} />} />
               <Route path="/graphs" element={<PrivateRoute Component = {DataPage} />} />
               <Route path="/users" element={<PrivateRoute Component= {EditUsers} />} />
               <Route path="/profile" element={<PrivateRoute Component = {ProfilePage} />} />
