@@ -11,7 +11,7 @@ const csv = require('csv-parser');
 const path = require('path');
 const mysql = require('mysql2/promise');
 const app = express();
-const PORT = process.env.PORT || 4000;
+const port = process.env.PORT;
 const { Parser } = require('json2csv');
 
 app.use(cors());
@@ -233,6 +233,9 @@ while (true) {
   }
 } */
 
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+if (port == null || port == "") {
+  port = 4000;
+}
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
 });
