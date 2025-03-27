@@ -1,11 +1,9 @@
 {
   "dependencies": {
-    "bootstrap": "^3.4.1",
-    "concurrently": "^9.1.2",
-    "react-bootstrap": "^2.10.9",
-    "serve": "^14.2.4",
     "auth0": "^4.19.0",
     "axios": "^1.7.9",
+    "bootstrap": "^3.4.1",
+    "concurrently": "^9.1.2",
     "cors": "^2.8.5",
     "csv-parser": "^3.2.0",
     "dotenv": "^16.4.7",
@@ -18,7 +16,9 @@
     "jwks-rsa": "^3.1.0",
     "multer": "^1.4.5-lts.1",
     "mysql2": "^2.3.3",
-    "sequelize": "^6.37.5"
+    "react-bootstrap": "^2.10.9",
+    "sequelize": "^6.37.5",
+    "serve": "^14.2.4"
   },
   "scripts": {
     "server": "node server.js",
