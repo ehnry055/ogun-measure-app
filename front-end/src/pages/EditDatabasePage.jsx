@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/EditDatabasePage.css';
 import NotesList from '../components/NotesList';
 import { useAuth0 } from "@auth0/auth0-react";
@@ -11,7 +11,50 @@ const EditDatabasePage = () => {
   const [entryLimit, setEntryLimit] = useState(10); // default: 10 entries
   const [selectedFile, setSelectedFile] = useState(null);
   const [tableName, setTableName] = useState("Default Table");
+  
+  const [presets, setPresets] = useState([]);
+  const [selectedColumns, setSelectedColumns] = useState(new Set());
+  const [selectedPreset, setSelectedPreset] = useState(null);
 
+  useEffect(() => {
+    const savedPresets = localStorage.getItem('columnPresets');
+    if (savedPresets) setPresets(JSON.parse(savedPresets));
+  }, []);
+
+  const handleSavePreset = () => {
+    const presetName = prompt('Enter preset name:');
+    if (!presetName) return;
+  
+    const currentSelection = Array.from(selectedColumns);
+    
+    const newPreset = {
+      name: presetName,
+      columns: currentSelection
+    };
+  
+    // update presets state and localStorage
+    const updatedPresets = [...presets, newPreset];
+    setPresets(updatedPresets);
+    localStorage.setItem('columnPresets', JSON.stringify(updatedPresets));
+  };  
+
+  const applyPreset = (preset) => {
+    if (selectedPreset === preset.name) {
+      setSelectedColumns(new Set());
+      setSelectedPreset(null);
+    } else {
+      const presetColumns = new Set(preset.columns);
+      setSelectedColumns(presetColumns);
+      setSelectedPreset(preset.name);
+    }
+  };
+    
+  const deletePreset = (presetName) => {
+    const updated = presets.filter(p => p.name !== presetName);
+    setPresets(updated);
+    localStorage.setItem('columnPresets', JSON.stringify(updated));
+  };
+  
   const handleEntryLimitChange = (e) => {
     const value = parseInt(e.target.value, 10);
     if (!isNaN(value)) {
@@ -144,17 +187,53 @@ const EditDatabasePage = () => {
         />
       </div>
 
+      <div className="preset-controls">
+        <button 
+          className="preset-button save-preset"
+          onClick={handleSavePreset}
+        >
+          Save Preset
+        </button>
+        
+        {presets.map(preset => (
+          <div key={preset.name} className="preset-item">
+            <button
+              className={`preset-button ${
+                selectedPreset === preset.name ? 'active' : ''
+              }`}
+              onClick={() => applyPreset(preset)}
+            >
+              {preset.name}
+            </button>
+            <button 
+              className="delete-preset"
+              onClick={(e) => {
+                e.stopPropagation();
+                deletePreset(preset.name);
+              }}
+            >
+              ×
+            </button>
+          </div>
+        ))}
+
+      </div>
+
       <div className="data-section">
         <h2 className="section-title">Your Data</h2>
         <div className="data-item">
           <h2>
             Selected Table: {tableName || "Default Table"}
           </h2>
-          <NotesList tableName={tableName} limit={entryLimit} />
-          <div className="action-buttons">
-            <button className="delete-button">Delete</button>
-            <button className="edit-button">Edit</button>
-          </div>
+            <NotesList 
+              limit={entryLimit}
+              selectedColumns={selectedColumns}
+              onToggleColumn={(column) => setSelectedColumns(prev => {
+                const newSet = new Set(prev);
+                newSet.has(column) ? newSet.delete(column) : newSet.add(column);
+                return newSet;
+              })}
+            />
         </div>
       </div>
 
@@ -167,21 +246,6 @@ const EditDatabasePage = () => {
           <button className="select-button" onClick={handleSelectTable}> Select Table </button>
           <button className="delete-table-button" onClick={handleDeleteTable}> Delete Table </button>
         </div>
-      </div>
-
-      <div className="saved-section">
-        <h2 className="section-title">Saved Graphs</h2>
-        {[1].map((item, index) => (
-          <div className="saved-graph" key={index}>
-            <div className="pie-chart"></div>
-            <h3>Pie Chart: AZ vs NJ</h3>
-            <p>Saved on 1/2/23</p>
-            <div className="action-buttons">
-              <button className="delete-button">Download</button>
-              <button className="edit-button">Delete</button>
-            </div>
-          </div>
-        ))}
       </div>
     </div>
   );
