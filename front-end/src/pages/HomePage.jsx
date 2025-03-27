@@ -18,6 +18,10 @@ In 2025, the measure was psychometrically validated and provided to the scientif
 community at-large. For more information on this measure, please read the manual
 and the seminal article. 
         </p>
+        <div class="container">
+        <a className="homebtn"><span> See Measure </span></a>
+        <a href="/itemdevelopers" className="homebtn"><span> See Item Developers </span></a>
+        </div>
       {/* </div>
       <div className="about-grid">
         <div className="text-box">

@@ -25,6 +25,7 @@ import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
 import Requests from './pages/RequestsPage';
 import ViewDatabasePage from './pages/ViewDatabasePage';
+import ItemDevelopers from './pages/ItemDevelopers';
 
 function App() {
 
@@ -42,6 +43,7 @@ function App() {
               <Route path="/users" element={<PrivateRoute Component= {EditUsers} />} />
               <Route path="/profile" element={<PrivateRoute Component = {ProfilePage} />} />
               <Route path="/requests" element={<PrivateRoute Component = {Requests} />} />
+              <Route path="/itemdevelopers" element={<PrivateRoute Component = {ItemDevelopers} />} />
               <Route path="/unauthorized" element={<UnAuthorized />} />
             </Routes>
           </div>

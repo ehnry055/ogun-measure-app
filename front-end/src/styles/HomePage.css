@@ -1,4 +1,96 @@
-.home-container {
+.homebtn {
+  border-radius: 0.5rem;   
+  background-color: #222222;
+  border: 1.75px solid #AC5180;
+  color: #AC5180;
+  text-align: center;
+  font-size: 24px;
+  padding: 20px;
+  width: 300px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 35px ;
+  justify-content: center;
+}
+
+/* .homebtn {
+  padding: 0.75rem 1.5rem; 
+  border-radius: 0.5rem;   
+  background-color: #222222;
+  border-color: #AC5180;
+  color: #AC5180;
+
+  display: inline-block;
+  text-align: center;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+} */
+
+.homebtn span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.homebtn span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.homebtn:hover span {
+  padding-right: 25px;
+}
+
+.homebtn:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+.homebtn:hover {
+  background-color: #371D33;
+}
+
+
+/* .homebtn span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.homebtn:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.homebtn:hover span {
+  padding-right: 25px;
+}
+
+.homebtn:hover span:after {
+  opacity: 1;
+  right: 0;
+}  */
+
+
+/* .homebtn:hover {
+  background-color: transparent;
+  border-color: #AC5180;
+  color: #AC5180;
+} */
+
+
+ .home-container {
     padding: 20px;
     font-family: Arial, sans-serif;
   }
@@ -9,8 +101,8 @@
     font-weight: bold;
     margin-bottom: 20px;
     text-align: center;
-  }
-  
+  } 
+ 
   .about-content {
     font-size: 1.1rem;
     line-height: 1.6;
@@ -42,4 +134,10 @@
     height: 200px;
     background-color: #d9d9d9;
     border: 1px solid #ccc;
-  }
+  } 
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
