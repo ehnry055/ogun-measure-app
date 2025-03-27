@@ -66,7 +66,7 @@ const EditDatabasePage = () => {
       const newWindow = window.open();
       newWindow.document.write(`<pre>${response.data}</pre>`);
       newWindow.document.title = 'CSV Preview';
-      
+  
     } catch (error) {
       console.error('Export failed:', error);
       alert('CSV export failed. Possible reasons: empty data/incorrect format');
