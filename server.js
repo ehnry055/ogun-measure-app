@@ -25,11 +25,6 @@ app.get('/api', (req, res) => {
   res.json({ message: 'Hello from the server!' });
 });
 
-// Catch-all handler for any other requests
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'front-end/build', 'index.html'));
-});
-
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
   host: process.env.DB_HOST,
   dialect: 'mysql',
@@ -249,6 +244,12 @@ while (true) {
 if (port == null || port == "") {
   port = 4000;
 }
+
+// Catch-all handler for any other requests
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'front-end/build', 'index.html'));
+});
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
