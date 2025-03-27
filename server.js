@@ -17,6 +17,19 @@ const { Parser } = require('json2csv');
 app.use(cors());
 app.use(express.json());
 
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'front-end/build')));
+
+// API routes (if any)
+app.get('/api', (req, res) => {
+  res.json({ message: 'Hello from the server!' });
+});
+
+// Catch-all handler for any other requests
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'front-end/build', 'index.html'));
+});
+
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
   host: process.env.DB_HOST,
   dialect: 'mysql',
