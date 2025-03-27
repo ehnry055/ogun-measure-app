@@ -2,11 +2,14 @@
   "dependencies": {
     "bootstrap": "^3.4.1",
     "concurrently": "^9.1.2",
-    "react-bootstrap": "^2.10.9"
+    "react-bootstrap": "^2.10.9",
+    "serve": "^14.2.4"
   },
   "scripts": {
     "server": "cd back-end && node server.js",
     "client": "cd front-end && npm start",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "node back-end/server.js",
+    "build": "cd front-end && npm run build"
   }
 }
