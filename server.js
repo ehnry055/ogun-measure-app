@@ -217,6 +217,21 @@ app.post('/api/upload', upload.single('csv'), async (req, res) => {
   }
 });
 
+
+app.get('/api/columns', async (req, res) => {
+  try {
+    const model = sequelize.models.AggregatedData;
+    const columns = Object.keys(model.rawAttributes).map(columnName => ({
+      name: columnName,
+      type: model.rawAttributes[columnName].type.key
+    }));
+    res.json(columns);
+  } catch (err) {
+    console.error('Columns error:', err);
+    res.status(500).send('Error fetching columns');
+  }
+});
+
 /*
 import { ManagementClient } from 'auth0';
 
