@@ -184,3 +184,100 @@
 .delete-table-button:hover {
   background: #f087a6;
 }
+
+.table-container {
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+
+.styled-table th, 
+.styled-table td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.styled-table th {
+  background-color: #f2aeae;
+  font-weight: 600;
+}
+
+.column-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.column-header input {
+  margin: 0;
+  cursor: pointer;
+}
+
+.styled-table td.selected,
+.styled-table th.selected {
+  background-color: #17568d;
+}
+
+.preset-controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+}
+
+.preset-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #f5f5f5;
+  border-radius: 20px;
+  padding-right: 8px;
+}
+
+.preset-button {
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.preset-button.active {
+  background: #e3f2fd;
+  border-color: #2196f3;
+  color: #2196f3;
+}
+
+.delete-preset {
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  padding: 0;
+}
+
+.delete-preset:hover {
+  color: #ff4444;
+}
+
+.save-preset {
+  background: #4CAF50;
+  color: white;
+  border-color: #4CAF50;
+}
+
+.preset-button.active.clearable {
+  background: #ffebee;
+  border-color: #f44336;
+  color: #f44336;
+}
