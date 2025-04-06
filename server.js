@@ -217,6 +217,7 @@ app.post('/api/upload', upload.single('csv'), async (req, res) => {
   }
 });
 
+
 app.get('/api/columns', async (req, res) => {
   try {
     const model = sequelize.models.AggregatedData;
@@ -258,6 +259,7 @@ while (true) {
 if (port == null || port == "") {
   port = 4000;
 }
+
 // Catch-all handler for any other requests
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'front-end/build', 'index.html'));

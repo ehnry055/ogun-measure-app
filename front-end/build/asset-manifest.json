@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.e96230eb.css",
+    "main.js": "/static/js/main.73218771.js",
+    "static/js/453.fc62cd9a.chunk.js": "/static/js/453.fc62cd9a.chunk.js",
+    "static/media/columbia-logo.png": "/static/media/columbia-logo.be06be7644eed804fac2.png",
+    "index.html": "/index.html",
+    "main.e96230eb.css.map": "/static/css/main.e96230eb.css.map",
+    "main.73218771.js.map": "/static/js/main.73218771.js.map",
+    "453.fc62cd9a.chunk.js.map": "/static/js/453.fc62cd9a.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e96230eb.css",
+    "static/js/main.73218771.js"
+  ]
+}
