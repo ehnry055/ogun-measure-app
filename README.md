@@ -5,5 +5,7 @@ Technology Stack:
 React
 Bootstrap
 MySQL
-Highcharts
+Sequelize
+Express.js
 Node.js
+Auth0
