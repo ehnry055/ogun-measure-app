@@ -19,6 +19,7 @@
     "react-bootstrap": "^2.10.9",
     "react-scripts": "5.0.1",
     "sequelize": "^6.37.5",
+    "sequelize-cli": "^6.6.2",
     "serve": "^14.2.4"
   },
   "scripts": {
@@ -26,7 +27,7 @@
     "client": "cd front-end && npm start",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "start": "node server.js",
-    "build": "cd front-end && npm install && npm run build" 
-  
+    "build": "cd front-end && npm install && npm run build",
+    "heroku-postbuild": "npm run build"
   }
 }
