@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>US Map with County Drilldown</title>
+  <script src="https://code.highcharts.com/maps/highmaps.js"></script>
+  <script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/maps/modules/drilldown.js"></script>
+  <script src="https://code.highcharts.com/mapdata/countries/us/us-all.js"></script>
+  <script src="us-ca-all.js"></script> <!-- Your local CA county map -->
+</head>
+<body>
+  <div id="container" style="height: 600px;"></div>
+
+  <script>
+    let chart = Highcharts.mapChart('container', {
+      chart: {
+        map: 'countries/us/us-all'
+      },
+
+      title: {
+        text: 'US Map with County Drilldown'
+      },
+
+      plotOptions: {
+        series: {
+          point: {
+            events: {
+              click: function () {
+                if (this.drilldown && this.drilldown === 'us-ca') {
+                  chart.addSeriesAsDrilldown(this, {
+                    name: this.name + ' Counties',
+                    mapData: Highcharts.maps['countries/us/us-ca-all'],
+                    data: Highcharts.geojson(Highcharts.maps['countries/us/us-ca-all']).map((f, i) => [f.properties['hc-key'], i]),
+                    joinBy: 'hc-key'
+                  });
+                }
+              }
+            }
+          }
+        }
+      },
+
+      series: [{
+        data: [
+          { 'hc-key': 'us-ca', value: 1, drilldown: 'us-ca' },
+          { 'hc-key': 'us-tx', value: 2 },
+          { 'hc-key': 'us-fl', value: 3 },
+          { 'hc-key': 'us-ny', value: 4 }
+        ],
+        name: 'States',
+        dataLabels: {
+          enabled: true,
+          format: '{point.name}'
+        }
+      }],
+
+      drilldown: {
+        activeDataLabelStyle: {
+          color: '#FFFFFF',
+          textDecoration: 'none',
+          textOutline: '1px #000000'
+        }
+      }
+    });
+  </script>
+</body>
+</html>

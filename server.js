@@ -11,7 +11,7 @@ const csv = require('csv-parser');
 const path = require('path');
 const mysql = require('mysql2/promise');
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 4000;
 const { Parser } = require('json2csv');
 
 app.use(cors());
@@ -25,12 +25,11 @@ app.get('/api', (req, res) => {
   res.json({ message: 'Hello from the server!' });
 });
 
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
-  host: process.env.DB_HOST,
+const sequelize = new Sequelize(process.env.JAWSDB_URL, {
   dialect: 'mysql',
   dialectOptions: {
     localInfile: true,
-    flags: ['+LOCAL_FILES'] // required for LOAD DATA LOCAL INFILE query (extra security)
+    flags: ['+LOCAL_FILES']
   }
 });
 
@@ -256,9 +255,6 @@ while (true) {
   }
 } */
 
-if (port == null || port == "") {
-  port = 4000;
-}
 
 // Catch-all handler for any other requests
 app.get('*', (req, res) => {

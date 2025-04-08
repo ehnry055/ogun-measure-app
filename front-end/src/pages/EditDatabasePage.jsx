@@ -238,7 +238,7 @@ const EditDatabasePage = () => {
       </div>
 
       <div className="upload-section">
-        <h2 className="section-title">Upload CSV</h2>
+        <h2 className="section-title">Database Controls</h2>
         <div className="upload-controls">
           <input type="file" accept=".csv" onChange={(e) => setSelectedFile(e.target.files[0])}/>
           <button className="upload-button" onClick={handleFileUpload}> Upload to Database </button>
