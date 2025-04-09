@@ -141,3 +141,25 @@
   align-items: center;
   justify-content: center;
 }
+
+table {
+  width: 90%;
+  margin: auto;
+  border-collapse: collapse;
+  border: 2px solid white;
+}
+th, td {
+  border: 1px solid white;
+  padding: 15px;
+  text-align: center;
+}
+th {
+  background-color: black;
+  color: #AC5180;
+  font-size: 18px;
+}
+.period {
+  color: #ffcc00;
+  font-weight: bold;
+  font-size: 16px;
+}

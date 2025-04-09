@@ -26,6 +26,7 @@ import AdminRoute from './components/AdminRoute';
 import Requests from './pages/RequestsPage';
 import ViewDatabasePage from './pages/ViewDatabasePage';
 import ItemDevelopers from './pages/ItemDevelopers';
+import rsg from './pages/rsg';
 
 function App() {
 
@@ -44,6 +45,7 @@ function App() {
               <Route path="/profile" element={<PrivateRoute Component = {ProfilePage} />} />
               <Route path="/requests" element={<PrivateRoute Component = {Requests} />} />
               <Route path="/itemdevelopers" element={<PrivateRoute Component = {ItemDevelopers} />} />
+              <Route path="/rsg" element={<PrivateRoute Component = {rsg} />} />
               <Route path="/unauthorized" element={<UnAuthorized />} />
             </Routes>
           </div>
