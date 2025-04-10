@@ -16,7 +16,7 @@ root.render(
     authorizationParams={
       {
         audience: "https://ogun-measure-app-4fceb75a4928.herokuapp.com/api",
-        redirect_uri: window.location.origin
+        redirect_uri: "https://ogun-measure-app-4fceb75a4928.herokuapp.com/"
       }
     }
     audience= "https://ogun-measure-app-4fceb75a4928.herokuapp.com/api"
