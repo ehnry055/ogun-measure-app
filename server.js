@@ -14,7 +14,15 @@ const app = express();
 const port = process.env.PORT || 4000;
 const { Parser } = require('json2csv');
 
-app.use(cors());
+const corsOptions = {
+  origin: [
+    'http://localhost:4000', 
+    'https://ogun-measure-app.herokuapp.com'
+  ],
+  credentials: true
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Serve static files from the React app
