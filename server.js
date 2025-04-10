@@ -27,12 +27,12 @@ app.get('/api', (req, res) => {
 
 const sequelize = new Sequelize(process.env.JAWSDB_URL, {
   dialect: 'mysql',
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false
-    }
-  }
+  // dialectOptions: {
+  //   ssl: {
+  //     require: true,
+  //     rejectUnauthorized: false
+  //   }
+  // }
 });
 
 const AggregatedData = sequelize.define('AggregatedData', {
