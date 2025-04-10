@@ -65,7 +65,7 @@ const EditDatabasePage = () => {
   const handleExport = async () => {
     try {
       const token = await getAccessTokenSilently();
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/export-csv`, {
+      const response = await axios.get(`/api/export-csv`, {
         headers: {
           Authorization: `Bearer ${token}`
         },
@@ -86,7 +86,7 @@ const EditDatabasePage = () => {
   const handleSelectTable = async () => {
     try {
       const token = await getAccessTokenSilently();
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/tables`, {
+      const response = await axios.get(`/api/tables`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -101,7 +101,7 @@ const EditDatabasePage = () => {
       }
 
       // change the dynamic table on the server side
-      await axios.post(`${process.env.REACT_APP_API_URL}/api/select-table`, { tableName: selected }, {
+      await axios.post(`/api/select-table`, { tableName: selected }, {
         headers: {
           Authorization: `Bearer ${token}`
         }
