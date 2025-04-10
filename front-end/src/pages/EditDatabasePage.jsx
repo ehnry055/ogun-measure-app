@@ -81,7 +81,7 @@ const EditDatabasePage = () => {
 
     try {
       const token = await getAccessTokenSilently(); // checks if the session is valid
-      await axios.post('http://localhost:4000/api/upload', formData, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data', // can take any type of form
           Authorization: `Bearer ${token}` // passes the access token (added security)
@@ -99,7 +99,7 @@ const EditDatabasePage = () => {
   const handleExport = async () => {
     try {
       const token = await getAccessTokenSilently();
-      const response = await axios.get('http://localhost:4000/api/export-csv', {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/export-csv`, {
         headers: {
           Authorization: `Bearer ${token}`
         },
@@ -120,7 +120,7 @@ const EditDatabasePage = () => {
   const handleSelectTable = async () => {
     try {
       const token = await getAccessTokenSilently();
-      const response = await axios.get('http://localhost:4000/api/tables', {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/tables`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -135,7 +135,7 @@ const EditDatabasePage = () => {
       }
 
       // change the dynamic table on the server side
-      await axios.post('http://localhost:4000/api/select-table', { tableName: selected }, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/select-table`, { tableName: selected }, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -151,7 +151,7 @@ const EditDatabasePage = () => {
   const handleDeleteTable = async () => {
     try {
       const token = await getAccessTokenSilently();
-      const response = await axios.get('http://localhost:4000/api/tables', {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/tables`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -160,7 +160,7 @@ const EditDatabasePage = () => {
       const tableToDelete = window.prompt(`Enter the table name to delete:\n${tableNames.join('\n')}`);
       if (!tableToDelete) return;  
   
-      await axios.post('http://localhost:4000/api/delete-table', 
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/delete-table`, 
         { tableName: tableToDelete },
         { headers: { Authorization: `Bearer ${token}` } }
       );
