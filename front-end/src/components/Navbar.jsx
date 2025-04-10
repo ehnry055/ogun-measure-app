@@ -64,7 +64,7 @@ function Navbar() {
       <div className="navbar-nav ms-auto" style={{minHeight: '50px'}}>
         <div className="tba">
           {error && <p>Authentication Error</p>}
-          {!error && isLoading &&  <p>Loading</p>}  
+          {!error && isLoading &&  <p>Loading...</p>}  
           {!error && !isLoading && (
             <>
               <LoginButton/>

@@ -57,6 +57,7 @@ console.log("printing the edit users page");
           <li>Henry Choi: hencho25@bergen.org</li>
           <li>Stephen Yoon: steyoo25@bergen.org</li>
           <li>Brendon Wan: brewan25@bergen.org</li>
+          <li> Additional testing</li>
         </ul>
       </div>
       <div>
