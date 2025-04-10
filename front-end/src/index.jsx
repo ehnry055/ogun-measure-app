@@ -15,11 +15,11 @@ root.render(
     clientId={clientId}
     authorizationParams={
       {
-        audience: "https://racism-data-system.com/api",
+        audience: "https://ogun-measure-app-4fceb75a4928.herokuapp.com/",
         redirect_uri: window.location.origin
       }
     }
-    audience="https://racism-data-system.com/api"
+    audience="https://ogun-measure-app-4fceb75a4928.herokuapp.com/"
     scope="openid profile email adminView"
   >
     <App />
