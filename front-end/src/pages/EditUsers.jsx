@@ -17,14 +17,14 @@ const EditUsers = () => {
         const token = await getAccessTokenSilently();
         console.log("Access token:", token); // Log the token for debugging
         const decodedToken = jwtDecode(token);
-        //console.log("Decoded token:", decodedToken);
+        console.log("Decoded token:", decodedToken);
 
         const hasPermission = decodedToken.permissions && decodedToken.permissions.includes("adminView");
-        //console.log("Has permission:", hasPermission);
+        console.log("Has permission:", hasPermission);
 
         if (!hasPermission) {
           navigate("/unauthorized");
-         // console.log("User does not have the required permission");
+          console.log("User does not have the required permission");
         }
       } catch (error) {
         console.error('Error checking permissions:', error);
