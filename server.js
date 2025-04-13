@@ -89,7 +89,7 @@ sequelize.sync();
 app.get('/api/tables', async (req, res) => {
   try {
     const [tables] = await sequelize.query("SHOW TABLES");
-    const key = `Tables_in_${process.env.DB_NAME}`;
+    const key = `Tables_in_${sequelize.config.database}`;
     const tableNames = tables
       .map(row => row[key])
       .filter(name => name !== 'AggregatedData'); // don't show this table
@@ -106,7 +106,7 @@ app.post('/api/select-table', async (req, res) => {
   if (!tableName) return res.status(400).send("No table name provided");
 
   const [tables] = await sequelize.query("SHOW TABLES");
-  const key = `Tables_in_${process.env.DB_NAME}`;
+  const key = `Tables_in_${sequelize.config.database}`;
   const tableExists = tables.some(row => row[key] === tableName);
   if (!tableExists) return res.status(404).send("Table not found");
   
