@@ -3,11 +3,10 @@ import '../styles/EditDatabasePage.css';
 import NotesList from '../components/NotesList';
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 
 const EditDatabasePage = () => {
-  const { isAuthenticated, user, loginWithRedirect, logout, getAccessTokenSilently } = useAuth0();
-  const navigate = useNavigate();
   const [entryLimit, setEntryLimit] = useState(10); // default: 10 entries
   const [selectedFile, setSelectedFile] = useState(null);
   const [tableName, setTableName] = useState("Default Table");
@@ -15,6 +14,35 @@ const EditDatabasePage = () => {
   const [presets, setPresets] = useState([]);
   const [selectedColumns, setSelectedColumns] = useState(new Set());
   const [selectedPreset, setSelectedPreset] = useState(null);
+
+
+  //AdminRole check
+  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkPermissions = async () => {
+      try {
+        const token = await getAccessTokenSilently();
+        console.log("Access token:", token); // Log the token for debugging
+        const decodedToken = jwtDecode(token);
+        console.log("Decoded token:", decodedToken);
+
+        const hasPermission = decodedToken.permissions && decodedToken.permissions.includes("adminView");
+        console.log("Has permission:", hasPermission);
+
+        if (!hasPermission) {
+          navigate("/unauthorized");
+          console.log("User does not have the required permission");
+        }
+      } catch (error) {
+        console.error('Error checking permissions:', error);
+        navigate("/unauthorized");
+      }
+    };
+
+    checkPermissions();
+  }, [isAuthenticated, getAccessTokenSilently, navigate]);
 
   useEffect(() => {
     const savedPresets = localStorage.getItem('columnPresets');
