@@ -19,7 +19,7 @@ community at-large. For more information on this measure, please read the manual
 and the seminal article. 
         </p>
         <div class="container">
-        <a href="/rsg" className="homebtn"><span> See Measure </span></a>
+        <a href="/gateway" className="homebtn"><span> See Measure </span></a>
         <a href="/itemdevelopers" className="homebtn"><span> See Item Developers </span></a>
         </div>
       {/* </div>
