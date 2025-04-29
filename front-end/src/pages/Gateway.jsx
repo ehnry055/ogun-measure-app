@@ -9,11 +9,15 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Import Bootstrap JS bundl
 const Gateway = () => {
   return (
     <div className="home-container">
-      <h2 className="about-title">The Story</h2>
+      <h2 className="about-title">Ogun Measure</h2>
       <div className="about-content">
         <div class="container">
-        <a href="/rsg" className="homebtn"><span> See Measure </span></a>
-        <a href="/itemdevelopers" className="homebtn"><span> See Item Developers </span></a>
+        <a href="/rsg" className="homebtn"><span> See Facets </span></a>
+        <a className="homebtn"><span> See Pathways </span></a>
+        <a className="homebtn"><span> See Periods </span></a>
+        <a className="homebtn"><span> Generate Data </span></a>
+
+
         <div>
         <Dropdown>
             <Dropdown.Menu className="custom-dropdown-menu">

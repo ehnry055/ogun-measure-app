@@ -27,8 +27,8 @@ function rsg() {
         </tr>
         </table>
         <div className="container">
-        <a className="homebtn"><span> See Measure </span></a>
-        <a href="/" className="homebtn"><span> Return Home </span></a>
+        <a href="/gateway" className="homebtn"><span> See Measure </span></a>
+        <a href="/viewdata" className="homebtn"><span> Generate Data </span></a>
         </div>
         </div>
     </div>
