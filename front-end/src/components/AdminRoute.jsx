@@ -9,11 +9,11 @@ import { useNavigate } from 'react-router-dom';
 const AdminRoute = ({Component}) => {
     console.log("helllooo!!!");
     const { isAuthenticated, getAccessTokenSilently, error, isLoading } = useAuth0();
-    navigate = useNavigate();
-    const adminPerms = false;
-
+    const navigate = useNavigate();
+    
     useEffect(() => {
         const checkPermissions = async () => {
+            
             try {
 
                 const token = await getAccessTokenSilently();
@@ -26,12 +26,12 @@ const AdminRoute = ({Component}) => {
         
                 if (!hasPermission) {
                 console.log("User does not have the required permission");
-                navigate ("/unauthorized");
+                navigate("/unauthorized");
                 
                 }
             } catch (error) {
                 console.error('Error checking permissions:', error);
-                navigate ("/unauthorized");
+                navigate("/unauthorized");
             }
         };
     
