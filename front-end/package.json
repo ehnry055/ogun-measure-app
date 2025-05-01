@@ -2,6 +2,10 @@
   "name": "racism-data-system",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "22.11.0",
+    "npm": "10.9.0"
+  },
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",
     "@highcharts/map-collection": "^2.3.0",
