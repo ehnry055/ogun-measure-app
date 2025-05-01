@@ -1,10 +1,10 @@
 import React from 'react';
 import '../styles/HomePage.css'; 
 
-function rsg() {
+function OgunMeasure() {
     return (
     <div className="home-container">
-        <h2 className="about-title">Residential Segregation and Gentrification</h2>
+        <h2 className="about-title">Ogun</h2>
         <div className="about-content">
         <table>
         <tr>
@@ -27,12 +27,12 @@ function rsg() {
         </tr>
         </table>
         <div className="container">
-        <a href="/gateway" className="homebtn"><span> See Measure </span></a>
-        <a href="/viewdata" className="homebtn"><span> Generate Data </span></a>
+        <a className="homebtn"><span> See Measure </span></a>
+        <a href="/" className="homebtn"><span> Return Home </span></a>
         </div>
         </div>
     </div>
     );
 };
 
-export default rsg;
+export default OgunMeasure;

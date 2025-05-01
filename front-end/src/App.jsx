@@ -27,6 +27,8 @@ import Requests from './pages/RequestsPage';
 import ViewDatabasePage from './pages/ViewDatabasePage';
 import ItemDevelopers from './pages/ItemDevelopers';
 import rsg from './pages/rsg';
+import OgunMeasure from './pages/OgunMeasure'
+import Gateway from './pages/Gateway';
 
 function App() {
 
@@ -46,6 +48,8 @@ function App() {
               <Route path="/requests" element={<PrivateRoute Component = {Requests} />} />
               <Route path="/itemdevelopers" element={<PrivateRoute Component = {ItemDevelopers} />} />
               <Route path="/rsg" element={<PrivateRoute Component = {rsg} />} />
+              <Route path="/ogun" element={<PrivateRoute Component = {OgunMeasure} />} />
+              <Route path="/gateway" element={<PrivateRoute Component = {Gateway} />} />
               <Route path="/unauthorized" element={<UnAuthorized />} />
             </Routes>
           </div>
