@@ -24,13 +24,14 @@ const EditUsers = () => {
         console.log("Has permission:", hasPermission);
 
         if (!hasPermission) {
-          navigate("/unauthorized");
           console.log("User does not have the required permission");
+          return false;
         }
       } catch (error) {
         console.error('Error checking permissions:', error);
-        navigate("/unauthorized");
+        return false;
       }
+      return true;
     };
 
     checkPermissions();
@@ -46,7 +47,10 @@ const EditUsers = () => {
 //  if (!hasPermission) {
 //    navigate("/unauthorized");
 //  }
-
+  if(checkPermissions() == false) {
+    navigate("/unauthorized");
+    return null;
+  }
 
   return (
     <div className="edit-database-container">
