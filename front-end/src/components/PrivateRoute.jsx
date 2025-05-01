@@ -14,9 +14,11 @@ const PrivateRoute = ({Component}) => {
       
       return <UnAuthorized />;
     }
-    return (
+    else {
+      return (
         <Component />
-    );
+      );
+    } 
   }
 
   export default PrivateRoute;

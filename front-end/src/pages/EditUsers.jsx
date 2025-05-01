@@ -26,12 +26,10 @@ const EditUsers = () => {
         if (!hasPermission) {
           navigate("/unauthorized");
           console.log("User does not have the required permission");
-          return null;
         }
       } catch (error) {
         console.error('Error checking permissions:', error);
         navigate("/unauthorized");
-        return null;
       }
     };
 
