@@ -34,16 +34,18 @@ const EditDatabasePage = () => {
         if (!hasPermission) {
           navigate("/unauthorized");
           console.log("User does not have the required permission");
+          return null;
         }
       } catch (error) {
         console.error('Error checking permissions:', error);
         navigate("/unauthorized");
+        return null;
       }
     };
 
     checkPermissions();
   }, [isAuthenticated, getAccessTokenSilently, navigate]);
-
+  
   useEffect(() => {
     const savedPresets = localStorage.getItem('columnPresets');
     if (savedPresets) setPresets(JSON.parse(savedPresets));

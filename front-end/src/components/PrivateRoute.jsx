@@ -4,8 +4,14 @@ import UnAuthorized from '../pages/UnAuthorized';
 
 
 const PrivateRoute = ({Component}) => {
-    const { isAuthenticated } = useAuth0();
-    if (!isAuthenticated) {
+    const { isAuthenticated, error, isLoading } = useAuth0();
+    console.log("Privaterouting");
+    if (isLoading) {
+      console.log("loading...");
+      return null;
+    }
+    if (!isAuthenticated && !isLoading) {
+      
       return <UnAuthorized />;
     }
     return (

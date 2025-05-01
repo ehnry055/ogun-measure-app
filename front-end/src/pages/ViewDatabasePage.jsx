@@ -2,12 +2,10 @@ import React, { useState, useEffect } from 'react';
 import '../styles/EditDatabasePage.css';
 import NotesList from '../components/NotesList';
 import { useAuth0 } from "@auth0/auth0-react";
-import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
-const EditDatabasePage = () => {
+const ViewDatabasePage = () => {
   const { isAuthenticated, user, loginWithRedirect, logout, getAccessTokenSilently } = useAuth0();
-  const navigate = useNavigate();
   const [entryLimit, setEntryLimit] = useState(10); // default: 10 entries
   const [selectedFile, setSelectedFile] = useState(null);
   const [tableName, setTableName] = useState("Default Table");
@@ -190,4 +188,4 @@ const EditDatabasePage = () => {
   );
 };
 
-export default EditDatabasePage;
+export default ViewDatabasePage;
