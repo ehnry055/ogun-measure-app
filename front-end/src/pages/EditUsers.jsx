@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 
 const EditUsers = () => {
 
+  /*
   //AdminRole check
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
   const navigate = useNavigate();
@@ -24,18 +25,20 @@ const EditUsers = () => {
         console.log("Has permission:", hasPermission);
 
         if (!hasPermission) {
+          navigate("/unauthorized");
           console.log("User does not have the required permission");
-          return false;
+          return null;
         }
       } catch (error) {
         console.error('Error checking permissions:', error);
-        return false;
+        navigate("/unauthorized");
+        return null
       }
-      return true;
     };
 
     checkPermissions();
   }, [isAuthenticated, getAccessTokenSilently, navigate]);
+  */
 
 //  const token = getAccessTokenSilently();
 //  console.log(token);
@@ -47,10 +50,7 @@ const EditUsers = () => {
 //  if (!hasPermission) {
 //    navigate("/unauthorized");
 //  }
-  if(checkPermissions() == false) {
-    navigate("/unauthorized");
-    return null;
-  }
+
 
   return (
     <div className="edit-database-container">
