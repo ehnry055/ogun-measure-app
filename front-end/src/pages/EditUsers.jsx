@@ -50,8 +50,12 @@ const EditUsers = () => {
 //  }
 
   if(!isAuthenticated || isLoading || !isAuthorized) {
+    console.log(!isAuthenticated);
+    console.long(isLoading);
+    console.log(!isAuthorized);
     return null;
   }
+  console.log("Authorized!");
   return (
     <div className="edit-database-container">
       <div className="saved-section">
