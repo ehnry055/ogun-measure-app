@@ -11,6 +11,7 @@ const EditUsers = () => {
   //AdminRole check
   const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
   const navigate = useNavigate();
+  const isAuthorized = false;
 
   useEffect(() => {
     const checkPermissions = async () => {
@@ -26,12 +27,11 @@ const EditUsers = () => {
         if (!hasPermission) {
           navigate("/unauthorized");
           console.log("User does not have the required permission");
-          return null;
         }
+        isAuthorized = true;
       } catch (error) {
         console.error('Error checking permissions:', error);
         navigate("/unauthorized");
-        return null
       }
     };
 
@@ -49,7 +49,7 @@ const EditUsers = () => {
 //    navigate("/unauthorized");
 //  }
 
-  if (isLoading) {
+  if(!isAuthenticated || isLoading || !isAuthorized) {
     return null;
   }
   return (
@@ -61,7 +61,6 @@ const EditUsers = () => {
           <li>Henry Choi: hencho25@bergen.org</li>
           <li>Stephen Yoon: steyoo25@bergen.org</li>
           <li>Brendon Wan: brewan25@bergen.org</li>
-          <li> Additional testing</li>
         </ul>
       </div>
       <div>
