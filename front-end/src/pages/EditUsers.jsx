@@ -10,9 +10,12 @@ const EditUsers = () => {
 
   //AdminRole check
   const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
-  const [Render, setRender] = useState(false);
+  const [isAuthorized, setisAuthorized] = useState(() => {
+    const initialState = false;
+    return initialState;
+  });
+  
   const navigate = useNavigate();
-  var isAuthorized = false;
 
   useEffect(() => {
     const checkPermissions = async () => {
@@ -31,8 +34,7 @@ const EditUsers = () => {
         }
         else {
           console.log("changed isAuthorized to true");
-          isAuthorized = true;
-          setRender(true);
+          setisAuthorized(true);
         }
       } catch (error) {
         console.error('Error checking permissions:', error);

@@ -19,7 +19,10 @@ const EditDatabasePage = () => {
   //AdminRole check
   const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
   const navigate = useNavigate();
-  var isAuthorized = false;
+  const [isAuthorized, setisAuthorized] = useState(() => {
+    const initialState = false;
+    return initialState;
+  });
 
   useEffect(() => {
     const checkPermissions = async () => {
@@ -36,7 +39,9 @@ const EditDatabasePage = () => {
           console.log("User does not have the required permission");
           navigate("/unauthorized");
         }
-        isAuthorized = true;
+        else {
+          setisAuthorized(true);
+        }
       } catch (error) {
         console.error('Error checking permissions:', error);
         navigate("/unauthorized");
