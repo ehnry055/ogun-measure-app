@@ -1,4 +1,39 @@
-.custom-dropdown-menu {
-    z-index: 1050; /* Ensure it's above other content */
+#dropdown-profile:focus,
+#dropdown-profile:active {
+    border-color: #AC5180;
+    box-shadow: none; /* Remove any box shadow */
+}
+
+.custom-dropdown-toggle {
+    border-color: #AC5180;  /* Set background color */
+    color: #fff;                /* Set text color to white */
+    padding: 30px 40px;         /* Adjust padding for the button */
+    border-radius: 5px;   
   }
   
+ /* Add focus and active outline to ensure the border is maintained */
+.custom-dropdown-toggle:focus,
+.custom-dropdown-toggle:active {
+    background-color: #AC5180; /* Add a colored outline when focused or active */
+    box-shadow: none;      /* Remove any box shadow */
+    outline: none;   
+}
+  .custom-dropdown-menu {
+    background-color: #3a3a3a !important;  /* Set background color of the dropdown menu */
+    border-radius: 5px !important;         /* Rounded corners */
+    min-width: 300px !important;           /* Increase the minimum width */
+    width: auto !important;                /* Allow it to grow if needed */
+    padding: 10px !important;              /* Add padding inside the dropdown */
+
+  }
+  
+  .custom-dropdown-item {
+    color: white !important;                /* Set text color of the items */
+
+  }
+  
+  .custom-dropdown-item:hover {
+    background-color: #3a3a3a !important;  /* Change background color on hover */
+    color: #AC5180 !important;             /* Change text color on hover */
+  }
+
