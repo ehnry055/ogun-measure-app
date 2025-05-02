@@ -5,17 +5,18 @@
 }
 
 .custom-dropdown-toggle {
-    background-color: #AC5180;  /* Set background color */
+    border-color: #AC5180;  /* Set background color */
     color: #fff;                /* Set text color to white */
-    padding: 10px 20px;         /* Adjust padding for the button */
+    padding: 30px 40px;         /* Adjust padding for the button */
     border-radius: 5px;   
   }
   
  /* Add focus and active outline to ensure the border is maintained */
 .custom-dropdown-toggle:focus,
 .custom-dropdown-toggle:active {
-    border-color: #AC5180; /* Add a colored outline when focused or active */
+    background-color: #AC5180; /* Add a colored outline when focused or active */
     box-shadow: none;      /* Remove any box shadow */
+    outline: none;   
 }
   .custom-dropdown-menu {
     background-color: #3a3a3a !important;  /* Set background color of the dropdown menu */
