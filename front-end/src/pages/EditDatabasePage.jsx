@@ -70,7 +70,7 @@ const EditDatabasePage = () => {
 
   if(!isAuthenticated || isLoading || !isAuthorized) {
     console.log(!isAuthenticated);
-    console.long(isLoading);
+    console.log(isLoading);
     console.log(!isAuthorized);
     return null;
   }

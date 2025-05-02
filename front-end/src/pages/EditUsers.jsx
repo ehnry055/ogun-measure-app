@@ -50,9 +50,9 @@ const EditUsers = () => {
 //  }
 
   if(!isAuthenticated || isLoading || !isAuthorized) {
-    console.log(!isAuthenticated);
-    console.long(isLoading);
-    console.log(!isAuthorized);
+    console.log('isAuthenticated ', !isAuthenticated);
+    console.log('isLoading ', isLoading);
+    console.log('isAuthorized ', !isAuthorized);
     return null;
   }
   console.log("Authorized!");
