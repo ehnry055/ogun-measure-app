@@ -1,13 +1,14 @@
 #dropdown-profile:focus,
 #dropdown-profile:active {
     border-color: #AC5180;
+    font-size: 24px;
     box-shadow: none; /* Remove any box shadow */
 }
 
 .gateway-dropdown-toggle {
     border-color: #AC5180;  /* Set background color */
     background-color: transparent;
-    color: #fff;                /* Set text color to white */
+    color: #AC5180 !important;             /* Change text color on hover */
     padding: 30px 40px;         /* Adjust padding for the button */
     border-radius: 5px;   
   }
@@ -15,7 +16,7 @@
  /* Add focus and active outline to ensure the border is maintained */
 .gateway-dropdown-toggle:focus,
 .gateway-dropdown-toggle:active {
-    background-color: #AC5180; /* Add a colored outline when focused or active */
+    background-color: #371D33;
     box-shadow: none;      /* Remove any box shadow */
     outline: none;   
 }
@@ -34,7 +35,8 @@
   }
   
   .gateway-dropdown-item:hover {
-    background-color: #3a3a3a !important;  /* Change background color on hover */
+    /* background-color: #3a3a3a !important;   */
+    background-color: #371D33;
     color: #AC5180 !important;             /* Change text color on hover */
   }
 
