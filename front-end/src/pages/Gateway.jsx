@@ -20,20 +20,20 @@ const Gateway = () => {
 
         <div>
         <Dropdown>
-            <Dropdown.Toggle className="custom-dropdown-toggle" id="dropdown-basic">
+            <Dropdown.Toggle className="gateway-dropdown-toggle">
                 See Facets
             </Dropdown.Toggle>
-            <Dropdown.Menu className="custom-dropdown-menu">
-                <Dropdown.Item href="/rsg" className="custom-dropdown-item">Residential Segregation and Gentrification</Dropdown.Item>
-                <Dropdown.Item className="custom-dropdown-item">Property Ownership</Dropdown.Item>
-                <Dropdown.Item className="custom-dropdown-item">Government Representation</Dropdown.Item>
-                <Dropdown.Item className="custom-dropdown-item">Policing and Incarceration</Dropdown.Item>
-                <Dropdown.Item className="custom-dropdown-item">Income and Poverty</Dropdown.Item>
-                <Dropdown.Item className="custom-dropdown-item">Occupational Segregation and Unemployment</Dropdown.Item>
-                <Dropdown.Item className="custom-dropdown-item">Healthcare Access</Dropdown.Item>
-                <Dropdown.Item className="custom-dropdown-item">Healthy Food Access</Dropdown.Item>
-                <Dropdown.Item className="custom-dropdown-item">Environmental Pollution</Dropdown.Item>
-                <Dropdown.Item className="custom-dropdown-item">Media and Marketing</Dropdown.Item>
+            <Dropdown.Menu className="gateway-dropdown-menu">
+                <Dropdown.Item href="/rsg" className="gateway-dropdown-item">Residential Segregation and Gentrification</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item">Property Ownership</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item">Government Representation</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item">Policing and Incarceration</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item">Income and Poverty</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item">Occupational Segregation and Unemployment</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item">Healthcare Access</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item">Healthy Food Access</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item">Environmental Pollution</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item">Media and Marketing</Dropdown.Item>
             </Dropdown.Menu>
         </Dropdown>
         </div>
