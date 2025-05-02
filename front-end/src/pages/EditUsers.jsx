@@ -11,7 +11,7 @@ const EditUsers = () => {
   //AdminRole check
   const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
   const navigate = useNavigate();
-  const isAuthorized = false;
+  var isAuthorized = false;
 
   useEffect(() => {
     const checkPermissions = async () => {
