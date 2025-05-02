@@ -82,28 +82,31 @@ const ViewDatabasePage = () => {
 
   const handleDownload = async () => {
     try {
-      const token = await getAccessTokenSilently();
-      const response = await axios.get('/api/export-csv', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-        responseType: 'blob' // Important for file downloads
+      let token = await getAccessTokenSilently();
+  
+      let response = await axios.get(`/api/export-csv`, {
+        headers: { Authorization: `Bearer ${token}` },
+        responseType: 'text'
       });
   
-      // Create a Blob from the response data
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
+      // make a Blob from the text
+      let blob = new Blob([response.data], { type: 'text/csv;charset=utf-8;' });
+  
+      // create a temporary link and click it
+      let url = URL.createObjectURL(blob);
+      let link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', 'data.csv'); // Default filename
+      link.download = 'data.csv';
       document.body.appendChild(link);
       link.click();
-      link.parentNode.removeChild(link);
-      
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
     } catch (error) {
       console.error('Download failed:', error);
-      alert('CSV download failed');
+      alert('CSV download failed.');
     }
-  };  
+  };
+  
 
   // get a list of existing tables and let the user select one
   const handleSelectTable = async () => {
@@ -206,7 +209,7 @@ const ViewDatabasePage = () => {
         <h2 className="section-title">Database Controls</h2>
         <div className="upload-controls">
           <button className="export-button" onClick={handleExport}> View as CSV </button>
-          <button className="download-button" onClick={handleDownload}>Download as CSV</button>
+          <button className="export-button" onClick={handleDownload}> Download as CSV </button>
           <button className="select-button" onClick={handleSelectTable}> Select Table </button>
         </div>
       </div>
