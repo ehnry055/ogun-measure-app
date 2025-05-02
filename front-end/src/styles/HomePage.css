@@ -1,8 +1,8 @@
 .homebtn {
   border-radius: 0.5rem;   
   background-color: #222222;
-  border: 1.75px solid #AC5180;
-  color: #AC5180;
+  border: 1.75px solid #8C68CD;
+  color: #8C68CD;
   text-align: center;
   font-size: 24px;
   padding: 20px;
@@ -11,6 +11,7 @@
   cursor: pointer;
   margin: 35px ;
   justify-content: center;
+  transition: background-color 0.5s, color 0.1s; /* Set a faster transition for color */
 }
 
 /* .homebtn {
@@ -53,7 +54,8 @@
 }
 
 .homebtn:hover {
-  background-color: #371D33;
+  background-color: #8C68CD;
+  color: white;
 }
 
 
@@ -96,7 +98,7 @@
   }
   
   .about-title {
-    color: #AC5180;
+    color: #8C68CD;
     font-size: 2.5rem;
     font-weight: bold;
     margin-bottom: 20px;

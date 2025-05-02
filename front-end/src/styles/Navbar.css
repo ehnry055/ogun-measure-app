@@ -1,5 +1,6 @@
 /* Light Purple: #8C68CD */
 /* Font: Saira, San Serif */
+/* Mauve: #AC5180 */
 
 .top-navbar {
   display: flex;
@@ -70,7 +71,7 @@
 }
 
 .navbar-gradient {
-  background: linear-gradient(90deg, #AC5180, #371D33); /* Purple gradient */
+  background: linear-gradient(90deg, #8C68CD, #ab88ed); /* Purple gradient */
 }
 
 .navbar-brand {

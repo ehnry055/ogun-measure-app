@@ -2,14 +2,14 @@
     padding: 0.75rem 1.5rem; /* Adjust button padding */
     border-radius: 0.5rem;   /* Adjust button border radius */
     background-color: #222222;
-    border-color: #AC5180;
-    color: #AC5180;
+    border-color: #8C68CD;
+    color: #8C68CD;
   }
 
 .btn-primary:hover {
-    background-color: transparent;
-    border-color: #AC5180;
-    color: #AC5180;
+    background-color: #8C68CD;
+    border-color: white;
+    color: white;
 }
 
 .btn:focus,

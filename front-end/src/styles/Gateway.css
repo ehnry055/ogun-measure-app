@@ -14,15 +14,15 @@
 
 #dropdown-profile:focus,
 #dropdown-profile:active {
-    border-color: #AC5180;
+    border-color: transparent;
     box-shadow: none; /* Remove any box shadow */
 }
 
 .gateway-dropdown-toggle {
-    border-color: #AC5180;  /* Set background color */
+    border-color: #8C68CD;  /* Set background color */
     background-color: transparent;
     font-size: 24px;
-    color: #AC5180 !important;             /* Change text color on hover */
+    color: #8C68CD !important;             
     padding: 20px;         /* Adjust padding for the button */
     width: 300px;
     border-radius: 5px;   
@@ -31,8 +31,9 @@
  /* Add focus and active outline to ensure the border is maintained */
 .gateway-dropdown-toggle:focus,
 .gateway-dropdown-toggle:active {
-    background-color: #371D33;
-    border: 1px solid #AC5180;
+    background-color: #8C68CD; 
+    border: 1px solid white;
+    color: white !important;
 }
   .gateway-dropdown-menu {
     background-color: #3a3a3a !important;  /* Set background color of the dropdown menu */
@@ -49,7 +50,15 @@
   }
   
   .gateway-dropdown-item:hover {
-    background-color: #3a3a3a !important;  
-    color: #AC5180 !important;             /* Change text color on hover */
+    /* background-color: #3a3a3a !important;   */
+    background-color: #8C68CD !important;  
+    color: white !important;             /* Change text color on hover */
+  }
+
+  .gateway-dropdown-toggle:hover {
+    /* background-color: #3a3a3a !important;   */
+    background-color: #8C68CD !important;  
+    border-color: #8C68CD;
+    color: white !important;             /* Change text color on hover */
   }
 
