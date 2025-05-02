@@ -10,7 +10,7 @@ const AdminRoute = ({Component}) => {
     console.log("helllooo!!!");
     const { isAuthenticated, getAccessTokenSilently, error, isLoading } = useAuth0();
     const navigate = useNavigate();
-    
+
     useEffect(() => {
         const checkPermissions = async () => {
             

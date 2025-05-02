@@ -8,7 +8,6 @@ import { useState, useEffect } from 'react';
 
 const EditUsers = () => {
 
-  /*
   //AdminRole check
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
   const navigate = useNavigate();
@@ -38,7 +37,6 @@ const EditUsers = () => {
 
     checkPermissions();
   }, [isAuthenticated, getAccessTokenSilently, navigate]);
-  */
 
 //  const token = getAccessTokenSilently();
 //  console.log(token);

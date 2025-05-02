@@ -43,7 +43,7 @@ function App() {
               <Route path="/viewdata" element={<PrivateRoute Component = {ViewDatabasePage} />} />
               <Route path="/editdata" element={<PrivateRoute Component = {EditDatabasePage} />} />
               <Route path="/graphs" element={<PrivateRoute Component = {DataPage} />} />
-              <Route path="/users" element={<AdminRoute Component= {EditUsers} />} />
+              <Route path="/users" element={<PrivateRoute Component= {EditUsers} />} />
               <Route path="/profile" element={<PrivateRoute Component = {ProfilePage} />} />
               <Route path="/requests" element={<PrivateRoute Component = {Requests} />} />
               <Route path="/itemdevelopers" element={<PrivateRoute Component = {ItemDevelopers} />} />
