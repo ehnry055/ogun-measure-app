@@ -49,7 +49,7 @@ const EditUsers = () => {
 //    navigate("/unauthorized");
 //  }
 
-  if(!isAuthenticated || !isAuthorized) {
+  if(isLoading) {
     return null;
   }
   return (
