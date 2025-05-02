@@ -20,13 +20,20 @@ const Gateway = () => {
 
         <div>
         <Dropdown>
-            <Dropdown.Toggle variant="success" id="dropdown-basic">
+            <Dropdown.Toggle className="custom-dropdown-toggle" id="dropdown-basic">
                 See Facets
             </Dropdown.Toggle>
             <Dropdown.Menu className="custom-dropdown-menu">
-                <Dropdown.Item href="/profile" className="custom-dropdown-item">Profile</Dropdown.Item>
-                <Dropdown.Item href="/requests" className="custom-dropdown-item">Requests</Dropdown.Item>
-                <Dropdown.Item href="/settings" className="custom-dropdown-item">Settings</Dropdown.Item>
+                <Dropdown.Item href="/rsg" className="custom-dropdown-item">Residential Segregation and Gentrification</Dropdown.Item>
+                <Dropdown.Item className="custom-dropdown-item">Property Ownership</Dropdown.Item>
+                <Dropdown.Item className="custom-dropdown-item">Government Representation</Dropdown.Item>
+                <Dropdown.Item className="custom-dropdown-item">Policing and Incarceration</Dropdown.Item>
+                <Dropdown.Item className="custom-dropdown-item">Income and Poverty</Dropdown.Item>
+                <Dropdown.Item className="custom-dropdown-item">Occupational Segregation and Unemployment</Dropdown.Item>
+                <Dropdown.Item className="custom-dropdown-item">Healthcare Access</Dropdown.Item>
+                <Dropdown.Item className="custom-dropdown-item">Healthy Food Access</Dropdown.Item>
+                <Dropdown.Item className="custom-dropdown-item">Environmental Pollution</Dropdown.Item>
+                <Dropdown.Item className="custom-dropdown-item">Media and Marketing</Dropdown.Item>
             </Dropdown.Menu>
         </Dropdown>
         </div>
