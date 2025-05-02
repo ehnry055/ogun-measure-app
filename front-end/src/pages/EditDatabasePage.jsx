@@ -15,7 +15,6 @@ const EditDatabasePage = () => {
   const [selectedColumns, setSelectedColumns] = useState(new Set());
   const [selectedPreset, setSelectedPreset] = useState(null);
 
-
   //AdminRole check
   const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
   const navigate = useNavigate();
@@ -25,7 +24,7 @@ const EditDatabasePage = () => {
     const checkPermissions = async () => {
       try {
         const token = await getAccessTokenSilently();
-        console.log("Access token:", token); // Log the token for debugging
+        console.log("Access token:", token);
         const decodedToken = jwtDecode(token);
         console.log("Decoded token:", decodedToken);
 
@@ -277,6 +276,7 @@ const EditDatabasePage = () => {
           <input type="file" accept=".csv" onChange={(e) => setSelectedFile(e.target.files[0])}/>
           <button className="upload-button" onClick={handleFileUpload}> Upload to Database </button>
           <button className="export-button" onClick={handleExport}> View as CSV </button>
+          <button className="download-button" onClick={handleDownload}>Download as CSV</button>
           <button className="select-button" onClick={handleSelectTable}> Select Table </button>
           <button className="delete-table-button" onClick={handleDeleteTable}> Delete Table </button>
         </div>
