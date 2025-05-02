@@ -15,6 +15,7 @@ const EditDatabasePage = () => {
   const [selectedColumns, setSelectedColumns] = useState(new Set());
   const [selectedPreset, setSelectedPreset] = useState(null);
 
+
   //AdminRole check
   const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const EditDatabasePage = () => {
     const checkPermissions = async () => {
       try {
         const token = await getAccessTokenSilently();
-        console.log("Access token:", token);
+        console.log("Access token:", token); // Log the token for debugging
         const decodedToken = jwtDecode(token);
         console.log("Decoded token:", decodedToken);
 
@@ -32,8 +33,8 @@ const EditDatabasePage = () => {
         console.log("Has permission:", hasPermission);
 
         if (!hasPermission) {
-          navigate("/unauthorized");
           console.log("User does not have the required permission");
+          navigate("/unauthorized");
         }
         isAuthorized = true;
       } catch (error) {
@@ -67,7 +68,7 @@ const EditDatabasePage = () => {
     localStorage.setItem('columnPresets', JSON.stringify(updatedPresets));
   };  
 
-  if(isLoading) {
+  if(!isAuthenticated || isLoading || !isAuthorized) {
     return null;
   }
 
@@ -276,7 +277,6 @@ const EditDatabasePage = () => {
           <input type="file" accept=".csv" onChange={(e) => setSelectedFile(e.target.files[0])}/>
           <button className="upload-button" onClick={handleFileUpload}> Upload to Database </button>
           <button className="export-button" onClick={handleExport}> View as CSV </button>
-          <button className="download-button" onClick={handleDownload}>Download as CSV</button>
           <button className="select-button" onClick={handleSelectTable}> Select Table </button>
           <button className="delete-table-button" onClick={handleDeleteTable}> Delete Table </button>
         </div>
