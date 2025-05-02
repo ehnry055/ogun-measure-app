@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react';
 const EditUsers = () => {
 
   //AdminRole check
-  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,7 +49,9 @@ const EditUsers = () => {
 //    navigate("/unauthorized");
 //  }
 
-
+  if (isLoading) {
+    return null;
+  }
   return (
     <div className="edit-database-container">
       <div className="saved-section">
