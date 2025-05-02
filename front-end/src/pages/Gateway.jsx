@@ -12,14 +12,14 @@ const Gateway = () => {
       <h2 className="about-title">Ogun Measure</h2>
       <div className="about-content">
         <div class="container">
-        <a href="/rsg" className="homebtn"><span> See Facets </span></a>
+        {/* <a href="/rsg" className="homebtn"><span> See Facets </span></a>
         <a href="" className="homebtn"><span> See Pathways </span></a>
         <a className="homebtn"><span> See Periods </span></a>
-        <a href="/viewdata" className="homebtn"><span> Generate Data </span></a>
+        <a href="/viewdata" className="homebtn"><span> Generate Data </span></a> */}
 
 
-        <div>
-        <Dropdown>
+        <div class="gateway-dropdown-container"> 
+        <Dropdown className="gateway-dropdown">
             <Dropdown.Toggle className="gateway-dropdown-toggle">
                 See Facets
             </Dropdown.Toggle>
@@ -36,6 +36,30 @@ const Gateway = () => {
                 <Dropdown.Item className="gateway-dropdown-item">Media and Marketing</Dropdown.Item>
             </Dropdown.Menu>
         </Dropdown>
+
+        <Dropdown className="gateway-dropdown">
+            <Dropdown.Toggle className="gateway-dropdown-toggle">
+                See Pathways
+            </Dropdown.Toggle>
+            <Dropdown.Menu className="gateway-dropdown-menu">
+                <Dropdown.Item href="/rsg" className="gateway-dropdown-item">Structural Violence</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item">Limited and Restricted Access</Dropdown.Item>
+            </Dropdown.Menu>
+        </Dropdown>
+
+        <Dropdown className="gateway-dropdown">
+            <Dropdown.Toggle className="gateway-dropdown-toggle">
+                See Periods
+            </Dropdown.Toggle>
+            <Dropdown.Menu className="gateway-dropdown-menu">
+                <Dropdown.Item href="/rsg" className="gateway-dropdown-item">Historical Period 1 Pre-Civil Rights 1619-1968</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item">Historical Period 2 Desegregation 1969-1999</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item">Historical Period 3 Modern Times 2000-Present</Dropdown.Item>
+            </Dropdown.Menu>
+        </Dropdown>
+
+        <a href="/viewdata" className="homebtn"><span> Generate Data </span></a>
+
         </div>
         </div>
       </div>

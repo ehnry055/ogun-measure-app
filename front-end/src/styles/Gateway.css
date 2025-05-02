@@ -1,15 +1,33 @@
+.homebtn {
+    margin: 0px !important;
+}
+
+.gateway-dropdown {
+    display: flex;
+    padding: 20px;
+    justify-content: center;
+}
+
+.gateway-dropdown-container {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Optional: Center the dropdowns */
+    gap: 20px; 
+}
+
 #dropdown-profile:focus,
 #dropdown-profile:active {
     border-color: #AC5180;
-    font-size: 24px;
     box-shadow: none; /* Remove any box shadow */
 }
 
 .gateway-dropdown-toggle {
     border-color: #AC5180;  /* Set background color */
     background-color: transparent;
+    font-size: 24px;
     color: #AC5180 !important;             /* Change text color on hover */
-    padding: 30px 40px;         /* Adjust padding for the button */
+    padding: 20px;         /* Adjust padding for the button */
+    width: 300px;
     border-radius: 5px;   
   }
   
@@ -17,8 +35,7 @@
 .gateway-dropdown-toggle:focus,
 .gateway-dropdown-toggle:active {
     background-color: #371D33;
-    box-shadow: none;      /* Remove any box shadow */
-    outline: none;   
+    border: 1px solid #AC5180;
 }
   .gateway-dropdown-menu {
     background-color: #3a3a3a !important;  /* Set background color of the dropdown menu */
@@ -35,8 +52,7 @@
   }
   
   .gateway-dropdown-item:hover {
-    /* background-color: #3a3a3a !important;   */
-    background-color: #371D33;
+    background-color: #3a3a3a !important;  
     color: #AC5180 !important;             /* Change text color on hover */
   }
 

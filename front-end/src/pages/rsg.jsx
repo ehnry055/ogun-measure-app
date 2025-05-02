@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/HomePage.css'; 
 
-function rsg() {
+function RSG() {
     return (
     <div className="home-container">
         <h2 className="about-title">Residential Segregation and Gentrification</h2>
@@ -35,4 +35,4 @@ function rsg() {
     );
 };
 
-export default rsg;
+export default RSG;

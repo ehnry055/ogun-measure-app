@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/HomePage.css'; 
 
-function sv() {
+function SV() {
     return (
     <div className="home-container">
         <h2 className="about-title">Structural Violence</h2>
@@ -35,4 +35,4 @@ function sv() {
     );
 };
 
-export default sv;
+export default SV;
