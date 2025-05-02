@@ -25,22 +25,14 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-// Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'front-end/build')));
 
-// API routes (if any)
 app.get('/api', (req, res) => {
   res.json({ message: 'Hello from the server!' });
 });
 
 const sequelize = new Sequelize(process.env.JAWSDB_URL, {
   dialect: 'mysql',
-  // dialectOptions: {
-  //   ssl: {
-  //     require: true,
-  //     rejectUnauthorized: false
-  //   }
-  // }
 });
 
 const AggregatedData = sequelize.define('AggregatedData', {
