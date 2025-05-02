@@ -9,7 +9,7 @@
   background-color: #4E2D76;
   color: white;
   padding: 10px 20px;
-  font-family: Arial, sans-serif;
+  font-family: "Saira", sans-serif;
 }
 
 .navbar-left {
@@ -82,6 +82,7 @@
 
 .navbar-nav .nav-link {
   text-decoration: none; /* Removes underline */
+  
 }
 
 .navbar-nav .nav-link:hover {
@@ -107,10 +108,11 @@
   height: 100%;
   color: white;          
   text-decoration: none;   
+  font-family: "Saira", sans-serif;
 }
 
 .navbar a:not(.navbar-brand):hover {
-  background-color: rgba(172, 81, 128, 0.5); 
+  background-color: #ab88ed; 
   color: #371D33;     
   transition: .3s ease;
   border-radius: 5px;

@@ -11,6 +11,18 @@ const Gateway = () => {
     <div className="home-container">
       <h2 className="about-title">Ogun Measure</h2>
       <div className="about-content">
+        <div class="center-text-container">
+        <p>During the Trans-Atlantic Slave Trade,
+        some people racialized as Black and
+        and enslaved for it called on the
+        strengthen of Ogun to protect and
+        empower them.
+        </p>
+        <p>This measure captures 10 facets, 2
+        pathways, and 3 historical periods
+        representing the 400+ years of Anti-Black
+        Structural Racism in the United States.</p>
+        </div>
         <div class="container">
         {/* <a href="/rsg" className="homebtn"><span> See Facets </span></a>
         <a href="" className="homebtn"><span> See Pathways </span></a>
@@ -61,6 +73,9 @@ const Gateway = () => {
         <a href="/viewdata" className="homebtn"><span> Generate Data </span></a>
 
         </div>
+        </div>
+        <div class="return">
+            <a href="/" className="homebtn"><span> Return Home </span></a>
         </div>
       </div>
     </div>

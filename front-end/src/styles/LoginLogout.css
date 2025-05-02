@@ -4,6 +4,7 @@
     background-color: #222222;
     border-color: #8C68CD;
     color: #8C68CD;
+    font-family: "Saira", sans-serif;
   }
 
 .btn-primary:hover {
@@ -37,28 +38,28 @@
 
 #dropdown-profile {
     background-color: transparent;
-    border-color: #AC5180
+    border-color: #8C68CD
 }
 
 #dropdown-profile:focus,
 #dropdown-profile:active {
-    border-color: #AC5180;
+    border-color: #8C68CD;
     box-shadow: none; /* Remove any box shadow */
 }
 
 .custom-dropdown-toggle {
-    background-color: #AC5180;  /* Set background color */
+    background-color: #8C68CD;  /* Set background color */
     color: #fff;                /* Set text color to white */
     /* border-color: #AC5180; */
     padding: 8px 16px;          /* Adjust padding */
     border-radius: 5px;         /* Rounded corners */
-    border: 1px solid #AC5180;  /* Ensure the border is solid */
+    border: 1px solid #8C68CD;  /* Ensure the border is solid */
   }
   
  /* Add focus and active outline to ensure the border is maintained */
 .custom-dropdown-toggle:focus,
 .custom-dropdown-toggle:active {
-    border-color: #AC5180; /* Add a colored outline when focused or active */
+    border-color: #8C68CD; /* Add a colored outline when focused or active */
     box-shadow: none;      /* Remove any box shadow */
 }
   .custom-dropdown-menu {
