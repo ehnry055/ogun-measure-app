@@ -10,6 +10,7 @@ const EditUsers = () => {
 
   //AdminRole check
   const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
+  const [Render, setRender] = useState(false);
   const navigate = useNavigate();
   var isAuthorized = false;
 
@@ -31,6 +32,7 @@ const EditUsers = () => {
         else {
           console.log("changed isAuthorized to true");
           isAuthorized = true;
+          setRender(true);
         }
       } catch (error) {
         console.error('Error checking permissions:', error);
@@ -58,6 +60,7 @@ const EditUsers = () => {
     console.log('isAuthorized ', !isAuthorized);
     return null;
   }
+  
   console.log("Authorized!");
   return (
     <div className="edit-database-container">
