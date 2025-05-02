@@ -19,6 +19,7 @@ const EditDatabasePage = () => {
   //AdminRole check
   const { isAuthenticated, getAccessTokenSilently } = useAuth0();
   const navigate = useNavigate();
+  const isAuthorized = false;
 
   useEffect(() => {
     const checkPermissions = async () => {
@@ -34,17 +35,20 @@ const EditDatabasePage = () => {
         if (!hasPermission) {
           navigate("/unauthorized");
           console.log("User does not have the required permission");
-          return null;
         }
+        isAuthorized = true;
       } catch (error) {
         console.error('Error checking permissions:', error);
         navigate("/unauthorized");
-        return null;
       }
     };
 
     checkPermissions();
   }, [isAuthenticated, getAccessTokenSilently, navigate]);
+
+  if(!isAuthenticated || isLoading || !isAuthorized) {
+    return null;
+  }
   
   useEffect(() => {
     const savedPresets = localStorage.getItem('columnPresets');
