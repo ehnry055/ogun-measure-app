@@ -17,7 +17,7 @@ const EditDatabasePage = () => {
 
 
   //AdminRole check
-  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
   const navigate = useNavigate();
   const isAuthorized = false;
 
@@ -45,10 +45,6 @@ const EditDatabasePage = () => {
 
     checkPermissions();
   }, [isAuthenticated, getAccessTokenSilently, navigate]);
-
-  if(!isAuthenticated || isLoading || !isAuthorized) {
-    return null;
-  }
   
   useEffect(() => {
     const savedPresets = localStorage.getItem('columnPresets');
@@ -71,6 +67,10 @@ const EditDatabasePage = () => {
     setPresets(updatedPresets);
     localStorage.setItem('columnPresets', JSON.stringify(updatedPresets));
   };  
+
+  if(!isAuthenticated || isLoading || !isAuthorized) {
+    return null;
+  }
 
   const applyPreset = (preset) => {
     if (selectedPreset === preset.name) {
