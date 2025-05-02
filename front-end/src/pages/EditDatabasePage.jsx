@@ -68,7 +68,7 @@ const EditDatabasePage = () => {
     localStorage.setItem('columnPresets', JSON.stringify(updatedPresets));
   };  
 
-  if(isLoading) {
+  if(!isAuthenticated) {
     return null;
   }
 
