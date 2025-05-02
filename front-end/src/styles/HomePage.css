@@ -11,7 +11,7 @@
   cursor: pointer;
   margin: 35px ;
   justify-content: center;
-  transition: background-color 0.5s, color 0.1s; /* Set a faster transition for color */
+  transition: background-color 0.3s, color 0.1s; /* Set a faster transition for color */
 }
 
 /* .homebtn {
@@ -32,7 +32,7 @@
   cursor: pointer;
   display: inline-block;
   position: relative;
-  transition: 0.5s;
+  transition: 0.3s;
 }
 
 .homebtn span:after {

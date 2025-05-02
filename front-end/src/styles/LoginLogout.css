@@ -25,14 +25,14 @@
     padding: 0.75rem 1.5rem; /* Adjust button padding */
     border-radius: 0.5rem;   /* Adjust button border radius */
     background-color: #222222;
-    border-color: #F1A5AD;
-    color: #F1A5AD;
+    border-color: #8C68CD;
+    color: #8C68CD;
   }
 
 .btn-secondary:hover {
     background-color: transparent;
-    border-color: #F1A5AD;
-    color: #F1A5AD;
+    border-color: #8C68CD;
+    color: #8C68CD;
 }
 
 #dropdown-profile {
@@ -75,6 +75,6 @@
   
   .custom-dropdown-item:hover {
     background-color: #3a3a3a !important;  /* Change background color on hover */
-    color: #AC5180 !important;             /* Change text color on hover */
+    color: #8C68CD !important;             /* Change text color on hover */
   }
 
