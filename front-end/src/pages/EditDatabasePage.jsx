@@ -152,6 +152,33 @@ const EditDatabasePage = () => {
       alert('CSV export failed. Possible reasons: empty data/incorrect format');
     }
   };
+  
+  const handleDownload = async () => {
+    try {
+      let token = await getAccessTokenSilently();
+  
+      let response = await axios.get(`/api/export-csv`, {
+        headers: { Authorization: `Bearer ${token}` },
+        responseType: 'text'
+      });
+  
+      // make a Blob from the text
+      let blob = new Blob([response.data], { type: 'text/csv;charset=utf-8;' });
+  
+      // create a temporary link and click it
+      let url = URL.createObjectURL(blob);
+      let link = document.createElement('a');
+      link.href = url;
+      link.download = 'data.csv';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Download failed:', error);
+      alert('CSV download failed.');
+    }
+  };
 
   // get a list of existing tables and let the user select one
   const handleSelectTable = async () => {
@@ -281,6 +308,7 @@ const EditDatabasePage = () => {
           <input type="file" accept=".csv" onChange={(e) => setSelectedFile(e.target.files[0])}/>
           <button className="upload-button" onClick={handleFileUpload}> Upload to Database </button>
           <button className="export-button" onClick={handleExport}> View as CSV </button>
+          <button className="download-button" onClick={handleDownload}> Download as CSV </button>
           <button className="select-button" onClick={handleSelectTable}> Select Table </button>
           <button className="delete-table-button" onClick={handleDeleteTable}> Delete Table </button>
         </div>

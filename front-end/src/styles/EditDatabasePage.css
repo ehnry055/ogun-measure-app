@@ -159,6 +159,19 @@
   background: #850196;
 }
 
+.download-button {
+  padding: 0.5rem 1rem;
+  background: #df4e4e;
+  color: rgb(233, 255, 88);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.download-button:hover {
+  background: #f0b2e7;
+}
+
 .select-button {
   padding: 0.5rem 1rem;
   background: #bdb325;
