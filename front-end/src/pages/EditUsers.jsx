@@ -28,7 +28,10 @@ const EditUsers = () => {
           console.log("User does not have the required permission");
           navigate("/unauthorized");
         }
-        isAuthorized = true;
+        else {
+          console.log("changed isAuthorized to true");
+          isAuthorized = true;
+        }
       } catch (error) {
         console.error('Error checking permissions:', error);
         navigate("/unauthorized");
