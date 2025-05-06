@@ -19,7 +19,7 @@ Bandeen-Roche, Sarah Szanton,, Zeyu Dong, Cailyn E. Clemons, Jaren L. Wyaco, Ric
 George, Lorraine Benn, Yao Zeng, Sydney Isabella Leung, Gina Wang, and Yixuan Ding.
             </p>
         <div className="container">
-        <a href="/rsg" className="homebtn"><span> See Measure </span></a>
+        <a href="/gateway" className="homebtn"><span> See Measure </span></a>
         <a href="/" className="homebtn"><span> Return Home </span></a>
         </div>
         </div>

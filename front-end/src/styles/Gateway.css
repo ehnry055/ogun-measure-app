@@ -24,7 +24,7 @@
 
 .gateway-dropdown-toggle {
     border: 1.75px solid #8C68CD;  /* Set background color */
-    background-color: transparent;
+    background-color: #8C68CD26;
     font-size: 24px;
     color: #8C68CD !important;             
     padding: 20px;         /* Adjust padding for the button */

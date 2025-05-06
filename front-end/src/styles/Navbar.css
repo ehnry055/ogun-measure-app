@@ -71,7 +71,8 @@
 }
 
 .navbar-gradient {
-  background: linear-gradient(90deg, #8C68CD, #ab88ed); /* Purple gradient */
+  /* ab88ed */
+  background: linear-gradient(#8C68CD, #ab88ed); /* Purple gradient */
 }
 
 .navbar-brand {

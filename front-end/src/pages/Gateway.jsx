@@ -23,6 +23,9 @@ const Gateway = () => {
         representing the 400+ years of Anti-Black
         Structural Racism in the United States.</p>
         </div>
+        <div>
+            <img src="front-end/src/assets/OGUN.jpg" alt="OGUN"></img>
+        </div>
         <div class="container">
         {/* <a href="/rsg" className="homebtn"><span> See Facets </span></a>
         <a href="" className="homebtn"><span> See Pathways </span></a>

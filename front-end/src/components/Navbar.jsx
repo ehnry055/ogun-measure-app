@@ -1,7 +1,6 @@
 import React from 'react';
 import '../styles/Navbar.css'; 
 import '../styles/LoginLogout.css'; 
-import columbiaLogo from '../assets/columbia-logo.png'; 
 import { useAuth0 } from '@auth0/auth0-react';
 import LoginButton from './login';
 import LogoutButton from './logout';

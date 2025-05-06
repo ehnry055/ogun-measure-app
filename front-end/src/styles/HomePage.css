@@ -2,7 +2,8 @@
 
 .homebtn {
   border-radius: 0.5rem;   
-  background-color: #222222;
+  /* background-color: #222222; */
+  background-color: #8C68CD26;
   border: 1.75px solid #8C68CD;
   color: #8C68CD;
   text-align: center;
