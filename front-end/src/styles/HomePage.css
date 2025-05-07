@@ -97,8 +97,11 @@
 
  .home-container {
     padding: 20px;
-    font-family: Arial, sans-serif;
-  }
+    width: 100%; /* Ensure it spans the full width of the parent container */
+    max-width: 85vw; /* Set a maximum width to prevent it from becoming too wide */
+    margin: 0 auto; /* Center the container horizontally */
+    box-sizing: border-box; /* Include padding in the width calculation */
+    }
   
   .about-title {
     color: #8C68CD;

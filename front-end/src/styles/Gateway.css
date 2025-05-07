@@ -1,6 +1,18 @@
 .center-text-container {
-    text-align: center; /* Center-align text horizontally */
-}
+    display: flex; /* Use flexbox to align items horizontally */
+    align-items: center; /* Vertically align the image and text */
+    justify-content: center; /* Optional: Center the entire container */
+    gap: 20px; /* Add spacing between the image and text */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  }
+  
+  .text-content {
+    flex: 1; /* Allow the text to take up remaining space */
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: rgb(196, 196, 196);
+    font-family: "Saira", sans-serif;
+  }
 
 .gateway-dropdown {
     display: flex;
@@ -9,12 +21,19 @@
 }
 
 .gateway-dropdown-container {
-    margin-top: 10px;
+    margin-top: 50px;
     display: flex;
     align-items: center;
     justify-content: center; /* Optional: Center the dropdowns */
     gap: 20px; 
+    flex-direction: row;
 }
+
+@media (max-width: 1000px) {
+    .gateway-dropdown-container {
+      flex-direction: column;
+    }
+  }  
 
 #dropdown-profile:focus,
 #dropdown-profile:active {
@@ -71,5 +90,16 @@
   .return {
     display: flex;
     justify-content: center;
-    margin-top: 75px;
+    margin-top: 50px;
   }
+
+  .ogunimg {
+    max-width: 200px;
+    flex-shrink: 0;
+    height: auto;
+    border: 5px solid black
+}
+
+#gendata {
+    margin: 20px;
+}

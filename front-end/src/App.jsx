@@ -26,10 +26,12 @@ import AdminRoute from './components/AdminRoute';
 import Requests from './pages/RequestsPage';
 import ViewDatabasePage from './pages/ViewDatabasePage';
 import ItemDevelopers from './pages/ItemDevelopers';
-import RSG from './pages/rsg';
+import RSG from './facets/rsg';
+import PO from './facets/po'
 import SV from './pages/sv';
 import OgunMeasure from './pages/OgunMeasure'
 import Gateway from './pages/Gateway';
+
 
 function App() {
 
@@ -49,6 +51,7 @@ function App() {
               <Route path="/requests" element={<PrivateRoute Component = {Requests} />} />
               <Route path="/itemdevelopers" element={<ItemDevelopers />} />
               <Route path="/rsg" element={<RSG />} />
+              <Route path="/po" element={<PO />} />
               <Route path="/sv" element={<SV />} />
               <Route path="/ogun" element={<PrivateRoute Component = {OgunMeasure} />} />
               <Route path="/gateway" element={<Gateway/>} />

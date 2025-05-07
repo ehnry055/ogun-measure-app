@@ -4,34 +4,32 @@ import '../styles/Gateway.css';
 import { Dropdown } from 'react-bootstrap'; // Add this import
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Import Bootstrap JS bundle
-
+import OGUN from '../assets/OGUN.jpg';
 
 const Gateway = () => {
   return (
     <div className="home-container">
       <h2 className="about-title">Ogun Measure</h2>
       <div className="about-content">
-        <div class="center-text-container">
-        <p>During the Trans-Atlantic Slave Trade,
-        some people racialized as Black and
-        and enslaved for it called on the
-        strengthen of Ogun to protect and
-        empower them.
+      <div className="center-text-container">
+        <img src={OGUN} alt="OGUN" className="ogunimg" />
+        <div className="text-content">
+        <p>
+            During the Trans-Atlantic Slave Trade, some people racialized as Black and
+            enslaved for it called on the strength of Ogun to protect and empower them.
         </p>
-        <p>This measure captures 10 facets, 2
-        pathways, and 3 historical periods
-        representing the 400+ years of Anti-Black
-        Structural Racism in the United States.</p>
+        <p>
+            This measure captures 10 facets, 2 pathways, and 3 historical periods
+            representing the 400+ years of Anti-Black Structural Racism in the United
+            States.
+        </p>
         </div>
-        <div>
-            <img src="front-end/src/assets/OGUN.jpg" alt="OGUN"></img>
         </div>
         <div class="container">
         {/* <a href="/rsg" className="homebtn"><span> See Facets </span></a>
         <a href="" className="homebtn"><span> See Pathways </span></a>
         <a className="homebtn"><span> See Periods </span></a>
         <a href="/viewdata" className="homebtn"><span> Generate Data </span></a> */}
-
 
         <div class="gateway-dropdown-container"> 
         <Dropdown className="gateway-dropdown">
@@ -73,8 +71,7 @@ const Gateway = () => {
             </Dropdown.Menu>
         </Dropdown>
 
-        <a href="/viewdata" className="homebtn"><span> Generate Data </span></a>
-
+        <a href="/viewdata" className="homebtn" id="gendata"><span> Generate Data </span></a>
         </div>
         </div>
         <div class="return">

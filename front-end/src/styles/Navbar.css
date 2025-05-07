@@ -10,6 +10,7 @@
   color: white;
   padding: 10px 20px;
   font-family: "Saira", sans-serif;
+  width: 100%;
 }
 
 .navbar-left {
@@ -123,3 +124,6 @@
   color: white;
 }
 
+.container-fluid {
+  width: 100%;
+}
