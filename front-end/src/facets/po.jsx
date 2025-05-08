@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Pencil } from 'lucide-react';
 import { useAuth0 } from "@auth0/auth0-react";
 import '../styles/HomePage.css'; 
-import React, { useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 
 // function PO({isAdmin}) change to this later
