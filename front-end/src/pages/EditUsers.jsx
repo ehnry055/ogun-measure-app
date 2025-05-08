@@ -34,7 +34,9 @@ const EditUsers = () => {
         const roleRes = await fetch("https://dev-mqfq6kte0qw3b36u.us.auth0.com/api/v2/roles?name_filter=admin", {
           headers: { Authorization: `Bearer ${mgmtToken}` }
         });
-        const [adminRole] = await roleRes.json();
+
+        const roleData = await roleRes.json();
+        console.log("ROLE DATA:", roleData);
 
         const usersRes = await fetch(`https://dev-mqfq6kte0qw3b36u.us.auth0.com/api/v2/roles/${adminRole.id}/users`, {
           headers: { Authorization: `Bearer ${mgmtToken}` }
