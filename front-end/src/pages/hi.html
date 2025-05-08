@@ -2,6 +2,18 @@
 <html>
 <head>
   <meta charset="utf-8" />
+    <!-- Content Security Policy to reduce XSS risks -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';">
+
+  <!-- Prevent MIME-type sniffing -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+
+  <!-- Prevent clickjacking -->
+  <meta http-equiv="X-Frame-Options" content="DENY">
+
+  <!-- Reduce referrer info -->
+  <meta name="referrer" content="no-referrer">
+
   <title>US Map with County Drilldown</title>
   <script src="https://code.highcharts.com/maps/highmaps.js"></script>
   <script src="https://code.highcharts.com/maps/modules/exporting.js"></script>

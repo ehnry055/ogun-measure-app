@@ -55,6 +55,7 @@ function PO({}) {
       };
     
       return (
+        
         <div className="home-container">
           <h2 className="about-title">Property Ownership</h2>
           <div className="about-content">
