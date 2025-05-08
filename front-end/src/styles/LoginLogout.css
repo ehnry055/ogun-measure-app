@@ -39,12 +39,12 @@
 
 #dropdown-profile {
     background-color: transparent;
-    border-color: #8C68CD
+    border-color: white
 }
 
 #dropdown-profile:focus,
 #dropdown-profile:active {
-    border-color: #8C68CD;
+    border-color: white;
     box-shadow: none; /* Remove any box shadow */
 }
 
