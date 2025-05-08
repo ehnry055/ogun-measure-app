@@ -7,7 +7,7 @@ import '../styles/HomePage.css';
 function PO({}) {
     // const isAdmin = true;
     const { user, isAuthenticated } = useAuth0();
-    const isAuthorized = isAuthenticated && user && user['https://your-app.com/roles']?.includes('admin');
+    const isAuthorized = isAuthenticated && user && user['https://your-app.com/roles']?.includes('adminView');
 
     // temp check
     // const isAuthorized = isAuthenticated && user?.email === 'youradmin@email.com';
