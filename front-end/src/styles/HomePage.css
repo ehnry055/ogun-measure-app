@@ -192,3 +192,31 @@ th {
   color: white;
   border-radius: 0.5rem;   
 }
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20vw;
+  margin-right: 20vw;
+}
+
+.send {
+  background-color: #8C68CD26;
+  border: 1.75px solid #8C68CD;
+  color: #8C68CD;
+  padding: 20px;
+  border-radius: 0.5rem;
+  font-size: 2rem;
+  font-family: "Saira", sans-serif;
+  transition: background-color 0.3s, color 0.1s; /* Set a faster transition for color */
+}
+
+.send:hover {
+  background-color: #8C68CD;
+  border: 1.75px solid #8C68CD;
+  color: white;
+  padding: 20px;
+  border-radius: 0.5rem;
+  font-size: 2rem;
+  font-family: "Saira", sans-serif;
+}

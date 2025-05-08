@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/App.css'; 
+import '../styles/HomePage.css'
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -41,8 +42,11 @@ const RequestsPage = () => {
   };
 
 
-  return (
-    <div>
+  return (    
+    <div class="home-container">
+      <div className='form-container'>
+      <h2 className="about-title">Request Form</h2>
+
       <input
         type="text"
         placeholder="Email"
@@ -94,7 +98,8 @@ const RequestsPage = () => {
         onChange={(e) => setData(e.target.value)}
       />
       <br />
-      <button onClick={sendMail}>Send Email</button>
+      <button class="send" onClick={sendMail}>Send Email</button>
+      </div>
     </div>
   );
 }
