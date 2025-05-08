@@ -19,7 +19,7 @@ const EditDatabasePage = () => {
   //AdminRole check
   const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
   const navigate = useNavigate();
-  const [isAuthorized, setisAuthorized] = useState(() => {
+  const [isAuthorized, setIsAuthorized] = useState(() => {
     const initialState = false;
     return initialState;
   });
@@ -40,7 +40,7 @@ const EditDatabasePage = () => {
           navigate("/unauthorized");
         }
         else {
-          setisAuthorized(true);
+          setIsAuthorized(true);
         }
       } catch (error) {
         console.error('Error checking permissions:', error);

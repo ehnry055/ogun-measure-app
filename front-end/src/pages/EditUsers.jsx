@@ -10,7 +10,7 @@ const EditUsers = () => {
 
   //AdminRole check
   const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
-  const [isAuthorized, setisAuthorized] = useState(() => {
+  const [isAuthorized, setIsAuthorized] = useState(() => {
     const initialState = false;
     return initialState;
   });
@@ -34,7 +34,7 @@ const EditUsers = () => {
         }
         else {
           console.log("changed isAuthorized to true");
-          setisAuthorized(true);
+          setIsAuthorized(true);
         }
       } catch (error) {
         console.error('Error checking permissions:', error);

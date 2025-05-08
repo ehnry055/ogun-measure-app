@@ -16,6 +16,7 @@
     "jwks-rsa": "^3.1.0",
     "multer": "^1.4.5-lts.1",
     "mysql2": "^2.3.3",
+    "nodemailer": "^7.0.2",
     "react-bootstrap": "^2.10.9",
     "react-scripts": "5.0.1",
     "sequelize": "^6.37.5",

@@ -13,6 +13,7 @@ const mysql = require('mysql2/promise');
 const app = express();
 const port = process.env.PORT || 4000;
 const { Parser } = require('json2csv');
+const nodemailer = require('nodemailer');
 
 const corsOptions = {
   origin: [
@@ -256,6 +257,54 @@ while (true) {
     break;
   }
 } */
+
+  const sendEmail = ({ email, role, affiliation, funding, intention, share, when, area, target, data }) => {
+    console.log("Sending email with the following data:")
+    return new Promise((resolve, reject) => {
+      const transporter = nodemailer.createTransport({
+        service: "Gmail",
+        host: "smtp.gmail.com",
+        port: 587,
+        auth: {
+          user: process.env.EMAIL_USER, // Your verified email address
+          pass: process.env.EMAIL_PASS, // App-specific password
+        },
+      });
+  
+      const mailData = {
+        from: process.env.EMAIL_USER, // Your verified email address
+        to: process.env.EMAIL_USER, // Send the email to yourself
+        subject: `Request for Data Access by ${email}`,
+        html: `
+          <p>Name: ${email}</p>
+          <p>Role: ${role}</p>
+          <p>Affiliation: ${affiliation}</p>
+          <p>Funding Source: ${funding}</p>
+          <p>Data Use Intentions: ${intention}</p>
+          <p>How and when will you share your findings with community members and organizations?: ${share}</p>
+          <p>When will you complete the final document based on this research?: ${when}</p>
+          <p>Which geographic area of the US are you interested in exploring?: ${area}</p>
+          <p>Target Population: ${target}</p>
+          <p>Data analysis program: ${data}</p>
+        `,
+      };
+  
+      transporter.sendMail(mailData, (err, info) => {
+        if (err) {
+          return reject(err); // Reject the promise with the error
+        }
+        resolve(info); // Resolve the promise with the info
+      });
+    });
+  };
+
+  app.get("/api/sendEmail", (req, res) => {
+    sendEmail(req.query)
+      .then((response) => res.send(response.message))
+      .catch((error) => res.status(500).send(error.message));
+  });
+
+
 
 
 // Catch-all handler for any other requests

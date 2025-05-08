@@ -23,7 +23,7 @@ import './styles/App.css';
 
 import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
-import Requests from './pages/RequestsPage';
+import RequestsPage from './pages/RequestsPage';
 import ViewDatabasePage from './pages/ViewDatabasePage';
 import ItemDevelopers from './pages/ItemDevelopers';
 import RSG from './facets/rsg';
@@ -48,7 +48,7 @@ function App() {
               <Route path="/graphs" element={<PrivateRoute Component = {DataPage} />} />
               <Route path="/users" element={<PrivateRoute Component= {EditUsers} />} />
               <Route path="/profile" element={<PrivateRoute Component = {ProfilePage} />} />
-              <Route path="/requests" element={<PrivateRoute Component = {Requests} />} />
+              <Route path="/requests" element={<RequestsPage />} />
               <Route path="/itemdevelopers" element={<ItemDevelopers />} />
               <Route path="/rsg" element={<RSG />} />
               <Route path="/po" element={<PO />} />
