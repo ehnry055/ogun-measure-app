@@ -3,7 +3,7 @@ import { Pencil } from 'lucide-react';
 import '../styles/HomePage.css'; 
 
 // function PO({isAdmin}) change to this later
-function PO({isAdmin}) {
+function PO({isAuthorized}) {
     // const isAdmin = true;
 
     const initialData = [
@@ -55,7 +55,7 @@ function PO({isAdmin}) {
               <thead>
                 <tr>
                   <th class="table-header-edit">
-                  {isAdmin && (
+                  {isAuthorized && (
                     <div className="admin-controls" style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         {!editMode ? (
                         <button onClick={handleEdit} className="edit-icon-btn">
