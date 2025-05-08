@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
 import { Pencil } from 'lucide-react';
+import { useAuth0 } from "@auth0/auth0-react";
 import '../styles/HomePage.css'; 
 
 // function PO({isAdmin}) change to this later
-function PO({isAuthorized}) {
+function PO({}) {
     // const isAdmin = true;
+    const { user, isAuthenticated } = useAuth0();
+    const isAuthorized = isAuthenticated && user && user['https://your-app.com/roles']?.includes('admin');
+
+    // temp check
+    // const isAuthorized = isAuthenticated && user?.email === 'youradmin@email.com';
+
 
     const initialData = [
         [
