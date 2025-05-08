@@ -10,7 +10,7 @@ const Gateway = () => {
   return (
     <div className="home-container">
       <h2 className="about-title">Ogun Measure</h2>
-      <div className="about-content">
+      {/* <div className="about-content"> */}
       <div className="center-text-container">
         <img src={OGUN} alt="OGUN" className="ogunimg" />
         <div className="text-content">
@@ -25,7 +25,7 @@ const Gateway = () => {
         </p>
         </div>
         </div>
-        <div class="container">
+        {/* <div class="container"> */}
         {/* <a href="/rsg" className="homebtn"><span> See Facets </span></a>
         <a href="" className="homebtn"><span> See Pathways </span></a>
         <a className="homebtn"><span> See Periods </span></a>
@@ -71,13 +71,13 @@ const Gateway = () => {
             </Dropdown.Menu>
         </Dropdown>
 
-        <a href="/viewdata" className="homebtn" id="gendata"><span> Generate Data </span></a>
+        {/* <a href="/viewdata" className="homebtn" id="gendata"><span> Generate Data </span></a> */}
         </div>
-        </div>
+        {/* </div> */}
         <div class="return">
-            <a href="/" className="homebtn"><span> Return Home </span></a>
+            <a href="/viewdata" className="homebtn" id="gendata"><span> Generate Data </span></a>
         </div>
-      </div>
+      {/* </div> */}
     </div>
   );
 };

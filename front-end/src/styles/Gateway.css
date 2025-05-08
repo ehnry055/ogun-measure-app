@@ -24,10 +24,10 @@
     margin-top: 50px;
     display: flex;
     align-items: center;
-    justify-content: center; /* Optional: Center the dropdowns */
+    justify-content: center; 
     gap: 20px; 
     flex-direction: row;
-}
+  }
 
 @media (max-width: 1000px) {
     .gateway-dropdown-container {
@@ -101,5 +101,12 @@
 }
 
 #gendata {
-    margin: 20px;
+  background-color: #EE635226;
+  border-color: #EE6352;
+  color: #EE6352;
+}
+
+#gendata:hover {
+  background-color: #EE6352;
+  color: white;
 }

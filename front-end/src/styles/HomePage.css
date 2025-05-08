@@ -17,19 +17,6 @@
   transition: background-color 0.3s, color 0.1s; /* Set a faster transition for color */
 }
 
-/* .homebtn {
-  padding: 0.75rem 1.5rem; 
-  border-radius: 0.5rem;   
-  background-color: #222222;
-  border-color: #AC5180;
-  color: #AC5180;
-
-  display: inline-block;
-  text-align: center;
-  transition: all 0.5s;
-  cursor: pointer;
-  margin: 5px;
-} */
 
 .homebtn span {
   cursor: pointer;
@@ -60,39 +47,6 @@
   background-color: #8C68CD;
   color: white;
 }
-
-
-/* .homebtn span {
-  cursor: pointer;
-  display: inline-block;
-  position: relative;
-  transition: 0.5s;
-}
-
-.homebtn:after {
-  content: '\00bb';
-  position: absolute;
-  opacity: 0;
-  top: 0;
-  right: -20px;
-  transition: 0.5s;
-}
-
-.homebtn:hover span {
-  padding-right: 25px;
-}
-
-.homebtn:hover span:after {
-  opacity: 1;
-  right: 0;
-}  */
-
-
-/* .homebtn:hover {
-  background-color: transparent;
-  border-color: #AC5180;
-  color: #AC5180;
-} */
 
 
  .home-container {
@@ -148,8 +102,11 @@
 
 .container {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
+  gap: 20px;
+  width: 120vw;
 }
 
 table {
