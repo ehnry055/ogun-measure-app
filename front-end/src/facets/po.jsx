@@ -6,11 +6,40 @@ import '../styles/HomePage.css';
 // function PO({isAdmin}) change to this later
 function PO({}) {
     // const isAdmin = true;
-    const { user, isAuthenticated } = useAuth0();
+    const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
+    const [isAuthorized, setIsAuthorized] = useState(() => {
+        const initialState = false;
+        return initialState;
+      });
+    useEffect(() => {
+        const checkPermissions = async () => {
+          try {
+            const token = await getAccessTokenSilently();
+            console.log("Access token:", token); // Log the token for debugging
+            const decodedToken = jwtDecode(token);
+            console.log("Decoded token:", decodedToken);
+    
+            const hasPermission = decodedToken.permissions && decodedToken.permissions.includes("adminView");
+            console.log("Has permission:", hasPermission);
+    
+            if (!hasPermission) {
+              console.log("User does not have the required permission");
+            }
+            else {
+              console.log("changed isAuthorized to true");
+              setIsAuthorized(true);
+            }
+          } catch (error) {
+            console.error('Error checking permissions:', error);
+          }
+        };
+    
+        checkPermissions();
+      }, [isAuthenticated, getAccessTokenSilently, navigate]);
     // const isAuthorized = isAuthenticated && user && user['https://your-app.com/roles']?.includes('adminView');
 
     // temp check
-    const isAuthorized = isAuthenticated && user?.email === 'bwan70707@gmail.com';
+    //const isAuthorized = isAuthenticated && user?.email === 'bwan70707@gmail.com';
 
 
     const initialData = [

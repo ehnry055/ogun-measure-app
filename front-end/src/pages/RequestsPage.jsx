@@ -18,7 +18,6 @@ const RequestsPage = () => {
   const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
 
   const sendMail = async () => {
-    console.log("done");
     try {
       const token = await getAccessTokenSilently();
       await axios.get("/api/sendEmail", {
