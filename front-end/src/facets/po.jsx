@@ -3,8 +3,8 @@ import { Pencil } from 'lucide-react';
 import '../styles/HomePage.css'; 
 
 // function PO({isAdmin}) change to this later
-function PO() {
-    const isAdmin = true;
+function PO({isAdmin}) {
+    // const isAdmin = true;
 
     const initialData = [
         [
