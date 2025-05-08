@@ -1,93 +1,82 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import '../styles/EditDatabasePage.css'; 
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
-import axios from 'axios';
-import '../styles/EditDatabasePage.css';
+import Token from "../components/token"
+import { useState, useEffect } from 'react';
 
 const EditUsers = () => {
-  const [users, setUsers] = useState([]);
-  const [admins, setAdmins] = useState([]);
-  const [emailInput, setEmailInput] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const { isAuthenticated, getAccessTokenSilently, isLoading, user } = useAuth0();
-  const [isAuthorized, setIsAuthorized] = useState(false);
+
+  //AdminRole check
+  const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
+  const [isAuthorized, setisAuthorized] = useState(() => {
+    const initialState = false;
+    return initialState;
+  });
+  
   const navigate = useNavigate();
 
-  const AUTH0_DOMAIN = process.env.REACT_APP_AUTH0_domain;
-  const MANAGEMENT_API_CLIENT_ID = process.env.REACT_APP_AUTH0_clientId;
-  const MANAGEMENT_API_CLIENT_SECRET = process.env.REACT_APP_AUTH0_SECRET;
-
-  // Permission check and initial load
   useEffect(() => {
     const checkPermissions = async () => {
       try {
         const token = await getAccessTokenSilently();
+        console.log("Access token:", token); // Log the token for debugging
         const decodedToken = jwtDecode(token);
-        const hasPermission = decodedToken.permissions?.includes("adminView");
+        console.log("Decoded token:", decodedToken);
+
+        const hasPermission = decodedToken.permissions && decodedToken.permissions.includes("adminView");
+        console.log("Has permission:", hasPermission);
 
         if (!hasPermission) {
+          console.log("User does not have the required permission");
           navigate("/unauthorized");
-        } else {
-          setIsAuthorized(true);
-          await fetchAdmins();
+        }
+        else {
+          console.log("changed isAuthorized to true");
+          setisAuthorized(true);
         }
       } catch (error) {
         console.error('Error checking permissions:', error);
         navigate("/unauthorized");
-      } finally {
-        setLoading(false);
       }
     };
 
-    if (isAuthenticated) checkPermissions();
+    checkPermissions();
   }, [isAuthenticated, getAccessTokenSilently, navigate]);
 
-  if (!isAuthenticated || isLoading || !isAuthorized || loading) {
+//  const token = getAccessTokenSilently();
+//  console.log(token);
+//  const decodedToken = jwtDecode(token);
+//  console.log(decodedToken);
+
+//  const hasPermission = decodedToken.permissions && decodedToken.permissions.includes('adminView');
+
+//  if (!hasPermission) {
+//    navigate("/unauthorized");
+//  }
+
+  if(!isAuthenticated || isLoading || !isAuthorized) {
+    console.log('isAuthenticated ', !isAuthenticated);
+    console.log('isLoading ', isLoading);
+    console.log('isAuthorized ', !isAuthorized);
     return null;
   }
-
+  
+  console.log("Authorized!");
   return (
     <div className="edit-database-container">
-      <div className="admin-management">
-        <h2 className="section-title">Admin Management</h2>
-        {error && <div className="error-message">{error}</div>}
-        
-        <div className="admin-controls">
-          <input
-            type="email"
-            value={emailInput}
-            onChange={(e) => setEmailInput(e.target.value)}
-            placeholder="Enter admin email"
-            className="email-input"
-          />
-          <button 
-            className="admin-button"
-            onClick={() => addAdmin(emailInput)}
-          >
-            Add Admin
-          </button>
-        </div>
-
-        <div className="admin-list">
-          {admins.map(admin => (
-            <div key={admin.user_id} className="admin-item">
-              {admin.email}
-              <button 
-                className="remove-button"
-                onClick={() => removeAdmin(admin.email)}
-              >
-                Remove Admin
-              </button>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="user-management">
+      <div className="saved-section">
         <h2 className="section-title">Registered Users</h2>
-        {/* Add regular user management here if needed */}
+        <ul className="saved-users">
+          <li>Jason Chae: jascha25@bergen.org</li>
+          <li>Henry Choi: hencho25@bergen.org</li>
+          <li>Stephen Yoon: steyoo25@bergen.org</li>
+          <li>Brendon Wan: brewan25@bergen.org</li>
+        </ul>
+      </div>
+      <div>
+        <h>This is where user editing will occur</h>
       </div>
     </div>
   );
