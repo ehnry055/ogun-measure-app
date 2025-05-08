@@ -1,82 +1,149 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/EditDatabasePage.css'; 
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
-import Token from "../components/token"
-import { useState, useEffect } from 'react';
 
 const EditUsers = () => {
-
-  //AdminRole check
   const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
-  const [isAuthorized, setisAuthorized] = useState(() => {
-    const initialState = false;
-    return initialState;
-  });
-  
+  const [isAuthorized, setisAuthorized] = useState(false);
+  const [admins, setAdmins] = useState([]);
+  const [emailInput, setEmailInput] = useState("");
   const navigate = useNavigate();
 
+  // 1. Permission check
   useEffect(() => {
-    const checkPermissions = async () => {
+    const checkPermissionsAndLoadAdmins = async () => {
       try {
         const token = await getAccessTokenSilently();
-        console.log("Access token:", token); // Log the token for debugging
-        const decodedToken = jwtDecode(token);
-        console.log("Decoded token:", decodedToken);
-
-        const hasPermission = decodedToken.permissions && decodedToken.permissions.includes("adminView");
-        console.log("Has permission:", hasPermission);
+        const decoded = jwtDecode(token);
+        const hasPermission = decoded.permissions && decoded.permissions.includes("adminView");
 
         if (!hasPermission) {
-          console.log("User does not have the required permission");
           navigate("/unauthorized");
+          return;
         }
-        else {
-          console.log("changed isAuthorized to true");
-          setisAuthorized(true);
-        }
+
+        setisAuthorized(true);
+
+        const mgmtToken = await getAccessTokenSilently({
+          audience: "https://dev-mqfq6kte0qw3b36u.us.auth0.com/api/v2/",
+          scope: "read:users read:roles"
+        });
+
+        const roleRes = await fetch("https://dev-mqfq6kte0qw3b36u.us.auth0.com/api/v2/roles?name_filter=admin", {
+          headers: { Authorization: `Bearer ${mgmtToken}` }
+        });
+        const [adminRole] = await roleRes.json();
+
+        const usersRes = await fetch(`https://dev-mqfq6kte0qw3b36u.us.auth0.com/api/v2/roles/${adminRole.id}/users`, {
+          headers: { Authorization: `Bearer ${mgmtToken}` }
+        });
+        const users = await usersRes.json();
+
+        setAdmins(users.map(u => ({ email: u.email, user_id: u.user_id })));
       } catch (error) {
-        console.error('Error checking permissions:', error);
+        console.error("Permission check or load failed:", error);
         navigate("/unauthorized");
       }
     };
 
-    checkPermissions();
-  }, [isAuthenticated, getAccessTokenSilently, navigate]);
+    if (isAuthenticated && !isLoading) {
+      checkPermissionsAndLoadAdmins();
+    }
+  }, [isAuthenticated, isLoading, getAccessTokenSilently, navigate]);
 
-//  const token = getAccessTokenSilently();
-//  console.log(token);
-//  const decodedToken = jwtDecode(token);
-//  console.log(decodedToken);
+  const getMgmtToken = () =>
+    getAccessTokenSilently({
+      audience: "https://dev-mqfq6kte0qw3b36u.us.auth0.com/api/v2/",
+      scope: "update:users read:roles read:users"
+    });
 
-//  const hasPermission = decodedToken.permissions && decodedToken.permissions.includes('adminView');
+  // 2. Add admin by email
+  const addAdmin = async () => {
+    try {
+      const token = await getMgmtToken();
 
-//  if (!hasPermission) {
-//    navigate("/unauthorized");
-//  }
+      const userRes = await fetch(
+        `https://dev-mqfq6kte0qw3b36u.us.auth0.com/api/v2/users-by-email?email=${emailInput}`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+      const [user] = await userRes.json();
+      if (!user) throw new Error("User not found");
 
-  if(!isAuthenticated || isLoading || !isAuthorized) {
-    console.log('isAuthenticated ', !isAuthenticated);
-    console.log('isLoading ', isLoading);
-    console.log('isAuthorized ', !isAuthorized);
+      const roleRes = await fetch("https://dev-mqfq6kte0qw3b36u.us.auth0.com/api/v2/roles?name_filter=admin", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const [adminRole] = await roleRes.json();
+
+      await fetch(`https://dev-mqfq6kte0qw3b36u.us.auth0.com/api/v2/users/${user.user_id}/roles`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ roles: [adminRole.id] })
+      });
+
+      setAdmins(a => [...a, { email: user.email, user_id: user.user_id }]);
+      setEmailInput("");
+    } catch (err) {
+      alert("Failed to add admin: " + err.message);
+    }
+  };
+
+  // 3. Remove admin
+  const removeAdmin = async (user_id) => {
+    try {
+      const token = await getMgmtToken();
+
+      const roleRes = await fetch("https://dev-mqfq6kte0qw3b36u.us.auth0.com/api/v2/roles?name_filter=admin", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const [adminRole] = await roleRes.json();
+
+      await fetch(`https://dev-mqfq6kte0qw3b36u.us.auth0.com/api/v2/users/${user_id}/roles`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ roles: [adminRole.id] })
+      });
+
+      setAdmins(admins.filter(u => u.user_id !== user_id));
+    } catch (err) {
+      alert("Failed to remove admin: " + err.message);
+    }
+  };
+
+  if (!isAuthenticated || isLoading || !isAuthorized) {
     return null;
   }
-  
-  console.log("Authorized!");
+
   return (
     <div className="edit-database-container">
       <div className="saved-section">
-        <h2 className="section-title">Registered Users</h2>
+        <h2 className="section-title">Registered Admin Users</h2>
         <ul className="saved-users">
-          <li>Jason Chae: jascha25@bergen.org</li>
-          <li>Henry Choi: hencho25@bergen.org</li>
-          <li>Stephen Yoon: steyoo25@bergen.org</li>
-          <li>Brendon Wan: brewan25@bergen.org</li>
+          {admins.map(user => (
+            <li key={user.user_id}>
+              {user.email}
+              <button onClick={() => removeAdmin(user.user_id)}>Remove</button>
+            </li>
+          ))}
         </ul>
-      </div>
-      <div>
-        <h>This is where user editing will occur</h>
+        <div style={{ marginTop: "1em" }}>
+          <input
+            type="email"
+            placeholder="Enter user email"
+            value={emailInput}
+            onChange={e => setEmailInput(e.target.value)}
+          />
+          <button onClick={addAdmin} disabled={!emailInput}>Add Admin</button>
+        </div>
       </div>
     </div>
   );
