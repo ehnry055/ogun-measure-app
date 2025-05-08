@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Pencil } from 'lucide-react';
 import { useAuth0 } from "@auth0/auth0-react";
 import '../styles/HomePage.css'; 
+import React, { useState, useEffect } from 'react';
+import { jwtDecode } from 'jwt-decode';
 
 // function PO({isAdmin}) change to this later
 function PO({}) {
@@ -35,7 +37,7 @@ function PO({}) {
         };
     
         checkPermissions();
-      }, [isAuthenticated, getAccessTokenSilently, navigate]);
+      }, [isAuthenticated, getAccessTokenSilently]);
     // const isAuthorized = isAuthenticated && user && user['https://your-app.com/roles']?.includes('adminView');
 
     // temp check
