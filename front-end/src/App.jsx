@@ -48,7 +48,7 @@ function App() {
               <Route path="/graphs" element={<PrivateRoute Component = {DataPage} />} />
               <Route path="/users" element={<PrivateRoute Component= {EditUsers} />} />
               <Route path="/profile" element={<PrivateRoute Component = {ProfilePage} />} />
-              <Route path="/requests" element={<RequestsPage />} />
+              <Route path="/requests" element={<PrivateRoute Component = {RequestsPage} />} />
               <Route path="/itemdevelopers" element={<ItemDevelopers />} />
               <Route path="/rsg" element={<RSG />} />
               <Route path="/po" element={<PO />} />
