@@ -38,7 +38,7 @@ const Gateway = () => {
             </Dropdown.Toggle>
             <Dropdown.Menu className="gateway-dropdown-menu">
                 <Dropdown.Item href="/rsg" className="gateway-dropdown-item">Residential Segregation and Gentrification</Dropdown.Item>
-                <Dropdown.Item href="/po" className="gateway-dropdown-item">Property Ownership</Dropdown.Item>
+                <Dropdown.Item href="/PropertyOrganization" className="gateway-dropdown-item">Property Ownership</Dropdown.Item>
                 <Dropdown.Item className="gateway-dropdown-item">Government Representation</Dropdown.Item>
                 <Dropdown.Item className="gateway-dropdown-item">Policing and Incarceration</Dropdown.Item>
                 <Dropdown.Item className="gateway-dropdown-item">Income and Poverty</Dropdown.Item>
