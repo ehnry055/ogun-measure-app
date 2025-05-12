@@ -37,10 +37,6 @@ function PO({}) {
     
         checkPermissions();
       }, [isAuthenticated, getAccessTokenSilently]);
-    // const isAuthorized = isAuthenticated && user && user['https://your-app.com/roles']?.includes('adminView');
-
-    // temp check
-    //const isAuthorized = isAuthenticated && user?.email === 'bwan70707@gmail.com';
 
 
     const initialData = [
