@@ -90,7 +90,7 @@ function PO({}) {
                 <tr>
                   <th class="table-header-edit">
                   {isAuthorized && (
-                    <div className="admin-controls" style={{display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <div className="admin-controls" style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         {!editMode ? (
                         <button onClick={handleEdit} className="edit-icon-btn">
                             <Pencil size={24}/>
