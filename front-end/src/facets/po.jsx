@@ -112,7 +112,7 @@ function PO({}) {
               <tbody>
                 {["Structural Violence", "Limited or Restricted Access"].map((rowTitle, rowIdx) => (
                     <tr key={rowTitle}>
-                    <td className="row-header">{rowTitle}</td>
+                    <th>{rowTitle}</th>
                     {(editMode ? editedData : tableData)[rowIdx].map((cell, colIdx) => (
                         <td key={colIdx}>
                         {editMode ? (

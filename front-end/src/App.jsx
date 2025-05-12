@@ -51,7 +51,7 @@ function App() {
               <Route path="/requests" element={<PrivateRoute Component = {RequestsPage} />} />
               <Route path="/itemdevelopers" element={<ItemDevelopers />} />
               <Route path="/rsg" element={<RSG />} />
-              <Route path="/po" element={<PO />} />
+              <Route path="/PropertyOrganization" element={<PO />} />
               <Route path="/sv" element={<SV />} />
               <Route path="/ogun" element={<PrivateRoute Component = {OgunMeasure} />} />
               <Route path="/gateway" element={<Gateway/>} />
