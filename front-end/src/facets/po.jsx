@@ -110,6 +110,27 @@ function PO({}) {
                 </tr>
               </thead>
               <tbody>
+                {["Structural Violence", "Limited or Restricted Access"].map((rowTitle, rowIdx) => (
+                    <tr key={rowTitle}>
+                    <td className="row-header">{rowTitle}</td>
+                    {(editMode ? editedData : tableData)[rowIdx].map((cell, colIdx) => (
+                        <td key={colIdx}>
+                        {editMode ? (
+                            <textarea
+                            value={cell}
+                            onChange={(e) => handleChange(rowIdx, colIdx, e.target.value)}
+                            rows={4}
+                            style={{ width: '100%' }}
+                            />
+                        ) : (
+                            cell
+                        )}
+                        </td>
+                    ))}
+                    </tr>
+                ))}
+            </tbody>
+              {/* <tbody>
                 <tr>
                   <th>Structural Violence</th>
                   {(editMode ? editedData : tableData)[0].map((cell, col) => (
@@ -140,7 +161,7 @@ function PO({}) {
                     </td>
                   ))}
                 </tr>
-              </tbody>
+              </tbody> */}
             </table>
     
             <div className="container">

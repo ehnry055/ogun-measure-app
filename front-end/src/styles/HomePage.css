@@ -221,9 +221,3 @@ th {
   font-family: "Saira", sans-serif;
 }
 
-td textarea {
-  width: 100%;
-  min-height: 80px; /* Adjust based on need */
-  box-sizing: border-box;
-  resize: vertical; /* or 'none' if you don't want resizing */
-}
