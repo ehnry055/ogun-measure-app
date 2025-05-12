@@ -18,8 +18,8 @@ root.render(
       {
         audience: "https://ogun-measure-app-4fceb75a4928.herokuapp.com/api",
         //"racism-data-system.com/api",
-        redirect_uri: "https://ogun-measure-app-4fceb75a4928.herokuapp.com/"
-        //window.location.origin
+        redirect_uri: window.location.origin
+        //"https://ogun-measure-app-4fceb75a4928.herokuapp.com/"
       }
     }
     audience= "https://ogun-measure-app-4fceb75a4928.herokuapp.com/api"
