@@ -297,7 +297,7 @@ while (true) {
           <p>Data analysis program: ${data}</p>
         `,
       };
-
+      /*
       const confirmMailData = {
         from: process.env.EMAIL_USER, // Your verified email address
         to: email, // Send the confirmation email to the user
@@ -316,20 +316,21 @@ while (true) {
           <p>Data analysis program: ${data}</p>
         `,
       };
-  
+      */
       transporter.sendMail(sendMailData, (err, info) => {
         if (err) {
           return reject(err); // Reject the promise with the error
         }
         resolve(info); // Resolve the promise with the info
       });
-
+      /*
       transporter.sendMail(confirmMailData, (err, info) => {
         if (err) {
           return reject(err); // Reject the promise with the error
         }
         resolve(info); // Resolve the promise with the info
       });
+      */
     });
   };
 
