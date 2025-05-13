@@ -10,7 +10,7 @@ const Auth0ProviderComponent = ({ children }) => {
     const navigate = useNavigate();
     
     const callback = (appState) => {
-        navigate(appState?.returnTo || '/');
+        navigate(appState?.returnTo || window.location.origin);
     };
     
     return (
