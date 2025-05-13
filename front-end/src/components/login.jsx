@@ -10,7 +10,7 @@ const LoginButton = () => {
     !isAuthenticated && (
       <button 
       className="btn btn-primary" 
-      onClick={() => loginWithRedirect({ appState: { returnTo: window.location.pathname + window.location.search } })}>
+      onClick={() => loginWithRedirect({ appState: { returnTo: window.location.pathname} })}>
         Log In</button>
     )
   )
