@@ -341,7 +341,7 @@ while (true) {
 
 
 // auth0 management api
-
+/*
 const management = new ManagementClient({
   client_id: process.env.REACT_APP_AUTH0_clientId,
   client_secret: process.env.REACT_APP_AUTH0_SECRET,
@@ -358,7 +358,7 @@ app.get("/api/v2/admin/get-users",  async (req, res) => {
     res.status(500).send('Error fetching users');
   }
 });
-
+*/
 
 
 
