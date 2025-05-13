@@ -1,4 +1,5 @@
 require('dotenv').config();
+import { ManagementClient } from 'auth0';
 const express = require('express');
 const cors = require('cors');
 const { Sequelize, DataTypes } = require('sequelize');
@@ -258,6 +259,11 @@ while (true) {
   }
 } */
 
+
+
+
+
+  //email sending funtions
   const sendEmail = ({ email, role, affiliation, funding, intention, share, when, area, target, data }) => {
     console.log("Sending email with the following data:")
     return new Promise((resolve, reject) => {
@@ -271,7 +277,7 @@ while (true) {
         },
       });
   
-      const mailData = {
+      const sendMailData = {
         from: process.env.EMAIL_USER, // Your verified email address
         to: process.env.EMAIL_USER, // Send the email to yourself
         subject: `Request for Data Access by ${email}`,
@@ -288,8 +294,34 @@ while (true) {
           <p>Data analysis program: ${data}</p>
         `,
       };
+
+      const confirmMailData = {
+        from: process.env.EMAIL_USER, // Your verified email address
+        to: email, // Send the confirmation email to the user
+        subject: "Confirmation of Data Access Request",
+        html: `
+          <p>Thank you for your request for data access.</p>
+          <p>Name: ${email}</p>
+          <p>Role: ${role}</p>
+          <p>Affiliation: ${affiliation}</p>
+          <p>Funding Source: ${funding}</p>
+          <p>Data Use Intentions: ${intention}</p>
+          <p>How and when will you share your findings with community members and organizations?: ${share}</p>
+          <p>When will you complete the final document based on this research?: ${when}</p>
+          <p>Which geographic area of the US are you interested in exploring?: ${area}</p>
+          <p>Target Population: ${target}</p>
+          <p>Data analysis program: ${data}</p>
+        `,
+      };
   
-      transporter.sendMail(mailData, (err, info) => {
+      transporter.sendMail(sendMailData, (err, info) => {
+        if (err) {
+          return reject(err); // Reject the promise with the error
+        }
+        resolve(info); // Resolve the promise with the info
+      });
+
+      transporter.sendMail(confirmMailData, (err, info) => {
         if (err) {
           return reject(err); // Reject the promise with the error
         }
@@ -298,11 +330,32 @@ while (true) {
     });
   };
 
-  app.get("/api/sendEmail", (req, res) => {
+  app.get("/api/user/send-email", (req, res) => {
     sendEmail(req.query)
       .then((response) => res.send(response.message))
       .catch((error) => res.status(500).send(error.message));
   });
+
+
+// auth0 management api
+
+const management = new ManagementClient({
+  client_id: process.env.REACT_APP_AUTH0_clientId,
+  client_secret: process.env.REACT_APP_AUTH0_SECRET,
+  domain: process.env.REACT_APP_AUTH0_domain
+});
+
+const userList = await management.users.getAll();
+
+app.get("/api/v2/admin/get-users",  async (req, res) => {
+  try {
+    res.json(userList);
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).send('Error fetching users');
+  }
+});
+
 
 
 

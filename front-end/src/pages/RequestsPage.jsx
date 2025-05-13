@@ -21,7 +21,7 @@ const RequestsPage = () => {
   const sendMail = async () => {
     try {
       const token = await getAccessTokenSilently();
-      await axios.get("/api/sendEmail", {
+      await axios.get("/api/user/send-email", {
         params: {
           email,
           role,
