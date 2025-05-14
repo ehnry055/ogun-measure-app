@@ -9,12 +9,11 @@ import axios from 'axios';
 const EditDatabasePage = () => {
   const [entryLimit, setEntryLimit] = useState(10); // default: 10 entries
   const [selectedFile, setSelectedFile] = useState(null);
-  const [tableName, setTableName] = useState("Default Table");
+  const [tableName, setTableName] = useState();
   
   const [presets, setPresets] = useState([]);
   const [selectedColumns, setSelectedColumns] = useState(new Set());
   const [selectedPreset, setSelectedPreset] = useState(null);
-
 
   //AdminRole check
   const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
@@ -123,7 +122,7 @@ const EditDatabasePage = () => {
 
     try {
       const token = await getAccessTokenSilently(); // checks if the session is valid
-      await axios.post(`/api/upload`, formData, {
+      await axios.post(`http://localhost:4000/api/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data', // can take any type of form
           Authorization: `Bearer ${token}` // passes the access token (added security)
@@ -141,7 +140,7 @@ const EditDatabasePage = () => {
   const handleExport = async () => {
     try {
       const token = await getAccessTokenSilently();
-      const response = await axios.get(`/api/export-csv`, {
+      const response = await axios.get(`http://localhost:4000/api/export-csv`, {
         headers: {
           Authorization: `Bearer ${token}`
         },
@@ -162,7 +161,7 @@ const EditDatabasePage = () => {
     try {
       let token = await getAccessTokenSilently();
   
-      let response = await axios.get(`/api/export-csv`, {
+      let response = await axios.get(`http://localhost:4000/api/export-csv`, {
         headers: { Authorization: `Bearer ${token}` },
         responseType: 'text'
       });
@@ -189,7 +188,7 @@ const EditDatabasePage = () => {
   const handleSelectTable = async () => {
     try {
       const token = await getAccessTokenSilently();
-      const response = await axios.get(`/api/tables`, {
+      const response = await axios.get(`http://localhost:4000/api/tables`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -204,13 +203,13 @@ const EditDatabasePage = () => {
       }
 
       // change the dynamic table on the server side
-      await axios.post(`/api/select-table`, { tableName: selected }, {
+      await axios.post(`http://localhost:4000/api/select-table`, { tableName: selected }, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
       setTableName(selected);
-      alert(`Dynamic table set to ${selected}`);
+      alert(`Current table set to ${selected}`);
     } catch (error) {
       console.error('Error selecting table:', error);
       alert('Error selecting table');
@@ -220,7 +219,7 @@ const EditDatabasePage = () => {
   const handleDeleteTable = async () => {
     try {
       const token = await getAccessTokenSilently();
-      const response = await axios.get(`/api/tables`, {
+      const response = await axios.get(`http://localhost:4000/api/tables`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -229,7 +228,7 @@ const EditDatabasePage = () => {
       const tableToDelete = window.prompt(`Enter the table name to delete:\n${tableNames.join('\n')}`);
       if (!tableToDelete) return;  
   
-      await axios.post(`/api/delete-table`, 
+      await axios.post(`http://localhost:4000/api/delete-table`, 
         { tableName: tableToDelete },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -245,71 +244,79 @@ const EditDatabasePage = () => {
 
   console.log("Authorized!");
   return (
-    <div className="edit-database-container">
-      <div className="entry-limit-container">
-        <label>Entries to display:</label>
-        <input
-          type="number"
-          min="1"
-          value={entryLimit}
-          onChange={handleEntryLimitChange}
-          className="limit-input"
-        />
-      </div>
+    <div className="page-layout-container">
+      <div className="left-section">
+        <div className="entry-limit-container">
+          <label htmlFor="entryLimitInput">Entries to display:</label>
+          <input
+            id="entryLimitInput"
+            type="number"
+            min="1"
+            value={entryLimit}
+            onChange={handleEntryLimitChange}
+            className="limit-input"
+          />
+        </div>
 
-      <div className="preset-controls">
-        <button 
-          className="preset-button save-preset"
-          onClick={handleSavePreset}
-        >
-          Save Preset
-        </button>
-        
-        {presets.map(preset => (
-          <div key={preset.name} className="preset-item">
-            <button
-              className={`preset-button ${
-                selectedPreset === preset.name ? 'active' : ''
-              }`}
-              onClick={() => applyPreset(preset)}
-            >
-              {preset.name}
-            </button>
-            <button 
-              className="delete-preset"
-              onClick={(e) => {
-                e.stopPropagation();
-                deletePreset(preset.name);
-              }}
-            >
-              ×
-            </button>
-          </div>
-        ))}
+        <div className="preset-controls">
+          <button 
+            className="preset-button save-preset"
+            onClick={handleSavePreset}
+          >
+            Save Preset
+          </button>
 
-      </div>
-
-      <div className="data-section">
-        <h2 className="section-title">Your Data</h2>
-        <div className="data-item">
-          <h2>
-            Selected Table: {tableName || "Default Table"}
-          </h2>
-            <NotesList 
-              limit={entryLimit}
-              selectedColumns={selectedColumns}
-              onToggleColumn={(column) => setSelectedColumns(prev => {
-                const newSet = new Set(prev);
-                newSet.has(column) ? newSet.delete(column) : newSet.add(column);
-                return newSet;
-              })}
-            />
+          {presets.length > 0 && <h3 className="presets-title">Saved Presets:</h3>}
+          {presets.map(preset => (
+            <div key={preset.name} className="preset-item">
+              <button
+                className={`preset-button ${
+                  selectedPreset === preset.name ? 'active' : ''
+                }`}
+                onClick={() => applyPreset(preset)}
+              >
+                {preset.name}
+              </button>
+              <button 
+                className="delete-preset"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  deletePreset(preset.name);
+                }}
+              >
+                ×
+              </button>
+            </div>
+          ))}
         </div>
       </div>
 
-      <div className="upload-section">
+      <div className="middle-data-section">
+        <div className="data-section">
+          <div className="data-item">
+            <h2>
+              {tableName || "Select a table to view"}
+            </h2>
+            <div className = 'table-container'>
+              <NotesList 
+                key={tableName}
+                limit={entryLimit}
+                selectedColumns={selectedColumns}
+                onToggleColumn={(column) => setSelectedColumns(prev => {
+                  const newSet = new Set(prev);
+                  newSet.has(column) ? newSet.delete(column) : newSet.add(column);
+                  return newSet;
+                })}
+                currentTableName={tableName}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="control-section">
         <h2 className="section-title">Database Controls</h2>
-        <div className="upload-controls">
+        <div className="controls">
           <input type="file" accept=".csv" onChange={(e) => setSelectedFile(e.target.files[0])}/>
           <button className="upload-button" onClick={handleFileUpload}> Upload to Database </button>
           <button className="export-button" onClick={handleExport}> View as CSV </button>
