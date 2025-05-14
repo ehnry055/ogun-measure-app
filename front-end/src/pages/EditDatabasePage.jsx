@@ -136,26 +136,6 @@ const EditDatabasePage = () => {
       alert('File upload failed');
     }
   };
-
-  const handleExport = async () => {
-    try {
-      const token = await getAccessTokenSilently();
-      const response = await axios.get(`/api/export-csv`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-        responseType: 'text'
-      });
-  
-      const newWindow = window.open();
-      newWindow.document.write(`<pre>${response.data}</pre>`);
-      newWindow.document.title = 'CSV Preview';
-  
-    } catch (error) {
-      console.error('Export failed:', error);
-      alert('CSV export failed. Possible reasons: empty data/incorrect format');
-    }
-  };
     
   const handleDownload = async () => {
     try {
@@ -325,7 +305,6 @@ const EditDatabasePage = () => {
         <div className="controls">
           <input type="file" accept=".csv" onChange={(e) => setSelectedFile(e.target.files[0])}/>
           <button className="upload-button" onClick={handleFileUpload}> Upload to Database </button>
-          <button className="export-button" onClick={handleExport}> View as CSV </button>
           <button className="download-button" onClick={handleDownload}> Download as CSV </button>
           <button className="select-button" onClick={handleSelectTable}> Select Table </button>
           <button className="delete-table-button" onClick={handleDeleteTable}> Delete Table </button>
