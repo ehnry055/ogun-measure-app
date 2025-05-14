@@ -13,7 +13,7 @@ import Profile from './components/profile';
 
 import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
-import EditDatabasePage from "./pages/EditDatabasePage";
+import DownloadDatabasePage from "./pages/DownloadDatabasePage";
 import DataPage from "./pages/DataPage";
 import ProfilePage from "./pages/ProfilePage";
 import EditUsers from "./pages/EditUsers";
@@ -43,7 +43,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/viewdata" element={<PrivateRoute Component = {ViewDatabasePage} />} />
-            <Route path="/editdata" element={<PrivateRoute Component = {EditDatabasePage} />} />
+            <Route path="/downloaddata" element={<PrivateRoute Component = {DownloadDatabasePage} />} />
             <Route path="/graphs" element={<PrivateRoute Component = {DataPage} />} />
             <Route path="/users" element={<PrivateRoute Component= {EditUsers} />} />
             <Route path="/profile" element={<PrivateRoute Component = {ProfilePage} />} />

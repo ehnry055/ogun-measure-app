@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/EditDatabasePage.css'; 
+import '../styles/DownloadDatabasePage.css'; 
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
