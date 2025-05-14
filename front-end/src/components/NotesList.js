@@ -9,8 +9,8 @@ const NotesList = ({ limit, selectedColumns, onToggleColumn }) => {
     const fetchData = async () => {
       try {
         const [notesRes, columnsRes] = await Promise.all([
-          axios.get(`/api/notes?limit=${limit}`),
-          axios.get(`/api/columns`)
+          axios.get(`http://localhost:4000/api/notes?limit=${limit}`),
+          axios.get(`http://localhost:4000/api/columns`)
         ]);
         
         setNotes(notesRes.data);
