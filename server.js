@@ -1,5 +1,5 @@
 require('dotenv').config();
-//import { ManagementClient } from 'auth0';
+const { ManagementClient } = require('auth0');
 const express = require('express');
 const cors = require('cors');
 const { Sequelize, DataTypes } = require('sequelize');
