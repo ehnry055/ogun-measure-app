@@ -21,8 +21,7 @@ const nodemailer = require('nodemailer');
 
 const corsOptions = {
   origin: [
-    'http://localhost:3000',
-    'http://localhost:4000',
+    'http://localhost:4000', 
     'https://ogun-measure-app.herokuapp.com'
   ],
   credentials: true
@@ -37,12 +36,7 @@ app.get('/api', (req, res) => {
   res.json({ message: 'Hello from the server!' });
 });
 
-// const sequelize = new Sequelize(process.env.JAWSDB_URL, {
-//   dialect: 'mysql',
-// });
-
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
-  host: process.env.DB_HOST,
+const sequelize = new Sequelize(process.env.JAWSDB_URL, {
   dialect: 'mysql',
 });
 
@@ -95,6 +89,7 @@ app.get('/api/tables', async (req, res) => {
     const key = `Tables_in_${sequelize.config.database}`;
     const tableNames = tables
       .map(row => row[key])
+      .filter(name => name !== 'AggregatedData'); // don't show this table
     res.json(tableNames);
   } catch (err) {
     console.error('Error fetching tables:', err);
@@ -267,6 +262,10 @@ while (true) {
   }
 } */
 
+
+
+
+
   //email sending funtions
   const sendEmail = ({ email, role, affiliation, funding, intention, share, when, area, target, data }) => {
     console.log("Sending email with the following data:")
@@ -340,6 +339,26 @@ while (true) {
       .then((response) => res.send(response.message))
       .catch((error) => res.status(500).send(error.message));
   });
+
+// auth0 management api
+/*
+const management = new ManagementClient({
+  client_id: process.env.REACT_APP_AUTH0_clientId,
+  client_secret: process.env.REACT_APP_AUTH0_SECRET,
+  domain: process.env.REACT_APP_AUTH0_domain
+});
+
+const userList = await management.users.getAll();
+
+app.get("/api/v2/admin/get-users",  async (req, res) => {
+  try {
+    res.json(userList);
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).send('Error fetching users');
+  }
+});
+*/
 
 
 // Catch-all handler for any other requests
