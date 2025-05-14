@@ -160,12 +160,25 @@ const EditDatabasePage = () => {
   const handleDownload = async () => {
     try {
       let token = await getAccessTokenSilently();
-  
-      let response = await axios.get(`/api/export-csv`, {
+      
+      // get array of selected columns
+      const selectedColumns = Array.from(selectedColumns);
+      
+      if (selectedColumns.length === 0) {
+        alert('Please select at least one column to download');
+        return;
+      }
+
+      // create URL with selected columns as query params
+      const params = new URLSearchParams({
+        columns: selectedColumns.join(',')
+      });
+
+      let response = await axios.get(`/api/export-csv?${params}`, {
         headers: { Authorization: `Bearer ${token}` },
         responseType: 'text'
       });
-  
+
       // make a Blob from the text
       let blob = new Blob([response.data], { type: 'text/csv;charset=utf-8;' });
   
