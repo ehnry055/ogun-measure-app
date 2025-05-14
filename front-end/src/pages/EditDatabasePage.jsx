@@ -156,33 +156,26 @@ const EditDatabasePage = () => {
       alert('CSV export failed. Possible reasons: empty data/incorrect format');
     }
   };
-  
+    
   const handleDownload = async () => {
     try {
       let token = await getAccessTokenSilently();
       
-      // get array of selected columns
-      const selectedColumns = Array.from(selectedColumns);
+      // get the columns array
+      const selectedColumnsArray = Array.from(selectedColumns);
       
-      if (selectedColumns.length === 0) {
-        alert('Please select at least one column to download');
-        return;
+      // URL params only if columns are selected
+      const params = new URLSearchParams();
+      if (selectedColumnsArray.length > 0) {
+        params.append('columns', selectedColumnsArray.join(','));
       }
 
-      // create URL with selected columns as query params
-      const params = new URLSearchParams({
-        columns: selectedColumns.join(',')
-      });
-
-      let response = await axios.get(`/api/export-csv?${params}`, {
+      let response = await axios.get(`/api/export-csv${params.toString() ? `?${params}` : ''}`, {
         headers: { Authorization: `Bearer ${token}` },
         responseType: 'text'
       });
 
-      // make a Blob from the text
       let blob = new Blob([response.data], { type: 'text/csv;charset=utf-8;' });
-  
-      // create a temporary link and click it
       let url = URL.createObjectURL(blob);
       let link = document.createElement('a');
       link.href = url;
