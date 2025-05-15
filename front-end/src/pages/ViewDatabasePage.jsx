@@ -2,18 +2,54 @@ import React, { useState, useEffect } from 'react';
 import '../styles/DownloadDatabasePage.css';
 import NotesList from '../components/NotesList';
 import { useAuth0 } from "@auth0/auth0-react";
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 
 const ViewDatabasePage = () => {
-  const { isAuthenticated, user, loginWithRedirect, logout, getAccessTokenSilently } = useAuth0();
   const [entryLimit, setEntryLimit] = useState(10); // default: 10 entries
   const [selectedFile, setSelectedFile] = useState(null);
-  const [tableName, setTableName] = useState("Default Table");
+  const [tableName, setTableName] = useState();
   
   const [presets, setPresets] = useState([]);
   const [selectedColumns, setSelectedColumns] = useState(new Set());
   const [selectedPreset, setSelectedPreset] = useState(null);
 
+  //AdminRole check
+  const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
+  const navigate = useNavigate();
+  const [isAuthorized, setIsAuthorized] = useState(() => {
+    const initialState = false;
+    return initialState;
+  });
+
+  useEffect(() => {
+    const checkPermissions = async () => {
+      try {
+        const token = await getAccessTokenSilently();
+        console.log("Access token:", token); // Log the token for debugging
+        const decodedToken = jwtDecode(token);
+        console.log("Decoded token:", decodedToken);
+
+        const hasPermission = decodedToken.permissions && decodedToken.permissions.includes("adminView");
+        console.log("Has permission:", hasPermission);
+
+        if (!hasPermission) {
+          console.log("User does not have the required permission");
+          navigate("/unauthorized");
+        }
+        else {
+          setIsAuthorized(true);
+        }
+      } catch (error) {
+        console.error('Error checking permissions:', error);
+        navigate("/unauthorized");
+      }
+    };
+
+    checkPermissions();
+  }, [isAuthenticated, getAccessTokenSilently, navigate]);
+  
   useEffect(() => {
     const savedPresets = localStorage.getItem('columnPresets');
     if (savedPresets) setPresets(JSON.parse(savedPresets));
@@ -35,6 +71,13 @@ const ViewDatabasePage = () => {
     setPresets(updatedPresets);
     localStorage.setItem('columnPresets', JSON.stringify(updatedPresets));
   };  
+
+  if(!isAuthenticated || isLoading || !isAuthorized) {
+    console.log(!isAuthenticated);
+    console.log(isLoading);
+    console.log(!isAuthorized);
+    return null;
+  }
 
   const applyPreset = (preset) => {
     if (selectedPreset === preset.name) {
@@ -59,40 +102,26 @@ const ViewDatabasePage = () => {
       setEntryLimit(value >= 1 ? value : 1); // value must be at least 1
     }
   };
-
-  const handleExport = async () => {
-    try {
-      const token = await getAccessTokenSilently();
-      const response = await axios.get(`/api/export-csv`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-        responseType: 'text'
-      });
-  
-      const newWindow = window.open();
-      newWindow.document.write(`<pre>${response.data}</pre>`);
-      newWindow.document.title = 'CSV Preview';
-  
-    } catch (error) {
-      console.error('Export failed:', error);
-      alert('CSV export failed. Possible reasons: empty data/incorrect format');
-    }
-  };
-
+    
   const handleDownload = async () => {
     try {
       let token = await getAccessTokenSilently();
-  
-      let response = await axios.get(`/api/export-csv`, {
+      
+      // get the columns array
+      const selectedColumnsArray = Array.from(selectedColumns);
+      
+      // URL params only if columns are selected
+      const params = new URLSearchParams();
+      if (selectedColumnsArray.length > 0) {
+        params.append('columns', selectedColumnsArray.join(','));
+      }
+
+      let response = await axios.get(`/api/export-csv${params.toString() ? `?${params}` : ''}`, {
         headers: { Authorization: `Bearer ${token}` },
         responseType: 'text'
       });
-  
-      // make a Blob from the text
+
       let blob = new Blob([response.data], { type: 'text/csv;charset=utf-8;' });
-  
-      // create a temporary link and click it
       let url = URL.createObjectURL(blob);
       let link = document.createElement('a');
       link.href = url;
@@ -106,7 +135,6 @@ const ViewDatabasePage = () => {
       alert('CSV download failed.');
     }
   };
-  
 
   // get a list of existing tables and let the user select one
   const handleSelectTable = async () => {
@@ -133,82 +161,88 @@ const ViewDatabasePage = () => {
         }
       });
       setTableName(selected);
-      alert(`Dynamic table set to ${selected}`);
+      alert(`Current table set to ${selected}`);
     } catch (error) {
       console.error('Error selecting table:', error);
       alert('Error selecting table');
     }
   }
 
-  
-
+  console.log("Authorized!");
   return (
-    <div className="edit-database-container">
-      <div className="entry-limit-container">
-        <label>Entries to display:</label>
-        <input
-          type="number"
-          min="1"
-          value={entryLimit}
-          onChange={handleEntryLimitChange}
-          className="limit-input"
-        />
-      </div>
+    <div className="page-layout-container">
+      <div className="left-section">
+        <div className="entry-limit-container">
+          <label htmlFor="entryLimitInput">Entries to display:</label>
+          <input
+            id="entryLimitInput"
+            type="number"
+            min="1"
+            value={entryLimit}
+            onChange={handleEntryLimitChange}
+            className="limit-input"
+          />
+        </div>
 
-      <div className="preset-controls">
-        <button 
-          className="preset-button save-preset"
-          onClick={handleSavePreset}
-        >
-          Save Preset
-        </button>
-        
-        {presets.map(preset => (
-          <div key={preset.name} className="preset-item">
-            <button
-              className={`preset-button ${
-                selectedPreset === preset.name ? 'active' : ''
-              }`}
-              onClick={() => applyPreset(preset)}
-            >
-              {preset.name}
-            </button>
-            <button 
-              className="delete-preset"
-              onClick={(e) => {
-                e.stopPropagation();
-                deletePreset(preset.name);
-              }}
-            >
-              ×
-            </button>
-          </div>
-        ))}
+        <div className="preset-controls">
+          <button 
+            className="preset-button save-preset"
+            onClick={handleSavePreset}
+          >
+            Save Preset
+          </button>
 
-      </div>
-
-      <div className="data-section">
-        <h2 className="section-title">Your Data</h2>
-        <div className="data-item">
-          <h2>
-            Selected Table: {tableName || "Default Table"}
-          </h2>
-            <NotesList 
-              limit={entryLimit}
-              selectedColumns={selectedColumns}
-              onToggleColumn={(column) => setSelectedColumns(prev => {
-                const newSet = new Set(prev);
-                newSet.has(column) ? newSet.delete(column) : newSet.add(column);
-                return newSet;
-              })}
-            />
+          {presets.length > 0 && <h3 className="presets-title">Saved Presets:</h3>}
+          {presets.map(preset => (
+            <div key={preset.name} className="preset-item">
+              <button
+                className={`preset-button ${
+                  selectedPreset === preset.name ? 'active' : ''
+                }`}
+                onClick={() => applyPreset(preset)}
+              >
+                {preset.name}
+              </button>
+              <button 
+                className="delete-preset"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  deletePreset(preset.name);
+                }}
+              >
+                ×
+              </button>
+            </div>
+          ))}
         </div>
       </div>
 
-      <div className="upload-section">
+      <div className="middle-data-section">
+        <div className="data-section">
+          <div className="data-item">
+            <h2>
+              {tableName || "Select a table to view"}
+            </h2>
+            <div className = 'table-container'>
+              <NotesList 
+                key={tableName}
+                limit={entryLimit}
+                selectedColumns={selectedColumns}
+                onToggleColumn={(column) => setSelectedColumns(prev => {
+                  const newSet = new Set(prev);
+                  newSet.has(column) ? newSet.delete(column) : newSet.add(column);
+                  return newSet;
+                })}
+                currentTableName={tableName}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="control-section">
         <h2 className="section-title">Database Controls</h2>
-        <div className="upload-controls">
-          <button className="export-button" onClick={handleExport}> View as CSV </button>
+        <div className="controls">
           <button className="download-button" onClick={handleDownload}> Download as CSV </button>
           <button className="select-button" onClick={handleSelectTable}> Select Table </button>
         </div>
