@@ -53,7 +53,7 @@ function App() {
         <div className="content">
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/viewdata" element={<PrivateRoute Component = {ViewDatabasePage} />} />
+            <Route path="/viewdata" element={<ViewDatabasePage />} />
             <Route path="/downloaddata" element={<PrivateRoute Component = {DownloadDatabasePage} />} />
             <Route path="/graphs" element={<PrivateRoute Component = {DataPage} />} />
             <Route path="/users" element={<PrivateRoute Component= {EditUsers} />} />
