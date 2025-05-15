@@ -111,7 +111,7 @@ app.post('/api/select-table', async (req, res) => {
     delete sequelize.models[tableName];
   }
   // redefine DynamicEntry by copying the default table (AggregatedData)
-  DynamicEntry = sequelize.define(tableName, AggregatedData.getAtt, {
+  DynamicEntry = sequelize.define(tableName, AggregatedData.rawAttributes, {
     tableName: tableName,
     timestamps: false
   });
