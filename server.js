@@ -237,7 +237,7 @@ app.post('/api/upload', upload.single('csv'), async (req, res) => {
 
 app.get('/api/columns', async (req, res) => {
   try {
-    const model = sequelize.models.AggregatedData;
+    const model = sequelize.models.DynamicEntry || AggregatedData;
     const columns = Object.keys(model.rawAttributes).map(columnName => ({
       name: columnName,
       type: model.rawAttributes[columnName].type.key
