@@ -44,7 +44,7 @@ const AggregatedData = sequelize.define('AggregatedData', {
   STATE: { type: Sequelize.DataTypes.STRING },
   STATEICP: { type: Sequelize.DataTypes.INTEGER },
   STATEFIPS: { type: Sequelize.DataTypes.INTEGER },
-  GISJOIN: { type: Sequelize.DataTypes.STRING, primaryKey: true },
+  GISJOIN: { type: Sequelize.DataTypes.STRING },
   COUNTYFIPS: { type: Sequelize.DataTypes.INTEGER },
   ALLCOUNTIES: { type: Sequelize.DataTypes.STRING },
   RSG_SV1: { type: Sequelize.DataTypes.INTEGER },

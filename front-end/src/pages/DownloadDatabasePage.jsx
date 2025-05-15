@@ -180,7 +180,7 @@ const DownloadDatabasePage = () => {
         }
       });
       const tableNames = response.data; // an array of table names
-      const message = `Select a table from the following:\n${tableNames.join('\n')}`;
+      const message = `Select a table from the following:\n=================\n${tableNames.join('\n')}`;
       const selected = window.prompt(message);
       if (!selected) return;
       if (!tableNames.includes(selected)) {
@@ -220,7 +220,7 @@ const DownloadDatabasePage = () => {
       );
       alert(`Table ${tableToDelete} deleted successfully.`);
       // if the current dynamic table is the one deleted, revert to default.
-      if (tableName === tableToDelete) setTableName("Default Table");
+      if (tableName === tableToDelete) setTableName("Select a table to view");
     } catch (error) {
       console.error('Error deleting table:', error);
       alert('Cannot delete this table.');
