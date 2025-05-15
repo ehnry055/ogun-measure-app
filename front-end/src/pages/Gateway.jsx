@@ -37,16 +37,16 @@ const Gateway = () => {
                 See Facets
             </Dropdown.Toggle>
             <Dropdown.Menu className="gateway-dropdown-menu">
-                <Dropdown.Item href="/rsg" className="gateway-dropdown-item">Residential Segregation and Gentrification</Dropdown.Item>
+                <Dropdown.Item href="/ResidentialSegregationGentrification" className="gateway-dropdown-item">Residential Segregation and Gentrification</Dropdown.Item>
                 <Dropdown.Item href="/PropertyOrganization" className="gateway-dropdown-item">Property Ownership</Dropdown.Item>
-                <Dropdown.Item className="gateway-dropdown-item">Government Representation</Dropdown.Item>
-                <Dropdown.Item className="gateway-dropdown-item">Policing and Incarceration</Dropdown.Item>
-                <Dropdown.Item className="gateway-dropdown-item">Income and Poverty</Dropdown.Item>
-                <Dropdown.Item className="gateway-dropdown-item">Occupational Segregation and Unemployment</Dropdown.Item>
-                <Dropdown.Item className="gateway-dropdown-item">Healthcare Access</Dropdown.Item>
-                <Dropdown.Item className="gateway-dropdown-item">Healthy Food Access</Dropdown.Item>
-                <Dropdown.Item className="gateway-dropdown-item">Environmental Pollution</Dropdown.Item>
-                <Dropdown.Item className="gateway-dropdown-item">Media and Marketing</Dropdown.Item>
+                <Dropdown.Item href="/GovernmentRepresentation" className="gateway-dropdown-item">Government Representation</Dropdown.Item>
+                <Dropdown.Item href="/PolicingIncarceration" className="gateway-dropdown-item">Policing and Incarceration</Dropdown.Item>
+                <Dropdown.Item href="/IncomePoverty" className="gateway-dropdown-item">Income and Poverty</Dropdown.Item>
+                <Dropdown.Item href="/OccupationalSegregationUnemployment" className="gateway-dropdown-item">Occupational Segregation and Unemployment</Dropdown.Item>
+                <Dropdown.Item href="/HealthcareAccess" className="gateway-dropdown-item">Healthcare Access</Dropdown.Item>
+                <Dropdown.Item href="/HealthyFoodAccess" className="gateway-dropdown-item">Healthy Food Access</Dropdown.Item>
+                <Dropdown.Item href="/EnvironmentalPollution" className="gateway-dropdown-item">Environmental Pollution</Dropdown.Item>
+                <Dropdown.Item href="/MediaMarketing" className="gateway-dropdown-item">Media and Marketing</Dropdown.Item>
             </Dropdown.Menu>
         </Dropdown>
 

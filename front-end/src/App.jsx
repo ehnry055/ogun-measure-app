@@ -26,8 +26,19 @@ import AdminRoute from './components/AdminRoute';
 import RequestsPage from './pages/RequestsPage';
 import ViewDatabasePage from './pages/ViewDatabasePage';
 import ItemDevelopers from './pages/ItemDevelopers';
+
 import RSG from './facets/rsg';
-import PO from './facets/po'
+import PO from './facets/po';
+import GR from './facets/gr';
+import PI from './facets/pi';
+import IP from './facets/ip';
+import OSU from './facets/osu';
+import HA from './facets/ha';
+import HFA from './facets/hfa';
+import EP from './facets/ep';
+import MM from './facets/mm';
+
+
 import SV from './pages/sv';
 import OgunMeasure from './pages/OgunMeasure'
 import Gateway from './pages/Gateway';
@@ -49,8 +60,19 @@ function App() {
             <Route path="/profile" element={<PrivateRoute Component = {ProfilePage} />} />
             <Route path="/requests" element={<PrivateRoute Component = {RequestsPage} />} />
             <Route path="/itemdevelopers" element={<ItemDevelopers />} />
-            <Route path="/rsg" element={<RSG />} />
+
+            {/* Facet Routes */}
+            <Route path="/ResidentialSegregationGentrification" element={<RSG />} />
             <Route path="/PropertyOrganization" element={<PO />} />
+            <Route path="/GovernmentRepresentation" element={<GR />} />
+            <Route path="/PolicingIncarceration" element={<PI />} />
+            <Route path="/IncomePoverty" element={<IP />} />
+            <Route path="/OccupationalSegregationUnemployment" element={<OSU />} />
+            <Route path="/HealthcareAccess" element={<HA />} />
+            <Route path="/HealthyFoodAccess" element={<HFA />} />
+            <Route path="/EnvironmentalPollution" element={<EP />} />
+            <Route path="/MediaMarketing" element={<MM />} />
+
             <Route path="/sv" element={<SV />} />
             <Route path="/ogun" element={<PrivateRoute Component = {OgunMeasure} />} />
             <Route path="/gateway" element={<Gateway/>} />

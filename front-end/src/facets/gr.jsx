@@ -4,8 +4,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import '../styles/HomePage.css'; 
 import { jwtDecode } from 'jwt-decode';
 
-function PO() {
-    const pageId = "PropertyOwnership"; 
+function GR() {
+    const pageId = "GovernmentRepresentation"; 
     const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
     const [isAuthorized, setIsAuthorized] = useState(() => {
         const initialState = false;
@@ -48,14 +48,14 @@ function PO() {
 
     const initialData = [
         [
-          'Counties where the value of all farmland/buildings owned by people racialized as Colored were less than 75% the value of all farmland/buildings owned by people racialized as White in 1930',
-          'Counties where there is greater house value for properties owned by people racialized as White compared to people racialized as Black in 1980',
-          'Counties with an anti-ski masklaw and/or a Crown Act law'
+          'Counties with a known revolts, race riots, uprisings, and other violent events between 1526-1969',
+          'Counties with a highway known to have dislocated a neighborhood with predominantly residents racialized as Black between 1990-2000',
+          'Counties with higher-than-the-median national occupied housing units with severe housing problems AND higher than residents racialized as Black between 2016-2020'
         ],
         [
-          'Counties where the proportion of farm owners racialized as White was above the national proportion of residents racialized as White in 1930',
-          'Counties where the owneroccupied units by residents racialized as Black decreased by 1% or more from 1990 to 2000',
-          'Counties where the average proportion of residents racialized as Black denied a home loan is above the national average, from 2010 to 2017'
+          'Counties with a known history of redlining or sundowning practices before 1970',
+          'Counties where the proportion of residents racialized as White was greater than the national proportion for 2 or more of decennial years between 1970-2000',
+          'Counties where the proportion of residents racialized as White was greater than the national proportion for 2010 and 2020 or 2020 only'
         ]
       ];
     
@@ -100,7 +100,7 @@ function PO() {
       return (
         
         <div className="home-container">
-          <h2 className="about-title">Property Ownership</h2>
+          <h2 className="about-title">Government Representation</h2>
           <div className="about-content">
             <table>
               <thead>
@@ -158,4 +158,4 @@ function PO() {
       );
     }
     
-export default PO;
+export default GR;
