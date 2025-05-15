@@ -36,13 +36,6 @@ const ViewDatabasePage = () => {
     localStorage.setItem('columnPresets', JSON.stringify(updatedPresets));
   };  
 
-  if(!isAuthenticated || isLoading || !isAuthorized) {
-    console.log(!isAuthenticated);
-    console.log(isLoading);
-    console.log(!isAuthorized);
-    return null;
-  }
-
   const applyPreset = (preset) => {
     if (selectedPreset === preset.name) {
       setSelectedColumns(new Set());
