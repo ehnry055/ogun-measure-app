@@ -35,12 +35,14 @@ function Navbar() {
           <li class="nav-item">
             <a class="nav-link" href="/downloaddata">Download Data</a>
           </li>
+          {/*
           <li class="nav-item">
             <a class="nav-link" href="/graphs">Graphs</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/users">Users</a>
           </li>
+          */}
           {/* <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Dropdown
@@ -87,7 +89,9 @@ function Navbar() {
                   <Dropdown.Menu className="custom-dropdown-menu">
                     <Dropdown.Item href="/profile" className="custom-dropdown-item">Profile</Dropdown.Item>
                     <Dropdown.Item href="/requests" className="custom-dropdown-item">Requests</Dropdown.Item>
+                    {/*}
                     <Dropdown.Item href="/settings" className="custom-dropdown-item">Settings</Dropdown.Item>
+                    */}
                     <Dropdown.Item className="custom-dropdown-item" onClick={() => logout({ returnTo: window.location.origin })}>Logout</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
