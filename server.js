@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { ManagementClient } = require('auth0');
+const { ManagementClient } = require('auth0').ManagementClient;
 const express = require('express');
 const cors = require('cors');
 const { Sequelize, DataTypes } = require('sequelize');
@@ -239,7 +239,6 @@ app.get('/api/columns', async (req, res) => {
 });
 
 /*
-import { ManagementClient } from 'auth0';
 
 var management = new ManagementClient({
   domain: process.env.REACT_APP_AUTH0_domain + '.auth0.com',
@@ -340,9 +339,10 @@ while (true) {
       .catch((error) => res.status(500).send(error.message));
   });
 
+
 // auth0 management api
-/*
-const management = new ManagementClient({
+
+var management = new ManagementClient({
   client_id: process.env.REACT_APP_AUTH0_clientId,
   client_secret: process.env.REACT_APP_AUTH0_SECRET,
   domain: process.env.REACT_APP_AUTH0_domain
@@ -350,7 +350,7 @@ const management = new ManagementClient({
 
 const userList = await management.users.getAll();
 
-app.get("/api/v2/admin/get-users",  async (req, res) => {
+app.get("/v2/admin/get-users",  async (req, res) => {
   try {
     res.json(userList);
   } catch (error) {
@@ -358,7 +358,7 @@ app.get("/api/v2/admin/get-users",  async (req, res) => {
     res.status(500).send('Error fetching users');
   }
 });
-*/
+
 
 
 // Catch-all handler for any other requests
