@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/EditDatabasePage.css';
+import '../styles/DownloadDatabasePage.css';
 import NotesList from '../components/NotesList';
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 
-const EditDatabasePage = () => {
+const DownloadDatabasePage = () => {
   const [entryLimit, setEntryLimit] = useState(10); // default: 10 entries
   const [selectedFile, setSelectedFile] = useState(null);
   const [tableName, setTableName] = useState();
@@ -136,40 +136,26 @@ const EditDatabasePage = () => {
       alert('File upload failed');
     }
   };
-
-  const handleExport = async () => {
-    try {
-      const token = await getAccessTokenSilently();
-      const response = await axios.get(`/api/export-csv`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-        responseType: 'text'
-      });
-  
-      const newWindow = window.open();
-      newWindow.document.write(`<pre>${response.data}</pre>`);
-      newWindow.document.title = 'CSV Preview';
-  
-    } catch (error) {
-      console.error('Export failed:', error);
-      alert('CSV export failed. Possible reasons: empty data/incorrect format');
-    }
-  };
-  
+    
   const handleDownload = async () => {
     try {
       let token = await getAccessTokenSilently();
-  
-      let response = await axios.get(`/api/export-csv`, {
+      
+      // get the columns array
+      const selectedColumnsArray = Array.from(selectedColumns);
+      
+      // URL params only if columns are selected
+      const params = new URLSearchParams();
+      if (selectedColumnsArray.length > 0) {
+        params.append('columns', selectedColumnsArray.join(','));
+      }
+
+      let response = await axios.get(`/api/export-csv${params.toString() ? `?${params}` : ''}`, {
         headers: { Authorization: `Bearer ${token}` },
         responseType: 'text'
       });
-  
-      // make a Blob from the text
+
       let blob = new Blob([response.data], { type: 'text/csv;charset=utf-8;' });
-  
-      // create a temporary link and click it
       let url = URL.createObjectURL(blob);
       let link = document.createElement('a');
       link.href = url;
@@ -319,7 +305,6 @@ const EditDatabasePage = () => {
         <div className="controls">
           <input type="file" accept=".csv" onChange={(e) => setSelectedFile(e.target.files[0])}/>
           <button className="upload-button" onClick={handleFileUpload}> Upload to Database </button>
-          <button className="export-button" onClick={handleExport}> View as CSV </button>
           <button className="download-button" onClick={handleDownload}> Download as CSV </button>
           <button className="select-button" onClick={handleSelectTable}> Select Table </button>
           <button className="delete-table-button" onClick={handleDeleteTable}> Delete Table </button>
@@ -329,4 +314,4 @@ const EditDatabasePage = () => {
   );
 };
 
-export default EditDatabasePage;
+export default DownloadDatabasePage;

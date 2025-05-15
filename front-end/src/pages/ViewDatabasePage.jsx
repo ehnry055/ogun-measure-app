@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/EditDatabasePage.css';
+import '../styles/DownloadDatabasePage.css';
 import NotesList from '../components/NotesList';
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from 'axios';

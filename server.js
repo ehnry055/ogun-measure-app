@@ -89,7 +89,6 @@ app.get('/api/tables', async (req, res) => {
     const key = `Tables_in_${sequelize.config.database}`;
     const tableNames = tables
       .map(row => row[key])
-      .filter(name => name !== 'AggregatedData'); // don't show this table
     res.json(tableNames);
   } catch (err) {
     console.error('Error fetching tables:', err);
@@ -150,18 +149,25 @@ app.get('/api/notes', async (req, res) => {
 
 app.get('/api/export-csv', async (req, res) => {
   try {
-    const data = await DynamicEntry.findAll();
-    
+    const columns = req.query.columns ? req.query.columns.split(',') : [];
+    const attributes = columns.length > 0 ? columns : undefined;
+
+    const data = await DynamicEntry.findAll({
+      attributes: attributes // include only selected columns
+    });
+
     if (data.length === 0) {
       return res.status(404).send('No data found');
     }
 
-    const fields = Object.keys(data[0].dataValues);
-    const parser = new Parser({fields});
+    // get all column names from model if no columns specified
+    const fields = attributes || Object.keys(data[0].dataValues);
+    
+    const parser = new Parser({ fields });
     const csv = parser.parse(data);
 
     res.header('Content-Type', 'text/plain');
-    res.header('Content-Disposition', 'inline; filename="temp_data.csv"');
+    res.header('Content-Disposition', 'inline; filename="filtered_data.csv"');
     res.send(csv);
     
   } catch (err) {

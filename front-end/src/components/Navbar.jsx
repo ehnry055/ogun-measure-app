@@ -33,7 +33,7 @@ function Navbar() {
             <a class="nav-link" href="/viewdata">View Data</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/editdata">Edit Data</a>
+            <a class="nav-link" href="/downloaddata">Download Data</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/graphs">Graphs</a>
