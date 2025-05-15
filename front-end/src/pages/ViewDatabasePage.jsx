@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import '../styles/DownloadDatabasePage.css';
 import NotesList from '../components/NotesList';
 import { useAuth0 } from "@auth0/auth0-react";
-import { useNavigate } from "react-router-dom";
-import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 
 const ViewDatabasePage = () => {
@@ -15,7 +13,7 @@ const ViewDatabasePage = () => {
   const [presets, setPresets] = useState([]);
   const [selectedColumns, setSelectedColumns] = useState(new Set());
   const [selectedPreset, setSelectedPreset] = useState(null);
-  
+
   useEffect(() => {
     const savedPresets = localStorage.getItem('columnPresets');
     if (savedPresets) setPresets(JSON.parse(savedPresets));
@@ -37,6 +35,13 @@ const ViewDatabasePage = () => {
     setPresets(updatedPresets);
     localStorage.setItem('columnPresets', JSON.stringify(updatedPresets));
   };  
+
+  if(!isAuthenticated || isLoading || !isAuthorized) {
+    console.log(!isAuthenticated);
+    console.log(isLoading);
+    console.log(!isAuthorized);
+    return null;
+  }
 
   const applyPreset = (preset) => {
     if (selectedPreset === preset.name) {
