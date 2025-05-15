@@ -7,21 +7,14 @@ import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 
 const ViewDatabasePage = () => {
+  const { isAuthenticated, user, loginWithRedirect, logout, getAccessTokenSilently } = useAuth0();
   const [entryLimit, setEntryLimit] = useState(10); // default: 10 entries
   const [selectedFile, setSelectedFile] = useState(null);
-  const [tableName, setTableName] = useState();
+  const [tableName, setTableName] = useState("Default Table");
   
   const [presets, setPresets] = useState([]);
   const [selectedColumns, setSelectedColumns] = useState(new Set());
   const [selectedPreset, setSelectedPreset] = useState(null);
-
-  //AdminRole check
-  const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
-  const navigate = useNavigate();
-  const [isAuthorized, setIsAuthorized] = useState(() => {
-    const initialState = false;
-    return initialState;
-  });
 
   useEffect(() => {
     const checkPermissions = async () => {
