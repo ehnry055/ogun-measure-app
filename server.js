@@ -124,6 +124,11 @@ app.post('/api/delete-table', async (req, res) => {
   if (!/^[a-zA-Z0-9_]+$/.test(tableName)) return res.status(400).send("Invalid table name");
   if (tableName === 'AggregatedData') return res.status(403).send("Cannot delete this table.");
   
+  const [tables] = await sequelize.query("SHOW TABLES");
+  const key = `Tables_in_${sequelize.config.database}`;
+  const tableExists = tables.some(row => row[key] === tableName);
+  if (!tableExists) return res.status(404).send("Table not found");
+
   try {
     await sequelize.query(`DROP TABLE IF EXISTS \`${tableName}\``);
     // if the deleted table is currently active, reset DynamicEntry to the default table.
