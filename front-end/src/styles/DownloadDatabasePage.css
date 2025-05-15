@@ -163,24 +163,10 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  width: 80%;
+  width: 70%;
 }
 
 .upload-button:hover {
-  background: #850196;
-}
-
-.export-button {
-  padding: 0.5rem 1rem;
-  background: #2196F3;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 80%;
-}
-
-.export-button:hover {
   background: #850196;
 }
 
@@ -191,7 +177,7 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  width: 50%;
+  width: 70%;
 }
 
 .download-button:hover {
@@ -205,7 +191,7 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  width: 80%;
+  width: 70%;
 }
 
 .select-button:hover {
@@ -219,7 +205,7 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  width: 80%;
+  width: 70%;
 }
 
 .delete-table-button:hover {

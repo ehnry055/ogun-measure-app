@@ -180,7 +180,7 @@ const DownloadDatabasePage = () => {
         }
       });
       const tableNames = response.data; // an array of table names
-      const message = `Select a table from the following:\n=================\n${tableNames.join('\n')}`;
+      const message = `Select a table from the following:\n-------------------------\n${tableNames.join('\n')}`;
       const selected = window.prompt(message);
       if (!selected) return;
       if (!tableNames.includes(selected)) {
@@ -211,7 +211,7 @@ const DownloadDatabasePage = () => {
         }
       });
       const tableNames = response.data;
-      const tableToDelete = window.prompt(`Enter the table name to delete:\n${tableNames.join('\n')}`);
+      const tableToDelete = window.prompt(`Enter the table name to delete:\n-------------------------\n${tableNames.join('\n')}`);
       if (!tableToDelete) return;  
   
       await axios.post(`/api/delete-table`, 

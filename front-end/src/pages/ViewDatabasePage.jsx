@@ -200,8 +200,8 @@ const ViewDatabasePage = () => {
       <div className="control-section">
         <h2 className="section-title">Database Controls</h2>
         <div className="controls">
-          <button className="download-button" onClick={handleDownload}> Download as CSV </button>
-          <button className="select-button" onClick={handleSelectTable}> Select Table </button>
+          <button className="download-button" onClick={handleDownload} width="85%"> Download as CSV </button>
+          <button className="select-button" onClick={handleSelectTable} width="85%"> Select Table </button>
         </div>
       </div>
     </div>
