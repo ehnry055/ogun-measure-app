@@ -155,10 +155,10 @@ function PO() {
                         <td key={colIdx}>
                           {editMode
                             ? <textarea
-                                value={entry.content}
+                                value={entry.content || ""}
                                 onChange={e => handleChange(entry.id, e.target.value)}
                               />
-                            : entry.content
+                            : (entry.content || "")
                           }
                         </td>
                       )
