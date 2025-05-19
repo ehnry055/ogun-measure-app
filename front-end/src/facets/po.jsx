@@ -15,7 +15,7 @@ function PO() {
         const checkPermissions = async () => {
           try {
             const token = await getAccessTokenSilently();
-            console.log("Access token:", token); // Log the token for debugging
+            console.log("Access token:", token); 
             const decodedToken = jwtDecode(token);
             console.log("Decoded token:", decodedToken);
     
@@ -59,42 +59,59 @@ function PO() {
         ]
       ];
     
-      const [tableData, setTableData] = useState(initialData);
-      const [editedData, setEditedData] = useState(initialData);
-      const [editMode, setEditMode] = useState(false);
+      let [tableData, setTableData] = useState([]);
+      let [editedData, setEditedData] = useState([]);
+      let [editMode, setEditMode] = useState(false);
+
+      useEffect(() => {
+        async function load() {
+          let token = await getAccessTokenSilently();
+          let resp = await fetch(`/api/ogun-pages/load?pageId=${pageId}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          let entries = await resp.json();
+          setTableData(entries);
+        }
+        load();
+      }, []);
     
-      const handleChange = (row, col, value) => {
-        const updated = [...editedData];
-        updated[row][col] = value;
+      let handleChange = (id, value) => {
+        let updated = editedData.map(e =>
+          e.id === id ? { ...e, content: value } : e
+        );
         setEditedData(updated);
       };
     
       const handleEdit = () => {
-        setEditedData(JSON.parse(JSON.stringify(tableData))); // Deep copy to prevent live binding
+        setEditedData(JSON.parse(JSON.stringify(tableData))); 
         setEditMode(true);
       };
     
       const handleCancel = () => {
-        setEditedData(JSON.parse(JSON.stringify(tableData))); // Reset edits
+        setEditedData(JSON.parse(JSON.stringify(tableData)));
         setEditMode(false);
       };
     
-      const handleSave = () => {
-        if (window.confirm('Are you sure you want to save your changes?')) {
+      let handleSave = async () => {
+        if (!window.confirm('Save changes?')) return;
+
+        let token = await getAccessTokenSilently();
+        let resp = await fetch('/api/ogun-pages/save', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({ pageId, updates: editedData })
+        });
+
+        if (resp.ok) {
           setTableData(editedData);
           setEditMode(false);
+          alert('Saved!');
+        } else {
+          alert('Save failed');
         }
-
-        // fetch('/api/ogun-pages/save', {
-        //     method: 'POST',
-        //     headers: {
-        //       'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({ pageId, tableData })
-        //   })
-        //     .then(res => res.ok ? alert("Saved") : alert("Failed"))
-        //     .catch(err => alert("Error saving data"));
-        
       };
     
       return (
@@ -127,28 +144,29 @@ function PO() {
                 </tr>
               </thead>
               <tbody>
-                {["Structural Violence", "Limited or Restricted Access"].map((rowTitle, rowIdx) => (
-                    <tr key={rowTitle}>
-                    <th>{rowTitle}</th>
-                    {(editMode ? editedData : tableData)[rowIdx].map((cell, colIdx) => (
+                {[0,1].map(rowIdx => (
+                  <tr key={rowIdx}>
+                    <th>{ rowIdx === 0 ? 'Structural Violence' : 'Limited or Restricted Access' }</th>
+                    {[0,1,2].map(colIdx => {
+                      // find the entry object for this cell
+                      let entry = (editMode ? editedData : tableData)
+                                    .find(e => e.rowIndex===rowIdx && e.colIndex===colIdx);
+                      return (
                         <td key={colIdx}>
-                        {editMode ? (
-                            <textarea
-                            value={cell}
-                            onChange={(e) => handleChange(rowIdx, colIdx, e.target.value)}
-                            rows={4}
-                            style={{ width: '100%' }}
-                            />
-                        ) : (
-                            cell
-                        )}
+                          {editMode
+                            ? <textarea
+                                value={entry.content}
+                                onChange={e => handleChange(entry.id, e.target.value)}
+                              />
+                            : entry.content
+                          }
                         </td>
-                    ))}
-                    </tr>
+                      )
+                    })}
+                  </tr>
                 ))}
-            </tbody>
+              </tbody>
             </table>
-    
             <div className="container">
               <a href="/gateway" className="homebtn"><span> See Measure </span></a>
               <a href="/viewdata" className="homebtn" id="gendata"><span> Generate Data </span></a>

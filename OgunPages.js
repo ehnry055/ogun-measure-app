@@ -3,7 +3,6 @@ const router = express.Router();
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = new Sequelize(process.env.JAWSDB_URL, { dialect: 'mysql' });
 
-// Dynamically define table for any page
 function defineNotesModel(tableName) {
   return sequelize.define(tableName, {
     rowTitle: { type: DataTypes.STRING, primaryKey: true },
@@ -29,7 +28,6 @@ router.post('/save', async (req, res) => {
     const rows = [
       { rowTitle: "Structural Violence", period1: tableData[0][0], period2: tableData[0][1], period3: tableData[0][2] },
       { rowTitle: "Limited or Restricted Access", period1: tableData[1][0], period2: tableData[1][1], period3: tableData[1][2] },
-      // Add more rows as needed
     ];
 
     await Table.bulkCreate(rows);
