@@ -80,7 +80,7 @@ function PO() {
           }
           let resp = await fetch(`/api/ogun-pages/load?pageId=${pageId}`);
           let entries = await resp.json();
-          setTableData(entries);h
+          setTableData(entries);
           setEditedData(entries.map(e => ({ ...e })));
         }
         load();
