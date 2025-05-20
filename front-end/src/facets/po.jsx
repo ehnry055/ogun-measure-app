@@ -75,14 +75,16 @@ function PO() {
 
       useEffect(() => {
         async function load() {
-          const token = await getAccessTokenSilently();
-          let resp = await fetch(`/api/ogun-pages/load?pageId=${pageId}`);
+          let token = await getAccessTokenSilently();
+          let resp = await fetch(`/api/ogun-pages/load?pageId=${pageId}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
           let entries = await resp.json();
           setTableData(entries);
           setEditedData(entries.map(e => ({ ...e })));
         }
         load();
-      }, [getAccessTokenSilently, pageId]);
+      }, [getAccessTokenSilently]);
     
       let handleChange = (id, value) => {
         let updated = editedData.map(e =>
@@ -102,8 +104,9 @@ function PO() {
       };
     
       let handleSave = async () => {
-
+        
         if (!window.confirm('Save changes?')) return;
+        const token = await getAccessTokenSilently();
         let resp = await fetch('/api/ogun-pages/save', {
           method: 'POST',
           headers: {
