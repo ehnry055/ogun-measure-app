@@ -149,17 +149,22 @@ function PO() {
                   <tr key={rowIdx}>
                     <th>{ rowIdx === 0 ? 'Structural Violence' : 'Limited or Restricted Access' }</th>
                     {[0,1,2].map(colIdx => {
-                      // find the entry object for this cell
-                      let entry = (editMode ? editedData : tableData)
-                                    .find(e => e.rowIndex===rowIdx && e.colIndex===colIdx);
+                      const source = editMode ? editedData : tableData;
+                      const entry  = source.find(e =>
+                        e.rowIndex === rowIdx && e.colIndex === colIdx
+                      );
+                      const text   = entry?.content ?? "";  //  safe default
+                      const id     = entry?.id;             // may be undefined pre-load
                       return (
                         <td key={colIdx}>
                           {editMode
                             ? <textarea
-                                value={entry.content || ""}
-                                onChange={e => handleChange(entry.id, e.target.value)}
+                                value={text}
+                                onChange={e => id && handleChange(id, e.target.value)}
+                                rows={4}
+                                style={{ width: '100%' }}
                               />
-                            : (entry.content || "")
+                            : text
                           }
                         </td>
                       )
