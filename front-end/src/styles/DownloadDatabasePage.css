@@ -85,7 +85,7 @@
 }
 
 .section-title {
-  color: #474E9E;
+  color: #8C68CD;
   font-size: 1.5rem;
   margin-bottom: 10px;
 }
@@ -105,7 +105,7 @@
 }
 
 .data-item h2 {
-  color: rgb(53, 232, 160);
+  color: #DDDDDD;
   text-align: center;
 }
 
@@ -158,58 +158,62 @@
 
 .upload-button {
   padding: 0.5rem 1rem;
-  background: #4CAF50;
-  color: white;
-  border: none;
+  background: #A3FF7726;
+  color: #A3FF77;
+  border: solid 1px #A3FF77;
   border-radius: 4px;
   cursor: pointer;
   width: 70%;
 }
 
 .upload-button:hover {
-  background: #850196;
+  background: #A3FF77;
+  color: #051225;
 }
 
 .download-button {
   padding: 0.5rem 1rem;
-  background: #df4e4e;
-  color: rgb(233, 255, 88);
-  border: none;
+  background: #00CFE826;
+  color: #00CFE8;
+  border: solid 1px #00CFE8;
   border-radius: 4px;
   cursor: pointer;
   width: 70%;
 }
 
 .download-button:hover {
-  background: #f0b2e7;
+  background: #00CFE8;
+  color: #051225;
 }
 
 .select-button {
   padding: 0.5rem 1rem;
-  background: #bdb325;
-  color: white;
-  border: none;
+  background: #FFC85726;
+  color: #FFC857;
+  border: solid 1px #FFC857;
   border-radius: 4px;
   cursor: pointer;
   width: 70%;
 }
 
 .select-button:hover {
-  background: #70f2c3;
+  background: #FFC857;
+  color: #051225;
 }
 
 .delete-table-button {
   padding: 0.5rem 1rem;
-  background: #93b62c;
-  color: white;
-  border: none;
+  background: #EE635226;
+  color: #EE6352;
+  border: solid 1px #EE6352;
   border-radius: 4px;
   cursor: pointer;
   width: 70%;
 }
 
 .delete-table-button:hover {
-  background: #f087a6;
+  background: #EE6352;
+  color: #051225;
 }
 
 .table-container {
@@ -299,10 +303,15 @@
 }
 
 .save-preset {
-  background: #4CAF50;
-  color: white;
-  border-color: #4CAF50;
+  background: #40BB8226;
+  color: #40BB82;
+  border-color: #40BB82;
   text-align: center;
+}
+
+.save-preset:hover {
+background-color: #40BB82;
+color: #051225;
 }
 
 .preset-button.active.clearable {
@@ -315,4 +324,28 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: solid 1px #DDDDDD;
+  background-color: #8C68CD26;
+  color: #DDDDDD;
+  outline: none;
+}
+
+
+/* might need to create new button */
+input[type="file"] { 
+  background-color: #262D3D; 
+  color: #DDDDDD;
+  border: 2px solid #DDDDDD; 
+  border-radius: 8px;
+  padding: 8px;
+  font-family: inherit;
+  cursor: pointer;
 }

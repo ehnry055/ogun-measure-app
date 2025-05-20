@@ -3,6 +3,8 @@ import '../styles/DownloadDatabasePage.css';
 import NotesList from '../components/NotesList';
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from 'axios';
+import InfoPopup from '../components/InfoPopup';
+import { Info } from 'lucide-react';
 
 const ViewDatabasePage = () => {
   const { isAuthenticated, user, loginWithRedirect, logout, getAccessTokenSilently } = useAuth0();
@@ -179,6 +181,14 @@ const ViewDatabasePage = () => {
           <div className="data-item">
             <h2>
               {tableName || "Select a table to view"}
+              <InfoPopup>
+              <h2>How to Use: </h2>
+              <p style={{ textAlign: 'left' , margin: '0 20px', fontSize: '22px'}}>
+              linebreak
+                <br></br>
+                yes
+              </p>
+              </InfoPopup>
             </h2>
             <div className = 'table-container'>
               <NotesList 
