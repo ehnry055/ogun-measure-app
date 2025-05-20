@@ -1,40 +1,50 @@
 import React, { useState, useEffect } from 'react';
 import { Pencil } from 'lucide-react';
 import { useAuth0 } from "@auth0/auth0-react";
+import { useNavigate } from "react-router-dom";
 import '../styles/HomePage.css'; 
 import { jwtDecode } from 'jwt-decode';
 
 function PO() {
     const pageId = "PropertyOwnership"; 
     const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
+    const navigate = useNavigate();
     const [isAuthorized, setIsAuthorized] = useState(() => {
         const initialState = false;
         return initialState;
       });
     useEffect(() => {
-        const checkPermissions = async () => {
-          try {
-            const token = await getAccessTokenSilently();
-            console.log("Access token:", token); 
-            const decodedToken = jwtDecode(token);
-            console.log("Decoded token:", decodedToken);
-    
-            const hasPermission = decodedToken.permissions && decodedToken.permissions.includes("adminView");
-            console.log("Has permission:", hasPermission);
-    
-            if (!hasPermission) {
-              console.log("User does not have the required permission");
-            }
-            else {
-              console.log("changed isAuthorized to true");
-              setIsAuthorized(true);
-            }
-          } catch (error) {
-            console.error('Error checking permissions:', error);
+      if (isLoading) return;        // wait until Auth0 is ready
+      if (!isAuthenticated) {
+        navigate("/unauthorized");
+        return;
+      }
+
+      const checkPermissions = async () => {
+        try {
+          const token = await getAccessTokenSilently();
+          console.log("Access token:", token); 
+          const decodedToken = jwtDecode(token);
+          console.log("Decoded token:", decodedToken);
+  
+          const hasPermission = decodedToken.permissions && decodedToken.permissions.includes("adminView");
+          console.log("Has permission:", hasPermission);
+  
+          if (!hasPermission) {
+            console.log("User does not have the required permission");
+            navigate("/unauthorized");
           }
-        };
-    
-        checkPermissions();
+          else {
+            console.log("changed isAuthorized to true");
+            setIsAuthorized(true);
+          }
+        } catch (error) {
+          console.error('Error checking permissions:', error);
+          navigate("/unauthorized");
+        }
+      };
+  
+      checkPermissions();
 
 
         // fetch(`/api/ogun-pages/load?pageId=${pageId}`)
@@ -43,7 +53,7 @@ function PO() {
         // .catch(err => console.error(err));
 
 
-      }, [isAuthenticated, getAccessTokenSilently]);
+      }, [isAuthenticated, getAccessTokenSilently, navigate]);
 
 
     const initialData = [
@@ -59,8 +69,8 @@ function PO() {
         ]
       ];
     
-      let [tableData, setTableData] = useState([]);
-      let [editedData, setEditedData] = useState([]);
+      let [tableData, setTableData] = useState([initialData]);
+      let [editedData, setEditedData] = useState([initialData.map(r=>[...r])]);
       let [editMode, setEditMode] = useState(false);
 
       useEffect(() => {
