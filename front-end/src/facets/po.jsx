@@ -9,7 +9,7 @@ function PO() {
     const pageId = "PropertyOwnership"; 
     const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
     const navigate = useNavigate();
-    const [isAuthorized, setIsAuthorized] = useState(() => {
+    const [isAdmin, setIsAdmin] = useState(() => {
         const initialState = false;
         return initialState;
       });
@@ -36,7 +36,7 @@ function PO() {
           }
           else {
             console.log("changed isAuthorized to true");
-            setIsAuthorized(true);
+            setIsAdmin(true);
           }
         } catch (error) {
           console.error('Error checking permissions:', error);
@@ -75,12 +75,12 @@ function PO() {
 
       useEffect(() => {
         async function load() {
-          let token = await getAccessTokenSilently();
-          let resp = await fetch(`/api/ogun-pages/load?pageId=${pageId}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
+          if(!isAdmin) {
+            return;
+          }
+          let resp = await fetch(`/api/ogun-pages/load?pageId=${pageId}`);
           let entries = await resp.json();
-          setTableData(entries);
+          setTableData(entries);h
           setEditedData(entries.map(e => ({ ...e })));
         }
         load();
@@ -104,14 +104,15 @@ function PO() {
       };
     
       let handleSave = async () => {
-        if (!window.confirm('Save changes?')) return;
+        if(!isAdmin) {
+          return;
+        }
 
-        let token = await getAccessTokenSilently();
+        if (!window.confirm('Save changes?')) return;
         let resp = await fetch('/api/ogun-pages/save', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({ pageId, updates: editedData })
         });
