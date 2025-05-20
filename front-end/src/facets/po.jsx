@@ -71,6 +71,7 @@ function PO() {
           });
           let entries = await resp.json();
           setTableData(entries);
+          setEditedData(entries.map(e => ({ ...e })));
         }
         load();
       }, []);
