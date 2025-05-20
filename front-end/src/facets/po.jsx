@@ -75,9 +75,6 @@ function PO() {
 
       useEffect(() => {
         async function load() {
-          if(!isAdmin) {
-            return;
-          }
           let resp = await fetch(`/api/ogun-pages/load?pageId=${pageId}`);
           let entries = await resp.json();
           setTableData(entries);h
@@ -104,9 +101,6 @@ function PO() {
       };
     
       let handleSave = async () => {
-        if(!isAdmin) {
-          return;
-        }
 
         if (!window.confirm('Save changes?')) return;
         let resp = await fetch('/api/ogun-pages/save', {
