@@ -7,7 +7,7 @@ import { jwtDecode } from 'jwt-decode';
 function HA() {
     const pageId = "HealthcareAccess"; 
     const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
-    const [isAuthorized, setIsAuthorized] = useState(() => {
+    const [isAdmin, setIsAdmin] = useState(() => {
         const initialState = false;
         return initialState;
       });
@@ -27,7 +27,7 @@ function HA() {
             }
             else {
               console.log("changed isAuthorized to true");
-              setIsAuthorized(true);
+              setIsAdmin(true);
             }
           } catch (error) {
             console.error('Error checking permissions:', error);
@@ -106,7 +106,7 @@ function HA() {
               <thead>
                 <tr>
                   <th class="table-header-edit">
-                  {isAuthorized && (
+                  {isAdmin && (
                     <div className="admin-controls" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                         {!editMode ? (
                         <button onClick={handleEdit} className="edit-icon-btn">

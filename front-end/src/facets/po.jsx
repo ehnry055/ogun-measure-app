@@ -35,7 +35,7 @@ function PO() {
             navigate("/unauthorized");
           }
           else {
-            console.log("changed isAuthorized to true");
+            console.log("changed isAdmin to true");
             setIsAdmin(true);
           }
         } catch (error) {
@@ -135,7 +135,7 @@ function PO() {
               <thead>
                 <tr>
                   <th class="table-header-edit">
-                  {isAuthorized && (
+                  {isAdmin && (
                     <div className="admin-controls" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                         {!editMode ? (
                         <button onClick={handleEdit} className="edit-icon-btn">

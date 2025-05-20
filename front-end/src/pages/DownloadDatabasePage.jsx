@@ -18,7 +18,7 @@ const DownloadDatabasePage = () => {
   //AdminRole check
   const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
   const navigate = useNavigate();
-  const [isAuthorized, setIsAuthorized] = useState(() => {
+  const [isAdmin, setIsAdmin] = useState(() => {
     const initialState = false;
     return initialState;
   });
@@ -39,7 +39,7 @@ const DownloadDatabasePage = () => {
           navigate("/unauthorized");
         }
         else {
-          setIsAuthorized(true);
+          setIsAdmin(true);
         }
       } catch (error) {
         console.error('Error checking permissions:', error);
@@ -72,10 +72,10 @@ const DownloadDatabasePage = () => {
     localStorage.setItem('columnPresets', JSON.stringify(updatedPresets));
   };  
 
-  if(!isAuthenticated || isLoading || !isAuthorized) {
+  if(!isAuthenticated || isLoading || !isAdmin) {
     console.log(!isAuthenticated);
     console.log(isLoading);
-    console.log(!isAuthorized);
+    console.log(!isAdmin);
     return null;
   }
 
