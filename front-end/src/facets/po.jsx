@@ -75,13 +75,14 @@ function PO() {
 
       useEffect(() => {
         async function load() {
+          const token = await getAccessTokenSilently();
           let resp = await fetch(`/api/ogun-pages/load?pageId=${pageId}`);
           let entries = await resp.json();
           setTableData(entries);
           setEditedData(entries.map(e => ({ ...e })));
         }
         load();
-      }, []);
+      }, [getAccessTokenSilently, pageId]);
     
       let handleChange = (id, value) => {
         let updated = editedData.map(e =>
@@ -106,7 +107,8 @@ function PO() {
         let resp = await fetch('/api/ogun-pages/save', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}` // Add the Authorization header
           },
           body: JSON.stringify({ pageId, updates: editedData })
         });
