@@ -4,6 +4,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import '../styles/HomePage.css'; 
 import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
 
 function PO() {
     const pageId = "PropertyOwnership"; 

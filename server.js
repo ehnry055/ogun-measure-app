@@ -19,6 +19,13 @@ const nodemailer = require('nodemailer');
 // const ogunPagesRouter = require('./OgunPages');
 // app.use('/api/ogun-pages', ogunPagesRouter);
 
+app.use(
+  auth({
+    audience: process.env.REACT_APP_AUTH0_AUDIENCE,
+    issuerBaseURL: process.env.REACT_APP_AUTH0_ISSUER_BASE_URL,  // This must be defined!
+  })
+);
+
 const corsOptions = {
   origin: [
     'http://localhost:4000', 
