@@ -132,7 +132,7 @@ const ViewDatabasePage = () => {
     <div className="page-layout-container">
       <div className="left-section">
         <div className="entry-limit-container">
-          <label htmlFor="entryLimitInput">Entries to display:</label>
+          <label htmlFor="entryLimitInput" style={{ color: '#8C68CD'}}>Entries to display:</label>
           <input
             id="entryLimitInput"
             type="number"
@@ -182,7 +182,7 @@ const ViewDatabasePage = () => {
             <h2>
               {tableName || "Select a table to view"}
               <InfoPopup>
-              <h2>How to Use: </h2>
+              <h2 style={{ color: '#8C68CD'}}>How to Use: </h2>
               <p style={{ textAlign: 'left' , margin: '0 20px', fontSize: '22px'}}>
               linebreak
                 <br></br>
