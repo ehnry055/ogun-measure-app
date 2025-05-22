@@ -79,34 +79,6 @@ const AggregatedData = sequelize.define('AggregatedData', {
   timestamps: false
 });
 
-const PageEntry = sequelize.define('PageEntry', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  pageId: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  rowIndex: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  colIndex: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  content: {
-    type: DataTypes.TEXT,
-    allowNull: false
-  }
-}, {
-  tableName: 'PageEntry',
-  timestamps: false
-});
-
-
 let DynamicEntry = AggregatedData;
 
 const upload = multer({ dest: 'uploads/' });
@@ -281,32 +253,6 @@ app.get('/api/columns', async (req, res) => {
   } catch (err) {
     console.error('Columns error:', err);
     res.status(500).send('Error fetching columns');
-  }
-});
-
-// FACETS pages
-app.get('/api/ogun-pages/load', auth(), async (req, res) => {
-  let pageId = req.query.pageId;
-  let entries = await PageEntry.findAll({
-    where: { pageId },
-    order: [['rowIndex'], ['colIndex']]
-  });
-  res.json(entries);
-});
-
-app.post('/api/ogun-pages/save', auth(), async (req, res) => {
-  let { pageId, updates } = req.body;
-  try {
-    for (let { id, content } of updates) {
-      await PageEntry.update(
-        { content },
-        { where: { id, pageId } }
-      );
-    }
-    res.sendStatus(200);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Error saving');
   }
 });
 

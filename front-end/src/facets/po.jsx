@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Pencil } from 'lucide-react';
 import { useAuth0 } from "@auth0/auth0-react";
-import { useNavigate } from "react-router-dom";
 import '../styles/HomePage.css'; 
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
@@ -9,43 +8,34 @@ import axios from 'axios';
 function PO() {
     const pageId = "PropertyOwnership"; 
     const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
-    const navigate = useNavigate();
-    const [isAdmin, setIsAdmin] = useState(() => {
+    const [isAuthorized, setIsAuthorized] = useState(() => {
         const initialState = false;
         return initialState;
       });
     useEffect(() => {
-      if (isLoading) return;        // wait until Auth0 is ready
-      if (!isAuthenticated) {
-        navigate("/unauthorized");
-        return;
-      }
-
-      const checkPermissions = async () => {
-        try {
-          const token = await getAccessTokenSilently();
-          console.log("Access token:", token); 
-          const decodedToken = jwtDecode(token);
-          console.log("Decoded token:", decodedToken);
-  
-          const hasPermission = decodedToken.permissions && decodedToken.permissions.includes("adminView");
-          console.log("Has permission:", hasPermission);
-  
-          if (!hasPermission) {
-            console.log("User does not have the required permission");
-            navigate("/unauthorized");
+        const checkPermissions = async () => {
+          try {
+            const token = await getAccessTokenSilently();
+            console.log("Access token:", token); // Log the token for debugging
+            const decodedToken = jwtDecode(token);
+            console.log("Decoded token:", decodedToken);
+    
+            const hasPermission = decodedToken.permissions && decodedToken.permissions.includes("adminView");
+            console.log("Has permission:", hasPermission);
+    
+            if (!hasPermission) {
+              console.log("User does not have the required permission");
+            }
+            else {
+              console.log("changed isAuthorized to true");
+              setIsAuthorized(true);
+            }
+          } catch (error) {
+            console.error('Error checking permissions:', error);
           }
-          else {
-            console.log("changed isAdmin to true");
-            setIsAdmin(true);
-          }
-        } catch (error) {
-          console.error('Error checking permissions:', error);
-          navigate("/unauthorized");
-        }
-      };
-  
-      checkPermissions();
+        };
+    
+        checkPermissions();
 
 
         // fetch(`/api/ogun-pages/load?pageId=${pageId}`)
@@ -54,7 +44,7 @@ function PO() {
         // .catch(err => console.error(err));
 
 
-      }, [isAuthenticated, getAccessTokenSilently, navigate]);
+      }, [isAuthenticated, getAccessTokenSilently]);
 
 
     const initialData = [
@@ -70,60 +60,42 @@ function PO() {
         ]
       ];
     
-      let [tableData, setTableData] = useState([initialData]);
-      let [editedData, setEditedData] = useState([initialData.map(r=>[...r])]);
-      let [editMode, setEditMode] = useState(false);
-
-      useEffect(() => {
-        async function load() {
-          let token = await getAccessTokenSilently();
-          let resp = await fetch(`/api/ogun-pages/load?pageId=${pageId}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          let entries = await resp.json();
-          setTableData(entries);
-          setEditedData(entries.map(e => ({ ...e })));
-        }
-        load();
-      }, [getAccessTokenSilently]);
+      const [tableData, setTableData] = useState(initialData);
+      const [editedData, setEditedData] = useState(initialData);
+      const [editMode, setEditMode] = useState(false);
     
-      let handleChange = (id, value) => {
-        let updated = editedData.map(e =>
-          e.id === id ? { ...e, content: value } : e
-        );
+      const handleChange = (row, col, value) => {
+        const updated = [...editedData];
+        updated[row][col] = value;
         setEditedData(updated);
       };
     
       const handleEdit = () => {
-        setEditedData(JSON.parse(JSON.stringify(tableData))); 
+        setEditedData(JSON.parse(JSON.stringify(tableData))); // Deep copy to prevent live binding
         setEditMode(true);
       };
     
       const handleCancel = () => {
-        setEditedData(JSON.parse(JSON.stringify(tableData)));
+        setEditedData(JSON.parse(JSON.stringify(tableData))); // Reset edits
         setEditMode(false);
       };
     
-      let handleSave = async () => {
-        
-        if (!window.confirm('Save changes?')) return;
-        const token = await getAccessTokenSilently();
-        let resp = await fetch('/api/ogun-pages/save', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}` // Add the Authorization header
-          },
-          body: JSON.stringify({ pageId, updates: editedData })
-        });
-
-        if (resp.ok) {
+      const handleSave = () => {
+        if (window.confirm('Are you sure you want to save your changes?')) {
           setTableData(editedData);
           setEditMode(false);
-          alert('Saved!');
-        } else {
-          alert('Save failed');
         }
+
+        // fetch('/api/ogun-pages/save', {
+        //     method: 'POST',
+        //     headers: {
+        //       'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({ pageId, tableData })
+        //   })
+        //     .then(res => res.ok ? alert("Saved") : alert("Failed"))
+        //     .catch(err => alert("Error saving data"));
+        
       };
     
       return (
@@ -156,34 +128,28 @@ function PO() {
                 </tr>
               </thead>
               <tbody>
-                {[0,1].map(rowIdx => (
-                  <tr key={rowIdx}>
-                    <th>{ rowIdx === 0 ? 'Structural Violence' : 'Limited or Restricted Access' }</th>
-                    {[0,1,2].map(colIdx => {
-                      const source = editMode ? editedData : tableData;
-                      const entry  = source.find(e =>
-                        e.rowIndex === rowIdx && e.colIndex === colIdx
-                      );
-                      const text   = entry?.content ?? "";  //  safe default
-                      const id     = entry?.id;             // may be undefined pre-load
-                      return (
+                {["Structural Violence", "Limited or Restricted Access"].map((rowTitle, rowIdx) => (
+                    <tr key={rowTitle}>
+                    <th>{rowTitle}</th>
+                    {(editMode ? editedData : tableData)[rowIdx].map((cell, colIdx) => (
                         <td key={colIdx}>
-                          {editMode
-                            ? <textarea
-                                value={text}
-                                onChange={e => id && handleChange(id, e.target.value)}
-                                rows={4}
-                                style={{ width: '100%' }}
-                              />
-                            : text
-                          }
+                        {editMode ? (
+                            <textarea
+                            value={cell}
+                            onChange={(e) => handleChange(rowIdx, colIdx, e.target.value)}
+                            rows={4}
+                            style={{ width: '100%' }}
+                            />
+                        ) : (
+                            cell
+                        )}
                         </td>
-                      )
-                    })}
-                  </tr>
+                    ))}
+                    </tr>
                 ))}
-              </tbody>
+            </tbody>
             </table>
+    
             <div className="container">
               <a href="/gateway" className="homebtn"><span> See Measure </span></a>
               <a href="/viewdata" className="homebtn" id="gendata"><span> Generate Data </span></a>
