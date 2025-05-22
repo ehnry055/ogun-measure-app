@@ -107,7 +107,7 @@ function PO() {
               <thead>
                 <tr>
                   <th class="table-header-edit">
-                  {isAdmin && (
+                  {(
                     <div className="admin-controls" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                         {!editMode ? (
                         <button onClick={handleEdit} className="edit-icon-btn">
