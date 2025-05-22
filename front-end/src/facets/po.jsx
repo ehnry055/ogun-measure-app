@@ -3,7 +3,6 @@ import { Pencil } from 'lucide-react';
 import { useAuth0 } from "@auth0/auth0-react";
 import '../styles/HomePage.css'; 
 import { jwtDecode } from 'jwt-decode';
-import axios from 'axios';
 
 function PO() {
     const pageId = "PropertyOwnership"; 
@@ -107,7 +106,7 @@ function PO() {
               <thead>
                 <tr>
                   <th class="table-header-edit">
-                  {(
+                  {isAuthorized && (
                     <div className="admin-controls" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                         {!editMode ? (
                         <button onClick={handleEdit} className="edit-icon-btn">
