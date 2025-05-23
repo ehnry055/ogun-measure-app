@@ -255,27 +255,6 @@ app.post('/api/upload', upload.single('csv'), async (req, res) => {
       )
     `);
 
-    if (sequelize.models[tableName]) {
-      delete sequelize.models[tableName];
-    }
-    
-    const [columns] = await sequelize.query(`
-        SELECT COLUMN_NAME 
-        FROM INFORMATION_SCHEMA.COLUMNS 
-        WHERE TABLE_NAME = '${tableName}'
-      `);
-
-    DynamicEntry = sequelize.define(tableName, 
-      columns.reduce((acc, col) => {
-        acc[col.COLUMN_NAME] = { type: Sequelize.TEXT };
-        return acc;
-      }, {}), 
-      {
-        tableName: tableName,
-        timestamps: false
-      }
-    );
-
     const results = await new Promise((resolve, reject) => {
       const rows = [];
       fs.createReadStream(filePath)
@@ -296,6 +275,27 @@ app.post('/api/upload', upload.single('csv'), async (req, res) => {
         VALUES ${values}
       `);
     }
+
+    if (sequelize.models[tableName]) {
+      delete sequelize.models[tableName];
+    }
+    
+    const [columns] = await sequelize.query(`
+        SELECT COLUMN_NAME 
+        FROM INFORMATION_SCHEMA.COLUMNS 
+        WHERE TABLE_NAME = '${tableName}'
+      `);
+
+    DynamicEntry = sequelize.define(tableName, 
+      columns.reduce((acc, col) => {
+        acc[col.COLUMN_NAME] = { type: Sequelize.TEXT };
+        return acc;
+      }, {}), 
+      {
+        tableName: tableName,
+        timestamps: false
+      }
+    );
 
     fs.unlinkSync(filePath);
     res.status(200).send('Upload successful');
