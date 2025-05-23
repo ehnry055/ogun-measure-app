@@ -101,36 +101,58 @@ app.post('/api/select-table', async (req, res) => {
   const tableName = req.body.tableName;
   if (!tableName) return res.status(400).send("No table name provided");
 
-  const [tables] = await sequelize.query("SHOW TABLES");
-  const key = `Tables_in_${sequelize.config.database}`;
-  const tableExists = tables.some(row => row[key] === tableName);
-  if (!tableExists) return res.status(404).send("Table not found");
-  
-  // replace any preexisting model with this name
-  if (sequelize.models[tableName]) {
-    delete sequelize.models[tableName];
+  try {
+    const [tables] = await sequelize.query("SHOW TABLES");
+    const key = `Tables_in_${sequelize.config.database}`;
+    const tableExists = tables.some(row => row[key] === tableName);
+    if (!tableExists) return res.status(404).send("Table not found");
+
+    // fetch column names AND data types
+    const [columns] = await sequelize.query(`
+      SELECT COLUMN_NAME, DATA_TYPE 
+      FROM INFORMATION_SCHEMA.COLUMNS 
+      WHERE TABLE_NAME = '${tableName}'
+    `);
+
+    // map SQL data types to Sequelize types
+    const attributes = columns.reduce((acc, col) => {
+      acc[col.COLUMN_NAME] = {
+        type: mapDataType(col.DATA_TYPE) // Map to Sequelize type
+      };
+      return acc;
+    }, {});
+
+    // remove existing model if it exists
+    if (sequelize.models[tableName]) {
+      delete sequelize.models[tableName];
+    }
+
+    // define the model with correct data types
+    DynamicEntry = sequelize.define(tableName, attributes, {
+      tableName: tableName,
+      timestamps: false
+    });
+
+    res.status(200).send(`Dynamic table set to ${tableName}`);
+  } catch (err) {
+    console.error('Error selecting table:', err);
+    res.status(500).send('Error selecting table');
   }
-
-  // get actual table structure
-  const [columns] = await sequelize.query(`
-    SELECT COLUMN_NAME 
-    FROM INFORMATION_SCHEMA.COLUMNS 
-    WHERE TABLE_NAME = '${tableName}'
-  `);
-
-  // build dynamic model
-  const attributes = columns.reduce((acc, col) => {
-    acc[col.COLUMN_NAME] = { type: Sequelize.TEXT };
-    return acc;
-  }, {});
-
-  DynamicEntry = sequelize.define(tableName, attributes, {
-    tableName: tableName,
-    timestamps: false
-  });
-
-  res.status(200).send(`Dynamic table set to ${tableName}`);
 });
+
+// helper function to map SQL data types to Sequelize
+function mapDataType(sqlType) {
+  const typeMap = {
+    'int': Sequelize.INTEGER,
+    'varchar': Sequelize.STRING,
+    'text': Sequelize.TEXT,
+    'tinyint': Sequelize.BOOLEAN,
+    'datetime': Sequelize.DATE,
+    'float': Sequelize.FLOAT,
+    'double': Sequelize.DOUBLE,
+  };
+  return typeMap[sqlType.toLowerCase()] || Sequelize.TEXT; // Default to TEXT
+}
 
 app.post('/api/delete-table', async (req, res) => {
   const tableName = req.body.tableName;
@@ -212,6 +234,9 @@ app.post('/api/upload', upload.single('csv'), async (req, res) => {
   const filePath = req.file.path;
 
   try {
+
+    await sequelize.query(`DROP TABLE IF EXISTS \`${tableName}\``);
+
     // get headers
     const headers = await new Promise((resolve, reject) => {
       fs.createReadStream(filePath)
