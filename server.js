@@ -66,10 +66,11 @@ const AggregatedData = sequelize.define('AggregatedData', {
   HFA_LRA2: { type: Sequelize.DataTypes.INTEGER },
   HFA_SV3: { type: Sequelize.DataTypes.INTEGER },
   HFA_LRA3: { type: Sequelize.DataTypes.INTEGER },
-  MM_LRA1: { type: Sequelize.DataTypes.INTEGER }
+  MM_LRA1: { type: Sequelize.DataTypes.INTEGER },
 }, {
   tableName: 'AggregatedData',
-  timestamps: false
+  timestamps: false,
+  id: false
 });
 
 let DynamicEntry = AggregatedData;
@@ -198,8 +199,10 @@ app.get('/api/export-csv', async (req, res) => {
     const columns = req.query.columns ? req.query.columns.split(',') : [];
     const attributes = columns.length > 0 ? columns : undefined;
 
+    const filteredAttributes = attributes.filter(attr => attr !== 'id');
+
     const data = await DynamicEntry.findAll({
-      attributes: attributes // include only selected columns
+      attributes: filteredAttributes // include only selected columns
     });
 
     if (data.length === 0) {
@@ -207,7 +210,7 @@ app.get('/api/export-csv', async (req, res) => {
     }
 
     // get all column names from model if no columns specified
-    const fields = attributes || Object.keys(data[0].dataValues);
+    const fields = filteredAttributes || Object.keys(data[0].dataValues);
     
     const parser = new Parser({ fields });
     const csv = parser.parse(data);
@@ -240,12 +243,9 @@ app.post('/api/upload', upload.single('csv'), async (req, res) => {
   }
 
   try {
-    // 1. Drop table (if exists)
-    console.log('Dropping table...'); // Debug 2
+    console.log('Dropping table...');
     await sequelize.query(`DROP TABLE IF EXISTS \`${tableName}\``);
     
-    // 2. Read CSV headers
-    console.log('Reading headers...'); // Debug 3
     const headers = await new Promise((resolve, reject) => {
       fs.createReadStream(filePath)
         .pipe(csv())
@@ -253,16 +253,12 @@ app.post('/api/upload', upload.single('csv'), async (req, res) => {
         .on('error', reject);
     });
 
-    // 3. Create table
-    console.log('Creating table with headers:', headers); // Debug 4
     await sequelize.query(`
       CREATE TABLE \`${tableName}\` (
         ${headers.map(h => `\`${h}\` TEXT`).join(', ')}
       )
     `);
 
-    // 4. Insert data
-    console.log('Inserting data...'); // Debug 5
     const results = await new Promise((resolve, reject) => {
       const rows = [];
       fs.createReadStream(filePath)
@@ -278,19 +274,15 @@ app.post('/api/upload', upload.single('csv'), async (req, res) => {
         `(${headers.map(h => row[h] ? sequelize.escape(row[h]) : 'NULL').join(', ')})`
       ).join(', ');
       
-      console.log('Executing INSERT query...'); // Debug 6
       await sequelize.query(`
         INSERT INTO \`${tableName}\` (${columns})
         VALUES ${values}
       `);
     }
 
-    // 5. Cleanup
     fs.unlinkSync(filePath);
-    console.log('Upload completed successfully'); // Debug 7
     res.status(200).send('Upload successful');
   } catch (err) {
-    console.error('Upload error:', err); // Debug 8
     fs.unlinkSync(filePath);
     res.status(500).send('Upload failed: ' + err.message);
   }
