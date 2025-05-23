@@ -110,11 +110,25 @@ app.post('/api/select-table', async (req, res) => {
   if (sequelize.models[tableName]) {
     delete sequelize.models[tableName];
   }
-  // redefine DynamicEntry by copying the default table (AggregatedData)
-  DynamicEntry = sequelize.define(tableName, AggregatedData.rawAttributes, {
+
+  // get actual table structure
+  const [columns] = await sequelize.query(`
+    SELECT COLUMN_NAME 
+    FROM INFORMATION_SCHEMA.COLUMNS 
+    WHERE TABLE_NAME = '${tableName}'
+  `);
+
+  // build dynamic model
+  const attributes = columns.reduce((acc, col) => {
+    acc[col.COLUMN_NAME] = { type: Sequelize.TEXT };
+    return acc;
+  }, {});
+
+  DynamicEntry = sequelize.define(tableName, attributes, {
     tableName: tableName,
     timestamps: false
   });
+
   res.status(200).send(`Dynamic table set to ${tableName}`);
 });
 
@@ -198,32 +212,36 @@ app.post('/api/upload', upload.single('csv'), async (req, res) => {
   const filePath = req.file.path;
 
   try {
-    await new Promise((resolve, reject) => {
+    // get headers
+    const headers = await new Promise((resolve, reject) => {
       fs.createReadStream(filePath)
         .pipe(csv())
-        .on('data', (data) => results.push(data))
-        .on('end', resolve)
+        .on('headers', resolve)
         .on('error', reject);
     });
-    
-    // create/replace a new table with the same rows as AggregatedData
-    await sequelize.query(`DROP TABLE IF EXISTS \`${tableName}\``);
-    
-    await sequelize.query(`CREATE TABLE \`${tableName}\` LIKE AggregatedData`);
-    
-    if (sequelize.models[tableName]) {
-      delete sequelize.models[tableName];
-    }
-    DynamicEntry = sequelize.define('DynamicEntry', AggregatedData.rawAttributes, {
-      tableName: tableName,
-      timestamps: false
+
+    // create table with dynamic columns
+    await sequelize.query(`
+      CREATE TABLE \`${tableName}\` (
+        ${headers.map(h => `\`${h}\` TEXT`).join(', ')}
+    `);
+
+    const results = await new Promise((resolve, reject) => {
+      const rows = [];
+      fs.createReadStream(filePath)
+        .pipe(csv())
+        .on('data', row => rows.push(row))
+        .on('end', () => resolve(rows))
+        .on('error', reject);
     });
-    
-    await DynamicEntry.bulkCreate(results, {
-      validate: true,
-      ignoreDuplicates: true
-    });
-    
+
+    await sequelize.query(
+      `INSERT INTO \`${tableName}\` (${headers.map(h => `\`${h}\``).join(', ')} 
+      VALUES ${results.map(row => 
+        `(${headers.map(h => sequelize.escape(row[h])).join(', ')})`
+      ).join(', ')}`
+    );
+  
     fs.unlinkSync(filePath);
     res.status(200).send(`Inserted ${results.length} records into table ${tableName}`);
 
@@ -370,7 +388,6 @@ app.get("/v2/admin/get-users",  async (req, res) => {
   }
 });
 */
-
 
 // Catch-all handler for any other requests
 app.get('*', (req, res) => {
