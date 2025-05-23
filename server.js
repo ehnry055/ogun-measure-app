@@ -197,28 +197,28 @@ app.get('/api/notes', async (req, res) => {
 app.get('/api/export-csv', async (req, res) => {
   try {
     const columns = req.query.columns ? req.query.columns.split(',') : [];
-    const attributes = columns.length > 0 ? columns : undefined;
+    
+    // always use columns from the CURRENT dynamic table if none are specified
+    const attributes = columns.length > 0 
+      ? columns 
+      : Object.keys(DynamicEntry.rawAttributes); 
 
     const filteredAttributes = attributes.filter(attr => attr !== 'id');
 
     const data = await DynamicEntry.findAll({
-      attributes: filteredAttributes // include only selected columns
+      attributes: filteredAttributes
     });
 
     if (data.length === 0) {
       return res.status(404).send('No data found');
     }
 
-    // get all column names from model if no columns specified
-    const fields = filteredAttributes || Object.keys(data[0].dataValues);
-    
-    const parser = new Parser({ fields });
+    const parser = new Parser({ fields: filteredAttributes });
     const csv = parser.parse(data);
 
-    res.header('Content-Type', 'text/plain');
-    res.header('Content-Disposition', 'inline; filename="filtered_data.csv"');
+    res.header('Content-Type', 'text/csv');
+    res.attachment('data.csv');
     res.send(csv);
-    
   } catch (err) {
     console.error('Export error:', err);
     res.status(500).send('Error generating CSV');
@@ -229,10 +229,7 @@ app.post('/api/upload', upload.single('csv'), async (req, res) => {
   if (!req.file) return res.status(400).send('No file uploaded');
   const tableName = req.body.tableName;
   const filePath = req.file.path;
-
-  console.log('Upload started for:', tableName); // Debug 1
-
-  // Validation
+  
   if (!tableName) {
     fs.unlinkSync(filePath);
     return res.status(400).send('No table name');
