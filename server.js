@@ -182,7 +182,9 @@ app.get('/api/notes', async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const notes = await DynamicEntry.findAll({
       limit,
-      attributes: Object.keys(DynamicEntry.rawAttributes) // Explicitly list columns
+      attributes: { 
+        exclude: ['id'] // forcefully exclude 'id' from queries
+      }
     });
     res.json(notes);
   } catch (err) {
