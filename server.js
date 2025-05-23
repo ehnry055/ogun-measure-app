@@ -130,7 +130,8 @@ app.post('/api/select-table', async (req, res) => {
     // define the model with correct data types
     DynamicEntry = sequelize.define(tableName, attributes, {
       tableName: tableName,
-      timestamps: false
+      timestamps: false,
+      id: false
     });
 
     res.status(200).send(`Dynamic table set to ${tableName}`);
@@ -178,9 +179,11 @@ app.post('/api/delete-table', async (req, res) => {
 
 app.get('/api/notes', async (req, res) => {
   try {
-    const limit = parseInt(req.query.limit) || 10; // default: 10 entries
-    const notes = await DynamicEntry.findAll({limit}); // adding LIMIT keyword to the query
-    console.error(notes);
+    const limit = parseInt(req.query.limit) || 10;
+    const notes = await DynamicEntry.findAll({
+      limit,
+      attributes: Object.keys(DynamicEntry.rawAttributes) // Explicitly list columns
+    });
     res.json(notes);
   } catch (err) {
     console.error('Error fetching notes:', err);
@@ -285,10 +288,9 @@ app.post('/api/upload', upload.single('csv'), async (req, res) => {
 
 app.get('/api/columns', async (req, res) => {
   try {
-    const model = sequelize.models.DynamicEntry || AggregatedData;
-    const columns = Object.keys(model.rawAttributes).map(columnName => ({
+    const columns = Object.keys(DynamicEntry.rawAttributes).map(columnName => ({
       name: columnName,
-      type: model.rawAttributes[columnName].type.key
+      type: DynamicEntry.rawAttributes[columnName].type.key
     }));
     res.json(columns);
   } catch (err) {
