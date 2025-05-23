@@ -224,25 +224,28 @@ app.get('/api/export-csv', async (req, res) => {
 
 app.post('/api/upload', upload.single('csv'), async (req, res) => {
   if (!req.file) return res.status(400).send('No file uploaded');
-  
   const tableName = req.body.tableName;
+  const filePath = req.file.path;
+
+  console.log('Upload started for:', tableName); // Debug 1
+
+  // Validation
   if (!tableName) {
-    fs.unlinkSync(req.file.path);
-    return res.status(400).send('No table name provided');
+    fs.unlinkSync(filePath);
+    return res.status(400).send('No table name');
   }
   if (!/^[a-zA-Z0-9_]+$/.test(tableName)) {
-    fs.unlinkSync(req.file.path);
+    fs.unlinkSync(filePath);
     return res.status(400).send('Invalid table name');
   }
 
-  const results = [];
-  const filePath = req.file.path;
-
   try {
-
+    // 1. Drop table (if exists)
+    console.log('Dropping table...'); // Debug 2
     await sequelize.query(`DROP TABLE IF EXISTS \`${tableName}\``);
-
-    // get headers
+    
+    // 2. Read CSV headers
+    console.log('Reading headers...'); // Debug 3
     const headers = await new Promise((resolve, reject) => {
       fs.createReadStream(filePath)
         .pipe(csv())
@@ -250,14 +253,16 @@ app.post('/api/upload', upload.single('csv'), async (req, res) => {
         .on('error', reject);
     });
 
-    // create table
+    // 3. Create table
+    console.log('Creating table with headers:', headers); // Debug 4
     await sequelize.query(`
       CREATE TABLE \`${tableName}\` (
         ${headers.map(h => `\`${h}\` TEXT`).join(', ')}
       )
     `);
 
-    // insert data
+    // 4. Insert data
+    console.log('Inserting data...'); // Debug 5
     const results = await new Promise((resolve, reject) => {
       const rows = [];
       fs.createReadStream(filePath)
@@ -270,20 +275,24 @@ app.post('/api/upload', upload.single('csv'), async (req, res) => {
     if (results.length > 0) {
       const columns = headers.map(h => `\`${h}\``).join(', ');
       const values = results.map(row => 
-        `(${headers.map(h => 
-          row[h] ? sequelize.escape(row[h]) : 'NULL'
-        ).join(', ')})`
+        `(${headers.map(h => row[h] ? sequelize.escape(row[h]) : 'NULL').join(', ')})`
       ).join(', ');
-
+      
+      console.log('Executing INSERT query...'); // Debug 6
       await sequelize.query(`
-        INSERT INTO \`${tableName}\` (${columns}) 
+        INSERT INTO \`${tableName}\` (${columns})
         VALUES ${values}
       `);
     }
-  } catch (err) {
-    console.error('Upload error:', err);
+
+    // 5. Cleanup
     fs.unlinkSync(filePath);
-    res.status(500).send('Error processing file');
+    console.log('Upload completed successfully'); // Debug 7
+    res.status(200).send('Upload successful');
+  } catch (err) {
+    console.error('Upload error:', err); // Debug 8
+    fs.unlinkSync(filePath);
+    res.status(500).send('Upload failed: ' + err.message);
   }
 });
 
