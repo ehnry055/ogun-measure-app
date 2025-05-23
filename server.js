@@ -220,13 +220,14 @@ app.post('/api/upload', upload.single('csv'), async (req, res) => {
         .on('error', reject);
     });
 
-    // create table with dynamic columns
+    // create table
     await sequelize.query(`
       CREATE TABLE \`${tableName}\` (
         ${headers.map(h => `\`${h}\` TEXT`).join(', ')}
       )
     `);
 
+    // insert data
     const results = await new Promise((resolve, reject) => {
       const rows = [];
       fs.createReadStream(filePath)
@@ -236,16 +237,19 @@ app.post('/api/upload', upload.single('csv'), async (req, res) => {
         .on('error', reject);
     });
 
-    await sequelize.query(
-      `INSERT INTO \`${tableName}\` (${headers.map(h => `\`${h}\``).join(', ')} 
-      VALUES ${results.map(row => 
-        `(${headers.map(h => sequelize.escape(row[h])).join(', ')})`
-      ).join(', ')}`
-    );
-  
-    fs.unlinkSync(filePath);
-    res.status(200).send(`Inserted ${results.length} records into table ${tableName}`);
+    if (results.length > 0) {
+      const columns = headers.map(h => `\`${h}\``).join(', ');
+      const values = results.map(row => 
+        `(${headers.map(h => 
+          row[h] ? sequelize.escape(row[h]) : 'NULL'
+        ).join(', ')})`
+      ).join(', ');
 
+      await sequelize.query(`
+        INSERT INTO \`${tableName}\` (${columns}) 
+        VALUES ${values}
+      `);
+    }
   } catch (err) {
     console.error('Upload error:', err);
     fs.unlinkSync(filePath);
