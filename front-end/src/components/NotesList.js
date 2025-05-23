@@ -13,9 +13,12 @@ const NotesList = ({ limit, selectedColumns, onToggleColumn }) => {
           axios.get(`/api/columns`)
         ]);
         
-        // handle dynamic columns
         setNotes(notesRes.data);
-        setColumns(columnsRes.data.map(c => c.name));
+        setColumns(
+          columnsRes.data
+            .map(c => c.name)
+            .filter(columnName => columnName !== 'id')
+        );
       } catch (error) {
         console.error('Error fetching data:', error);
       }
