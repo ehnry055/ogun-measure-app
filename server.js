@@ -159,7 +159,7 @@ function mapDataType(sqlType) {
 app.post('/api/delete-table', async (req, res) => {
   const tableName = req.body.tableName;
   if (!tableName) return res.status(400).send("No table name provided");
-  if (!/^[a-zA-Z0-9_]+$/.test(tableName)) return res.status(400).send("Invalid table name");
+  if (!/^[a-zA-Z0-9_].+$/.test(tableName)) return res.status(400).send("Invalid table name");
   if (tableName === 'AggregatedData') return res.status(403).send("Cannot delete this table.");
   
   const [tables] = await sequelize.query("SHOW TABLES");
@@ -234,7 +234,7 @@ app.post('/api/upload', upload.single('csv'), async (req, res) => {
     fs.unlinkSync(filePath);
     return res.status(400).send('No table name');
   }
-  if (!/^[a-zA-Z0-9_]+$/.test(tableName)) {
+  if (!/^[a-zA-Z0-9_.]+$/.test(tableName)) {
     fs.unlinkSync(filePath);
     return res.status(400).send('Invalid table name');
   }
