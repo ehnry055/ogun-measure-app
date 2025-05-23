@@ -224,6 +224,7 @@ app.post('/api/upload', upload.single('csv'), async (req, res) => {
     await sequelize.query(`
       CREATE TABLE \`${tableName}\` (
         ${headers.map(h => `\`${h}\` TEXT`).join(', ')}
+      )
     `);
 
     const results = await new Promise((resolve, reject) => {
