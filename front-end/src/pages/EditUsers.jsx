@@ -8,12 +8,35 @@ import { useState, useEffect } from 'react';
 
 const EditUsers = () => {
 
+  //fetch users from auth0
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const token = await getAccessTokenSilently();
+        const response = await fetch('/api/admin/get-users');
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch users');
+        }
+
+        const data = await response.json();
+        setUsers(data);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+
+    fetchUsers();
+  }, [getAccessTokenSilently]);
+
+
   //AdminRole check
   const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
   const [isAuthorized, setIsAuthorized] = useState(() => {
     const initialState = false;
     return initialState;
   });
+  const [users, setUsers] = useState([]);
   
   const navigate = useNavigate();
 
@@ -41,7 +64,7 @@ const EditUsers = () => {
         navigate("/unauthorized");
       }
     };
-
+    
     checkPermissions();
   }, [isAuthenticated, getAccessTokenSilently, navigate]);
 
@@ -65,39 +88,6 @@ const EditUsers = () => {
   
   console.log("Authorized!");
 
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const token = await getAccessTokenSilently();
-        const response = await fetch('/api/admin/get-users');
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch users');
-        }
-
-        const data = await response.json();
-        setUsers(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUsers();
-  }, [getAccessTokenSilently]);
-
-  if (loading) {
-    return <div>Loading users...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
 
   return (
     <div className="user-list-container">
