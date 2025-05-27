@@ -3,6 +3,7 @@ import { Pencil } from 'lucide-react';
 import { useAuth0 } from "@auth0/auth0-react";
 import '../styles/HomePage.css'; 
 import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
 
 function PO() {
     const pageId = "PropertyOwnership"; 
@@ -28,6 +29,14 @@ function PO() {
             else {
               console.log("changed isAuthorized to true");
               setIsAuthorized(true);
+
+              const response = await axios.get(`/api/ogun-pages/load?pageId=${pageId}`, {
+                headers: { Authorization: `Bearer ${token}` }
+              });        
+              if (response.data) {
+                setTableData(response.data);
+                setEditedData(response.data);
+              }
             }
           } catch (error) {
             console.error('Error checking permissions:', error);
@@ -64,9 +73,9 @@ function PO() {
       const [editMode, setEditMode] = useState(false);
     
       const handleChange = (row, col, value) => {
-        const updated = [...editedData];
-        updated[row][col] = value;
-        setEditedData(updated);
+        setEditedData(prev => prev.map((r, rIdx) => 
+          rIdx === row ? r.map((c, cIdx) => cIdx === col ? value : c) : r
+        ));
       };
     
       const handleEdit = () => {
@@ -79,22 +88,29 @@ function PO() {
         setEditMode(false);
       };
     
-      const handleSave = () => {
-        if (window.confirm('Are you sure you want to save your changes?')) {
+      const handleSave = async () => {
+        if (!window.confirm('Save changes?')) return;
+
+        try {
+          const token = await getAccessTokenSilently();
+          
+          await axios.post('/api/ogun-pages/save', 
+            { pageId, tableData: editedData },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
+              }
+            }
+          );
+
           setTableData(editedData);
           setEditMode(false);
+          alert("Changes saved successfully!");
+        } catch (error) {
+          console.error('Save failed:', error);
+          alert("Error saving changes to database");
         }
-
-        // fetch('/api/ogun-pages/save', {
-        //     method: 'POST',
-        //     headers: {
-        //       'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({ pageId, tableData })
-        //   })
-        //     .then(res => res.ok ? alert("Saved") : alert("Failed"))
-        //     .catch(err => alert("Error saving data"));
-        
       };
     
       return (

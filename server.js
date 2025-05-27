@@ -74,6 +74,22 @@ const AggregatedData = sequelize.define('AggregatedData', {
   id: false
 });
 
+const OgunPage = sequelize.define('OgunPage', {
+  pageId: {
+    type: DataTypes.STRING,
+    primaryKey: true
+  },
+  content: {
+    type: DataTypes.JSON,
+    allowNull: false
+  }
+}, {
+  tableName: 'ogun_pages',
+  timestamps: true,
+  updatedAt: 'last_modified',
+  createdAt: false
+});
+
 let DynamicEntry = AggregatedData;
 
 const upload = multer({ dest: 'uploads/' });
@@ -82,7 +98,9 @@ sequelize.authenticate()
   .then(() => console.log('Connected to MySQL using Sequelize'))
   .catch(err => console.error('Error connecting to sql:', err));
 
-sequelize.sync();
+sequelize.sync()
+  .then(() => console.log('All models synchronized'))
+  .catch(err => console.error('Error syncing models:', err));
 
 // list all tables in the database
 app.get('/api/tables', async (req, res) => {
@@ -320,7 +338,38 @@ app.get('/api/columns', async (req, res) => {
   }
 });
 
+// facets functions
+app.post('/api/ogun-pages/save', async (req, res) => {
+  try {
+    const { pageId, tableData } = req.body;
+    
+    await OgunPage.upsert({
+      pageId: pageId,
+      content: tableData
+    });
 
+    res.status(200).json({ message: 'Content saved successfully' });
+  } catch (err) {
+    console.error('Save error:', err);
+    res.status(500).send('Error saving content');
+  }
+});
+
+app.get('/api/ogun-pages/load', async (req, res) => {
+  try {
+    const { pageId } = req.query;
+    const page = await OgunPage.findByPk(pageId);
+    
+    if (page) {
+      res.json(page.content);
+    } else {
+      res.status(404).send('Page not found');
+    }
+  } catch (err) {
+    console.error('Load error:', err);
+    res.status(500).send('Error loading content');
+  }
+});
 
   //email sending funtions
   const sendEmail = ({ email, role, affiliation, funding, intention, share, when, area, target, data }) => {
@@ -396,10 +445,7 @@ app.get('/api/columns', async (req, res) => {
       .catch((error) => res.status(500).send(error.message));
   });
 
-
 // auth0 management api
-
-
 
 app.get("/api/admin/get-users",  async (req, res) => {
   try {
@@ -410,7 +456,6 @@ app.get("/api/admin/get-users",  async (req, res) => {
     res.status(500).send('Error fetching users');
   }
 });
-
 
 // Catch-all handler for any other requests
 app.get('*', (req, res) => {
