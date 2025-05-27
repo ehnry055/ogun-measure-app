@@ -13,46 +13,33 @@ function PO() {
         return initialState;
       });
     useEffect(() => {
-        const checkPermissions = async () => {
-          try {
-            const token = await getAccessTokenSilently();
-            console.log("Access token:", token); // Log the token for debugging
-            const decodedToken = jwtDecode(token);
-            console.log("Decoded token:", decodedToken);
-    
-            const hasPermission = decodedToken.permissions && decodedToken.permissions.includes("adminView");
-            console.log("Has permission:", hasPermission);
-    
-            if (!hasPermission) {
-              console.log("User does not have the required permission");
-            }
-            else {
-              console.log("changed isAuthorized to true");
-              setIsAuthorized(true);
+      const loadData = async () => {
+        try {
+          const token = await getAccessTokenSilently();
+          console.log("Access token:", token); // Log the token for debugging
+          const response = await axios.get(`/api/ogun-pages/load?pageId=${pageId}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
 
-              const response = await axios.get(`/api/ogun-pages/load?pageId=${pageId}`, {
-                headers: { Authorization: `Bearer ${token}` }
-              });        
-              if (response.data) {
-                setTableData(response.data);
-                setEditedData(response.data);
-              }
-            }
-          } catch (error) {
-            console.error('Error checking permissions:', error);
+          const decodedToken = jwtDecode(token);
+          console.log("Decoded token:", decodedToken);
+          const hasPermission = decodedToken.permissions && decodedToken.permissions.includes("adminView");
+          console.log("Has permission:", hasPermission);
+
+          if (response.data) {
+            setTableData(response.data);
+            setEditedData(response.data);
           }
-        };
-    
-        checkPermissions();
-
-
-        // fetch(`/api/ogun-pages/load?pageId=${pageId}`)
-        // .then(res => res.json())
-        // .then(data => setTableData(data))
-        // .catch(err => console.error(err));
-
-
-      }, [isAuthenticated, getAccessTokenSilently]);
+        } catch (error) {
+          setTableData(initialData);
+          setEditedData(initialData);
+        }
+      }
+      
+      if (isAuthenticated) {
+        loadData();
+      }
+    }, [isAuthenticated, getAccessTokenSilently]);
 
 
     const initialData = [
