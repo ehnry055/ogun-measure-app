@@ -11,20 +11,13 @@ function PO() {
     const [isAuthorized, setIsAuthorized] = useState(() => {
         const initialState = false;
         return initialState;
-      });
+    });
+
     useEffect(() => {
       const loadData = async () => {
         try {
-          const token = await getAccessTokenSilently();
-          console.log("Access token:", token); // Log the token for debugging
-          const response = await axios.get(`/api/ogun-pages/load?pageId=${pageId}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-
-          const decodedToken = jwtDecode(token);
-          console.log("Decoded token:", decodedToken);
-          const hasPermission = decodedToken.permissions && decodedToken.permissions.includes("adminView");
-          console.log("Has permission:", hasPermission);
+          // runs for ALL users
+          const response = await axios.get(`/api/ogun-pages/load?pageId=${pageId}`);
 
           if (response.data) {
             setTableData(response.data);
@@ -35,10 +28,27 @@ function PO() {
           setEditedData(initialData);
         }
       }
-      
-      if (isAuthenticated) {
-        loadData();
+
+      const checkAdminPermissions = async () => {
+        if (!isAuthenticated) {
+          setIsAuthorized(false);
+          return;
+        }
+        try {
+          const token = await getAccessTokenSilently();
+          console.log("Access token:", token); // Log the token for debugging
+          const decodedToken = jwtDecode(token);
+          console.log("Decoded token:", decodedToken);
+          const hasPermission = decodedToken.permissions && decodedToken.permissions.includes("adminView");
+          console.log("Has permission:", hasPermission);
+          setIsAuthorized(hasPermission);
+        } catch (error) {
+          console.error("Permission error", error);
+        }
       }
+
+      loadData();
+      checkAdminPermissions();
     }, [isAuthenticated, getAccessTokenSilently]);
 
 
