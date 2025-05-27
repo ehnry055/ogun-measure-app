@@ -15,6 +15,7 @@ const app = express();
 const port = process.env.PORT || 4000;
 const { Parser } = require('json2csv');
 const nodemailer = require('nodemailer');
+const auth0Management = require('./auth0')
 
 // const ogunPagesRouter = require('./OgunPages');
 // app.use('/api/ogun-pages', ogunPagesRouter);
@@ -319,31 +320,6 @@ app.get('/api/columns', async (req, res) => {
   }
 });
 
-/*
-
-var management = new ManagementClient({
-  domain: process.env.REACT_APP_AUTH0_domain + '.auth0.com',
-  clientId: process.env.REACT_APP_AUTH0_clientId,
-  clientSecret: process.env.REACT_APP_AUTH0_SECRET,
-});
-
-const allUsers = [];
-let page = 0;
-while (true) {
-  const {
-    data: { users, total },
-  } = await management.users.getAll({
-    include_totals: true,
-    page: page++,
-  });
-  allUsers.push(...users);
-  if (allUsers.length === total) {
-    break;
-  }
-} */
-
-
-
 
 
   //email sending funtions
@@ -422,24 +398,19 @@ while (true) {
 
 
 // auth0 management api
-/*
-var management = new ManagementClient({
-  client_id: process.env.REACT_APP_AUTH0_clientId,
-  client_secret: process.env.REACT_APP_AUTH0_SECRET,
-  domain: process.env.REACT_APP_AUTH0_domain
-});
 
-const userList = await management.users.getAll();
 
-app.get("/v2/admin/get-users",  async (req, res) => {
+
+app.get("/api/admin/get-users",  async (req, res) => {
   try {
+    const userList = await auth0Management.users.getAll();
     res.json(userList);
   } catch (error) {
     console.error('Error fetching users:', error);
     res.status(500).send('Error fetching users');
   }
 });
-*/
+
 
 // Catch-all handler for any other requests
 app.get('*', (req, res) => {

@@ -64,20 +64,68 @@ const EditUsers = () => {
   }
   
   console.log("Authorized!");
+
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const token = await getAccessTokenSilently();
+        const response = await fetch('/api/admin/get-users');
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch users');
+        }
+
+        const data = await response.json();
+        setUsers(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, [getAccessTokenSilently]);
+
+  if (loading) {
+    return <div>Loading users...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
-    <div className="edit-database-container">
-      <div className="saved-section">
-        <h2 className="section-title">Registered Users</h2>
-        <ul className="saved-users">
-          <li>Jason Chae: jascha25@bergen.org</li>
-          <li>Henry Choi: hencho25@bergen.org</li>
-          <li>Stephen Yoon: steyoo25@bergen.org</li>
-          <li>Brendon Wan: brewan25@bergen.org</li>
-        </ul>
-      </div>
-      <div>
-        <h>This is where user editing will occur</h>
-      </div>
+    <div className="user-list-container">
+      <h1>User Management</h1>
+      <table className="user-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>User ID</th>
+            <th>Last Login</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((user) => (
+            <tr key={user.user_id}>
+              <td>{user.name || 'N/A'}</td>
+              <td>{user.email}</td>
+              <td className="user-id">{user.user_id}</td>
+              <td>
+                {user.last_login ? 
+                  new Date(user.last_login).toLocaleString() : 
+                  'Never logged in'}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
