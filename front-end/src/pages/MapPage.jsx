@@ -3,6 +3,7 @@ import Highcharts, { color } from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import HighchartsMapModule from 'highcharts/modules/map';
 import mapData from '@highcharts/map-collection/countries/us/us-all-all.topo.json';
+import "../styles/MapPage.css";
 
 // Initialize the map module
 HighchartsMapModule(Highcharts);
@@ -101,7 +102,7 @@ const MapPage = () => {
   }, []);
 
   return (
-    <div style={{ width: '80%', height: '400px', margin: '0 auto' }}>
+    <div className='map-display'>
       {options ? (
         <HighchartsReact
           highcharts={Highcharts}
