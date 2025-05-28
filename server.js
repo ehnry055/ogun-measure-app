@@ -191,21 +191,28 @@ app.post('/api/delete-table', async (req, res) => {
   const tableName = req.body.tableName;
   if (!tableName) return res.status(400).send("No table name provided");
   if (!/^[a-zA-Z0-9_].+$/.test(tableName)) return res.status(400).send("Invalid table name");
-  if (tableName === 'AggregatedData' || tableName === "ogun_pages" || tableName === "OgunPage") return res.status(403).send("Cannot delete this table.");
   
-  const [tables] = await sequelize.query("SHOW TABLES");
-  const key = `Tables_in_${sequelize.config.database}`;
-
-  // filter out ogun_pages from the tables list
-  const filteredTables = tables.map(row => row[key]);
-
-  const tableExists = filteredTables.includes(tableName);
-  if (!tableExists) return res.status(404).send("Table not found");
+  // block protected tables
+  if (tableName === 'AggregatedData' || tableName === "ogun_pages" || tableName === "OgunPage") {
+    return res.status(403).send("Cannot delete this table.");
+  }
 
   try {
+    const [tables] = await sequelize.query("SHOW TABLES");
+    const key = `Tables_in_${sequelize.config.database}`;
+    
+    const tableNames = tables.map(row => row[key]);
+    
+    const tableExists = tableNames.includes(tableName);
+    
+    if (!tableExists) return res.status(404).send("Table not found");
+
     await sequelize.query(`DROP TABLE IF EXISTS \`${tableName}\``);
-    // if the deleted table is currently active, reset DynamicEntry to the default table.
-    if (DynamicEntry && DynamicEntry.getTableName() === tableName) DynamicEntry = AggregatedData;
+    
+    if (DynamicEntry && DynamicEntry.getTableName() === tableName) {
+      DynamicEntry = AggregatedData;
+    }
+    
     res.status(200).send(`Table ${tableName} dropped successfully`);
   } catch (err) {
     console.error('Error deleting table:', err);
