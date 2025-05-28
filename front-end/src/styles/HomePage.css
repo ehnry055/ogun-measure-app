@@ -224,3 +224,7 @@ th {
 .table-header-edit{
   width: 15%;
 }
+
+.highcharts-credits {
+  display: none;
+}
