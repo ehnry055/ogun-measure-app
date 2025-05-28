@@ -33,7 +33,10 @@ const MapPage = () => {
             map: mapData,
             height: '80%',
             backgroundColor: '#8C68CD26',
-            borderRadius: 10
+            borderRadius: 10,
+            borderWidth: 2,
+            borderColor: '#8C68CD'
+
           },
           title: {
             text: 'Ogun Measure by County: Total Structural Racism',
