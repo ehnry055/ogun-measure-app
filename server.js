@@ -224,7 +224,7 @@ app.post('/api/delete-table', async (req, res) => {
 
 app.get('/api/notes', async (req, res) => {
   try {
-    const limit = parseInt(req.query.limit) || 10;
+    const limit = parseInt(req.query.limit) || 20;
     const notes = await DynamicEntry.findAll({
       limit,
       attributes: { 
