@@ -39,6 +39,7 @@ const EditUsers = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
+        const token = await getAccessTokenSilently();
         const response = await fetch('/api/admin/get-users', {
           headers: {
             Authorization: `Bearer ${token}`
