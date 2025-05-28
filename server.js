@@ -136,7 +136,7 @@ app.post('/api/select-table', async (req, res) => {
       .map(row => row[key])
       .filter(name => name !== 'ogun_pages' && name !== 'OgunPage');
 
-    const tableExists = filteredTables.some(row => row[key] === tableName);
+    const tableExists = filteredTables.includes(tableName);
     if (!tableExists) return res.status(404).send("Table not found");
 
     // fetch column names AND data types
@@ -201,7 +201,7 @@ app.post('/api/delete-table', async (req, res) => {
     .map(row => row[key])
     .filter(name => name !== 'ogun_pages' && name !== 'OgunPage');
 
-  const tableExists = filteredTables.some(row => row[key] === tableName);
+  const tableExists = filteredTables.includes(tableName);
   if (!tableExists) return res.status(404).send("Table not found");
 
   try {
