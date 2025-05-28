@@ -1,7 +1,7 @@
 import { useAuth0, useEffect, useState } from "@auth0/auth0-react";
 import React from "react";
 
-const Profile = () => {
+const profile = () => {
   console.log("test");
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const [permissions, setPermissions] = useState([]);
@@ -42,4 +42,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default profile;

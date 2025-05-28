@@ -9,7 +9,7 @@ import HighchartsReact from 'highcharts-react-official';
 import { useAuth0 } from '@auth0/auth0-react';
 import LoginButton from './components/login';
 import LogoutButton from './components/logout';
-import Profile from './components/Profile';
+import Profile from './components/profile';
 
 import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
