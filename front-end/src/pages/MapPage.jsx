@@ -37,7 +37,7 @@ const MapPage = () => {
             text: 'Ogun Measure by County',
             align: 'left',
             style: {
-                color: #ffffff
+                color: "#ffffff"
             }
           },
           accessibility: {
