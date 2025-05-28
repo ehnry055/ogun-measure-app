@@ -74,7 +74,7 @@ const AggregatedData = sequelize.define('AggregatedData', {
   id: false
 });
 
-const OgunPage = sequelize.define('ogun_pages', {
+const ogun_pages = sequelize.define('ogun_pages', {
   pageId: {
     type: DataTypes.STRING,
     primaryKey: true
