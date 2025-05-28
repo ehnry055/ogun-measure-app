@@ -30,8 +30,8 @@ const MapPage = () => {
         const chartOptions = {
           chart: {
             map: mapData,
-            height: '60%',
-            backgroundColor: 'rgba(140, 104, 205, 0.15)',
+            height: '80%',
+            backgroundColor: '#8C68CD26',
           },
           title: {
             text: 'Ogun Measure by County',
@@ -47,7 +47,7 @@ const MapPage = () => {
             layout: 'vertical',
             align: 'right',
             margin: 0,
-            backgroundColor: 'rgba(140, 104, 205, 0.15)'
+            backgroundColor: '#8C68CD26'
           },
           mapNavigation: {
             enabled: true
@@ -101,7 +101,7 @@ const MapPage = () => {
   }, []);
 
   return (
-    <div>
+    <div style={{ width: '80%', height: '400px', margin: '0 auto' }}>
       {options ? (
         <HighchartsReact
           highcharts={Highcharts}
