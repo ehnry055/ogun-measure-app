@@ -44,7 +44,7 @@ class Auth0ManagementService {
         }
         // ... rest of the implementation
         } */
-    }
+}
         
 
 module.exports = new Auth0ManagementService();

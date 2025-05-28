@@ -467,7 +467,7 @@ app.get('/api/ogun-pages/load', async (req, res) => {
 
 app.get("/api/admin/get-users",  async (req, res) => {
   try {
-    const userList = await auth0Management.users.getAll();
+    const userList = await auth0Management.getAllUsers();
     res.json(userList);
   } catch (error) {
     console.error('Error fetching users:', error);
