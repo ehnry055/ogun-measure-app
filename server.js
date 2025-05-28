@@ -190,7 +190,9 @@ function mapDataType(sqlType) {
 app.post('/api/delete-table', async (req, res) => {
   const tableName = req.body.tableName;
   if (!tableName) return res.status(400).send("No table name provided");
-  if (!/^[a-zA-Z0-9_].+$/.test(tableName)) return res.status(400).send("Invalid table name");
+  if (!/^[\w.]+$/.test(tableName)) {
+    return res.status(400).send("Invalid table name. Only letters, numbers, underscores and periods are allowed.");
+  }
   
   // block protected tables
   if (tableName === 'AggregatedData' || tableName === "ogun_pages" || tableName === "OgunPage") {
@@ -276,7 +278,8 @@ app.post('/api/upload', upload.single('csv'), async (req, res) => {
     fs.unlinkSync(filePath);
     return res.status(400).send('No table name');
   }
-  if (!/^[a-zA-Z0-9_.]+$/.test(tableName)) {
+
+  if (!/^[\w.]+$/.test(tableName)) {
     fs.unlinkSync(filePath);
     return res.status(400).send('Invalid table name');
   }
