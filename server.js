@@ -109,6 +109,7 @@ app.get('/api/tables', async (req, res) => {
     const key = `Tables_in_${sequelize.config.database}`;
     const tableNames = tables
       .map(row => row[key])
+      .filter(name => name !== 'ogun_pages');
     res.json(tableNames);
   } catch (err) {
     console.error('Error fetching tables:', err);
@@ -121,10 +122,20 @@ app.post('/api/select-table', async (req, res) => {
   const tableName = req.body.tableName;
   if (!tableName) return res.status(400).send("No table name provided");
 
+  if (tableName === 'ogun_pages') {
+    return res.status(404).send("Table not found");
+  }
+
   try {
     const [tables] = await sequelize.query("SHOW TABLES");
     const key = `Tables_in_${sequelize.config.database}`;
-    const tableExists = tables.some(row => row[key] === tableName);
+
+    // filter out ogun_pages from the tables list
+    const filteredTables = tables
+      .map(row => row[key])
+      .filter(name => name !== 'ogun_pages');
+
+    const tableExists = filteredTables.some(row => row[key] === tableName);
     if (!tableExists) return res.status(404).send("Table not found");
 
     // fetch column names AND data types
@@ -179,11 +190,17 @@ app.post('/api/delete-table', async (req, res) => {
   const tableName = req.body.tableName;
   if (!tableName) return res.status(400).send("No table name provided");
   if (!/^[a-zA-Z0-9_].+$/.test(tableName)) return res.status(400).send("Invalid table name");
-  if (tableName === 'AggregatedData') return res.status(403).send("Cannot delete this table.");
+  if (tableName === 'AggregatedData' || tableName === "ogun_pages") return res.status(403).send("Cannot delete this table.");
   
   const [tables] = await sequelize.query("SHOW TABLES");
   const key = `Tables_in_${sequelize.config.database}`;
-  const tableExists = tables.some(row => row[key] === tableName);
+
+  // filter out ogun_pages from the tables list
+  const filteredTables = tables
+    .map(row => row[key])
+    .filter(name => name !== 'ogun_pages');
+
+  const tableExists = filteredTables.some(row => row[key] === tableName);
   if (!tableExists) return res.status(404).send("Table not found");
 
   try {
