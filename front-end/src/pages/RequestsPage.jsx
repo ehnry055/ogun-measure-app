@@ -3,6 +3,7 @@ import '../styles/App.css';
 import '../styles/HomePage.css'
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
+import InfoPopup from '../components/InfoPopup';
 
 
 const RequestsPage = () => {
@@ -45,7 +46,11 @@ const RequestsPage = () => {
   return (    
     <div class="home-container">
       <div className='form-container'>
-      <h2 className="about-title">Request Form</h2>
+      <h2 className="about-title">Request Form 
+        <InfoPopup>
+          text
+        </InfoPopup>
+      </h2>
 
       <input
         type="text"
