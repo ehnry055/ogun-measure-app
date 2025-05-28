@@ -14,7 +14,7 @@ import Profile from './components/profile';
 import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
 import DownloadDatabasePage from "./pages/DownloadDatabasePage";
-import DataPage from "./pages/DataPage";
+import VisualizeDataPage from "./pages/VisualizeDataPage";
 import ProfilePage from "./pages/ProfilePage";
 import EditUsers from "./pages/EditUsers";
 import UnAuthorized from './pages/UnAuthorized';
@@ -56,7 +56,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/viewdata" element={<ViewDatabasePage />} />
             <Route path="/downloaddata" element={<PrivateRoute Component = {DownloadDatabasePage} />} />
-            <Route path="/graphs" element={<PrivateRoute Component = {DataPage} />} />
+            <Route path="/graphs" element={<PrivateRoute Component = {VisualizeDataPage} />} />
             <Route path="/users" element={<PrivateRoute Component= {EditUsers} />} />
             <Route path="/profile" element={<PrivateRoute Component = {ProfilePage} />} />
             <Route path="/requests" element={<PrivateRoute Component = {RequestsPage} />} />
