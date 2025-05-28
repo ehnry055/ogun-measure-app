@@ -18,6 +18,7 @@ import DataPage from "./pages/DataPage";
 import ProfilePage from "./pages/ProfilePage";
 import EditUsers from "./pages/EditUsers";
 import UnAuthorized from './pages/UnAuthorized';
+import MapPage from './pages/MapPage';
 
 import './styles/App.css';
 
@@ -40,7 +41,7 @@ import MM from './facets/mm';
 
 
 import SV from './pages/sv';
-import OgunMeasure from './pages/OgunMeasure'
+import OgunMeasure from './pages/OgunMeasure';
 import Gateway from './pages/Gateway';
 
 
@@ -60,6 +61,7 @@ function App() {
             <Route path="/profile" element={<PrivateRoute Component = {ProfilePage} />} />
             <Route path="/requests" element={<PrivateRoute Component = {RequestsPage} />} />
             <Route path="/itemdevelopers" element={<ItemDevelopers />} />
+            <Route path="/map" element={<MapPage />} />
 
             {/* Facet Routes */}
             <Route path="/ResidentialSegregationGentrification" element={<RSG />} />

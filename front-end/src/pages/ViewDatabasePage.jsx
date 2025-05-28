@@ -184,9 +184,31 @@ const ViewDatabasePage = () => {
               <InfoPopup>
               <h2 style={{ color: '#8C68CD'}}>How to Use: </h2>
               <p style={{ textAlign: 'left' , margin: '0 20px', fontSize: '22px'}}>
-              linebreak
-                <br></br>
-                yes
+              This is the data collected on counties across the US.
+                <br />
+                <br />
+                Each column represents a different combination of a facet, pathway, and time period.
+<br /><br />10 facets: 
+<br />Residential Segregation and Gentrification (RSG)
+<br />Property Ownership (PO)
+<br />Government Representation (GR)
+<br />Policing and Incarceration (PI)
+<br />Income and Poverty (IP)
+<br />Occupational Segregation and Unemployment (OSU)
+<br />Healthcare Access (HCA)
+<br />Healthy Food Access (HFA)
+<br />Environmental Pollution (EP)
+<br />Media and Marketing (MM)
+
+<br /><br />2 pathways:<br />
+Structural Violence (SV)<br />
+Limited or Restricted Access (LRA)<br /><br />
+
+3 historical periods:<br />
+Before the Civil Rights Act of 1968 that included the Fair Housing Act legally ending residential segregation (Time Period 1)<br />
+During Desegregation or Integration (1969-1999) (Time Period 2)<br />
+Modern Times (2000-present) (Time Period 3)<br />
+
               </p>
               </InfoPopup>
             </h2>
