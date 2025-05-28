@@ -11,7 +11,7 @@ function EP() {
     const [isAuthorized, setIsAuthorized] = useState(() => {
         const initialState = false;
         return initialState;
-      });
+    });
     useEffect(() => {
       const loadData = async () => {
         try {

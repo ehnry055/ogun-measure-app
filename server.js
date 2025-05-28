@@ -15,7 +15,8 @@ const app = express();
 const port = process.env.PORT || 4000;
 const { Parser } = require('json2csv');
 const nodemailer = require('nodemailer');
-const auth0Management = require('./auth0')
+const auth0Management = require('./auth0');
+const { table } = require('console');
 
 // const ogunPagesRouter = require('./ogun_pagess');
 // app.use('/api/ogun-pages', ogunPagesRouter);
@@ -109,7 +110,7 @@ app.get('/api/tables', async (req, res) => {
     const key = `Tables_in_${sequelize.config.database}`;
     const tableNames = tables
       .map(row => row[key])
-      .filter(name => name !== 'ogun_pages');
+      .filter(name => name !== 'ogun_pages' && name !== 'OgunPage'); 
     res.json(tableNames);
   } catch (err) {
     console.error('Error fetching tables:', err);
@@ -122,7 +123,7 @@ app.post('/api/select-table', async (req, res) => {
   const tableName = req.body.tableName;
   if (!tableName) return res.status(400).send("No table name provided");
 
-  if (tableName === 'ogun_pages') {
+  if (tableName === 'ogun_pages' || tableName === 'OgunPage') {
     return res.status(404).send("Table not found");
   }
 
@@ -133,7 +134,7 @@ app.post('/api/select-table', async (req, res) => {
     // filter out ogun_pages from the tables list
     const filteredTables = tables
       .map(row => row[key])
-      .filter(name => name !== 'ogun_pages');
+      .filter(name => name !== 'ogun_pages' && name !== 'OgunPage');
 
     const tableExists = filteredTables.some(row => row[key] === tableName);
     if (!tableExists) return res.status(404).send("Table not found");
@@ -198,7 +199,7 @@ app.post('/api/delete-table', async (req, res) => {
   // filter out ogun_pages from the tables list
   const filteredTables = tables
     .map(row => row[key])
-    .filter(name => name !== 'ogun_pages');
+    .filter(name => name !== 'ogun_pages' && name !== 'OgunPage');
 
   const tableExists = filteredTables.some(row => row[key] === tableName);
   if (!tableExists) return res.status(404).send("Table not found");
