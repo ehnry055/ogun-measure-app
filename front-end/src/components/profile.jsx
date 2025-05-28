@@ -26,10 +26,17 @@ const Profile = () => {
     }
   }, [isAuthenticated, getAccessTokenSilently]);
 
+  const getUserRole = () => {
+    if (permissions.includes('adminView') || permissions.includes('admin')) {
+      return 'Admin';
+    } else if (permissions.includes('registeredView')) {
+      return 'Registered';
+    } else {
+      return 'Guest';
+    }
+  };
+
   const styles = {
-    content: {
-      padding: "0"
-    },
 
     container: {
       minHeight: '100vh',
@@ -270,6 +277,62 @@ const Profile = () => {
           </div>
 
           {/* Access Level Section */}
+
+{/* 
+          <div style={styles.accessCard}>
+            <div style={styles.sectionHeader}>
+              <div style={styles.iconContainer}>
+                <i className="fas fa-shield-alt" style={{fontSize: '2rem', color: '#fed7aa'}}></i>
+              </div>
+              <h2 style={styles.sectionTitle}>Access Level</h2>
+            </div>
+
+            {permissions.length > 0 ? (
+              <div style={styles.permissionsGrid}>
+                {permissions.map((perm, index) => {
+                  let displayText = perm;
+                  if (perm === 'adminView') {
+                    displayText = 'adminView';
+                  } else if (perm === 'registeredView') {
+                    displayText = 'registeredView';
+                  } 
+
+                  return (
+                    <div 
+                      key={index}
+                      style={{
+                        ...styles.permissionCard,
+                        ...(hoveredCard === index ? styles.permissionCardHover : {})
+                      }}
+                      onMouseEnter={() => setHoveredCard(index)}
+                      onMouseLeave={() => setHoveredCard(null)}
+                    >
+                      <div style={styles.permissionContent}>
+                        <div style={styles.permissionIcon}>
+                          <i className="fas fa-check-circle" style={{color: '#fed7aa'}}></i>
+                        </div>
+                        <div>
+                          <p style={styles.permissionText}>
+                            {displayText.replace(/([A-Z])/g, ' $1').trim()}
+                          </p>
+                          <p style={styles.permissionStatus}>Active</p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div style={styles.emptyState}>
+                <div style={styles.emptyIcon}>
+                  <i className="fas fa-shield-alt" style={{fontSize: '2rem', color: 'rgba(255, 255, 255, 0.5)'}}></i>
+                </div>
+                <p style={{color: 'rgba(255, 255, 255, 0.7)', fontSize: '1.125rem', margin: '0'}}>No permissions assigned</p>
+                <p style={{color: 'rgba(255, 255, 255, 0.5)', fontSize: '0.875rem', marginTop: '8px'}}>Contact your administrator for access</p>
+              </div>
+            )}
+          </div> */}
+
           <div style={styles.accessCard}>
             <div style={styles.sectionHeader}>
               <div style={styles.iconContainer}>
@@ -326,7 +389,7 @@ const Profile = () => {
               <div style={styles.statLabel}>Status</div>
             </div>
             <div style={styles.statCard}>
-              <div style={styles.statNumber}>Admin</div>
+              <div style={styles.statNumber}>{getUserRole()}</div>
               <div style={styles.statLabel}>Role Level</div>
             </div>
           </div>
@@ -337,48 +400,5 @@ const Profile = () => {
 };
 
 
-
-
-
-// const Profile = () => {
-//   console.log("test");
-//   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
-//   const [permissions, setPermissions] = useState([]);
-
-//   useEffect( () => { 
-//     const getPermissions = async () => {
-//         try {
-//             const token = await getAccessTokenSilently();
-//             const decoded = jwtDecode(token);
-//             const perms = decoded.permissions;
-//             setPermissions(perms);
-//         } catch (error) {
-//             console.error(error);
-//         }
-//     }
-//     if(isAuthenticated) {
-//         getPermissions();
-//     }
-
-//   }, [isAuthenticated, getAccessTokenSilently]);
-
-  
-//   return (
-//     isAuthenticated && (
-//       <article className="column">
-//         {user?.picture && <img src={user.picture} alt={user?.name} />}
-//         <h2>{user?.name}</h2>
-//         <h1>Access Level: </h1>
-//         <ul>
-//           {permissions.map((perm, index) => (
-//             <li key={index}>{perm}</li>
-//           ))}
-//         </ul>
-
-//       </article>
-//     )
-    
-//   );
-// };
 
 export default Profile;
