@@ -18,7 +18,7 @@ const ChangeDatabasePage = () => {
   //AdminRole check
   const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
   const navigate = useNavigate();
-  const [isAdmin, setIsAdmin] = useState(() => {
+  const [isAuthorized, setIsAuthorized] = useState(() => {
     const initialState = false;
     return initialState;
   });
@@ -39,7 +39,7 @@ const ChangeDatabasePage = () => {
           navigate("/unauthorized");
         }
         else {
-          setIsAdmin(true);
+          setIsAuthorized(true);
         }
       } catch (error) {
         console.error('Error checking permissions:', error);
@@ -72,10 +72,10 @@ const ChangeDatabasePage = () => {
     localStorage.setItem('columnPresets', JSON.stringify(updatedPresets));
   };  
 
-  if(!isAuthenticated || isLoading || !isAdmin) {
+  if(!isAuthenticated || isLoading || !isAuthorized) {
     console.log(!isAuthenticated);
     console.log(isLoading);
-    console.log(!isAdmin);
+    console.log(!isAuthorized);
     return null;
   }
 
