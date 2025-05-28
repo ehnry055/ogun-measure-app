@@ -1,19 +1,49 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/DownloadDatabasePage.css'; 
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
-import Token from "../components/token"
-import { useState, useEffect } from 'react';
 
 const EditUsers = () => {
+  const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
+  const navigate = useNavigate();
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [users, setUsers] = useState([]);
 
-  //fetch users from auth0
+  // Admin role check
+  useEffect(() => {
+    const checkPermissions = async () => {
+      try {
+        const token = await getAccessTokenSilently();
+        const decodedToken = jwtDecode(token);
+        const hasPermission = decodedToken.permissions && 
+                            decodedToken.permissions.includes("adminView");
+
+        if (!hasPermission) {
+          navigate("/unauthorized");
+        } else {
+          setIsAdmin(true);
+        }
+      } catch (error) {
+        console.error('Error checking permissions:', error);
+        navigate("/unauthorized");
+      }
+    };
+
+    if (isAuthenticated) {
+      checkPermissions();
+    }
+  }, [isAuthenticated, getAccessTokenSilently, navigate]);
+
+  // Fetch users from auth0
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const token = await getAccessTokenSilently();
-        const response = await fetch('/api/admin/get-users');
+        const response = await fetch('/api/admin/get-users', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
 
         if (!response.ok) {
           throw new Error('Failed to fetch users');
@@ -26,68 +56,14 @@ const EditUsers = () => {
       }
     };
 
-    fetchUsers();
-  }, [getAccessTokenSilently]);
+    if (isAdmin) {
+      fetchUsers();
+    }
+  }, [isAdmin, getAccessTokenSilently]);
 
-
-  //AdminRole check
-  const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
-  const [isAdmin, setIsAdmin] = useState(() => {
-    const initialState = false;
-    return initialState;
-  });
-  const [users, setUsers] = useState([]);
-  
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const checkPermissions = async () => {
-      try {
-        const token = await getAccessTokenSilently();
-        console.log("Access token:", token); // Log the token for debugging
-        const decodedToken = jwtDecode(token);
-        console.log("Decoded token:", decodedToken);
-
-        const hasPermission = decodedToken.permissions && decodedToken.permissions.includes("adminView");
-        console.log("Has permission:", hasPermission);
-
-        if (!hasPermission) {
-          console.log("User does not have the required permission");
-          navigate("/unauthorized");
-        }
-        else {
-          console.log("changed isAdmin to true");
-          setIsAdmin(true);
-        }
-      } catch (error) {
-        console.error('Error checking permissions:', error);
-        navigate("/unauthorized");
-      }
-    };
-    
-    checkPermissions();
-  }, [isAuthenticated, getAccessTokenSilently, navigate]);
-
-//  const token = getAccessTokenSilently();
-//  console.log(token);
-//  const decodedToken = jwtDecode(token);
-//  console.log(decodedToken);
-
-//  const hasPermission = decodedToken.permissions && decodedToken.permissions.includes('adminView');
-
-//  if (!hasPermission) {
-//    navigate("/unauthorized");
-//  }
-
-  if(!isAuthenticated || isLoading || !isAdmin) {
-    console.log('isAuthenticated ', !isAuthenticated);
-    console.log('isLoading ', isLoading);
-    console.log('isAdmin ', !isAdmin);
+  if (!isAuthenticated || isLoading || !isAdmin) {
     return null;
   }
-  
-  console.log("Authorized!");
-
 
   return (
     <div className="user-list-container">
