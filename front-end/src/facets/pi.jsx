@@ -112,7 +112,7 @@ function PI() {
       return (
         
         <div className="home-container">
-          <h2 className="about-title">Policing Incarceration</h2>
+          <h2 className="about-title">Policing and Incarceration</h2>
           <div className="about-content">
             <table>
               <thead>

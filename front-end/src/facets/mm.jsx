@@ -112,7 +112,7 @@ function MM() {
       return (
         
         <div className="home-container">
-          <h2 className="about-title">Media Marketing</h2>
+          <h2 className="about-title">Media and Marketing</h2>
           <div className="about-content">
             <table>
               <thead>

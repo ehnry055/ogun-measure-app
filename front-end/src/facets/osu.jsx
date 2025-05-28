@@ -112,7 +112,7 @@ function OSU() {
       return (
         
         <div className="home-container">
-          <h2 className="about-title">Occupational Segregation Unemployment</h2>
+          <h2 className="about-title">Occupational Segregation and Unemployment</h2>
           <div className="about-content">
             <table>
               <thead>
