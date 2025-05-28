@@ -34,7 +34,7 @@ const MapPage = () => {
             backgroundColor: '#8C68CD26',
           },
           title: {
-            text: 'Ogun Measure by County',
+            text: 'Ogun Measure by County: Total Structural Racism',
             align: 'left',
             style: {
                 color: "#ffffff"
