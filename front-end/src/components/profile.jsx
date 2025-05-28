@@ -1,8 +1,9 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState, useEffect } from 'react';
 import React from "react";
+import { jwtDecode } from 'jwt-decode';
 
-const profile = () => {
+const Profile = () => {
   console.log("test");
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const [permissions, setPermissions] = useState([]);
@@ -14,11 +15,11 @@ const profile = () => {
             const decoded = jwtDecode(token);
             const perms = decoded.permissions;
             setPermissions(perms);
-        } catch {
+        } catch (error) {
             console.error(error);
         }
     }
-    if(isAuthernticated) {
+    if(isAuthenticated) {
         getPermissions();
     }
 
@@ -43,4 +44,4 @@ const profile = () => {
   );
 };
 
-export default profile;
+export default Profile;
