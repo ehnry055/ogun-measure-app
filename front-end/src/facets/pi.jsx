@@ -48,17 +48,16 @@ function PI() {
 
     const initialData = [
         [
-          'Counties with a known revolts, race riots, uprisings, and other violent events between 1526-1969',
-          'Counties with a highway known to have dislocated a neighborhood with predominantly residents racialized as Black between 1990-2000',
-          'Counties with higher-than-the-median national occupied housing units with severe housing problems AND higher than residents racialized as Black between 2016-2020'
+          '',
+          '',
+          ''
         ],
         [
-          'Counties with a known history of redlining or sundowning practices before 1970',
-          'Counties where the proportion of residents racialized as White was greater than the national proportion for 2 or more of decennial years between 1970-2000',
-          'Counties where the proportion of residents racialized as White was greater than the national proportion for 2010 and 2020 or 2020 only'
+          '',
+          '',
+          ''
         ]
-      ];
-    
+      ];    
       const [tableData, setTableData] = useState(initialData);
       const [editedData, setEditedData] = useState(initialData);
       const [editMode, setEditMode] = useState(false);
