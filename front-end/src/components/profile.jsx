@@ -29,7 +29,7 @@ const Profile = () => {
   const styles = {
     container: {
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #7c3aed 0%, #6d28d9 50%, #1e40af 100%)',
+      background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #020617 100%)',
       padding: '24px'
     },
     maxWidth: {
