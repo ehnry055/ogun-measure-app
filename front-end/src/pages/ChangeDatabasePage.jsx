@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 
-const DownloadDatabasePage = () => {
+const ChangeDatabasePage = () => {
   const [entryLimit, setEntryLimit] = useState(10); // default: 10 entries
   const [selectedFile, setSelectedFile] = useState(null);
   const [tableName, setTableName] = useState();
@@ -314,4 +314,4 @@ const DownloadDatabasePage = () => {
   );
 };
 
-export default DownloadDatabasePage;
+export default ChangeDatabasePage;

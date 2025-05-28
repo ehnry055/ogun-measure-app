@@ -33,7 +33,10 @@ function Navbar() {
             <a class="nav-link" href="/viewdata">View Data</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/downloaddata">Download Data</a>
+            <a class="nav-link" href="/changedata">Upload/Delete Data</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/map">Map Display</a>
           </li>
           {/*
           <li class="nav-item">
