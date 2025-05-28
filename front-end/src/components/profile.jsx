@@ -1,4 +1,5 @@
-import { useAuth0, useEffect, useState } from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useState, useEffect } from 'react';
 import React from "react";
 
 const profile = () => {
