@@ -3,59 +3,64 @@ import { Pencil } from 'lucide-react';
 import { useAuth0 } from "@auth0/auth0-react";
 import '../styles/HomePage.css'; 
 import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
 
 function PI() {
     const pageId = "PolicingIncarceration"; 
     const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
-    const [isAdmin, setIsAdmin] = useState(() => {
+    const [isAuthorized, setIsAuthorized] = useState(() => {
         const initialState = false;
         return initialState;
-      });
+    });
     useEffect(() => {
-        const checkPermissions = async () => {
-          try {
-            const token = await getAccessTokenSilently();
-            console.log("Access token:", token); // Log the token for debugging
-            const decodedToken = jwtDecode(token);
-            console.log("Decoded token:", decodedToken);
-    
-            const hasPermission = decodedToken.permissions && decodedToken.permissions.includes("adminView");
-            console.log("Has permission:", hasPermission);
-    
-            if (!hasPermission) {
-              console.log("User does not have the required permission");
-            }
-            else {
-              console.log("changed isAdmin to true");
-              setIsAdmin(true);
-            }
-          } catch (error) {
-            console.error('Error checking permissions:', error);
+      const loadData = async () => {
+        try {
+          // runs for ALL users
+          const response = await axios.get(`/api/ogun-pages/load?pageId=${pageId}`);
+
+          if (response.data) {
+            setTableData(response.data);
+            setEditedData(response.data);
           }
-        };
-    
-        checkPermissions();
+        } catch (error) {
+          setTableData(initialData);
+          setEditedData(initialData);
+        }
+      }
 
+      const checkAdminPermissions = async () => {
+        if (!isAuthenticated) {
+          setIsAuthorized(false);
+          return;
+        }
+        try {
+          const token = await getAccessTokenSilently();
+          console.log("Access token:", token); // Log the token for debugging
+          const decodedToken = jwtDecode(token);
+          console.log("Decoded token:", decodedToken);
+          const hasPermission = decodedToken.permissions && decodedToken.permissions.includes("adminView");
+          console.log("Has permission:", hasPermission);
+          setIsAuthorized(hasPermission);
+        } catch (error) {
+          console.error("Permission error", error);
+        }
+      }
 
-        // fetch(`/api/ogun-pages/load?pageId=${pageId}`)
-        // .then(res => res.json())
-        // .then(data => setTableData(data))
-        // .catch(err => console.error(err));
-
-
-      }, [isAuthenticated, getAccessTokenSilently]);
+      loadData();
+      checkAdminPermissions();
+    }, [isAuthenticated, getAccessTokenSilently]);
 
 
     const initialData = [
         [
-          'Counties with a known revolts, race riots, uprisings, and other violent events between 1526-1969',
-          'Counties with a highway known to have dislocated a neighborhood with predominantly residents racialized as Black between 1990-2000',
-          'Counties with higher-than-the-median national occupied housing units with severe housing problems AND higher than residents racialized as Black between 2016-2020'
+          '',
+          '',
+          ''
         ],
         [
-          'Counties with a known history of redlining or sundowning practices before 1970',
-          'Counties where the proportion of residents racialized as White was greater than the national proportion for 2 or more of decennial years between 1970-2000',
-          'Counties where the proportion of residents racialized as White was greater than the national proportion for 2010 and 2020 or 2020 only'
+          '',
+          '',
+          ''
         ]
       ];
     
@@ -64,9 +69,9 @@ function PI() {
       const [editMode, setEditMode] = useState(false);
     
       const handleChange = (row, col, value) => {
-        const updated = [...editedData];
-        updated[row][col] = value;
-        setEditedData(updated);
+        setEditedData(prev => prev.map((r, rIdx) => 
+          rIdx === row ? r.map((c, cIdx) => cIdx === col ? value : c) : r
+        ));
       };
     
       const handleEdit = () => {
@@ -79,34 +84,41 @@ function PI() {
         setEditMode(false);
       };
     
-      const handleSave = () => {
-        if (window.confirm('Are you sure you want to save your changes?')) {
+      const handleSave = async () => {
+        if (!window.confirm('Save changes?')) return;
+
+        try {
+          const token = await getAccessTokenSilently();
+          
+          await axios.post('/api/ogun-pages/save', 
+            { pageId, tableData: editedData },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
+              }
+            }
+          );
+
           setTableData(editedData);
           setEditMode(false);
+          alert("Changes saved successfully!");
+        } catch (error) {
+          console.error('Save failed:', error);
+          alert("Error saving changes to database");
         }
-
-        // fetch('/api/ogun-pages/save', {
-        //     method: 'POST',
-        //     headers: {
-        //       'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({ pageId, tableData })
-        //   })
-        //     .then(res => res.ok ? alert("Saved") : alert("Failed"))
-        //     .catch(err => alert("Error saving data"));
-        
       };
     
       return (
         
         <div className="home-container">
-          <h2 className="about-title">Policing and Incarceration</h2>
+          <h2 className="about-title">Policing Incarceration</h2>
           <div className="about-content">
             <table>
               <thead>
                 <tr>
                   <th class="table-header-edit">
-                  {isAdmin && (
+                  {isAuthorized && (
                     <div className="admin-controls" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                         {!editMode ? (
                         <button onClick={handleEdit} className="edit-icon-btn">

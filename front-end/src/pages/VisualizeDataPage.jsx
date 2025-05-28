@@ -6,7 +6,7 @@ import '../styles/DataPage.css';
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 
-const DataPage = () => {
+const VisualizeDataPage = () => {
   const [isCompareMode, setIsCompareMode] = useState(false);
   const { isAuthenticated, user, loginWithRedirect, logout } = useAuth0();
   const navigate = useNavigate();
@@ -118,4 +118,4 @@ const highstock = {
   );
 };
 
-export default DataPage;
+export default VisualizeDataPage;

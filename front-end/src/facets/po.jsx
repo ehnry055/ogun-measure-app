@@ -54,14 +54,14 @@ function PO() {
 
     const initialData = [
         [
-          'Counties where the value of all farmland/buildings owned by people racialized as Colored were less than 75% the value of all farmland/buildings owned by people racialized as White in 1930',
-          'Counties where there is greater house value for properties owned by people racialized as White compared to people racialized as Black in 1980',
-          'Counties with an anti-ski masklaw and/or a Crown Act law'
+          '',
+          '',
+          ''
         ],
         [
-          'Counties where the proportion of farm owners racialized as White was above the national proportion of residents racialized as White in 1930',
-          'Counties where the owneroccupied units by residents racialized as Black decreased by 1% or more from 1990 to 2000',
-          'Counties where the average proportion of residents racialized as Black denied a home loan is above the national average, from 2010 to 2017'
+          '',
+          '',
+          ''
         ]
       ];
     

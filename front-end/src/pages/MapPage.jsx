@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Highcharts from 'highcharts';
+import Highcharts, { color } from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import HighchartsMapModule from 'highcharts/modules/map';
 import mapData from '@highcharts/map-collection/countries/us/us-all-all.topo.json';
@@ -30,11 +30,15 @@ const MapPage = () => {
         const chartOptions = {
           chart: {
             map: mapData,
-            height: '80%'
+            height: '80%',
+            backgroundColor: '#8C68CD26',
           },
           title: {
-            text: 'Ogun Measure by County',
-            align: 'left'
+            text: 'Ogun Measure by County: Total Structural Racism',
+            align: 'left',
+            style: {
+                color: "#ffffff"
+            }
           },
           accessibility: {
             description: 'Demo showing a large dataset.'
@@ -43,7 +47,7 @@ const MapPage = () => {
             layout: 'vertical',
             align: 'right',
             margin: 0,
-            backgroundColor: 'rgba(140, 104, 205, 0.15)'
+            backgroundColor: '#8C68CD26'
           },
           mapNavigation: {
             enabled: true
@@ -97,7 +101,7 @@ const MapPage = () => {
   }, []);
 
   return (
-    <div>
+    <div style={{ width: '80%', height: '400px', margin: '0 auto' }}>
       {options ? (
         <HighchartsReact
           highcharts={Highcharts}
