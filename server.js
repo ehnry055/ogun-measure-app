@@ -388,7 +388,7 @@ app.get('/api/ogun-pages/load', async (req, res) => {
 });
 
   //email sending funtions
-  const sendEmail = ({ email, role, affiliation, funding, intention, share, when, area, target, data }) => {
+  const sendEmail = ({ email, name, role, affiliation, funding, intention, share, when, area, target, data }) => {
     console.log("Sending email with the following data:")
     return new Promise((resolve, reject) => {
       const transporter = nodemailer.createTransport({
@@ -404,9 +404,10 @@ app.get('/api/ogun-pages/load', async (req, res) => {
       const sendMailData = {
         from: process.env.EMAIL_USER, // Your verified email address
         to: process.env.EMAIL_USER, // Send the email to yourself
-        subject: `Request for Data Access by ${email}`,
+        subject: `Request for Data Access by ${name}`,
         html: `
-          <p>Name: ${email}</p>
+          <p>Name: ${name}</p>
+          <p>Email: ${email}</p>
           <p>Role: ${role}</p>
           <p>Affiliation: ${affiliation}</p>
           <p>Funding Source: ${funding}</p>
@@ -425,7 +426,8 @@ app.get('/api/ogun-pages/load', async (req, res) => {
         subject: "Confirmation of Data Access Request",
         html: `
           <p>Thank you for your request for data access.</p>
-          <p>Name: ${email}</p>
+          <p>Name: ${name}</p>
+          <p>Email: ${email}</p>
           <p>Role: ${role}</p>
           <p>Affiliation: ${affiliation}</p>
           <p>Funding Source: ${funding}</p>

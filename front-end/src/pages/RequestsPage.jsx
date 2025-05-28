@@ -7,7 +7,7 @@ import InfoPopup from '../components/InfoPopup';
 
 
 const RequestsPage = () => {
-  const [email, setEmail] = useState();
+  const [name, setName] = useState();
   const [role, setRole] = useState();
   const [affiliation, setAffiliation] = useState();
   const [funding, setFunding] = useState();
@@ -17,14 +17,16 @@ const RequestsPage = () => {
   const [area, setArea] = useState();
   const [target, setTarget] = useState();
   const [data, setData] = useState();
-  const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
+  const { user, isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
 
   const sendMail = async () => {
     try {
       const token = await getAccessTokenSilently();
+      const email = user.email;
       await axios.get("/api/user/send-email", {
         params: {
           email,
+          name,
           role,
           affiliation,
           funding,
@@ -54,8 +56,8 @@ const RequestsPage = () => {
 
       <input
         type="text"
-        placeholder="Email"
-        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Name"
+        onChange={(e) => setName(e.target.value)}
       />
       <br />
       <textarea
