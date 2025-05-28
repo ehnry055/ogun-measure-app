@@ -50,7 +50,8 @@ const RequestsPage = () => {
       <div className='form-container'>
       <h2 className="about-title">Request Form 
         <InfoPopup>
-          text
+          To request Registered User permissions, fill out the fields and click send email. This will send an email to an admin with the inputted information. An email will also be sent to the email address of the current user account.
+          Registered Users will be able to access the Upload/Delete Data page for changing data. 
         </InfoPopup>
       </h2>
 
