@@ -303,7 +303,7 @@ const DownloadDatabasePage = () => {
       <div className="control-section">
         <h2 className="section-title">Database Controls</h2>
         <div className="controls">
-          <input type="file" accept=".csv" onChange={(e) => setSelectedFile(e.target.files[0])}/>
+          <input className="inputcsv" type="file" accept=".csv" onChange={(e) => setSelectedFile(e.target.files[0])}/>
           <button className="upload-button" onClick={handleFileUpload}> Upload to Database </button>
           <button className="download-button" onClick={handleDownload}> Download as CSV </button>
           <button className="select-button" onClick={handleSelectTable}> Select Table </button>
