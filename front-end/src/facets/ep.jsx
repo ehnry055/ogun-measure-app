@@ -8,7 +8,7 @@ import axios from 'axios';
 function EP() {
     const pageId = "EnvironmentalPollution"; 
     const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
-    const [isAdmin, setIsAdmin] = useState(() => {
+    const [isAuthorized, setIsAuthorized] = useState(() => {
         const initialState = false;
         return initialState;
       });

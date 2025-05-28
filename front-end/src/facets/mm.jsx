@@ -8,7 +8,7 @@ import axios from 'axios';
 function MM() {
     const pageId = "MediaMarketing"; 
     const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
-    const [isAdmin, setIsAdmin] = useState(() => {
+    const [isAuthorized, setIsAuthorized] = useState(() => {
         const initialState = false;
         return initialState;
       });

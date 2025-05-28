@@ -8,7 +8,7 @@ import axios from 'axios';
 function GR() {
     const pageId = "GovernmentRepresentation"; 
     const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
-    const [isAdmin, setIsAdmin] = useState(() => {
+    const [isAuthorized, setIsAuthorized] = useState(() => {
         const initialState = false;
         return initialState;
       });
