@@ -70,24 +70,22 @@ const EditUsers = () => {
     return null;
   }
   
-  const user2 = userData[0];
+  const users = userData[0]
 
-  console.log("Users:", user2);
-  console.log("API Response: User2", {
-    type: typeof user2,
-    data: user2,
-    isArray: Array.isArray(user2)
+  console.log("Users:", users);
+  console.log("API Response: Users", {
+    type: typeof users,
+    data: users,
+    isArray: Array.isArray(users)
   });
-
-  const users = userData;
 
 
   // Extract specific fields from large objects
   const extractUserData = (users) => {
     return users.map(user => ({
-      name: user.name,
-      email: user.email || 'No email',
-      lastLogged: user.last_login,
+      name: user?.name,
+      email: user?.email || 'No email',
+      lastLogged: user?.last_login,
       verified: user.email_verified !== undefined ? user.email_verified : null
     }));
   };
