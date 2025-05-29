@@ -22,23 +22,25 @@ class Auth0ManagementService {
         }
     }
 
-    /*
+    
     async deleteUser(userId) {
-        
+      try {
+        return await this.management.users.delete({ id: userId });
+      }  catch (error) {
+        console.error('Auth0 Management Error:', error);
+        throw new Error('Failed to delete user from Auth0');
+      }
     }
 
-    // Add to auth0Management.service.js
-    async function verifyRolesExist(roles) {
+    async getUserRoles(userId) {
         try {
-            const existingRoles = await this.management.roles.getAll();
-            const existingRoleNames = existingRoles.map(role => role.name);
-            
-            return roles.every(role => existingRoleNames.includes(role));
+            return await this.management.users.getRoles({ id: userId });
         } catch (error) {
-            console.error('Error verifying roles:', error);
-            return false;
+            console.error('Auth0 Management Error:', error);
+            throw new Error('Failed to fetch user roles from Auth0');
         }
     }
+    /*
 
     // Then update the assignRolesToUser method:
     async assignRolesToUser(userId, roles) {

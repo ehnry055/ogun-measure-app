@@ -70,8 +70,6 @@ const EditUsers = () => {
     return null;
   }
 
-  const users = userData[0];
-
   return (
     <div className="user-list-container">
       <h1>User Management</h1>
