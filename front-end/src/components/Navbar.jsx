@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/Navbar.css'; 
 import '../styles/LoginLogout.css'; 
 import { useAuth0 } from '@auth0/auth0-react';
@@ -15,7 +15,6 @@ import { jwtDecode } from 'jwt-decode';
 function Navbar() {
   const { isLoading, error, user, loginWithRedirect, logout, getAccessTokenSilently, isAuthenticated } = useAuth0();
   //AdminRole check
-  const navigate = useNavigate();
   const [isAuthorized, setIsAuthorized] = useState(() => {
     const initialState = false;
     return initialState;
