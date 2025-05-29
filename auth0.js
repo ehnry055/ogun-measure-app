@@ -75,7 +75,7 @@ class Auth0ManagementService {
         data : data
         };
 
-        axios.request(config)
+        const response = await axios.request(config)
         .then((response) => {
             console.log(JSON.stringify(response.data));
         })
@@ -104,7 +104,7 @@ class Auth0ManagementService {
         data : data
         };
 
-        axios.request(config)
+        const response = await axios.request(config)
         .then((response) => {
             console.log(JSON.stringify(response.data));
         })
