@@ -49,12 +49,13 @@ const EditUsers = () => {
 
         const data = response.data
         const dataArray = Object.values(data);
-        setUserData(data);
+        setUserData(dataArray);
         console.log("API Response:", {
           type: typeof response.data,
           data: response.data,
           isArray: Array.isArray(response.data)
       });
+        console.log("User Data:", dataArray);
       } catch (error) {
         console.error('Error fetching users:', error);
       }
