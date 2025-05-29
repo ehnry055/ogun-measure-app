@@ -19,6 +19,25 @@ const RequestsPage = () => {
   const [data, setData] = useState();
   const { user, isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
 
+  // Prefill form from URL parameters
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      
+      // Set each field if URL parameter exists
+      setName(params.get('name') || '');
+      setRole(params.get('role') || '');
+      setAffiliation(params.get('affiliation') || '');
+      setFunding(params.get('funding') || '');
+      setIntention(params.get('intention') || '');
+      setShare(params.get('share') || '');
+      setWhen(params.get('when') || '');
+      setArea(params.get('area') || '');
+      setTarget(params.get('target') || '');
+      setData(params.get('data') || '');
+    }
+  }, []);
+
   const sendMail = async () => {
     try {
       const token = await getAccessTokenSilently();
@@ -43,6 +62,27 @@ const RequestsPage = () => {
       console.error('error', error);
     }
   };
+
+
+// Generate prefilled URL for presentation
+const generateDemoUrl = () => {
+  const baseUrl = window.location.origin + window.location.pathname;
+  const params = new URLSearchParams();
+  
+  params.set('name', 'Dr. Jane Smith');
+  params.set('role', 'Faculty Researcher');
+  params.set('affiliation', 'Stanford University');
+  params.set('funding', 'NSF Grant #12345');
+  params.set('intention', 'Academic publication and policy recommendations');
+  params.set('share', 'Conference presentation in Q3 2024, followed by public report');
+  params.set('when', 'December 2024');
+  params.set('area', 'California Bay Area');
+  params.set('target', 'Low-income urban communities');
+  params.set('data', 'Python with Pandas and R');
+  
+  return `${baseUrl}?${params.toString()}`;
+};
+
 
 
   return (    
