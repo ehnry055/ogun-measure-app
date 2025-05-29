@@ -48,12 +48,6 @@ const MapPage = () => {
             
           },
 
-          text: {
-            style: {
-              color: 'white'
-            },
-          },
-
           accessibility: {
             description: 'Demo showing a large dataset.'
           },
@@ -63,18 +57,24 @@ const MapPage = () => {
             margin: 0,
             backgroundColor: '#EEEEEE26',
             borderRadius: 10,
-            border: '1px solid white'
+            borderColor: 'white',
+            borderWidth: 2
           },
           mapNavigation: {
             enabled: true
           },
           colorAxis: {
+            itemStyle: {
+              color: 'white',
+              fontWeight: 'bold'
+            },
+            color: 'white',
             min: 0,
             max: 25,
             tickInterval: 5,
             stops: [[0, '#F1EEF6'], [0.65, '#900037'], [1, '#500007']],
             labels: {
-              format: '{value}%'
+              format: '{value}'
             }
           },
           plotOptions: {
