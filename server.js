@@ -475,7 +475,7 @@ app.get('/api/ogun-pages/load', async (req, res) => {
 
 // auth0 management api
 
-app.get("/api/admin/get-users",  async (req, res) => {
+app.get("/admin/get-users",  async (req, res) => {
   try {
     const userList = await auth0Management.getAllUsers();
     res.json(userList);
