@@ -34,7 +34,7 @@ const ChangeDatabasePage = () => {
         const decodedToken = jwtDecode(token);
         console.log("Decoded token:", decodedToken);
 
-        const hasPermission = decodedToken.permissions && decodedToken.permissions.includes("adminView");
+        const hasPermission = decodedToken.permissions && decodedToken.permissions.includes("adminView") || decodedToken.permissions.includes("registeredView");
         console.log("Has permission:", hasPermission);
 
         if (!hasPermission) {

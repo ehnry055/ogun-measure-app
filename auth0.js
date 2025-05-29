@@ -58,10 +58,10 @@ class Auth0ManagementService {
         return response.data.access_token;
     }
 
-    async assignAdmin(userId) {
+    async assignRegistered(userId) {
         let data = JSON.stringify({
             "roles": [
-                "rol_XQpYexn0DuyyZRll"
+                "rol_s0gbfVEc1ktAU3Lv"
             ]   
         });
         const token = await this.getToken();
@@ -86,11 +86,11 @@ class Auth0ManagementService {
         });
     }
 
-    async removeAdmin(userId) {
+    async removeRegistered(userId) {
         console.log('removing');
         let data = JSON.stringify({
             "roles": [
-                "rol_XQpYexn0DuyyZRll"
+                "rol_s0gbfVEc1ktAU3Lv"
             ]   
         });
 

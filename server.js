@@ -527,31 +527,31 @@ app.get("/api/admin/delete-user",  async (req, res) => {
   }
 });
 
-app.post("/api/admin/assign-admin",  async (req, res) => {
+app.post("/api/admin/assign-registered",  async (req, res) => {
   try {
     console.log("add");
     const { userId } = req.body;
     if (!userId) {
       return res.status(400).send('User ID is required');
     }
-    const assignAdmin = await auth0Management.assignAdmin(userId);
-    res.json(assignAdmin);
+    const assignRegistered = await auth0Management.assignRegistered(userId);
+    res.json(assignRegistered);
   } catch (error) {
     console.error('Error fetching users:', error);
     res.status(500).send('Error fetching users');
   }
 });
 
-app.delete("/api/admin/remove-admin",  async (req, res) => {
+app.delete("/api/admin/remove-registered",  async (req, res) => {
   console.log("remove");
   try {
-    console.log("removig admin");
+    console.log("removig reg");
     const { userId } = req.query;
     if (!userId) {
       return res.status(400).send('User ID is required');
     }
-    const removeAdmin = await auth0Management.removeAdmin(userId);
-    res.json(removeAdmin);
+    const removeRegistered = await auth0Management.removeRegistered(userId);
+    res.json(removeRegistered);
   } catch (error) {
     console.error('Error fetching users:', error);
     res.status(500).send('Error fetching users');

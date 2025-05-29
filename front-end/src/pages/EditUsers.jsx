@@ -218,12 +218,12 @@ const EditUsers = () => {
                       )}
                     </td>
                     <td>
-                    {user.roles === 'admin_role' ? (
+                    {user.roles === 'registered_role' ? (
                       <button
                         onClick={async () => {
-                          console.log("removing admin");
+                          console.log("removing registered");
                           try {
-                            const response = await axios.delete('/api/admin/remove-admin', {
+                            const response = await axios.delete('/api/admin/remove-registered', {
                               params: { userId: user.userId }
                             });
                             alert('Success: ');
@@ -241,13 +241,13 @@ const EditUsers = () => {
                           marginRight: '8px'
                         }}
                       >
-                        Remove Admin
+                        Remove Registered
                       </button>
                     ) : (
                       <button
                         onClick={async () => {
                           try {
-                            const response = await axios.post('/api/admin/assign-admin', 
+                            const response = await axios.post('/api/admin/assign-registered', 
                               { userId: user.userId }
                             );
                             alert('Success: ');
@@ -265,7 +265,7 @@ const EditUsers = () => {
                           marginRight: '8px'
                         }}
                       >
-                        Assign Admin
+                        Assign Registered
                       </button>
                     )}/
                       <button
