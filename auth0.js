@@ -67,7 +67,7 @@ class Auth0ManagementService {
         let config = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: `https:// ${process.env.Auth0_M2M_AUDIENCE}users/${userId}/roles`,
+            url: `https://${process.env.Auth0_M2M_AUDIENCE}users/${userId}/roles`,
             headers: { 
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
