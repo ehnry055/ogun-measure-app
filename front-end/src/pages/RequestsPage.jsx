@@ -39,15 +39,15 @@ const RequestsPage = () => {
 
     const demoUrl = `${window.location.origin}${window.location.pathname}?${new URLSearchParams({
       name: 'Dr. Jane Smith',
-      role: 'Faculty Researcher',
-      affiliation: 'Stanford University',
-      funding: 'NSF Grant #12345',
-      intention: 'Academic publication',
-      share: 'Conference presentation in Q3 2024',
-      when: 'December 2024',
-      area: 'California Bay Area',
-      target: 'Low-income urban communities',
-      data: 'Python with Pandas and R'
+      role: 'Researcher',
+      affiliation: 'National Institutes of Health (NIH)',
+      funding: 'NIH Intramural Research Program',
+      intention: 'Peer-reviewed publication and clinical guidelines',
+      share: 'NIH website and annual report (2025)',
+      when: 'December 2025',
+      area: 'National (US-wide)',
+      target: 'Patients with Alzheimer\'s in Marginalized Communities',
+      data: 'Bioinformatics tools'
     }).toString()}`;
   
     console.log('Demo prefilled URL:', demoUrl);
