@@ -69,12 +69,12 @@ const EditUsers = () => {
   if (!isAuthenticated || isLoading || !isAdmin) {
     return null;
   }
-  firstelement = userData[0];
+  const firstelement = userData[0];
   console.log("Users:", firstelement);
   console.log("API Response:", {
     type: typeof firstelement,
-    data: element,
-    isArray: Array.isArray(element)
+    data: firstelement,
+    isArray: Array.isArray(firstelement)
   });
 
 
