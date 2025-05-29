@@ -40,7 +40,6 @@ import EP from './facets/ep';
 import MM from './facets/mm';
 
 
-import SV from './pages/sv';
 import OgunMeasure from './pages/OgunMeasure';
 import Gateway from './pages/Gateway';
 
@@ -75,7 +74,6 @@ function App() {
             <Route path="/EnvironmentalPollution" element={<EP />} />
             <Route path="/MediaMarketing" element={<MM />} />
 
-            <Route path="/sv" element={<SV />} />
             <Route path="/ogun" element={<PrivateRoute Component = {OgunMeasure} />} />
             <Route path="/gateway" element={<Gateway/>} />
             <Route path="/unauthorized" element={<UnAuthorized />} />
