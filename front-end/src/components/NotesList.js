@@ -4,13 +4,21 @@ import axios from 'axios';
 const NotesList = ({ limit, selectedColumns, onToggleColumn, stateFilter }) => {
   const [notes, setNotes] = useState([]);
   const [columns, setColumns] = useState([]);
-  const [filteredNotes, setFilteredNotes] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       try {
+        // Build query parameters
+        const params = new URLSearchParams();
+        params.append('limit', limit);
+        if (stateFilter) {
+          params.append('state', stateFilter); // send state filter to backend
+        }
+        
         const [notesRes, columnsRes] = await Promise.all([
-          axios.get(`/api/notes?limit=${limit}`),
+          axios.get(`/api/notes?${params.toString()}`),
           axios.get(`/api/columns`)
         ]);
         
@@ -22,71 +30,62 @@ const NotesList = ({ limit, selectedColumns, onToggleColumn, stateFilter }) => {
         );
       } catch (error) {
         console.error('Error fetching data:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
     
     fetchData();
-  }, [limit]);
+  }, [limit, stateFilter]);  // re-fetch when limit or filter changes
 
-  // filter notes when stateFilter changes
-  useEffect(() => {
-    if (!stateFilter) {
-      setFilteredNotes(notes);
-      return;
-    }
-
-    const filterValue = stateFilter.toLowerCase();
-    const filtered = notes.filter(note => 
-      note.STATE && note.STATE.toLowerCase().includes(filterValue)
-    );
-    
-    setFilteredNotes(filtered);
-  }, [notes, stateFilter]);
-
-  useEffect(() => {
-    setFilteredNotes(notes);
-  }, [notes]);
+  if (isLoading) {
+    return <div>Loading data...</div>;
+  }
 
   return (
     <div className="table-container">
-      <table className="styled-table">
-        <thead>
-          <tr>
-            {columns.map(column => (
-              <th 
-                key={column} 
-                className={selectedColumns.has(column) ? 'selected' : ''}
-              >
-                <div 
-                  className="column-header" 
-                  onClick={() => onToggleColumn(column)}
-                >
-                  <input 
-                    type="checkbox" 
-                    checked={selectedColumns.has(column)} 
-                    readOnly 
-                  />
-                  {column}
-                </div>
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {filteredNotes.map(entry => (
-            <tr key={entry.GISJOIN}>
+      {notes.length === 0 ? (
+        <div>No matching records found</div>
+      ) : (
+        <table className="styled-table">
+          <thead>
+            <tr>
               {columns.map(column => (
-                <td 
+                <th 
                   key={column} 
                   className={selectedColumns.has(column) ? 'selected' : ''}
                 >
-                  {entry[column]}
-                </td>
+                  <div 
+                    className="column-header" 
+                    onClick={() => onToggleColumn(column)}
+                  >
+                    <input 
+                      type="checkbox" 
+                      checked={selectedColumns.has(column)} 
+                      readOnly 
+                    />
+                    {column}
+                  </div>
+                </th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {notes.map(entry => (
+              <tr key={entry.GISJOIN || entry.id || Math.random()}>
+                {columns.map(column => (
+                  <td 
+                    key={column} 
+                    className={selectedColumns.has(column) ? 'selected' : ''}
+                  >
+                    {entry[column]}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };

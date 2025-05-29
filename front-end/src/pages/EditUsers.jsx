@@ -3,12 +3,13 @@ import '../styles/DownloadDatabasePage.css';
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
 
 const EditUsers = () => {
   const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(false);
-  const [users, setUsers] = useState([]);
+  const [userData, setUserData] = useState([]);
 
   // Admin role check
   useEffect(() => {
@@ -40,18 +41,21 @@ const EditUsers = () => {
     const fetchUsers = async () => {
       try {
         const token = await getAccessTokenSilently();
-        const response = await axios.post('/api/admin/get-users', {
+        const response = await axios.get('/api/admin/get-users', {
           headers: {
             Authorization: `Bearer ${token}`
           }
         });
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch, response not ok');
-        }
-
-        const data = await response.json();
-        setUsers(data);
+        const data = response.data
+        const dataArray = Object.values(data);
+        setUserData(dataArray);
+        console.log("API Response:", {
+          type: typeof response.data,
+          data: response.data,
+          isArray: Array.isArray(response.data)
+      });
+        console.log("User Data:", dataArray);
       } catch (error) {
         console.error('Error fetching users:', error);
       }
@@ -74,20 +78,30 @@ const EditUsers = () => {
           <tr>
             <th>Name</th>
             <th>Email</th>
-            <th>User ID</th>
             <th>Last Login</th>
+            <th>Email Verified</th>
           </tr>
         </thead>
         <tbody>
-          {users.map((user) => (
-            <tr key={user.user_id}>
-              <td>{user.name || 'N/A'}</td>
-              <td>{user.email}</td>
-              <td className="user-id">{user.user_id}</td>
-              <td>
-                {user.last_login ? 
-                  new Date(user.last_login).toLocaleString() : 
-                  'Never logged in'}
+          {users.map((user, index) => (
+            <tr key={user.user_id || index} className="hover:bg-gray-50">
+              <td className="px-6 py-4 whitespace-nowrap">
+                <div>user.name</div>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <div>{user.email || 'No email'}</div>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <div>{user.last_login}</div>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                  user.email_verified 
+                    ? 'bg-green-100 text-green-800' 
+                    : 'bg-red-100 text-red-800'
+                  }`}>
+                  {user.email_verified ? 'Verified' : 'Unverified'}
+                </span>
               </td>
             </tr>
           ))}

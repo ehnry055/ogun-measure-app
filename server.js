@@ -17,6 +17,7 @@ const { Parser } = require('json2csv');
 const nodemailer = require('nodemailer');
 const auth0Management = require('./auth0');
 const { table } = require('console');
+const { Op } = require('sequelize');
 
 // const ogunPagesRouter = require('./ogun_pagess');
 // app.use('/api/ogun-pages', ogunPagesRouter);
@@ -225,12 +226,24 @@ app.post('/api/delete-table', async (req, res) => {
 app.get('/api/notes', async (req, res) => {
   try {
     const limit = parseInt(req.query.limit) || 20;
-    const notes = await DynamicEntry.findAll({
+    const state = req.query.state;
+    
+    const options = {
       limit,
-      attributes: { 
-        exclude: ['id'] // forcefully exclude 'id' from queries
-      }
-    });
+      attributes: { exclude: ['id'] }
+    };
+    
+    // add state filter if provided
+    if (state) {
+      options.where = {
+        STATE: {
+          [Op.like]: `%${state}%`
+        }
+      };
+    }
+
+    const notes = await DynamicEntry.findAll(options);
+    
     res.json(notes);
   } catch (err) {
     console.error('Error fetching notes:', err);
@@ -475,7 +488,7 @@ app.get('/api/ogun-pages/load', async (req, res) => {
 
 // auth0 management api
 
-app.get("/admin/get-users",  async (req, res) => {
+app.get("/api/admin/get-users",  async (req, res) => {
   try {
     const userList = await auth0Management.getAllUsers();
     res.json(userList);

@@ -4,6 +4,7 @@ import HighchartsReact from 'highcharts-react-official';
 import HighchartsMapModule from 'highcharts/modules/map';
 import mapData from '@highcharts/map-collection/countries/us/us-all-all.topo.json';
 import "../styles/MapPage.css";
+import InfoPopup from '../components/InfoPopup';
 
 // Initialize the map module
 HighchartsMapModule(Highcharts);
@@ -39,14 +40,12 @@ const MapPage = () => {
 
           },
           title: {
-            text: 'Ogun Measure by County: Total Structural Racism',
+            text: ' ',
             align: 'left',
             style: {
                 color: "#ffffff"
             },
-            tooltip: {
-              format: "This map displays a heatmap of all US counties based on the total structural racism score as calculated by the Ogun Measure. This value is determined by the cumulative value of all combinations of facets, pathways, and historical periods."
-            }
+            
           },
           accessibility: {
             description: 'Demo showing a large dataset.'
@@ -110,6 +109,15 @@ const MapPage = () => {
 
   return (
     <div className='map-display'>
+      <h1 className='map-title'>Ogun Measure by County: Total Structural Racism
+        <InfoPopup>
+          <p style={{ textAlign: 'left' , margin: '0 20px', fontSize: '22px', padding: '70px 0'}}>
+            This map displays a heatmap of all US counties based on the total structural racism score as calculated by the Ogun Measure. 
+            <brk />
+            This value is determined by the cumulative value of all combinations of facets, pathways, and historical periods.
+          </p>
+        </InfoPopup>
+      </h1>
       {options ? (
         <HighchartsReact
           highcharts={Highcharts}

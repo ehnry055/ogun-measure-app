@@ -11,6 +11,8 @@ const ViewDatabasePage = () => {
   const [entryLimit, setEntryLimit] = useState(20); // default: 20 entries
   const [selectedFile, setSelectedFile] = useState(null);
   const [tableName, setTableName] = useState("Default Table");
+
+  const [stateFilter, setStateFilter] = useState('');
   
   const [presets, setPresets] = useState([]);
   const [selectedColumns, setSelectedColumns] = useState(new Set());
@@ -143,6 +145,17 @@ const ViewDatabasePage = () => {
           />
         </div>
 
+        <div className="state-filter-container">
+          <label htmlFor="stateFilter">Filter by State:</label>
+          <input
+            id="stateFilter"
+            type="text"
+            placeholder="Enter state name"
+            value={stateFilter}
+            onChange={(e) => setStateFilter(e.target.value)}
+          />
+        </div>
+
         <div className="preset-controls">
           <button 
             className="preset-button save-preset"
@@ -223,6 +236,7 @@ Modern Times (2000-present) (Time Period 3)<br />
                   return newSet;
                 })}
                 currentTableName={tableName}
+                stateFilter={stateFilter}
               />
             </div>
           </div>
