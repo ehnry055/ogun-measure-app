@@ -95,57 +95,67 @@ const RequestsPage = () => {
       </h2>
 
       <input
-        type="text"
-        placeholder="Name"
-        onChange={(e) => setName(e.target.value)}
-      />
-      <br />
-      <textarea
-        placeholder="Role (e.g., Student, Postdoc, Faculty, Researcher, Policy Analyst, other)"
-        onChange={(e) => setRole(e.target.value)}
-      />
-      <br />
-      <textarea
-        placeholder="Affiliation (e.g., Academic, Government, Non-Profit, Private Sector, other)"
-        onChange={(e) => setAffiliation(e.target.value)}
-      />
-      <br />
-      <textarea
-        placeholder="Funding Source (if applicable)"
-        onChange={(e) => setFunding(e.target.value)}
-      />
-      <br />
-      <textarea
-        placeholder="Data Use Intentions (e.g., Publication, Policy Report, Internal Analysis, other)"
-        onChange={(e) => setIntention(e.target.value)}
-      />
-      <br />
-      <textarea
-        placeholder="How and when will you share your findings with community members and organizations?"
-        onChange={(e) => setShare(e.target.value)}
-      />
-      <br />
-      <textarea
-        placeholder="When will you complete the final document based on this research?"
-        onChange={(e) => setWhen(e.target.value)}
-      />
-      <br />
-      <textarea
-        placeholder="Which geographic area of the US are you interested in exploring?"
-        onChange={(e) => setArea(e.target.value)}
-      />
-      <br />
-      <textarea
-        placeholder="Target Population"
-        onChange={(e) => setTarget(e.target.value)}
-      />
-      <br />
-      <textarea
-        placeholder="Data analysis program"
-        onChange={(e) => setData(e.target.value)}
-      />
-      <br />
-      <button class="send" onClick={sendMail}>Send Email</button>
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <br />
+        <textarea
+          placeholder="Role (e.g., Student, Postdoc, Faculty, Researcher, Policy Analyst, other)"
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
+        />
+        <br />
+        <textarea
+          placeholder="Affiliation (e.g., Academic, Government, Non-Profit, Private Sector, other)"
+          value={affiliation}
+          onChange={(e) => setAffiliation(e.target.value)}
+        />
+        <br />
+        <textarea
+          placeholder="Funding Source (if applicable)"
+          value={funding}
+          onChange={(e) => setFunding(e.target.value)}
+        />
+        <br />
+        <textarea
+          placeholder="Data Use Intentions (e.g., Publication, Policy Report, Internal Analysis, other)"
+          value={intention}
+          onChange={(e) => setIntention(e.target.value)}
+        />
+        <br />
+        <textarea
+          placeholder="How and when will you share your findings with community members and organizations?"
+          value={share}
+          onChange={(e) => setShare(e.target.value)}
+        />
+        <br />
+        <textarea
+          placeholder="When will you complete the final document based on this research?"
+          value={when}
+          onChange={(e) => setWhen(e.target.value)}
+        />
+        <br />
+        <textarea
+          placeholder="Which geographic area of the US are you interested in exploring?"
+          value={area}
+          onChange={(e) => setArea(e.target.value)}
+        />
+        <br />
+        <textarea
+          placeholder="Target Population"
+          value={target}
+          onChange={(e) => setTarget(e.target.value)}
+        />
+        <br />
+        <textarea
+          placeholder="Data analysis program"
+          value={data}
+          onChange={(e) => setData(e.target.value)}
+        />
+        <br />
+        <button className="send" onClick={sendMail}>Send Email</button>
       </div>
     </div>
   );
