@@ -43,15 +43,6 @@ class Auth0ManagementService {
       }
     }
 
-    async getUserRoles(userId) {
-        try {
-            return await this.management.users.getRoles({ id: userId });
-        } catch (error) {
-            console.error('Auth0 Management Error:', error);
-            throw new Error('Failed to fetch user roles from Auth0');
-        }
-    }
-
     async getToken() {
         const response = await axios.post(`https://${process.env.REACT_APP_AUTH0_domain}/oauth/token`, {
             client_id: process.env.Auth0_M2M_CLIENT_ID,
@@ -63,7 +54,7 @@ class Auth0ManagementService {
         });
 
         console.log(response.data);
-        return response.data.acces_token;
+        return response.data.access_token;
     }
 
     async assignAdmin(userId) {
