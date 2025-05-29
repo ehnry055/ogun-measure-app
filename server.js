@@ -514,7 +514,11 @@ app.get("/api/admin/get-user-roles",  async (req, res) => {
 
 app.get("/api/admin/remove-user",  async (req, res) => {
   try {
-    const removed = await auth0Management.deleteUser();
+    const { userId } = req.query;
+    if (!userId) {
+      return res.status(400).send('User ID is required');
+    }
+    const removed = await auth0Management.deleteUser(userId);
     res.json(removed);
   } catch (error) {
     console.error('Error fetching users:', error);
@@ -522,19 +526,27 @@ app.get("/api/admin/remove-user",  async (req, res) => {
   }
 });
 /*
-app.get("/api/admin/remove-admin",  async (req, res) => {
+app.get("/api/admin/assign-admin",  async (req, res) => {
   try {
-    const removed = await auth0Management.getAllUsers();
-    res.json(removed);
+    const { userId } = req.query;
+    if (!userId) {
+      return res.status(400).send('User ID is required');
+    }
+    const assignAdmin = await auth0Management.assignAdmin(userId);
+    res.json(assignAdmin);
   } catch (error) {
     console.error('Error fetching users:', error);
     res.status(500).send('Error fetching users');
   }
 });
 
-app.get("/api/admin/remove-registered",  async (req, res) => {
+app.get("/api/admin/remove-admin",  async (req, res) => {
   try {
-    const userList = await auth0Management.getAllUsers();
+    const { userId } = req.query;
+    if (!userId) {
+      return res.status(400).send('User ID is required');
+    }
+    const removeAdmin = await auth0Management.removeAdmin();
     res.json(userList);
   } catch (error) {
     console.error('Error fetching users:', error);

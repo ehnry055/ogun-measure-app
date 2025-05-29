@@ -77,7 +77,7 @@ const EditUsers = () => {
           });
           const rolesList = Object.values(roles.data);
           console.log(rolesList);
-          const roleName = {};
+          var roleName = {};
           if(rolesList[0].length === 0) {
             roleName = { name: 'guest_role' };
           }
@@ -211,6 +211,30 @@ const EditUsers = () => {
                       ) : (
                         <span>Unknown</span>
                       )}
+                    </td>
+                    <td>
+                      <button
+                        onClick={async () => {
+                          try {
+                            const response = await axios.get('/api/admin/delete-user', {
+                              params: { userId: user.userId }
+                            });
+                            alert('Success: ' + response.data);
+                          } catch (err) {
+                            alert('Error: ' + (err.response?.data || err.message));
+                          }
+                        }}
+                        style={{
+                          background: '#8C68CD',
+                          color: '#fff',
+                          border: 'none',
+                          borderRadius: '4px',
+                          padding: '4px 10px',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        Action
+                      </button>
                     </td>
                   </tr>
                 ))}
