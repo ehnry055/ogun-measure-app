@@ -95,7 +95,7 @@ const EditUsers = () => {
   if (!isAuthenticated || isLoading || !isAdmin) {
     return null;
   }
-  if(processedData || userData == null) {
+  if(processedData == null || userData == null) {
     return null;
   }
   return (

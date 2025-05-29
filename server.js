@@ -497,6 +497,37 @@ app.get("/api/admin/get-users",  async (req, res) => {
     res.status(500).send('Error fetching users');
   }
 });
+/*
+app.get("/api/admin/remove-user",  async (req, res) => {
+  try {
+    const removed = await auth0Management.deleteUser();
+    res.json(removed);
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).send('Error fetching users');
+  }
+});
+
+app.get("/api/admin/remove-admin",  async (req, res) => {
+  try {
+    const removed = await auth0Management.getAllUsers();
+    res.json(removed);
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).send('Error fetching users');
+  }
+});
+
+app.get("/api/admin/remove-registered",  async (req, res) => {
+  try {
+    const userList = await auth0Management.getAllUsers();
+    res.json(userList);
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).send('Error fetching users');
+  }
+});
+*/
 
 // Catch-all handler for any other requests
 app.get('*', (req, res) => {
