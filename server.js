@@ -529,6 +529,7 @@ app.get("/api/admin/delete-user",  async (req, res) => {
 
 app.post("/api/admin/assign-admin",  async (req, res) => {
   try {
+    console.log("add");
     const { userId } = req.body;
     if (!userId) {
       return res.status(400).send('User ID is required');
