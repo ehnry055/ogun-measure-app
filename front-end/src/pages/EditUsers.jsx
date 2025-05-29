@@ -49,6 +49,11 @@ const EditUsers = () => {
 
         const data = response.data
         setUserData(data);
+        console.log("API Response:", {
+          type: typeof response.data,
+          data: response.data,
+          isArray: Array.isArray(response.data)
+      });
       } catch (error) {
         console.error('Error fetching users:', error);
       }
