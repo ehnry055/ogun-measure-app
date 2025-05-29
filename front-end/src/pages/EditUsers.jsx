@@ -10,6 +10,7 @@ const EditUsers = () => {
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(false);
   const [userData, setUserData] = useState([]);
+  const [processedData, setProcessedData] = useState([]);
 
   // Admin role check
   useEffect(() => {
@@ -56,9 +57,32 @@ const EditUsers = () => {
           isArray: Array.isArray(response.data)
       });
         console.log("User Data:", dataArray);
+
+
+        const users = userData[0];
+
+      console.log("Users:", users);
+      console.log("API Response: Users", {
+        type: typeof users,
+        data: users,
+        isArray: Array.isArray(users)
+      });
+
+      // Extract specific fields from large objects
+      const extractUserData = (users) => {
+        return users.map(user => ({
+          name: user?.name,
+          email: user?.email || 'No email',
+          lastLogged: user?.last_login,
+          verified: user.email_verified !== undefined ? user.email_verified : null
+        }));
+      };
+
+      setProcessedData(extractUserData(users));
       } catch (error) {
         console.error('Error fetching users:', error);
       }
+      
     };
 
     if (isAdmin) {
@@ -69,28 +93,6 @@ const EditUsers = () => {
   if (!isAuthenticated || isLoading || !isAdmin) {
     return null;
   }
-  
-  const users = userData[0]
-
-  console.log("Users:", users);
-  console.log("API Response: Users", {
-    type: typeof users,
-    data: users,
-    isArray: Array.isArray(users)
-  });
-
-
-  // Extract specific fields from large objects
-  const extractUserData = (users) => {
-    return users.map(user => ({
-      name: user?.name,
-      email: user?.email || 'No email',
-      lastLogged: user?.last_login,
-      verified: user.email_verified !== undefined ? user.email_verified : null
-    }));
-  };
-
-  const processedData = extractUserData(users);
 
   return (<div></div>);
   return (
