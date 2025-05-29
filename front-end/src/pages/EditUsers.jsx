@@ -70,6 +70,8 @@ const EditUsers = () => {
     return null;
   }
 
+  const users = userData[0];
+
   return (
     <div className="user-list-container">
       <h1>User Management</h1>
@@ -78,20 +80,34 @@ const EditUsers = () => {
           <tr>
             <th>Name</th>
             <th>Email</th>
-            <th>User ID</th>
             <th>Last Login</th>
           </tr>
         </thead>
         <tbody>
-          {userData.map((user) => (
-            <tr key={userData.user_id}>
-              <td>{userData.name || 'N/A'}</td>
-              <td>{userData.email}</td>
-              <td className="user-id">{userData.user_id}</td>
-              <td>
-                {userData.last_login ? 
-                  new Date(userData.last_login).toLocaleString() : 
-                  'Never logged in'}
+          {users.map((user, index) => (
+            <tr key={user.user_id || index} className="hover:bg-gray-50">
+              <td className="px-6 py-4 whitespace-nowrap">
+                <div className="text-sm font-medium text-gray-900">
+                  {getDisplayName(user)}
+                  </div>
+                    {user.nickname && user.nickname !== user.name && (
+                      <div className="text-sm text-gray-500">@{user.nickname}</div>
+                    )}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <div className="text-sm text-gray-900">{user.email || 'No email'}</div>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <div className="text-sm text-gray-900">{formatLastLogin(user)}</div>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                  user.email_verified 
+                    ? 'bg-green-100 text-green-800' 
+                    : 'bg-red-100 text-red-800'
+                  }`}>
+                  {user.email_verified ? 'Verified' : 'Unverified'}
+                </span>
               </td>
             </tr>
           ))}
