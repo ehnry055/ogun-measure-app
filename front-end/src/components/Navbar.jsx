@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../styles/Navbar.css'; 
 import '../styles/LoginLogout.css'; 
 import { useAuth0 } from '@auth0/auth0-react';
@@ -7,12 +7,44 @@ import LogoutButton from './logout';
 import { Dropdown } from 'react-bootstrap'; // Add this import
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Import Bootstrap JS bundle
+import { jwtDecode } from 'jwt-decode';
 
 
 //CURRENT BUG: the log out button disappears when navigating to another page, i think isauthenticated isn't updated every time? confusing
 
 function Navbar() {
-  const { isLoading, error, user, loginWithRedirect, logout } = useAuth0();
+  const { isLoading, error, user, loginWithRedirect, logout, getAccessTokenSilently, isAuthenticated } = useAuth0();
+  //AdminRole check
+  const navigate = useNavigate();
+  const [isAuthorized, setIsAuthorized] = useState(() => {
+    const initialState = false;
+    return initialState;
+  });
+  useEffect(() => {
+    const checkPermissions = async () => {
+        try {
+          const token = await getAccessTokenSilently();
+          console.log("Access token:", token); // Log the token for debugging
+          const decodedToken = jwtDecode(token);
+          console.log("Decoded token:", decodedToken);
+  
+          const hasPermission = decodedToken.permissions && decodedToken.permissions.includes("adminView");
+          console.log("Has permission:", hasPermission);
+  
+          if (!hasPermission) {
+          }
+          else {
+            setIsAuthorized(true);
+          }
+        } catch (error) {
+          console.error('Error checking permissions:', error);
+        }
+      };
+  
+      checkPermissions();
+    }, [isAuthenticated, getAccessTokenSilently, navigate]);
+
+
   return (
     <nav class="navbar navbar-expand-lg navbar-light navbar-gradient sticky-top">
       <div className="container-fluid">
@@ -95,7 +127,9 @@ function Navbar() {
                     {/*}
                     <Dropdown.Item href="/settings" className="custom-dropdown-item">Settings</Dropdown.Item>
                     */}
-                    <Dropdown.Item href="/users" className="custom-dropdown-item">User Management</Dropdown.Item>
+                    {isAuthorized && (
+                      <Dropdown.Item href="/users" className="custom-dropdown-item">User Management</Dropdown.Item>
+                    )}
                     <Dropdown.Item className="custom-dropdown-item" onClick={() => logout({ returnTo: window.location.origin })}>Logout</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
