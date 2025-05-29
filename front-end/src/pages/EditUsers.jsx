@@ -99,21 +99,21 @@ const EditUsers = () => {
     return null;
   }
   return (
-    <div className="min-h-screen p-6" style={{ backgroundColor: '#0a0a0a' }}>
+    
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white mb-2">User Management</h1>
         </div>
         
         {/* Main Table */}
-        <div className="rounded-xl overflow-hidden shadow-2xl" style={{ backgroundColor: '#1a1a1a', border: '1px solid #8C68CD' }}>
-          <div className="overflow-x-auto">
+        
+          <div className="overflow-x-auto" style={{ borderRadius: '8px' }}>
             <table className="w-full">
               <thead>
-                <tr style={{ backgroundColor: '#8C68CD26' }}>
+                <tr style={{ backgroundColor: '#2B2534'}}>
                   <th 
                     className="px-6 py-4 text-left text-sm font-semibold text-white uppercase tracking-wider"
-                    style={{ borderBottom: '2px solid #8C68CD' }}
+                    style={{ border: '2px solid #8C68CD' }}
                   >
                     Name
                   </th>
@@ -205,8 +205,6 @@ const EditUsers = () => {
             </table>
           </div>
         </div>
-      </div>
-    </div>
   );
 };
 

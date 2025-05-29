@@ -21,6 +21,17 @@ class Auth0ManagementService {
         }
     }
 
+    async getUserRoles(userId) {
+        try {
+            return await this.management.users.getRoles({
+                id: userId
+            });
+        } catch (error) {
+            console.error('Auth0 Management Error:', error);
+            throw new Error('Failed to fetch roles from Auth0');
+        }
+    }
+
     
     async deleteUser(userId) {
       try {
