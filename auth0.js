@@ -65,6 +65,7 @@ class Auth0ManagementService {
             ]   
         });
         const token = await this.getToken();
+        console.log(token);
         let config = {
             method: 'post',
             maxBodyLength: Infinity,
@@ -95,6 +96,7 @@ class Auth0ManagementService {
         });
 
         const token = await this.getToken();
+        console.log(token);
         
         let config = {
             method: 'delete',
