@@ -74,26 +74,21 @@ const EditUsers = () => {
         for (const user of users) {
           const roles = await axios.get('/api/admin/get-user-roles', {
             params: {
-              userId: user.userId
+              userId: user.user_id
             },
             headers: {
               Authorization: `Bearer ${token}`
             }
           });
+          const rolesList = Object.values(roles.data);
           results.push({
             name: user?.name,
             email: user?.email || 'No email',
             lastLogged: user?.last_login,
             verified: user.email_verified !== undefined ? user.email_verified : null,
-            roles: roles
+            roles: rolesList
           })
         }
-        
-        for (const user of results) {
-
-        }
-
-
         setProcessedData(results);
       } catch (error) {
         console.error('Error fetching users:', error);
@@ -115,7 +110,7 @@ const EditUsers = () => {
   return (
       <div>
         <div>
-          <h1>User Management</h1>
+          <h1 style={{textAlign: 'center', padding: '10px'}}>User Management</h1>
         </div>
         {/* Main Table */}
         
