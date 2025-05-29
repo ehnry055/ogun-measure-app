@@ -236,7 +236,8 @@ const EditUsers = () => {
                           border: 'none',
                           borderRadius: '4px',
                           padding: '4px 10px',
-                          cursor: 'pointer'
+                          cursor: 'pointer',
+                          marginRight: '8px'
                         }}
                       >
                         Remove Admin
@@ -259,7 +260,8 @@ const EditUsers = () => {
                           border: 'none',
                           borderRadius: '4px',
                           padding: '4px 10px',
-                          cursor: 'pointer'
+                          cursor: 'pointer',
+                          marginRight: '8px'
                         }}
                       >
                         Assign Admin
