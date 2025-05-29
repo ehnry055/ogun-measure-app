@@ -69,9 +69,23 @@ const EditUsers = () => {
   if (!isAuthenticated || isLoading || !isAdmin) {
     return null;
   }
+  firstelement = userData[0];
+  console.log("Users:", firstelement);
+  console.log("API Response:", {
+    type: typeof firstelement,
+    data: element,
+    isArray: Array.isArray(element)
+  });
+
 
   const users = userData;
+
   console.log("Users:", users);
+  console.log("API Response:", {
+    type: typeof users,
+    data: users,
+    isArray: Array.isArray(users)
+  });
 
   return (
     <div className="user-list-container">
