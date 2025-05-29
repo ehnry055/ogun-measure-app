@@ -225,6 +225,21 @@ app.post('/api/delete-table', async (req, res) => {
 app.get('/api/notes', async (req, res) => {
   try {
     const limit = parseInt(req.query.limit) || 20;
+    const stateFilter = req.query.state || null;
+
+    const options = {
+      limit,
+      attributes: { exclude: ['id'] }
+    };
+    
+    if (stateFilter) {
+      options.where = {
+        STATE: {
+          [Sequelize.Op.like]: `%${stateFilter}%`
+        }
+      };
+    }
+
     const notes = await DynamicEntry.findAll({
       limit,
       attributes: { 
