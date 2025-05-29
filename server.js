@@ -543,6 +543,7 @@ app.post("/api/admin/assign-admin",  async (req, res) => {
 
 app.delete("/api/admin/remove-admin",  async (req, res) => {
   try {
+    console.log("removig admin");
     const { userId } = req.query;
     if (!userId) {
       return res.status(400).send('User ID is required');
