@@ -10,6 +10,7 @@ class Auth0ManagementService {
             audience: process.env.Auth0_M2M_AUDIENCE,
             scope: 'read:users read:user_idp_tokens update:client_grants update:users delete:users create:users read:clients read:roles create:role_members read:role_members delete:role_members'
         });
+
     }
 
     async getAllUsers() {
@@ -71,14 +72,14 @@ class Auth0ManagementService {
                 "rol_XQpYexn0DuyyZRll"
             ]   
         });
-
+        const token = await this.getToken();
         let config = {
             method: 'post',
             maxBodyLength: Infinity,
             url: 'https://'+ process.env.Auth0_M2M_AUDIENCE +'users/'+userId+'/roles',
             headers: { 
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + this.getToken()
+                'Authorization': 'Bearer ' + token
         },
         data : data
         };
@@ -99,13 +100,15 @@ class Auth0ManagementService {
             ]   
         });
 
+        const token = await this.getToken();
+        
         let config = {
             method: 'delete',
             maxBodyLength: Infinity,
             url: 'https://'+ process.env.Auth0_M2M_AUDIENCE +'users/'+userId+'/roles',
             headers: { 
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + this.getToken()
+            'Authorization': 'Bearer ' + token
         },
         data : data
         };

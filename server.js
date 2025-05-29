@@ -513,6 +513,7 @@ app.get("/api/admin/get-user-roles",  async (req, res) => {
 });
 
 app.get("/api/admin/delete-user",  async (req, res) => {
+  console.log("Deleting user");
   try {
     const { userId } = req.query;
     if (!userId) {
