@@ -10,10 +10,11 @@ const NotesList = ({ limit, selectedColumns, onToggleColumn, stateFilter }) => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
+        // Build query parameters
         const params = new URLSearchParams();
         params.append('limit', limit);
         if (stateFilter) {
-          params.append('state', stateFilter);
+          params.append('state', stateFilter); // send state filter to backend
         }
         
         const [notesRes, columnsRes] = await Promise.all([

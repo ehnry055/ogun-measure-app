@@ -17,6 +17,7 @@ const { Parser } = require('json2csv');
 const nodemailer = require('nodemailer');
 const auth0Management = require('./auth0');
 const { table } = require('console');
+const { Op } = require('sequelize');
 
 // const ogunPagesRouter = require('./ogun_pagess');
 // app.use('/api/ogun-pages', ogunPagesRouter);
@@ -225,17 +226,17 @@ app.post('/api/delete-table', async (req, res) => {
 app.get('/api/notes', async (req, res) => {
   try {
     const limit = parseInt(req.query.limit) || 20;
-    const stateFilter = req.query.state || null;
+    const state = req.query.state;
 
     const options = {
       limit,
       attributes: { exclude: ['id'] }
     };
     
-    if (stateFilter) {
+    if (state) {
       options.where = {
         STATE: {
-          [Sequelize.Op.like]: `%${stateFilter}%`
+          [Sequelize.Op.like]: `%${state}%`
         }
       };
     }
