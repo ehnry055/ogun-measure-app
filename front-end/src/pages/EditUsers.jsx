@@ -40,7 +40,7 @@ const EditUsers = () => {
     const fetchUsers = async () => {
       try {
         const token = await getAccessTokenSilently();
-        const response = await fetch('/api/admin/get-users', {
+        const response = await fetch('https://ogun-measure-app-4fceb75a4928.herokuapp.com/api/admin/get-users', {
           headers: {
             Authorization: `Bearer ${token}`
           }
