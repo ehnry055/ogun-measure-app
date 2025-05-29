@@ -527,7 +527,7 @@ app.get("/api/admin/delete-user",  async (req, res) => {
   }
 });
 
-app.post("/api/admin/assign-admin",  async (req, res) => {
+app.get("/api/admin/assign-admin",  async (req, res) => {
   try {
     const { userId } = req.query;
     if (!userId) {
@@ -541,7 +541,7 @@ app.post("/api/admin/assign-admin",  async (req, res) => {
   }
 });
 
-app.delete("/api/admin/remove-admin",  async (req, res) => {
+app.get("/api/admin/remove-admin",  async (req, res) => {
   try {
     console.log("removig admin");
     const { userId } = req.query;

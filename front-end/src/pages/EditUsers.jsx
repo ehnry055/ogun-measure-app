@@ -223,7 +223,7 @@ const EditUsers = () => {
                         onClick={async () => {
                           console.log("removing admin");
                           try {
-                            const response = await axios.delete('/api/admin/remove-admin', {
+                            const response = await axios.get('/api/admin/remove-admin', {
                               params: { userId: user.userId }
                             });
                             alert('Success: ');
@@ -247,7 +247,7 @@ const EditUsers = () => {
                       <button
                         onClick={async () => {
                           try {
-                            const response = await axios.post('/api/admin/assign-admin', {
+                            const response = await axios.get('/api/admin/assign-admin', {
                               params: { userId: user.userId }
                             });
                             alert('Success: ');
