@@ -1,6 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Saira:ital,wght@0,100..900;1,100..900&display=swap');
+
 .map-display { 
     width: 80%;
     height: 400px;
     margin: 0 auto;
     border-radius: 0.5rem;
+}
+
+.map-title {
+    font-size: 30px;
+    text-align: left;
+    font-family: "Saira", sans-serif;
 }

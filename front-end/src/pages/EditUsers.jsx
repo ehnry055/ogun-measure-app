@@ -41,15 +41,11 @@ const EditUsers = () => {
     const fetchUsers = async () => {
       try {
         const token = await getAccessTokenSilently();
-        const response = await axios.post('/api/admin/get-users', {
+        const response = await axios.get('/api/admin/get-users', {
           headers: {
             Authorization: `Bearer ${token}`
           }
         });
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch, response not ok');
-        }
 
         const data = await response.json();
         setUsers(data);

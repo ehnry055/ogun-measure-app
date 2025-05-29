@@ -12,7 +12,9 @@ class Auth0ManagementService {
 
     async getAllUsers() {
         try {
-            return await this.management.users.getAll();
+            return await this.management.users.getAll({
+                per_page: 50,
+            });
         } catch (error) {
             console.error('Auth0 Management Error:', error);
             throw new Error('Failed to fetch users from Auth0');
