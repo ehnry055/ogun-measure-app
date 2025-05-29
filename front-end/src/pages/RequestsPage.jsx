@@ -97,6 +97,13 @@ const generateDemoUrl = () => {
         </InfoPopup>
       </h2>
 
+      {/* For presentation: show the demo URL */}
+             {process.env.NODE_ENV === 'development' && (
+          <div style={{ marginBottom: '20px', padding: '10px', backgroundColor: '#f0f0f0' }}>
+            <p>Demo URL: <a href={generateDemoUrl()}>{generateDemoUrl()}</a></p>
+          </div>
+        )}
+
       <input
         type="text"
         placeholder="Name"
