@@ -94,6 +94,7 @@ const EditUsers = () => {
 
   const processedData = extractUserData(users);
 
+  return (<div></div>);
   return (
     <div className="min-h-screen p-6" style={{ backgroundColor: '#0a0a0a' }}>
       <div className="max-w-6xl mx-auto">
@@ -212,5 +213,6 @@ const EditUsers = () => {
     </div>
   );
 };
+**/
 
 export default EditUsers;
