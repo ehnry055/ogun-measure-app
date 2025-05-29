@@ -70,7 +70,7 @@ const EditUsers = () => {
     return null;
   }
   
-  const users = userData[0];
+  const user2 = userData[0];
 
   console.log("Users:", users);
   console.log("API Response: Users", {
@@ -78,6 +78,8 @@ const EditUsers = () => {
     data: users,
     isArray: Array.isArray(users)
   });
+
+  const users = userData;
 
 
   // Extract specific fields from large objects
