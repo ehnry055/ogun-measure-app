@@ -46,7 +46,7 @@ class Auth0ManagementService {
         const axios = require('axios');
             let data = JSON.stringify({
             "roles": [
-                "adminView"
+                "admin_role"
             ]   
         });
 
@@ -68,15 +68,88 @@ class Auth0ManagementService {
             console.log(error);
         });
     }
-    /*
 
-    // Then update the assignRolesToUser method:
-    async assignRolesToUser(userId, roles) {
-        if (!await this.verifyRolesExist(roles)) {
-            throw new Error('One or more roles do not exist');
-        }
-        // ... rest of the implementation
-        } */
+    async removeRegistered(userId) {
+        const axios = require('axios');
+            let data = JSON.stringify({
+            "roles": [
+                "registered_role"
+            ]   
+        });
+
+        let config = {
+            method: 'delete',
+            maxBodyLength: Infinity,
+            url: 'https://'+ process.env.REACT_APP_AUTH0_domain +'/api/v2/users/'+userId+'/roles',
+            headers: { 
+            'Content-Type': 'application/json'
+        },
+        data : data
+        };
+
+        axios.request(config)
+        .then((response) => {
+            console.log(JSON.stringify(response.data));
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
+
+
+    async assignAdmin(userId) {
+        const axios = require('axios');
+            let data = JSON.stringify({
+            "roles": [
+                "admin_role"
+            ]   
+        });
+
+        let config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: 'https://'+ process.env.REACT_APP_AUTH0_domain +'/api/v2/users/'+userId+'/roles',
+            headers: { 
+            'Content-Type': 'application/json'
+        },
+        data : data
+        };
+
+        axios.request(config)
+        .then((response) => {
+            console.log(JSON.stringify(response.data));
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
+
+    async assignRegistered(userId) {
+        const axios = require('axios');
+            let data = JSON.stringify({
+            "roles": [
+                "registerd_role"
+            ]   
+        });
+
+        let config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: 'https://'+ process.env.REACT_APP_AUTH0_domain +'/api/v2/users/'+userId+'/roles',
+            headers: { 
+            'Content-Type': 'application/json'
+        },
+        data : data
+        };
+
+        axios.request(config)
+        .then((response) => {
+            console.log(JSON.stringify(response.data));
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
 }
         
 
