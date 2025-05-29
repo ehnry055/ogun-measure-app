@@ -548,7 +548,7 @@ app.delete("/api/admin/remove-admin",  async (req, res) => {
     if (!userId) {
       return res.status(400).send('User ID is required');
     }
-    const removeAdmin = await auth0Management.removeAdmin();
+    const removeAdmin = await auth0Management.removeAdmin(userId);
     res.json(removeAdmin);
   } catch (error) {
     console.error('Error fetching users:', error);

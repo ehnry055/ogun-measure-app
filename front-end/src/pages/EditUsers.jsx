@@ -247,9 +247,9 @@ const EditUsers = () => {
                       <button
                         onClick={async () => {
                           try {
-                            const response = await axios.post('/api/admin/assign-admin', {
-                              params: { userId: user.userId }
-                            });
+                            const response = await axios.post('/api/admin/assign-admin', 
+                              { userId: user.userId }
+                            );
                             alert('Success: ');
                           } catch (err) {
                             alert('Error: ' + (err.response?.data || err.message));
