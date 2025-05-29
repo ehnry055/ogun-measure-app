@@ -71,7 +71,11 @@ const MapPage = () => {
             stops: [[0, '#F1EEF6'], [0.65, '#900037'], [1, '#500007']],
             labels: {
               format: '{value}',
-              color: 'white'
+              itemStyle: {
+                color: 'white', 
+                fontWeight: 'bold'
+              },
+            
             }
           },
           plotOptions: {
