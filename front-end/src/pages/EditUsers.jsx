@@ -48,6 +48,7 @@ const EditUsers = () => {
         });
 
         const data = response.data
+        const dataArray = Object.values(data);
         setUserData(data);
         console.log("API Response:", {
           type: typeof response.data,
