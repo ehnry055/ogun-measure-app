@@ -88,8 +88,10 @@ const RequestsPage = () => {
       <div className='form-container'>
       <h2 className="about-title">Request Form 
         <InfoPopup>
+          <h2 style={{ color: '#8C68CD'}}>Request Page </h2>
           <p style={{ textAlign: 'center' , margin: '0 20px', fontSize: '22px', padding: '70px 0'}}>
           To request Registered User permissions, fill out the fields and click send email. This will send an email to an admin with the inputted information. An email will also be sent to the email address of the current user account.
+          <br></br>
           <br></br>
           Registered Users will be able to access the Upload/Delete Data page for changing data. 
           </p>

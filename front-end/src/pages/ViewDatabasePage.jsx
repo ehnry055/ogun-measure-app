@@ -182,7 +182,7 @@ const ViewDatabasePage = () => {
             <h2>
               {tableName || "Select a table to view"}
               <InfoPopup>
-              <h2 style={{ color: '#8C68CD'}}>How to Use: </h2>
+              <h2 style={{ color: '#8C68CD'}}>View Data </h2>
               <p style={{ textAlign: 'left' , margin: '0 20px', fontSize: '22px'}}>
               This is the data collected on counties across the US.
                 <br />
