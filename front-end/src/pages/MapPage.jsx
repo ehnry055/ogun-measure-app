@@ -52,10 +52,6 @@ const MapPage = () => {
             description: 'Demo showing a large dataset.'
           },
           legend: {
-            itemStyle: {
-              color: 'white !important',
-              fontWeight: 'bold'
-            },
             layout: 'vertical',
             align: 'right',
             margin: 0,
@@ -68,17 +64,14 @@ const MapPage = () => {
             enabled: true
           },
           colorAxis: {
-            itemStyle: {
-              color: 'white !important',
-              fontWeight: 'bold'
-            },
             color: 'white',
             min: 0,
             max: 25,
             tickInterval: 5,
             stops: [[0, '#F1EEF6'], [0.65, '#900037'], [1, '#500007']],
             labels: {
-              format: '{value}'
+              format: '{value}',
+              color: 'white'
             }
           },
           plotOptions: {
