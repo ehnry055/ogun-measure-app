@@ -36,6 +36,22 @@ const RequestsPage = () => {
       setTarget(params.get('target') || '');
       setData(params.get('data') || '');
     }
+
+    const demoUrl = `${window.location.origin}${window.location.pathname}?${new URLSearchParams({
+      name: 'Dr. Jane Smith',
+      role: 'Faculty Researcher',
+      affiliation: 'Stanford University',
+      funding: 'NSF Grant #12345',
+      intention: 'Academic publication',
+      share: 'Conference presentation in Q3 2024',
+      when: 'December 2024',
+      area: 'California Bay Area',
+      target: 'Low-income urban communities',
+      data: 'Python with Pandas and R'
+    }).toString()}`;
+  
+    console.log('Demo prefilled URL:', demoUrl);
+  
   }, []);
 
   const sendMail = async () => {
@@ -64,25 +80,6 @@ const RequestsPage = () => {
   };
 
 
-// Generate prefilled URL for presentation
-const generateDemoUrl = () => {
-  const baseUrl = window.location.origin + window.location.pathname;
-  const params = new URLSearchParams();
-  
-  params.set('name', 'Dr. Jane Smith');
-  params.set('role', 'Faculty Researcher');
-  params.set('affiliation', 'Stanford University');
-  params.set('funding', 'NSF Grant #12345');
-  params.set('intention', 'Academic publication and policy recommendations');
-  params.set('share', 'Conference presentation in Q3 2024, followed by public report');
-  params.set('when', 'December 2024');
-  params.set('area', 'California Bay Area');
-  params.set('target', 'Low-income urban communities');
-  params.set('data', 'Python with Pandas and R');
-  
-  return `${baseUrl}?${params.toString()}`;
-};
-
 
 
   return (    
@@ -96,13 +93,6 @@ const generateDemoUrl = () => {
           </p>
         </InfoPopup>
       </h2>
-
-      {/* For presentation: show the demo URL */}
-             {process.env.NODE_ENV === 'development' && (
-          <div style={{ marginBottom: '20px', padding: '10px', backgroundColor: '#f0f0f0' }}>
-            <p>Demo URL: <a href={generateDemoUrl()}>{generateDemoUrl()}</a></p>
-          </div>
-        )}
 
       <input
         type="text"
