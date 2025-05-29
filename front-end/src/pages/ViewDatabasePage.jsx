@@ -8,7 +8,7 @@ import { Info } from 'lucide-react';
 
 const ViewDatabasePage = () => {
   const { isAuthenticated, user, loginWithRedirect, logout, getAccessTokenSilently } = useAuth0();
-  const [entryLimit, setEntryLimit] = useState(10); // default: 10 entries
+  const [entryLimit, setEntryLimit] = useState(20); // default: 20 entries
   const [selectedFile, setSelectedFile] = useState(null);
   const [tableName, setTableName] = useState("Default Table");
   
