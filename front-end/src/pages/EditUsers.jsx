@@ -218,56 +218,8 @@ const EditUsers = () => {
                       )}
                     </td>
                     <td>
-                    {user.roles === 'admin_role' ? (
-                      <button
-                        onClick={async () => {
-                          console.log("removing admin");
-                          try {
-                            const response = await axios.get('/api/admin/remove-admin', {
-                              params: { userId: user.userId }
-                            });
-                            alert('Success: ');
-                          } catch (err) {
-                            alert('Error: ' + (err.response?.data || err.message));
-                          }
-                        }}
-                        style={{
-                          background: '#8C68CD',
-                          color: '#fff',
-                          border: 'none',
-                          borderRadius: '4px',
-                          padding: '4px 10px',
-                          cursor: 'pointer',
-                          marginRight: '8px'
-                        }}
-                      >
-                        Remove Admin
-                      </button>
-                    ) : (
-                      <button
-                        onClick={async () => {
-                          try {
-                            const response = await axios.get('/api/admin/assign-admin', {
-                              params: { userId: user.userId }
-                            });
-                            alert('Success: ');
-                          } catch (err) {
-                            alert('Error: ' + (err.response?.data || err.message));
-                          }
-                        }}
-                        style={{
-                          background: '#8C68CD',
-                          color: '#fff',
-                          border: 'none',
-                          borderRadius: '4px',
-                          padding: '4px 10px',
-                          cursor: 'pointer',
-                          marginRight: '8px'
-                        }}
-                      >
-                        Assign Admin
-                      </button>
-                    )}
+                    
+                    
                       <button
                         onClick={async () => {
                           try {
