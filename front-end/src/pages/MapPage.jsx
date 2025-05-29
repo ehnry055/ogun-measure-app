@@ -47,6 +47,13 @@ const MapPage = () => {
             },
             
           },
+
+          text: {
+            style: {
+              color: 'white'
+            },
+          },
+
           accessibility: {
             description: 'Demo showing a large dataset.'
           },
@@ -55,8 +62,8 @@ const MapPage = () => {
             align: 'right',
             margin: 0,
             backgroundColor: '#EEEEEE26',
-            color: 'white',
-            borderRadius: 10
+            borderRadius: 10,
+            border: '1px solid white'
           },
           mapNavigation: {
             enabled: true
