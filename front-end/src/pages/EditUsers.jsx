@@ -9,7 +9,7 @@ const EditUsers = () => {
   const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(false);
-  const [users, setUsers] = useState([]);
+  const [userData, setUserData] = useState([]);
 
   // Admin role check
   useEffect(() => {
@@ -47,8 +47,8 @@ const EditUsers = () => {
           }
         });
 
-        const data = await response.json();
-        setUsers(data);
+        const data = response.data
+        setUserData(data);
       } catch (error) {
         console.error('Error fetching users:', error);
       }
@@ -76,14 +76,14 @@ const EditUsers = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user) => (
-            <tr key={user.user_id}>
-              <td>{user.name || 'N/A'}</td>
-              <td>{user.email}</td>
-              <td className="user-id">{user.user_id}</td>
+          {userData.map((user) => (
+            <tr key={userData.user_id}>
+              <td>{userData.name || 'N/A'}</td>
+              <td>{userData.email}</td>
+              <td className="user-id">{userData.user_id}</td>
               <td>
-                {user.last_login ? 
-                  new Date(user.last_login).toLocaleString() : 
+                {userData.last_login ? 
+                  new Date(userData.last_login).toLocaleString() : 
                   'Never logged in'}
               </td>
             </tr>
