@@ -225,7 +225,7 @@ const EditUsers = () => {
                             const response = await axios.get('/api/admin/remove-admin', {
                               params: { userId: user.userId }
                             });
-                            alert('Success: ' + response.data);
+                            alert('Success: ');
                           } catch (err) {
                             alert('Error: ' + (err.response?.data || err.message));
                           }
@@ -248,7 +248,7 @@ const EditUsers = () => {
                             const response = await axios.get('/api/admin/assign-admin', {
                               params: { userId: user.userId }
                             });
-                            alert('Success: ' + response.data);
+                            alert('Success: ');
                           } catch (err) {
                             alert('Error: ' + (err.response?.data || err.message));
                           }

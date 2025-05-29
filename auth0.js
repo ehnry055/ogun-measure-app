@@ -52,9 +52,9 @@ class Auth0ManagementService {
     }
 
     async assignAdmin(userId) {
-            let data = JSON.stringify({
+        let data = JSON.stringify({
             "roles": [
-                "admin_role"
+                "rol_XQpYexn0DuyyZRll"
             ]   
         });
 
@@ -78,9 +78,9 @@ class Auth0ManagementService {
     }
 
     async removeAdmin(userId) {
-            let data = JSON.stringify({
+        let data = JSON.stringify({
             "roles": [
-                "admin_role"
+                "rol_XQpYexn0DuyyZRll"
             ]   
         });
 
