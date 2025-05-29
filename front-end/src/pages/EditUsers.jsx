@@ -55,30 +55,31 @@ const EditUsers = () => {
           type: typeof response.data,
           data: response.data,
           isArray: Array.isArray(response.data)
-      });
+        });
         console.log("User Data:", dataArray);
 
 
         const users = userData[0];
 
-      console.log("Users:", users);
-      console.log("API Response: Users", {
-        type: typeof users,
-        data: users,
-        isArray: Array.isArray(users)
-      });
+        console.log("Users:", users);
+        console.log("API Response: Users", {
+          type: typeof users,
+          data: users,
+          isArray: Array.isArray(users)
+        });
 
-      // Extract specific fields from large objects
-      const extractUserData = (users) => {
-        return users.map(user => ({
-          name: user?.name,
-          email: user?.email || 'No email',
-          lastLogged: user?.last_login,
-          verified: user.email_verified !== undefined ? user.email_verified : null
-        }));
-      };
+        // Extract specific fields from large objects
+        const results = [];
+        for (const user of users) {
+          results.push({
+            name: user?.name,
+            email: user?.email || 'No email',
+            lastLogged: user?.last_login,
+            verified: user.email_verified !== undefined ? user.email_verified : null
+          })
+        }
 
-      setProcessedData(extractUserData(users));
+        setProcessedData(results);
       } catch (error) {
         console.error('Error fetching users:', error);
       }
