@@ -258,6 +258,25 @@
   background-color: #17568d;
 }
 
+.state-filter-container {
+  margin-top: 15px;
+  margin-bottom: 20px;
+}
+
+.state-filter-container label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.state-filter-container input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
 .preset-controls {
   display: flex;
   gap: 1rem;

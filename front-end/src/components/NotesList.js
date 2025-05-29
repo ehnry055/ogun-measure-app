@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const NotesList = ({ limit, selectedColumns, onToggleColumn }) => {
+const NotesList = ({ limit, selectedColumns, onToggleColumn, stateFilter }) => {
   const [notes, setNotes] = useState([]);
   const [columns, setColumns] = useState([]);
+  const [filteredNotes, setFilteredNotes] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,8 +24,28 @@ const NotesList = ({ limit, selectedColumns, onToggleColumn }) => {
         console.error('Error fetching data:', error);
       }
     };
+    
     fetchData();
   }, [limit]);
+
+  // filter notes when stateFilter changes
+  useEffect(() => {
+    if (!stateFilter) {
+      setFilteredNotes(notes);
+      return;
+    }
+
+    const filterValue = stateFilter.toLowerCase();
+    const filtered = notes.filter(note => 
+      note.STATE && note.STATE.toLowerCase().includes(filterValue)
+    );
+    
+    setFilteredNotes(filtered);
+  }, [notes, stateFilter]);
+
+  useEffect(() => {
+    setFilteredNotes(notes);
+  }, [notes]);
 
   return (
     <div className="table-container">
@@ -33,14 +54,17 @@ const NotesList = ({ limit, selectedColumns, onToggleColumn }) => {
           <tr>
             {columns.map(column => (
               <th 
-                key={column}
+                key={column} 
                 className={selectedColumns.has(column) ? 'selected' : ''}
               >
-                <div className="column-header" onClick={() => onToggleColumn(column)}>
-                  <input
-                    type="checkbox"
-                    checked={selectedColumns.has(column)}
-                    readOnly
+                <div 
+                  className="column-header" 
+                  onClick={() => onToggleColumn(column)}
+                >
+                  <input 
+                    type="checkbox" 
+                    checked={selectedColumns.has(column)} 
+                    readOnly 
                   />
                   {column}
                 </div>
@@ -49,11 +73,11 @@ const NotesList = ({ limit, selectedColumns, onToggleColumn }) => {
           </tr>
         </thead>
         <tbody>
-          {notes.map(entry => (
+          {filteredNotes.map(entry => (
             <tr key={entry.GISJOIN}>
               {columns.map(column => (
                 <td 
-                  key={column}
+                  key={column} 
                   className={selectedColumns.has(column) ? 'selected' : ''}
                 >
                   {entry[column]}
