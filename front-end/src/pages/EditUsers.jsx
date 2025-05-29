@@ -213,6 +213,55 @@ const EditUsers = () => {
                       )}
                     </td>
                     <td>
+                    {user.roles === 'admin' ? (
+                      <button
+                        onClick={async () => {
+                          try {
+                            const response = await axios.get('/api/admin/remove-admin', {
+                              params: { userId: user.userId }
+                            });
+                            alert('Success: ' + response.data);
+                          } catch (err) {
+                            alert('Error: ' + (err.response?.data || err.message));
+                          }
+                        }}
+                        style={{
+                          background: '#8C68CD',
+                          color: '#fff',
+                          border: 'none',
+                          borderRadius: '4px',
+                          padding: '4px 10px',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        Remove Admin
+                      </button>
+                    ) : (
+                      <button
+                        onClick={async () => {
+                          try {
+                            const response = await axios.get('/api/admin/assign-admin', {
+                              params: { userId: user.userId }
+                            });
+                            alert('Success: ' + response.data);
+                          } catch (err) {
+                            alert('Error: ' + (err.response?.data || err.message));
+                          }
+                        }}
+                        style={{
+                          background: '#8C68CD',
+                          color: '#fff',
+                          border: 'none',
+                          borderRadius: '4px',
+                          padding: '4px 10px',
+                          cursor: 'pointer'
+                        }}
+                      >
+                        Assign Admin
+                      </button>
+                    )}
+                    </td>
+                    <td>
                       <button
                         onClick={async () => {
                           try {
@@ -239,55 +288,6 @@ const EditUsers = () => {
                     </td>
                   </tr>
                 ))}
-                  <td>
-                  {user.roles === 'admin' ? (
-                    <button
-                      onClick={async () => {
-                        try {
-                          const response = await axios.get('/api/admin/remove-admin', {
-                            params: { userId: user.userId }
-                          });
-                          alert('Success: ' + response.data);
-                        } catch (err) {
-                          alert('Error: ' + (err.response?.data || err.message));
-                        }
-                      }}
-                      style={{
-                        background: '#8C68CD',
-                        color: '#fff',
-                        border: 'none',
-                        borderRadius: '4px',
-                        padding: '4px 10px',
-                        cursor: 'pointer'
-                      }}
-                    >
-                      Remove Admin
-                    </button>
-                  ) : (
-                    <button
-                      onClick={async () => {
-                        try {
-                          const response = await axios.get('/api/admin/assign-admin', {
-                            params: { userId: user.userId }
-                          });
-                          alert('Success: ' + response.data);
-                        } catch (err) {
-                          alert('Error: ' + (err.response?.data || err.message));
-                        }
-                      }}
-                      style={{
-                        background: '#8C68CD',
-                        color: '#fff',
-                        border: 'none',
-                        borderRadius: '4px',
-                        padding: '4px 10px',
-                        cursor: 'pointer'
-                      }}
-                    >
-                      Assign Admin
-                    </button>
-                  )}
-                </td>
               </tbody>
             </table>
             </div>
