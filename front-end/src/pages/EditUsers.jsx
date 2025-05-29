@@ -76,12 +76,15 @@ const EditUsers = () => {
             }
           });
           const rolesList = Object.values(roles.data);
+          console.log(rolesList);
+          const roleName = rolesList[0];
           results.push({
             name: user?.name,
             email: user?.email || 'No email',
             lastLogged: user?.last_login,
             verified: user.email_verified !== undefined ? user.email_verified : null,
-            roles: rolesList || 'guest_role'
+            userId: user?.user_id,
+            roles: roleName || 'guest_role'
           })
         }
         setProcessedData(results);
