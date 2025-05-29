@@ -54,8 +54,9 @@ const MapPage = () => {
             layout: 'vertical',
             align: 'right',
             margin: 0,
-            backgroundColor: '#8C68CD26',
-            color: 'white'
+            backgroundColor: '#EEEEEE26',
+            color: 'white',
+            borderRadius: 10
           },
           mapNavigation: {
             enabled: true
