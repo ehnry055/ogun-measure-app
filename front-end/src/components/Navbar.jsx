@@ -95,6 +95,7 @@ function Navbar() {
                     {/*}
                     <Dropdown.Item href="/settings" className="custom-dropdown-item">Settings</Dropdown.Item>
                     */}
+                    <Dropdown.Item href="/users" className="custom-dropdown-item">User Manage</Dropdown.Item>
                     <Dropdown.Item className="custom-dropdown-item" onClick={() => logout({ returnTo: window.location.origin })}>Logout</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>

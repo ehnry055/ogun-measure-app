@@ -61,7 +61,7 @@ class Auth0ManagementService {
         let config = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: 'https://'+ process.env.REACT_APP_AUTH0_domain +'/api/v2/users/'+userId+'/roles',
+            url: 'https://'+ process.env.Auth0_M2M_AUDIENCE +'/api/v2/users/'+userId+'/roles',
             headers: { 
             'Content-Type': 'application/json'
         },
@@ -87,7 +87,7 @@ class Auth0ManagementService {
         let config = {
             method: 'delete',
             maxBodyLength: Infinity,
-            url: 'https://'+ process.env.REACT_APP_AUTH0_domain +'/api/v2/users/'+userId+'/roles',
+            url: 'https://'+ process.env.Auth0_M2M_AUDIENCE +'/api/v2/users/'+userId+'/roles',
             headers: { 
             'Content-Type': 'application/json'
         },

@@ -150,7 +150,7 @@ const EditUsers = () => {
                   <th 
                     style={{ borderBottom: '2px solid #8C68CD' }}
                   >
-                    Admin Action
+                    Admin Actions
                   </th>
                 </tr>
               </thead>
@@ -265,8 +265,6 @@ const EditUsers = () => {
                         Assign Admin
                       </button>
                     )}
-                    </td>
-                    <td>
                       <button
                         onClick={async () => {
                           try {
