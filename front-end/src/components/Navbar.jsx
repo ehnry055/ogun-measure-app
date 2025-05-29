@@ -41,7 +41,7 @@ function Navbar() {
       };
   
       checkPermissions();
-    }, [isAuthenticated, getAccessTokenSilently, navigate]);
+    }, [isAuthenticated, getAccessTokenSilently]);
 
 
   return (
