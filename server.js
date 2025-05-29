@@ -227,26 +227,23 @@ app.get('/api/notes', async (req, res) => {
   try {
     const limit = parseInt(req.query.limit) || 20;
     const state = req.query.state;
-
+    
     const options = {
       limit,
       attributes: { exclude: ['id'] }
     };
     
+    // add state filter if provided
     if (state) {
       options.where = {
         STATE: {
-          [Sequelize.Op.like]: `%${state}%`
+          [Op.like]: `%${state}%`
         }
       };
     }
 
-    const notes = await DynamicEntry.findAll({
-      limit,
-      attributes: { 
-        exclude: ['id'] // forcefully exclude 'id' from queries
-      }
-    });
+    const notes = await DynamicEntry.findAll(options);
+    
     res.json(notes);
   } catch (err) {
     console.error('Error fetching notes:', err);
