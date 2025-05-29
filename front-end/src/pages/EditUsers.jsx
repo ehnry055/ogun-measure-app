@@ -95,8 +95,9 @@ const EditUsers = () => {
   if (!isAuthenticated || isLoading || !isAdmin) {
     return null;
   }
-
-  return (<div></div>);
+  if(processedData || userData == null) {
+    return null;
+  }
   return (
     <div className="min-h-screen p-6" style={{ backgroundColor: '#0a0a0a' }}>
       <div className="max-w-6xl mx-auto">
