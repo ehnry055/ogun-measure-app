@@ -82,7 +82,7 @@ const EditUsers = () => {
             roleName = { name: 'guest_role' };
           }
           else {
-            roleName = rolesList[0];
+            roleName = rolesList[0][0];
           }
           results.push({
             name: user?.name,
@@ -216,10 +216,11 @@ const EditUsers = () => {
                       <button
                         onClick={async () => {
                           try {
+                            console.log('Deleting user:', user.userId);
                             const response = await axios.get('/api/admin/delete-user', {
                               params: { userId: user.userId }
                             });
-                            alert('Success: ' + response.data);
+                            alert('Success');
                           } catch (err) {
                             alert('Error: ' + (err.response?.data || err.message));
                           }
@@ -233,7 +234,7 @@ const EditUsers = () => {
                           cursor: 'pointer'
                         }}
                       >
-                        Action
+                        Delete User
                       </button>
                     </td>
                   </tr>
