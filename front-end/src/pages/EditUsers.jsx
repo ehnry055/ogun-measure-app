@@ -72,13 +72,27 @@ const EditUsers = () => {
         
         const results = [];
         for (const user of users) {
+          const roles = await axios.get('/api/admin/get-user-roles', {
+            params: {
+              userId: user.userId
+            },
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
           results.push({
             name: user?.name,
             email: user?.email || 'No email',
             lastLogged: user?.last_login,
-            verified: user.email_verified !== undefined ? user.email_verified : null
+            verified: user.email_verified !== undefined ? user.email_verified : null,
+            roles: roles
           })
         }
+        
+        for (const user of results) {
+
+        }
+
 
         setProcessedData(results);
       } catch (error) {
@@ -277,7 +291,7 @@ const EditUsers = () => {
                                       : 'status-inactive'
                                   }`}
                                 ></span>
-                                <span className="text-light">{formatDate(user.lastLogged)}</span>
+                                <span className="text-light">{user.lastLogged}</span>
                               </div>
                             </td>
 

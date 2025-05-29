@@ -500,7 +500,7 @@ app.get("/api/admin/get-users",  async (req, res) => {
 
 app.get("/api/admin/get-user-roles",  async (req, res) => {
   try {
-    const userId = req.query.userId;
+    const userId = req.query;
     if (!userId) {
       return res.status(400).send('User ID is required');
     }
