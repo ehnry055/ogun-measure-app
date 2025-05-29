@@ -61,7 +61,7 @@ class Auth0ManagementService {
         headers: { "Content-Type": "application/json" }
         });
 
-        return response.data.access_token;
+        return response.data;
     }
 
     async assignAdmin(userId) {
