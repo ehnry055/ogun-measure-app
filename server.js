@@ -527,36 +527,6 @@ app.get("/api/admin/delete-user",  async (req, res) => {
   }
 });
 
-app.post("/api/admin/assign-admin",  async (req, res) => {
-  try {
-    const { userId } = req.body;
-    if (!userId) {
-      return res.status(400).send('User ID is required');
-    }
-    const assignAdmin = await auth0Management.assignAdmin(userId);
-    res.json(assignAdmin);
-  } catch (error) {
-    console.error('Error fetching users:', error);
-    res.status(500).send('Error fetching users');
-  }
-});
-
-app.delete("/api/admin/remove-admin",  async (req, res) => {
-  try {
-    console.log("removig admin");
-    const { userId } = req.query;
-    if (!userId) {
-      return res.status(400).send('User ID is required');
-    }
-    const removeAdmin = await auth0Management.removeAdmin(userId);
-    res.json(removeAdmin);
-  } catch (error) {
-    console.error('Error fetching users:', error);
-    res.status(500).send('Error fetching users');
-  }
-});
-
-
 // Catch-all handler for any other requests
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'front-end/build', 'index.html'));

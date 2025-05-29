@@ -83,6 +83,7 @@ class Auth0ManagementService {
         .catch((error) => {
             console.log(error);
         });
+        return response;
     }
 
     async removeAdmin(userId) {
@@ -113,60 +114,8 @@ class Auth0ManagementService {
         .catch((error) => {
             console.log(error);
         });
+        return response;
     }
-
-    /*
-    async assignRegistered(userId) {
-            let data = JSON.stringify({
-            "roles": [
-                "registered_role"
-            ]   
-        });
-
-        let config = {
-            method: 'post',
-            maxBodyLength: Infinity,
-            url: 'https://'+ process.env.REACT_APP_AUTH0_domain +'/api/v2/users/'+userId+'/roles',
-            headers: { 
-            'Content-Type': 'application/json'
-        },
-        data : data
-        };
-
-        axios.request(config)
-        .then((response) => {
-            console.log(JSON.stringify(response.data));
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-    }
-
-    async removeRegistered(userId) {
-            let data = JSON.stringify({
-            "roles": [
-                "registered_role"
-            ]   
-        });
-
-        let config = {
-            method: 'delete',
-            maxBodyLength: Infinity,
-            url: 'https://'+ process.env.REACT_APP_AUTH0_domain +'/api/v2/users/'+userId+'/roles',
-            headers: { 
-            'Content-Type': 'application/json'
-        },
-        data : data
-        };
-
-        axios.request(config)
-        .then((response) => {
-            console.log(JSON.stringify(response.data));
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-    }*/
 }
         
 

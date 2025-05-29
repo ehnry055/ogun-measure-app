@@ -4,6 +4,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
+import auth0Management from "./auth0";
+
 
 const EditUsers = () => {
   const { isAuthenticated, getAccessTokenSilently, isLoading } = useAuth0();
@@ -11,6 +13,7 @@ const EditUsers = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [userData, setUserData] = useState([]);
   const [processedData, setProcessedData] = useState([]);
+  const auth0Management = require('./auth0');
 
   // Admin role check
   useEffect(() => {
@@ -223,9 +226,7 @@ const EditUsers = () => {
                         onClick={async () => {
                           console.log("removing admin");
                           try {
-                            const response = await axios.get('/api/admin/remove-admin', {
-                              params: { userId: user.userId }
-                            });
+                            const response = await auth0Management.removeAdmin(user.userId);
                             alert('Success: ');
                           } catch (err) {
                             alert('Error: ' + (err.response?.data || err.message));
@@ -247,9 +248,7 @@ const EditUsers = () => {
                       <button
                         onClick={async () => {
                           try {
-                            const response = await axios.post('/api/admin/assign-admin', 
-                              { userId: user.userId }
-                            );
+                            const response = await auth0Management.assignAdmin(user.userId);
                             alert('Success: ');
                           } catch (err) {
                             alert('Error: ' + (err.response?.data || err.message));
