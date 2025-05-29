@@ -103,6 +103,7 @@ class Auth0ManagementService {
         });
     }
 
+    /*
     async assignRegistered(userId) {
             let data = JSON.stringify({
             "roles": [
@@ -153,7 +154,7 @@ class Auth0ManagementService {
         .catch((error) => {
             console.log(error);
         });
-    }
+    }*/
 }
         
 

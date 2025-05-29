@@ -512,7 +512,7 @@ app.get("/api/admin/get-user-roles",  async (req, res) => {
   }
 });
 
-app.get("/api/admin/remove-user",  async (req, res) => {
+app.get("/api/admin/delete-user",  async (req, res) => {
   try {
     const { userId } = req.query;
     if (!userId) {
@@ -525,7 +525,7 @@ app.get("/api/admin/remove-user",  async (req, res) => {
     res.status(500).send('Error fetching users');
   }
 });
-/*
+
 app.get("/api/admin/assign-admin",  async (req, res) => {
   try {
     const { userId } = req.query;
@@ -547,13 +547,13 @@ app.get("/api/admin/remove-admin",  async (req, res) => {
       return res.status(400).send('User ID is required');
     }
     const removeAdmin = await auth0Management.removeAdmin();
-    res.json(userList);
+    res.json(removeAdmin);
   } catch (error) {
     console.error('Error fetching users:', error);
     res.status(500).send('Error fetching users');
   }
 });
-*/
+
 
 // Catch-all handler for any other requests
 app.get('*', (req, res) => {
