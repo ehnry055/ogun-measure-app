@@ -85,6 +85,7 @@ class Auth0ManagementService {
     }
 
     async removeAdmin(userId) {
+        console.log('removing');
         let data = JSON.stringify({
             "roles": [
                 "rol_XQpYexn0DuyyZRll"
