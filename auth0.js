@@ -51,17 +51,43 @@ class Auth0ManagementService {
         }
     }
 
-    async assignAdmin(userId) {
-        const adminRole = "rol_XQpYexn0DuyyZRll";
+    async getToken() {
+        const response = await axios.post(`https://${process.env.REACT_APP_AUTH0_domain}/oauth/token`, {
+            client_id: process.env.Auth0_M2M_CLIENT_ID,
+            client_secret: process.env.Auth0_M2M_CLIENT_SECRET,
+            audience: process.env.Auth0_M2M_AUDIENCE,
+            grant_type: "client_credentials"
+        }, {
+        headers: { "Content-Type": "application/json" }
+        });
 
-        const response = await fetch(`${process.env.AUTH0_M2M_AUDIENCE}users/${userId}/roles`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-            roles: [admineRole]
+        return response.data.access_token;
+    }
+
+    async assignAdmin(userId) {
+        let data = JSON.stringify({
+            "roles": [
+                "rol_XQpYexn0DuyyZRll"
+            ]   
+        });
+
+        let config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: 'https://'+ process.env.Auth0_M2M_AUDIENCE +'users/'+userId+'/roles',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + this.getToken()
+        },
+        data : data
+        };
+
+        axios.request(config)
+        .then((response) => {
+            console.log(JSON.stringify(response.data));
         })
+        .catch((error) => {
+            console.log(error);
         });
     }
 
@@ -77,7 +103,8 @@ class Auth0ManagementService {
             maxBodyLength: Infinity,
             url: 'https://'+ process.env.Auth0_M2M_AUDIENCE +'users/'+userId+'/roles',
             headers: { 
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + this.getToken()
         },
         data : data
         };
