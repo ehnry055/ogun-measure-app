@@ -54,7 +54,9 @@ const MapPage = () => {
             layout: 'vertical',
             align: 'right',
             margin: 0,
-            backgroundColor: '#8C68CD26'
+            backgroundColor: '#EEEEEE26',
+            color: 'white',
+            borderRadius: 10
           },
           mapNavigation: {
             enabled: true
@@ -111,9 +113,9 @@ const MapPage = () => {
     <div className='map-display'>
       <h1 className='map-title'>Ogun Measure by County: Total Structural Racism
         <InfoPopup>
-        <h2 style={{ color: '#8C68CD'}}>Map Display </h2>
+        <h2 style={{textAlign: 'center', color: '#8C68CD'}}>Map Display </h2>
 
-          <p style={{ textAlign: 'left' , margin: '0 20px', fontSize: '22px', padding: '70px 0'}}>
+          <p style={{ textAlign: 'center' , margin: '0 20px', fontSize: '22px'}}>
             This map displays a heatmap of all US counties based on the total structural racism score as calculated by the Ogun Measure. 
             <brk />
             This value is determined by the cumulative value of all combinations of facets, pathways, and historical periods.
