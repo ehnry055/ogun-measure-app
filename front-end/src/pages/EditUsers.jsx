@@ -90,27 +90,6 @@ const EditUsers = () => {
     }));
   };
 
-  // Format date for display
-  const formatDate = (date) => {
-    if (!date) return 'Never';
-    
-    const now = new Date();
-    const diffMs = now - date;
-    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-    const diffMinutes = Math.floor(diffMs / (1000 * 60));
-
-    if (diffMinutes < 60) return `${diffMinutes}m ago`;
-    if (diffHours < 24) return `${diffHours}h ago`;
-    if (diffDays < 7) return `${diffDays}d ago`;
-    
-    return date.toLocaleDateString('en-US', { 
-      month: 'short', 
-      day: 'numeric',
-      year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined
-    });
-  };
-
   const processedData = extractUserData(users);
 
   return (
@@ -200,7 +179,7 @@ const EditUsers = () => {
                             backgroundColor: user.lastLogged && (new Date() - user.lastLogged) < 86400000 ? '#8C68CD' : '#666'
                           }}
                         />
-                        <span className="text-sm text-gray-200">{formatDate(user.lastLogged)}</span>
+                        <span className="text-sm text-gray-200">{user.lastLogged}</span>
                       </div>
                     </td>
 
