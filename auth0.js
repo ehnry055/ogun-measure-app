@@ -43,7 +43,7 @@ class Auth0ManagementService {
       }
     }
 
-    async getToken() {
+    getToken = async () => {
         console.log("trying getToken")
         const response = await axios.post(`https://${process.env.REACT_APP_AUTH0_domain}/oauth/token`, {
             client_id: process.env.Auth0_M2M_CLIENT_ID,
