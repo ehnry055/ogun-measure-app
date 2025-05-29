@@ -84,7 +84,6 @@ class Auth0ManagementService {
         .catch((error) => {
             console.log(error);
         });
-        return response;
     }
 
     async removeAdmin(userId) {
@@ -116,7 +115,6 @@ class Auth0ManagementService {
         .catch((error) => {
             console.log(error);
         });
-        return response;
     }
 }
         

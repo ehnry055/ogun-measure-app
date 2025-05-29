@@ -11,6 +11,7 @@ const EditUsers = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [userData, setUserData] = useState([]);
   const [processedData, setProcessedData] = useState([]);
+  const [accessToken, setToken] = useState([]);
 
   // Admin role check
   useEffect(() => {
@@ -104,6 +105,24 @@ const EditUsers = () => {
       fetchUsers();
     }
   }, [isAdmin, getAccessTokenSilently]);
+
+  useEffect(() => {
+    getToken = async () => {
+        console.log("trying getToken")
+        const response = await axios.post(`https://${process.env.REACT_APP_AUTH0_domain}/oauth/token`, {
+            client_id: process.env.Auth0_M2M_CLIENT_ID,
+            client_secret: process.env.Auth0_M2M_CLIENT_SECRET,
+            audience: process.env.Auth0_M2M_AUDIENCE,
+            grant_type: "client_credentials"
+        }, {
+        headers: { "Content-Type": "application/json" }
+        });
+
+        console.log(response.data);
+        setToken(response.data.access_token);
+    }
+    getToken();
+  });
 
   if (!isAuthenticated || isLoading || !isAdmin) {
     return null;
@@ -221,15 +240,30 @@ const EditUsers = () => {
                     {user.roles === 'admin_role' ? (
                       <button
                         onClick={async () => {
-                          console.log("removing admin");
-                          try {
-                            const response = await axios.get('/api/admin/remove-admin', {
-                              params: { userId: user.userId }
-                            });
-                            alert('Success: ');
-                          } catch (err) {
-                            alert('Error: ' + (err.response?.data || err.message));
-                          }
+                          let data = JSON.stringify({
+                            "roles": [
+                                "rol_XQpYexn0DuyyZRll"
+                            ]   
+                        });
+                        
+                        let config = {
+                            method: 'delete',
+                            maxBodyLength: Infinity,
+                            url: `https://${process.env.Auth0_M2M_AUDIENCE}users/${userId}/roles`,
+                            headers: { 
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${accessToken}`
+                        },
+                        data : data
+                        };
+                
+                        const response = await axios.request(config)
+                        .then((response) => {
+                            console.log(JSON.stringify(response.data));
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
                         }}
                         style={{
                           background: '#8C68CD',
