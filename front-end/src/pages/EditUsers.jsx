@@ -77,14 +77,20 @@ const EditUsers = () => {
           });
           const rolesList = Object.values(roles.data);
           console.log(rolesList);
-          const roleName = rolesList[0];
+          const roleName = {};
+          if(rolesList[0].length === 0) {
+            roleName = { name: 'guest_role' };
+          }
+          else {
+            roleName = rolesList[0];
+          }
           results.push({
             name: user?.name,
             email: user?.email || 'No email',
             lastLogged: user?.last_login,
             verified: user.email_verified !== undefined ? user.email_verified : null,
             userId: user?.user_id,
-            roles: roleName || 'guest_role'
+            roles: roleName.name
           })
         }
         setProcessedData(results);
