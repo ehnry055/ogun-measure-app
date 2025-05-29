@@ -74,6 +74,7 @@ const RequestsPage = () => {
         },
       });
       console.log("done");
+      alert("Email sent successfully!");
     } catch (error) {
       console.error('error', error);
     }
