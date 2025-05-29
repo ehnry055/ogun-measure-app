@@ -72,11 +72,11 @@ const EditUsers = () => {
   
   const user2 = userData[0];
 
-  console.log("Users:", users);
-  console.log("API Response: Users", {
-    type: typeof users,
-    data: users,
-    isArray: Array.isArray(users)
+  console.log("Users:", user2);
+  console.log("API Response: User2", {
+    type: typeof user2,
+    data: user2,
+    isArray: Array.isArray(user2)
   });
 
   const users = userData;
