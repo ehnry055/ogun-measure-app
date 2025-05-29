@@ -81,24 +81,20 @@ const EditUsers = () => {
             <th>Name</th>
             <th>Email</th>
             <th>Last Login</th>
+            <th>Email Verified</th>
           </tr>
         </thead>
         <tbody>
           {users.map((user, index) => (
             <tr key={user.user_id || index} className="hover:bg-gray-50">
               <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm font-medium text-gray-900">
-                  {getDisplayName(user)}
-                  </div>
-                    {user.nickname && user.nickname !== user.name && (
-                      <div className="text-sm text-gray-500">@{user.nickname}</div>
-                    )}
+                <div>user.name</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm text-gray-900">{user.email || 'No email'}</div>
+                <div>{user.email || 'No email'}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm text-gray-900">{formatLastLogin(user)}</div>
+                <div>{user.last_login}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
