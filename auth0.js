@@ -42,13 +42,31 @@ class Auth0ManagementService {
         }
     }
 
-    async removeRole(userId, role) {
-        try {
-            return await this.management.roles.removeUsers({ id: roleId }, { users: [userId] });
-        } catch (error) {
-            console.error('Auth0 Management Error:', error);
-            throw new Error('Failed to remove role from user in Auth0');
-        }
+    async removeAdmin(userId) {
+        const axios = require('axios');
+            let data = JSON.stringify({
+            "roles": [
+                "adminView"
+            ]   
+        });
+
+        let config = {
+            method: 'delete',
+            maxBodyLength: Infinity,
+            url: 'https://'+ process.env.REACT_APP_AUTH0_domain +'/api/v2/users/'+userId+'/roles',
+            headers: { 
+            'Content-Type': 'application/json'
+        },
+        data : data
+        };
+
+        axios.request(config)
+        .then((response) => {
+            console.log(JSON.stringify(response.data));
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     }
     /*
 

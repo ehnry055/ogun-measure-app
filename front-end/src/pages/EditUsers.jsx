@@ -70,7 +70,7 @@ const EditUsers = () => {
     return null;
   }
 
-  const users = userData[0];
+  const users = userData;
   console.log("Users:", users);
 
   return (
