@@ -78,95 +78,128 @@ const EditUsers = () => {
     data: users,
     isArray: Array.isArray(users)
   });
-  const getAllKeys = (array) => {
-    const keys = new Set();
-    array.forEach(obj => {
-      Object.keys(obj).forEach(key => keys.add(key));
-    });
-    return Array.from(keys);
+
+
+  // Extract specific fields from large objects
+  const extractUserData = (users) => {
+    return users.map(user => ({
+      name: user.name,
+      email: user.email || 'No email',
+      lastLogged: user.last_login,
+      verified: user.email_verified !== undefined ? user.email_verified : null
+    }));
   };
 
-  // Format cell value for display
-  const formatCellValue = (value) => {
-    if (value === null || value === undefined) return 'N/A';
-    if (typeof value === 'object') return JSON.stringify(value);
-    if (typeof value === 'boolean') return value ? 'Yes' : 'No';
-    return String(value);
-  };
-
-  // Capitalize first letter of header
-  const formatHeader = (key) => {
-    return key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
-  };
-
-  const headers = getAllKeys(users);
+  const processedData = extractUserData(users);
 
   return (
     <div className="min-h-screen p-6" style={{ backgroundColor: '#0a0a0a' }}>
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6 text-white">Object Array Parser</h1>
+      <div className="max-w-6xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-white mb-2">User Management</h1>
+          <p className="text-gray-400">Parsed from large object arrays - showing only essential data</p>
+        </div>
         
-        {/* Table Container */}
+        {/* Main Table */}
         <div className="rounded-xl overflow-hidden shadow-2xl" style={{ backgroundColor: '#1a1a1a', border: '1px solid #8C68CD' }}>
-          {/* Table Header */}
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr style={{ backgroundColor: '#8C68CD26' }}>
-                  {headers.map((header, index) => (
-                    <th 
-                      key={header}
-                      className="px-6 py-4 text-left text-sm font-semibold text-white uppercase tracking-wider border-r border-gray-700 last:border-r-0"
-                      style={{ 
-                        backgroundColor: index % 2 === 0 ? '#8C68CD26' : 'rgba(140, 104, 205, 0.1)',
-                        borderBottom: '2px solid #8C68CD'
-                      }}
-                    >
-                      {formatHeader(header)}
-                    </th>
-                  ))}
+                  <th 
+                    className="px-6 py-4 text-left text-sm font-semibold text-white uppercase tracking-wider"
+                    style={{ borderBottom: '2px solid #8C68CD' }}
+                  >
+                    Name
+                  </th>
+                  <th 
+                    className="px-6 py-4 text-left text-sm font-semibold text-white uppercase tracking-wider border-l border-gray-700"
+                    style={{ borderBottom: '2px solid #8C68CD' }}
+                  >
+                    Email
+                  </th>
+                  <th 
+                    className="px-6 py-4 text-left text-sm font-semibold text-white uppercase tracking-wider border-l border-gray-700"
+                    style={{ borderBottom: '2px solid #8C68CD' }}
+                  >
+                    Last Active
+                  </th>
+                  <th 
+                    className="px-6 py-4 text-left text-sm font-semibold text-white uppercase tracking-wider border-l border-gray-700"
+                    style={{ borderBottom: '2px solid #8C68CD' }}
+                  >
+                    Verified
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                {users.map((item, rowIndex) => (
+                {processedData.map((user, rowIndex) => (
                   <tr 
                     key={rowIndex}
-                    className="transition-all duration-200 hover:shadow-lg"
+                    className="transition-all duration-200"
                     style={{ 
                       backgroundColor: rowIndex % 2 === 0 ? '#1f1f1f' : '#252525',
                       borderBottom: '1px solid #333'
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.backgroundColor = '#8C68CD26';
-                      e.currentTarget.style.transform = 'scale(1.01)';
+                      e.currentTarget.style.transform = 'translateX(4px)';
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.backgroundColor = rowIndex % 2 === 0 ? '#1f1f1f' : '#252525';
-                      e.currentTarget.style.transform = 'scale(1)';
+                      e.currentTarget.style.transform = 'translateX(0px)';
                     }}
                   >
-                    {headers.map((header, cellIndex) => (
-                      <td 
-                        key={`${rowIndex}-${header}`}
-                        className="px-6 py-4 text-sm text-gray-200 border-r border-gray-700 last:border-r-0"
-                      >
-                        <div className="flex items-center">
-                          {header === 'status' && item[header] ? (
-                            <div className="flex items-center">
-                              <div 
-                                className="w-2 h-2 rounded-full mr-2"
-                                style={{ 
-                                  backgroundColor: item[header] === 'Active' ? '#8C68CD' : '#666' 
-                                }}
-                              />
-                              <span>{formatCellValue(item[header])}</span>
-                            </div>
-                          ) : (
-                            <span>{formatCellValue(item[header])}</span>
-                          )}
+                    {/* Name Column */}
+                    <td className="px-6 py-4">
+                      <div className="flex items-center">
+                        <div 
+                          className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium mr-3"
+                          style={{ backgroundColor: '#8C68CD', color: 'white' }}
+                        >
+                          {user.name.charAt(0).toUpperCase()}
                         </div>
-                      </td>
-                    ))}
+                        <div>
+                          <div className="text-sm font-medium text-white">{user.name}</div>
+                        </div>
+                      </div>
+                    </td>
+
+                    {/* Email Column */}
+                    <td className="px-6 py-4 border-l border-gray-700">
+                      <div className="text-sm text-gray-200">{user.email}</div>
+                    </td>
+
+                    {/* Last Active Column */}
+                    <td className="px-6 py-4 border-l border-gray-700">
+                      <div className="flex items-center">
+                        <div 
+                          className="w-2 h-2 rounded-full mr-2"
+                          style={{ 
+                            backgroundColor: user.lastLogged && (new Date() - user.lastLogged) < 86400000 ? '#8C68CD' : '#666'
+                          }}
+                        />
+                        <span className="text-sm text-gray-200">{formatDate(user.lastLogged)}</span>
+                      </div>
+                    </td>
+
+                    {/* Verified Column */}
+                    <td className="px-6 py-4 border-l border-gray-700">
+                      {user.verified !== null ? (
+                        <span 
+                          className="inline-flex px-3 py-1 text-xs font-semibold rounded-full"
+                          style={{ 
+                            backgroundColor: user.verified ? '#8C68CD26' : '#ff444426',
+                            color: user.verified ? '#8C68CD' : '#ff6b6b',
+                            border: `1px solid ${user.verified ? '#8C68CD' : '#ff4444'}`
+                          }}
+                        >
+                          {user.verified ? 'Verified' : 'Unverified'}
+                        </span>
+                      ) : (
+                        <span className="text-xs text-gray-500">Unknown</span>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </tbody>
