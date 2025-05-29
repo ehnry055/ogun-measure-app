@@ -52,28 +52,16 @@ class Auth0ManagementService {
     }
 
     async assignAdmin(userId) {
-        let data = JSON.stringify({
-            "roles": [
-                "rol_XQpYexn0DuyyZRll"
-            ]   
-        });
+        const adminRole = "rol_XQpYexn0DuyyZRll";
 
-        let config = {
-            method: 'post',
-            maxBodyLength: Infinity,
-            url: 'https://'+ process.env.Auth0_M2M_AUDIENCE +'users/'+userId+'/roles',
-            headers: { 
-            'Content-Type': 'application/json'
-        },
-        data : data
-        };
-
-        axios.request(config)
-        .then((response) => {
-            console.log(JSON.stringify(response.data));
+        const response = await fetch(`${process.env.AUTH0_M2M_AUDIENCE}users/${userId}/roles`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+            roles: [admineRole]
         })
-        .catch((error) => {
-            console.log(error);
         });
     }
 
