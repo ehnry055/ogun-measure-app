@@ -103,7 +103,6 @@ const EditUsers = () => {
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white mb-2">User Management</h1>
-          <p className="text-gray-400">Parsed from large object arrays - showing only essential data</p>
         </div>
         
         {/* Main Table */}
@@ -159,12 +158,6 @@ const EditUsers = () => {
                     {/* Name Column */}
                     <td className="px-6 py-4">
                       <div className="flex items-center">
-                        <div 
-                          className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium mr-3"
-                          style={{ backgroundColor: '#8C68CD', color: 'white' }}
-                        >
-                          {user.name.charAt(0).toUpperCase()}
-                        </div>
                         <div>
                           <div className="text-sm font-medium text-white">{user.name}</div>
                         </div>

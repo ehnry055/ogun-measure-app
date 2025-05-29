@@ -14,9 +14,7 @@ class Auth0ManagementService {
 
     async getAllUsers() {
         try {
-            return await this.management.users.getAll({
-                per_page: 50,
-            });
+            return await this.management.users.getAll();
         } catch (error) {
             console.error('Auth0 Management Error:', error);
             throw new Error('Failed to fetch users from Auth0');
@@ -43,7 +41,6 @@ class Auth0ManagementService {
     }
 
     async removeAdmin(userId) {
-        const axios = require('axios');
             let data = JSON.stringify({
             "roles": [
                 "admin_role"
@@ -70,7 +67,6 @@ class Auth0ManagementService {
     }
 
     async removeRegistered(userId) {
-        const axios = require('axios');
             let data = JSON.stringify({
             "roles": [
                 "registered_role"
@@ -98,7 +94,6 @@ class Auth0ManagementService {
 
 
     async assignAdmin(userId) {
-        const axios = require('axios');
             let data = JSON.stringify({
             "roles": [
                 "admin_role"
@@ -125,10 +120,9 @@ class Auth0ManagementService {
     }
 
     async assignRegistered(userId) {
-        const axios = require('axios');
             let data = JSON.stringify({
             "roles": [
-                "registerd_role"
+                "registered_role"
             ]   
         });
 
