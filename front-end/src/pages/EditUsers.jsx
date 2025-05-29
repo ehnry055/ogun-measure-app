@@ -69,6 +69,7 @@ const EditUsers = () => {
         });
 
         // Extract specific fields from large objects
+        /*
         const results = [];
         for (const user of users) {
           results.push({
@@ -79,7 +80,7 @@ const EditUsers = () => {
           })
         }
 
-        setProcessedData(results);
+        setProcessedData(results);*/
       } catch (error) {
         console.error('Error fetching users:', error);
       }
