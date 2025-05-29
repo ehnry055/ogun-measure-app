@@ -4,7 +4,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
-import auth0Management from "./auth0";
+import auth0Management from "..../auth0";
 
 
 const EditUsers = () => {
