@@ -6,6 +6,7 @@ class Auth0ManagementService {
             client_id: process.env.Auth0_M2M_CLIENT_ID,
             client_secret: process.env.Auth0_M2M_CLIENT_SECRET,
             domain: process.env.REACT_APP_AUTH0_domain,
+            audience: process.env.Auth0_M2M_AUDIENCE,
             scope: 'read:users read:user_idp_tokens update:client_grants update:users delete:users create:users read:clients read:roles create:role_members read:role_members delete:role_members'
         });
     }
