@@ -113,36 +113,32 @@ const EditUsers = () => {
     return null;
   }
   return (
-      <div className="max-w-6xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">User Management</h1>
+      <div>
+        <div>
+          <h1>User Management</h1>
         </div>
         {/* Main Table */}
         
-          <div className="overflow-x-auto" style={{ borderRadius: '8px' }}>
-            <table className="w-full">
+          <div style={{ borderRadius: '8px' }}>
+            <table>
               <thead>
                 <tr style={{ backgroundColor: '#2B2534'}}>
                   <th 
-                    className="px-6 py-4 text-left text-sm font-semibold text-white uppercase tracking-wider"
-                    style={{ border: '2px solid #8C68CD' }}
+                    style={{ borderBottom: '2px solid #8C68CD' }}
                   >
                     Name
                   </th>
                   <th 
-                    className="px-6 py-4 text-left text-sm font-semibold text-white uppercase tracking-wider border-l border-gray-700"
                     style={{ borderBottom: '2px solid #8C68CD' }}
                   >
                     Email
                   </th>
                   <th 
-                    className="px-6 py-4 text-left text-sm font-semibold text-white uppercase tracking-wider border-l border-gray-700"
                     style={{ borderBottom: '2px solid #8C68CD' }}
                   >
                     Last Active
                   </th>
                   <th 
-                    className="px-6 py-4 text-left text-sm font-semibold text-white uppercase tracking-wider border-l border-gray-700"
                     style={{ borderBottom: '2px solid #8C68CD' }}
                   >
                     Verified
@@ -153,7 +149,6 @@ const EditUsers = () => {
                 {processedData.map((user, rowIndex) => (
                   <tr 
                     key={rowIndex}
-                    className="transition-all duration-200"
                     style={{ 
                       backgroundColor: rowIndex % 2 === 0 ? '#1f1f1f' : '#252525',
                       borderBottom: '1px solid #333'
@@ -168,37 +163,35 @@ const EditUsers = () => {
                     }}
                   >
                     {/* Name Column */}
-                    <td className="px-6 py-4">
-                      <div className="flex items-center">
+                    <td>
+                      <div>
                         <div>
-                          <div className="text-sm font-medium text-white">{user.name}</div>
+                          <div>{user.name}</div>
                         </div>
                       </div>
                     </td>
 
                     {/* Email Column */}
-                    <td className="px-6 py-4 border-l border-gray-700">
-                      <div className="text-sm text-gray-200">{user.email}</div>
+                    <td>
+                      <div>{user.email}</div>
                     </td>
 
                     {/* Last Active Column */}
-                    <td className="px-6 py-4 border-l border-gray-700">
-                      <div className="flex items-center">
+                    <td>
+                      <div>
                         <div 
-                          className="w-2 h-2 rounded-full mr-2"
                           style={{ 
                             backgroundColor: user.lastLogged && (new Date() - user.lastLogged) < 86400000 ? '#8C68CD' : '#666'
                           }}
                         />
-                        <span className="text-sm text-gray-200">{user.lastLogged}</span>
+                        <span>{user.lastLogged}</span>
                       </div>
                     </td>
 
                     {/* Verified Column */}
-                    <td className="px-6 py-4 border-l border-gray-700">
+                    <td>
                       {user.verified !== null ? (
                         <span 
-                          className="inline-flex px-3 py-1 text-xs font-semibold rounded-full"
                           style={{ 
                             backgroundColor: user.verified ? '#8C68CD26' : '#ff444426',
                             color: user.verified ? '#8C68CD' : '#ff6b6b',
@@ -208,7 +201,7 @@ const EditUsers = () => {
                           {user.verified ? 'Verified' : 'Unverified'}
                         </span>
                       ) : (
-                        <span className="text-xs text-gray-500">Unknown</span>
+                        <span>Unknown</span>
                       )}
                     </td>
                   </tr>
