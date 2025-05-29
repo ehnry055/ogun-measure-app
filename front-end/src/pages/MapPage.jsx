@@ -52,6 +52,10 @@ const MapPage = () => {
             description: 'Demo showing a large dataset.'
           },
           legend: {
+            itemStyle: {
+              color: 'white !important',
+              fontWeight: 'bold'
+            },
             layout: 'vertical',
             align: 'right',
             margin: 0,
@@ -65,7 +69,7 @@ const MapPage = () => {
           },
           colorAxis: {
             itemStyle: {
-              color: 'white',
+              color: 'white !important',
               fontWeight: 'bold'
             },
             color: 'white',
