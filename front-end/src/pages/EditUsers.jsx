@@ -272,7 +272,7 @@ const EditUsers = () => {
                         onClick={async () => {
                           try {
                             console.log('Deleting user:', user.userId);
-                            const response = await axios.delete('/api/admin/delete-user', {
+                            const response = await axios.get('/api/admin/delete-user', {
                               params: { userId: user.userId }
                             });
                             alert('Success');
