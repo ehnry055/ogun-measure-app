@@ -213,7 +213,7 @@ const EditUsers = () => {
                       )}
                     </td>
                     <td>
-                    {user.roles === 'admin' ? (
+                    {user.roles === 'admin_role' ? (
                       <button
                         onClick={async () => {
                           try {
