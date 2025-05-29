@@ -50,7 +50,7 @@ const Gateway = () => {
             </Dropdown.Menu>
         </Dropdown>
 
-        <Dropdown className="gateway-dropdown">
+        {/* <Dropdown className="gateway-dropdown">
             <Dropdown.Toggle className="gateway-dropdown-toggle">
                 See Pathways
             </Dropdown.Toggle>
@@ -69,14 +69,15 @@ const Gateway = () => {
                 <Dropdown.Item className="gateway-dropdown-item">Historical Period 2 Desegregation 1969-1999</Dropdown.Item>
                 <Dropdown.Item className="gateway-dropdown-item">Historical Period 3 Modern Times 2000-Present</Dropdown.Item>
             </Dropdown.Menu>
-        </Dropdown>
+        </Dropdown> */}
 
         {/* <a href="/viewdata" className="homebtn" id="gendata"><span> Generate Data </span></a> */}
-        </div>
         {/* </div> */}
-        <div class="return">
+        {/* </div> */}
+        {/* <div class="return"> */}
             <a href="/viewdata" className="homebtn" id="gendata"><span> Generate Data </span></a>
-        </div>
+            </div>
+        {/* </div> */}
       {/* </div> */}
     </div>
   );
