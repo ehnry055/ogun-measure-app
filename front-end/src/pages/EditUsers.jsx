@@ -147,6 +147,11 @@ const EditUsers = () => {
                   >
                     Verified
                   </th>
+                  <th 
+                    style={{ borderBottom: '2px solid #8C68CD' }}
+                  >
+                    Admin Action
+                  </th>
                 </tr>
               </thead>
               <tbody>
