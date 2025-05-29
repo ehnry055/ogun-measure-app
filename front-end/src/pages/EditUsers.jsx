@@ -51,22 +51,17 @@ const EditUsers = () => {
         const data = response.data
         const dataArray = Object.values(data);
         setUserData(dataArray);
-        console.log("API Response: userData", {
-          type: typeof response.data,
-          data: response.data,
-          isArray: Array.isArray(response.data)
-        });
-        console.log("User Data:", dataArray);
-
 
         const users = dataArray[0];
 
+        /*
         console.log("Users:", users);
         console.log("API Response: Users", {
           type: typeof users,
           data: users,
           isArray: Array.isArray(users)
         });
+        */
 
         // Extract specific fields from large objects
         
@@ -86,7 +81,7 @@ const EditUsers = () => {
             email: user?.email || 'No email',
             lastLogged: user?.last_login,
             verified: user.email_verified !== undefined ? user.email_verified : null,
-            roles: rolesList
+            roles: rolesList || 'guest_role'
           })
         }
         setProcessedData(results);
@@ -136,6 +131,11 @@ const EditUsers = () => {
                   <th 
                     style={{ borderBottom: '2px solid #8C68CD' }}
                   >
+                    Roles
+                  </th>
+                  <th 
+                    style={{ borderBottom: '2px solid #8C68CD' }}
+                  >
                     Verified
                   </th>
                 </tr>
@@ -181,6 +181,10 @@ const EditUsers = () => {
                         />
                         <span>{user.lastLogged}</span>
                       </div>
+                    </td>
+                    
+                    <td>
+                      <div>{user.roles}</div>
                     </td>
 
                     {/* Verified Column */}
