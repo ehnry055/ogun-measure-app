@@ -1,4 +1,5 @@
 const { ManagementClient } = require('auth0');
+const axios = require('axios');
 
 class Auth0ManagementService {
     constructor() {
@@ -38,6 +39,15 @@ class Auth0ManagementService {
         } catch (error) {
             console.error('Auth0 Management Error:', error);
             throw new Error('Failed to fetch user roles from Auth0');
+        }
+    }
+
+    async removeRole(userId, role) {
+        try {
+            return await this.management.roles.removeUsers({ id: roleId }, { users: [userId] });
+        } catch (error) {
+            console.error('Auth0 Management Error:', error);
+            throw new Error('Failed to remove role from user in Auth0');
         }
     }
     /*

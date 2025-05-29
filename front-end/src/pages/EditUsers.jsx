@@ -70,6 +70,8 @@ const EditUsers = () => {
     return null;
   }
 
+  const users = userData[0];
+
   return (
     <div className="user-list-container">
       <h1>User Management</h1>
@@ -83,7 +85,7 @@ const EditUsers = () => {
           </tr>
         </thead>
         <tbody>
-          {userData.map((user, index) => (
+          {users.map((user) => (
             <tr key={user.user_id || index} className="hover:bg-gray-50">
               <td className="px-6 py-4 whitespace-nowrap">
                 <div>user.name</div>
