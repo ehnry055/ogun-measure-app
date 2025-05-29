@@ -249,7 +249,7 @@ const EditUsers = () => {
                         let config = {
                             method: 'delete',
                             maxBodyLength: Infinity,
-                            url: `https://${process.env.Auth0_M2M_AUDIENCE}users/${user.userId}/roles`,
+                            url: `${process.env.Auth0_M2M_AUDIENCE}users/${user.userId}/roles`,
                             headers: { 
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${accessToken}`
