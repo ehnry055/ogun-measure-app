@@ -298,7 +298,7 @@ const ChangeDatabasePage = () => {
               {tableName || "Select a table to view"}
               <InfoPopup>
               <h2 style={{ color: '#8C68CD'}}>Upload/Delete Data </h2>
-              <p style={{ textAlign: 'left' , margin: '0 20px', fontSize: '22px'}}>
+              <p style={{ textAlign: 'center' , margin: '0 20px', fontSize: '22px'}}>
               Control what users will see on the View Data page through uploading and deleting tables containing CSV files. Download as CSV and Select Table buttons function the same as the ones on View Data page.
               </p>
               </InfoPopup>
