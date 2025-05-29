@@ -44,6 +44,7 @@ class Auth0ManagementService {
     }
 
     async getToken() {
+        console.log("trying getToken")
         const response = await axios.post(`https://${process.env.REACT_APP_AUTH0_domain}/oauth/token`, {
             client_id: process.env.Auth0_M2M_CLIENT_ID,
             client_secret: process.env.Auth0_M2M_CLIENT_SECRET,
@@ -97,7 +98,7 @@ class Auth0ManagementService {
         let config = {
             method: 'delete',
             maxBodyLength: Infinity,
-            url: `https:// ${process.env.Auth0_M2M_AUDIENCE}users/${userId}/roles`,
+            url: `https://${process.env.Auth0_M2M_AUDIENCE}users/${userId}/roles`,
             headers: { 
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`

@@ -527,9 +527,9 @@ app.get("/api/admin/delete-user",  async (req, res) => {
   }
 });
 
-app.get("/api/admin/assign-admin",  async (req, res) => {
+app.post("/api/admin/assign-admin",  async (req, res) => {
   try {
-    const { userId } = req.query;
+    const { userId } = req.body;
     if (!userId) {
       return res.status(400).send('User ID is required');
     }
@@ -541,7 +541,7 @@ app.get("/api/admin/assign-admin",  async (req, res) => {
   }
 });
 
-app.get("/api/admin/remove-admin",  async (req, res) => {
+app.delete("/api/admin/remove-admin",  async (req, res) => {
   try {
     console.log("removig admin");
     const { userId } = req.query;
