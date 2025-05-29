@@ -43,6 +43,9 @@ const MapPage = () => {
             align: 'left',
             style: {
                 color: "#ffffff"
+            },
+            tooltip: {
+              format: "This map displays a heatmap of all US counties based on the total structural racism score as calculated by the Ogun Measure. This value is determined by the cumulative value of all combinations of facets, pathways, and historical periods."
             }
           },
           accessibility: {
