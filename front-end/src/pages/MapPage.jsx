@@ -36,7 +36,7 @@ const MapPage = () => {
             backgroundColor: '#8C68CD26',
             borderRadius: 10,
             borderWidth: 2,
-            borderColor: '#8C68CD'
+            borderColor: 'white'
 
           },
           title: {
@@ -111,6 +111,8 @@ const MapPage = () => {
     <div className='map-display'>
       <h1 className='map-title'>Ogun Measure by County: Total Structural Racism
         <InfoPopup>
+        <h2 style={{ color: '#8C68CD'}}>Map Display </h2>
+
           <p style={{ textAlign: 'left' , margin: '0 20px', fontSize: '22px', padding: '70px 0'}}>
             This map displays a heatmap of all US counties based on the total structural racism score as calculated by the Ogun Measure. 
             <brk />
