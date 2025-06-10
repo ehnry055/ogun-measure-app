@@ -13,7 +13,7 @@ https://ogun-measure-app-4fceb75a4928.herokuapp.com/
 
 ## Installation:  
 
-Node.js is needed to install the node modules (currently using v22)
+Node.js is needed to install the node modules (currently using v22)  
 npm (included with node.js) or yarn  
 MySQL server
 
