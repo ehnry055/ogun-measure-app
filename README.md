@@ -23,3 +23,7 @@ Clone the repository
 npm install  
 to run locally, execute 'npm run dev'  
 execute 'npm run build' to create a production build
+
+# Config Files
+
+.env file
