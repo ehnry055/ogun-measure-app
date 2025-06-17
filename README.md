@@ -26,4 +26,5 @@ execute 'npm run build' to create a production build
 
 # Config Files
 
-.env file. All config variables are saved in Heroku
+.env file. A sample .env is provided in the repository  
+All config variables are saved in Heroku
