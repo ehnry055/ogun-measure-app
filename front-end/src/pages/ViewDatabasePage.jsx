@@ -97,6 +97,41 @@ const ViewDatabasePage = () => {
     }
   };
 
+  const handleDownloadExcel = async () => {
+  try {
+    let token = await getAccessTokenSilently();
+
+    const selectedColumnsArray = Array.from(selectedColumns);
+
+    const params = new URLSearchParams();
+    if (selectedColumnsArray.length > 0) {
+      params.append('columns', selectedColumnsArray.join(','));
+    }
+
+    let response = await axios.get(`/api/export-excel${params.toString() ? `?${params}` : ''}`, {
+      headers: { Authorization: `Bearer ${token}` },
+      responseType: 'blob'  // important!
+    });
+
+    let blob = new Blob([response.data], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    });
+
+    let url = URL.createObjectURL(blob);
+    let link = document.createElement('a');
+    link.href = url;
+    link.download = 'data.xlsx';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error('Excel download failed:', error);
+    alert('Excel download failed.');
+  }
+};
+
+
   // get a list of existing tables and let the user select one
   const handleSelectTable = async () => {
     try {
@@ -247,6 +282,7 @@ Modern Times (2000-present) (Time Period 3)<br />
         <h2 className="section-title">Database Controls</h2>
         <div className="controls">
           <button className="download-button" onClick={handleDownload} width="85%"> Download as CSV </button>
+          <button className="downloadExcel-button" onClick={handleDownloadExcel} width="85%"> Download as XLSX </button>
           <button className="select-button" onClick={handleSelectTable} width="85%"> Select Table </button>
         </div>
       </div>

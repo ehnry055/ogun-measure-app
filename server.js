@@ -9,6 +9,7 @@ const qs = require('qs');
 const multer = require('multer');
 const fs = require('fs');
 const csv = require('csv-parser');
+const xlsx = require("xlsx");
 const path = require('path');
 const mysql = require('mysql2/promise');
 const app = express();
@@ -279,6 +280,46 @@ app.get('/api/export-csv', async (req, res) => {
   } catch (err) {
     console.error('Export error:', err);
     res.status(500).send('Error generating CSV');
+  }
+});
+
+app.get("/api/export-excel", async (req, res) => {
+  try {
+    const columns = req.query.columns ? req.query.columns.split(",") : [];
+    const attributes = columns.length > 0 
+      ? columns 
+      : Object.keys(DynamicEntry.rawAttributes);
+
+    const filteredAttributes = attributes.filter(attr => attr !== "id");
+
+    const data = await DynamicEntry.findAll({
+      attributes: filteredAttributes,
+      raw: true
+    });
+
+    if (data.length === 0) {
+      return res.status(404).send("No data found");
+    }
+
+    const worksheet = xlsx.utils.json_to_sheet(data);
+    const workbook = xlsx.utils.book_new();
+    xlsx.utils.book_append_sheet(workbook, worksheet, "Data");
+
+    const buffer = xlsx.write(workbook, {
+      type: "buffer",
+      bookType: "xlsx"
+    });
+
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader("Content-Disposition", "attachment; filename=data.xlsx");
+
+    res.send(buffer);
+  } catch (err) {
+    console.error("Excel export error:", err);
+    res.status(500).send("Error generating Excel");
   }
 });
 

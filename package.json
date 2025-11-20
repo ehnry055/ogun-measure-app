@@ -21,7 +21,8 @@
     "react-scripts": "5.0.1",
     "sequelize": "^6.37.5",
     "sequelize-cli": "^6.6.2",
-    "serve": "^14.2.4"
+    "serve": "^14.2.4",
+    "xlsx": "^0.18.5"
   },
   "engines": {
     "node": "22.11.0",
