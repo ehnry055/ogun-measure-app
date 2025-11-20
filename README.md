@@ -10,6 +10,8 @@ https://ogun-measure-app-4fceb75a4928.herokuapp.com/
 **Authentication**: Auth0  
 **Data Visualization**: Highcharts  
 **Hosting**: Heroku 
+**R Integration**: Plumber API
+
 
 ## Installation:  
 
