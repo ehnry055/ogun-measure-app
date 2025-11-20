@@ -281,8 +281,8 @@ Modern Times (2000-present) (Time Period 3)<br />
       <div className="control-section">
         <h2 className="section-title">Database Controls</h2>
         <div className="controls">
-          <button className="download-button" onClick={handleDownload} width="85%"> Download as CS </button>
-          <button className="downloadExcel-button" onClick={handleDownloadExcel} width="85%"> Download as XLSX </button>
+          <button className="download-button" onClick={handleDownload} width="85%"> Download as CSV </button>
+          <button className="download-button" onClick={handleDownloadExcel} width="85%"> Download as XLSX </button>
           <button className="select-button" onClick={handleSelectTable} width="85%"> Select Table </button>
         </div>
       </div>
