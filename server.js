@@ -252,6 +252,18 @@ app.get('/api/notes', async (req, res) => {
   }
 });
 
+app.get('/api/get-sample-rows', async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit, 10) || 100;
+    const rows = await DynamicEntry.findAll({ limit });
+    res.json(rows);
+  } catch (e) {
+    console.error("Error fetching sample rows:", e);
+    res.status(500).send("Error fetching rows.");
+  }
+});
+
+
 app.get('/api/export-csv', async (req, res) => {
   try {
     const columns = req.query.columns ? req.query.columns.split(',') : [];

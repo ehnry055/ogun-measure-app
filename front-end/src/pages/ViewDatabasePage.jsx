@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/DownloadDatabasePage.css';
-import NotesList from '../components/NotesList';
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from 'axios';
 import InfoPopup from '../components/InfoPopup';
@@ -19,6 +18,7 @@ const ViewDatabasePage = () => {
   const [rReady, setRReady] = useState(false);
   const [rLoading, setRLoading] = useState(false);
   const [rResult, setRResult] = useState(null);
+  const [tableRows, setTableRows] = useState([]);
 
   useEffect(() => {
     const savedPresets = localStorage.getItem('columnPresets');
@@ -48,41 +48,90 @@ const ViewDatabasePage = () => {
     };
   }, []);
 
-    const handleRunRAnalysis = async () => {
-      if (!rReady || !webRInstance) return;
-      setRLoading(true);
-      setRResult(null);
-      try {
-        const values = [1, 2, 3, 4, 5, 10, 20, 30];
-        const rCode = `
-          vals <- as.numeric(vals)
-          list(
-            n = length(vals),
-            mean = mean(vals),
-            sd = sd(vals)
-          )
-        `;
-        const rObj = await webRInstance.evalR(rCode, { env: { vals: values } });
-        const js = await rObj.toJs();
+  const fetchSampleRows = async () => {
+    try {
+      const token = await getAccessTokenSilently();
+      const params = new URLSearchParams();
+      if (entryLimit) params.append('limit', entryLimit);
+      const response = await axios.get(`/api/get-sample-rows?${params.toString()}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setTableRows(response.data || []);
+    } catch (err) {
+      console.error("Error fetching sample rows:", err);
+    }
+  };
 
-        const names = js.names || [];
-        const vals = js.values || [];
-        const flattened = {};
-        names.forEach((name, idx) => {
-          const v = vals[idx];
-          if (v && Array.isArray(v.values) && v.values.length > 0) {
-            flattened[name] = v.values[0];
-          }
-        });
+  useEffect(() => {
+    fetchSampleRows();
+  }, [entryLimit, tableName]);
 
-        setRResult(flattened);
-      } catch (e) {
-        console.error("R analysis error", e);
-      } finally {
+  const handleRunRAnalysis = async () => {
+    if (!rReady || !webRInstance) return;
+    setRLoading(true);
+    setRResult(null);
+    try {
+      if (!tableRows || tableRows.length === 0) {
+        alert("No data loaded to analyze.");
         setRLoading(false);
+        return;
       }
-    };
 
+      const firstRow = tableRows[0] || {};
+      const allKeys = Object.keys(firstRow);
+      if (allKeys.length === 0) {
+        alert("No columns found in data.");
+        setRLoading(false);
+        return;
+      }
+
+      let numericKey = allKeys.find(k => typeof firstRow[k] === 'number');
+      if (!numericKey) {
+        numericKey = allKeys[0];
+      }
+
+      const values = tableRows
+        .map(row => Number(row[numericKey]))
+        .filter(v => !Number.isNaN(v));
+
+      if (values.length === 0) {
+        alert("Selected column has no numeric data.");
+        setRLoading(false);
+        return;
+      }
+
+      const rCode = `
+        vals <- as.numeric(vals)
+        list(
+          n = length(vals),
+          mean = mean(vals),
+          sd = sd(vals)
+        )
+      `;
+      const rObj = await webRInstance.evalR(rCode, { env: { vals: values } });
+      const js = await rObj.toJs();
+
+      const names = js.names || [];
+      const vals = js.values || [];
+      const flattened = {};
+      names.forEach((name, idx) => {
+        const v = vals[idx];
+        if (v && Array.isArray(v.values) && v.values.length > 0) {
+          flattened[name] = v.values[0];
+        }
+      });
+
+      setRResult({
+        ...flattened,
+        columnName: numericKey,
+        count: values.length
+      });
+    } catch (e) {
+      console.error("R analysis error", e);
+    } finally {
+      setRLoading(false);
+    }
+  };
 
   const handleSavePreset = () => {
     const presetName = prompt('Enter preset name:');
@@ -182,7 +231,7 @@ const ViewDatabasePage = () => {
       const token = await getAccessTokenSilently();
       const response = await axios.get(`/api/tables`, {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: { Authorization: `Bearer ${token}` }
         }
       });
       const tableNames = response.data;
@@ -199,6 +248,7 @@ const ViewDatabasePage = () => {
         }
       });
       setTableName(selected);
+      await fetchSampleRows();
       alert(`Current table set to ${selected}`);
     } catch (error) {
       console.error('Error selecting table:', error);
@@ -272,50 +322,36 @@ const ViewDatabasePage = () => {
             <h2>
               {tableName || "Select a table to view"}
               <InfoPopup>
-              <h2 style={{ color: '#8C68CD'}}>View Data </h2>
-              <p style={{ textAlign: 'left' , margin: '0 20px', fontSize: '22px'}}>
-              This is the data collected on counties across the US.
-                <br />
-                <br />
-                Each column represents a different combination of a facet, pathway, and time period.
-<br /><br />10 facets: 
-<br />Residential Segregation and Gentrification (RSG)
-<br />Property Ownership (PO)
-<br />Government Representation (GR)
-<br />Policing and Incarceration (PI)
-<br />Income and Poverty (IP)
-<br />Occupational Segregation and Unemployment (OSU)
-<br />Healthcare Access (HCA)
-<br />Healthy Food Access (HFA)
-<br />Environmental Pollution (EP)
-<br />Media and Marketing (MM)
-
-<br /><br />2 pathways:<br />
-Structural Violence (SV)<br />
-Limited or Restricted Access (LRA)<br /><br />
-
-3 historical periods:<br />
-Before the Civil Rights Act of 1968 that included the Fair Housing Act legally ending residential segregation (Time Period 1)<br />
-During Desegregation or Integration (1969-1999) (Time Period 2)<br />
-Modern Times (2000-present) (Time Period 3)<br />
-
-              </p>
+                <h2 style={{ color: '#8C68CD'}}>View Data </h2>
+                <p style={{ textAlign: 'left' , margin: '0 20px', fontSize: '22px'}}>
+                  This is the data collected on counties across the US.
+                  <br />
+                  <br />
+                  Each column represents a different combination of a facet, pathway, and time period.
+                  <br /><br />10 facets: 
+                  <br />Residential Segregation and Gentrification (RSG)
+                  <br />Property Ownership (PO)
+                  <br />Government Representation (GR)
+                  <br />Policing and Incarceration (PI)
+                  <br />Income and Poverty (IP)
+                  <br />Occupational Segregation and Unemployment (OSU)
+                  <br />Healthcare Access (HCA)
+                  <br />Healthy Food Access (HFA)
+                  <br />Environmental Pollution (EP)
+                  <br />Media and Marketing (MM)
+                  <br /><br />2 pathways:<br />
+                  Structural Violence (SV)<br />
+                  Limited or Restricted Access (LRA)<br /><br />
+                  3 historical periods:<br />
+                  Before the Civil Rights Act of 1968 (Time Period 1)<br />
+                  During Desegregation or Integration (1969-1999) (Time Period 2)<br />
+                  Modern Times (2000-present) (Time Period 3)<br />
+                </p>
               </InfoPopup>
             </h2>
-            <div className = 'table-container'>
-              <NotesList 
-                key={tableName}
-                limit={entryLimit}
-                selectedColumns={selectedColumns}
-                onToggleColumn={(column) => setSelectedColumns(prev => {
-                  const newSet = new Set(prev);
-                  newSet.has(column) ? newSet.delete(column) : newSet.add(column);
-                  return newSet;
-                })}
-                currentTableName={tableName}
-                stateFilter={stateFilter}
-              />
-            </div>
+            <p style={{ marginTop: "1rem", fontSize: "0.9rem" }}>
+              Currently loaded rows for analysis: {tableRows.length}
+            </p>
           </div>
         </div>
       </div>
@@ -327,7 +363,6 @@ Modern Times (2000-present) (Time Period 3)<br />
           <button className="download-button" onClick={handleDownloadExcel} width="85%"> Download as XLSX </button>
           <button className="select-button" onClick={handleSelectTable} width="85%"> Select Table </button>
           <button
-
             className="download-button"
             onClick={handleRunRAnalysis}
             width="85%"
@@ -337,14 +372,14 @@ Modern Times (2000-present) (Time Period 3)<br />
           </button>
           {rResult && (
             <div style={{ marginTop: "1rem", fontSize: "0.9rem" }}>
-              <p>R result (demo data):</p>
+              <p>R result (sample data):</p>
+              {rResult.columnName && <p>column = {rResult.columnName}</p>}
+              {rResult.count != null && <p>entries used = {rResult.count}</p>}
               <p>n = {rResult.n}</p>
               <p>mean = {Number(rResult.mean).toFixed(2)}</p>
               <p>sd = {Number(rResult.sd).toFixed(2)}</p>
             </div>
           )}
-
-
         </div>
       </div>
     </div>
