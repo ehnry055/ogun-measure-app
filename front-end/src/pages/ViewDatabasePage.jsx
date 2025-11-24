@@ -29,12 +29,17 @@ const ViewDatabasePage = () => {
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      if (typeof window === 'undefined' || !window.webR) return;
-      if (!webRInstance) {
-        webRInstance = new window.webR.WebR();
-        await webRInstance.init();
+      try {
+        const { WebR } = await import('https://webr.r-wasm.org/latest/webr.mjs');
+        const instance = new WebR();
+        await instance.init();
+        if (!cancelled) {
+          webRInstance = instance;
+          setRReady(true);
+        }
+      } catch (e) {
+        console.error("Failed to init webR:", e);
       }
-      if (!cancelled) setRReady(true);
     })();
     return () => {
       cancelled = true;
