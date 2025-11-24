@@ -64,6 +64,10 @@ const ViewDatabasePage = () => {
       `;
       const rObj = await webRInstance.evalR(rCode, { env: { vals: values } });
       const js = await rObj.toJs();
+     
+      console.log("R result from webR:", js);
+      setRResult(js); //Debug
+
       setRResult(js);
     } catch (e) {
       console.error("R analysis error", e);
@@ -315,6 +319,7 @@ Modern Times (2000-present) (Time Period 3)<br />
           <button className="download-button" onClick={handleDownloadExcel} width="85%"> Download as XLSX </button>
           <button className="select-button" onClick={handleSelectTable} width="85%"> Select Table </button>
           <button
+
             className="download-button"
             onClick={handleRunRAnalysis}
             width="85%"
@@ -325,11 +330,12 @@ Modern Times (2000-present) (Time Period 3)<br />
           {rResult && (
             <div style={{ marginTop: "1rem", fontSize: "0.9rem" }}>
               <p>R result (demo data):</p>
-              <p>n = {rResult.n}</p>
-              <p>mean = {rResult.mean.toFixed(2)}</p>
-              <p>sd = {rResult.sd.toFixed(2)}</p>
+              <pre style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+                {JSON.stringify(rResult, null, 2)}
+              </pre>
             </div>
           )}
+
         </div>
       </div>
     </div>
