@@ -1,5 +1,6 @@
 # Ogun-Measure-App
-Jason Chae, Henry Choi, Brendon Wan, Stephen Yoon
+Previous Developers: Jason Chae, Henry Choi, Brendon Wan, Stephen Yoon  
+Current Developers: Aiden Hong, Dean Elbayar
 
 https://ogun-measure-app-4fceb75a4928.herokuapp.com/
 
