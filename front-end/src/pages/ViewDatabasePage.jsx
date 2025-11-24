@@ -6,39 +6,77 @@ import axios from 'axios';
 import InfoPopup from '../components/InfoPopup';
 import { Info } from 'lucide-react';
 
+let webRInstance = null;
+
 const ViewDatabasePage = () => {
   const { isAuthenticated, user, loginWithRedirect, logout, getAccessTokenSilently } = useAuth0();
-  const [entryLimit, setEntryLimit] = useState(20); // default: 20 entries
+  const [entryLimit, setEntryLimit] = useState(20);
   const [selectedFile, setSelectedFile] = useState(null);
   const [tableName, setTableName] = useState("Default Table");
-
   const [stateFilter, setStateFilter] = useState('');
-  
   const [presets, setPresets] = useState([]);
   const [selectedColumns, setSelectedColumns] = useState(new Set());
   const [selectedPreset, setSelectedPreset] = useState(null);
+  const [rReady, setRReady] = useState(false);
+  const [rLoading, setRLoading] = useState(false);
+  const [rResult, setRResult] = useState(null);
 
   useEffect(() => {
     const savedPresets = localStorage.getItem('columnPresets');
     if (savedPresets) setPresets(JSON.parse(savedPresets));
   }, []);
 
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      if (typeof window === 'undefined' || !window.webR) return;
+      if (!webRInstance) {
+        webRInstance = new window.webR.WebR();
+        await webRInstance.init();
+      }
+      if (!cancelled) setRReady(true);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const handleRunRAnalysis = async () => {
+    if (!rReady || !webRInstance) return;
+    setRLoading(true);
+    setRResult(null);
+    try {
+      const values = [1, 2, 3, 4, 5, 10, 20];
+      const rCode = `
+        vals <- as.numeric(vals)
+        list(
+          n = length(vals),
+          mean = mean(vals),
+          sd = sd(vals)
+        )
+      `;
+      const rObj = await webRInstance.evalR(rCode, { env: { vals: values } });
+      const js = await rObj.toJs();
+      setRResult(js);
+    } catch (e) {
+      console.error("R analysis error", e);
+    } finally {
+      setRLoading(false);
+    }
+  };
+
   const handleSavePreset = () => {
     const presetName = prompt('Enter preset name:');
     if (!presetName) return;
-  
     const currentSelection = Array.from(selectedColumns);
-    
     const newPreset = {
       name: presetName,
       columns: currentSelection
     };
-  
-    // update presets state and localStorage
     const updatedPresets = [...presets, newPreset];
     setPresets(updatedPresets);
     localStorage.setItem('columnPresets', JSON.stringify(updatedPresets));
-  };  
+  };
 
   const applyPreset = (preset) => {
     if (selectedPreset === preset.name) {
@@ -50,38 +88,32 @@ const ViewDatabasePage = () => {
       setSelectedPreset(preset.name);
     }
   };
-    
+
   const deletePreset = (presetName) => {
     const updated = presets.filter(p => p.name !== presetName);
     setPresets(updated);
     localStorage.setItem('columnPresets', JSON.stringify(updated));
   };
-  
+
   const handleEntryLimitChange = (e) => {
     const value = parseInt(e.target.value, 10);
     if (!isNaN(value)) {
-      setEntryLimit(value >= 1 ? value : 1); // value must be at least 1
+      setEntryLimit(value >= 1 ? value : 1);
     }
   };
-    
+
   const handleDownload = async () => {
     try {
       let token = await getAccessTokenSilently();
-      
-      // get the columns array
       const selectedColumnsArray = Array.from(selectedColumns);
-      
-      // URL params only if columns are selected
       const params = new URLSearchParams();
       if (selectedColumnsArray.length > 0) {
         params.append('columns', selectedColumnsArray.join(','));
       }
-
       let response = await axios.get(`/api/export-csv${params.toString() ? `?${params}` : ''}`, {
         headers: { Authorization: `Bearer ${token}` },
         responseType: 'text'
       });
-
       let blob = new Blob([response.data], { type: 'text/csv;charset=utf-8;' });
       let url = URL.createObjectURL(blob);
       let link = document.createElement('a');
@@ -98,41 +130,34 @@ const ViewDatabasePage = () => {
   };
 
   const handleDownloadExcel = async () => {
-  try {
-    let token = await getAccessTokenSilently();
-
-    const selectedColumnsArray = Array.from(selectedColumns);
-
-    const params = new URLSearchParams();
-    if (selectedColumnsArray.length > 0) {
-      params.append('columns', selectedColumnsArray.join(','));
+    try {
+      let token = await getAccessTokenSilently();
+      const selectedColumnsArray = Array.from(selectedColumns);
+      const params = new URLSearchParams();
+      if (selectedColumnsArray.length > 0) {
+        params.append('columns', selectedColumnsArray.join(','));
+      }
+      let response = await axios.get(`/api/export-excel${params.toString() ? `?${params}` : ''}`, {
+        headers: { Authorization: `Bearer ${token}` },
+        responseType: 'blob'
+      });
+      let blob = new Blob([response.data], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      });
+      let url = URL.createObjectURL(blob);
+      let link = document.createElement('a');
+      link.href = url;
+      link.download = 'data.xlsx';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Excel download failed:', error);
+      alert('Excel download failed.');
     }
+  };
 
-    let response = await axios.get(`/api/export-excel${params.toString() ? `?${params}` : ''}`, {
-      headers: { Authorization: `Bearer ${token}` },
-      responseType: 'blob'  // important!
-    });
-
-    let blob = new Blob([response.data], {
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    });
-
-    let url = URL.createObjectURL(blob);
-    let link = document.createElement('a');
-    link.href = url;
-    link.download = 'data.xlsx';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  } catch (error) {
-    console.error('Excel download failed:', error);
-    alert('Excel download failed.');
-  }
-};
-
-
-  // get a list of existing tables and let the user select one
   const handleSelectTable = async () => {
     try {
       const token = await getAccessTokenSilently();
@@ -141,7 +166,7 @@ const ViewDatabasePage = () => {
           Authorization: `Bearer ${token}`
         }
       });
-      const tableNames = response.data; // an array of table names
+      const tableNames = response.data;
       const message = `Select a table from the following:\n-------------------------\n${tableNames.join('\n')}`;
       const selected = window.prompt(message);
       if (!selected) return;
@@ -149,8 +174,6 @@ const ViewDatabasePage = () => {
         alert("Invalid table name selected.");
         return;
       }
-
-      // change the dynamic table on the server side
       await axios.post(`/api/select-table`, { tableName: selected }, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -162,7 +185,7 @@ const ViewDatabasePage = () => {
       console.error('Error selecting table:', error);
       alert('Error selecting table');
     }
-  }
+  };
 
   console.log("Authorized!");
   return (
@@ -284,6 +307,22 @@ Modern Times (2000-present) (Time Period 3)<br />
           <button className="download-button" onClick={handleDownload} width="85%"> Download as CSV </button>
           <button className="download-button" onClick={handleDownloadExcel} width="85%"> Download as XLSX </button>
           <button className="select-button" onClick={handleSelectTable} width="85%"> Select Table </button>
+          <button
+            className="download-button"
+            onClick={handleRunRAnalysis}
+            width="85%"
+            disabled={!rReady || rLoading}
+          >
+            {!rReady ? "Loading R..." : rLoading ? "Running R Analysis (R)" : "Run R Analysis (R)"}
+          </button>
+          {rResult && (
+            <div style={{ marginTop: "1rem", fontSize: "0.9rem" }}>
+              <p>R result (demo data):</p>
+              <p>n = {rResult.n}</p>
+              <p>mean = {rResult.mean.toFixed(2)}</p>
+              <p>sd = {rResult.sd.toFixed(2)}</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
