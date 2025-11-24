@@ -4,7 +4,6 @@ import NotesList from '../components/NotesList';
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from 'axios';
 import InfoPopup from '../components/InfoPopup';
-import { Info } from 'lucide-react';
 
 let webRInstance = null;
 
@@ -30,15 +29,18 @@ const ViewDatabasePage = () => {
     let cancelled = false;
     (async () => {
       try {
-        const { WebR } = await import('https://webr.r-wasm.org/latest/webr.mjs');
-        const instance = new WebR();
+        if (!window.WebR) {
+          console.error("WebR not found on window");
+          return;
+        }
+        const instance = new window.WebR();
         await instance.init();
         if (!cancelled) {
           webRInstance = instance;
           setRReady(true);
         }
       } catch (e) {
-        console.error("Failed to init webR:", e);
+        console.error("webR: failed to init", e);
       }
     })();
     return () => {
