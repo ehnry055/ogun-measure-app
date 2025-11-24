@@ -252,6 +252,43 @@ app.get('/api/notes', async (req, res) => {
   }
 });
 
+app.get('/api/sample-column', async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit, 10) || 100;
+
+    const rows = await DynamicEntry.findAll({
+      limit,
+      attributes: { exclude: ['id'] },
+      raw: true
+    });
+
+    if (!rows || rows.length === 0) {
+      return res.json({ columnName: null, values: [] });
+    }
+
+    const firstRow = rows[0];
+    const keys = Object.keys(firstRow);
+    if (keys.length === 0) {
+      return res.json({ columnName: null, values: [] });
+    }
+
+    let numericKey = keys.find(k => typeof firstRow[k] === 'number');
+    if (!numericKey) {
+      numericKey = keys[0];
+    }
+
+    const values = rows
+      .map(r => Number(r[numericKey]))
+      .filter(v => !Number.isNaN(v));
+
+    return res.json({ columnName: numericKey, values });
+  } catch (err) {
+    console.error('sample-column error', err);
+    res.status(500).send('Error fetching sample column');
+  }
+});
+
+
 
 
 

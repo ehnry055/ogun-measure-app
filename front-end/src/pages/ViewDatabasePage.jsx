@@ -54,40 +54,57 @@ const ViewDatabasePage = () => {
 
 
 
-    const handleRunRAnalysis = async () => {
-      if (!rReady || !webRInstance) return;
-      setRLoading(true);
-      setRResult(null);
-      try {
-        const values = [1, 2, 3, 4, 5, 10, 20, 30];
-        const rCode = `
-          vals <- as.numeric(vals)
-          list(
-            n = length(vals),
-            mean = mean(vals),
-            sd = sd(vals)
-          )
-        `;
-        const rObj = await webRInstance.evalR(rCode, { env: { vals: values } });
-        const js = await rObj.toJs();
+  const handleRunRAnalysis = async () => {
+    if (!rReady || !webRInstance) return;
+    setRLoading(true);
+    setRResult(null);
+    try {
+      const token = await getAccessTokenSilently();
 
-        const names = js.names || [];
-        const vals = js.values || [];
-        const flattened = {};
-        names.forEach((name, idx) => {
-          const v = vals[idx];
-          if (v && Array.isArray(v.values) && v.values.length > 0) {
-            flattened[name] = v.values[0];
-          }
-        });
+      const res = await axios.get(`/api/sample-column?limit=${entryLimit}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
 
-        setRResult(flattened);
-      } catch (e) {
-        console.error("R analysis error", e);
-      } finally {
+      const { columnName, values } = res.data || {};
+      if (!values || values.length === 0) {
+        alert("No numeric data returned from server.");
         setRLoading(false);
+        return;
       }
-    };
+
+      const rCode = `
+        vals <- as.numeric(vals)
+        list(
+          n = length(vals),
+          mean = mean(vals),
+          sd = sd(vals)
+        )
+      `;
+      const rObj = await webRInstance.evalR(rCode, { env: { vals: values } });
+      const js = await rObj.toJs();
+
+      const names = js.names || [];
+      const vals = js.values || [];
+      const flattened = {};
+      names.forEach((name, idx) => {
+        const v = vals[idx];
+        if (v && Array.isArray(v.values) && v.values.length > 0) {
+          flattened[name] = v.values[0];
+        }
+      });
+
+      setRResult({
+        ...flattened,
+        columnName,
+        count: values.length
+      });
+    } catch (e) {
+      console.error("R analysis error", e);
+    } finally {
+      setRLoading(false);
+    }
+  };
+
 
 
   const handleSavePreset = () => {
@@ -344,7 +361,7 @@ Modern Times (2000-present) (Time Period 3)<br />
           </button>
           {rResult && (
             <div style={{ marginTop: "1rem", fontSize: "0.9rem" }}>
-              <p>R result (demo data):</p>
+              <p>R result (test):</p>
               <p>n = {rResult.n}</p>
               <p>mean = {Number(rResult.mean).toFixed(2)}</p>
               <p>sd = {Number(rResult.sd).toFixed(2)}</p>
