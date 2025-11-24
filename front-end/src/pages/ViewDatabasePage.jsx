@@ -53,7 +53,7 @@ const ViewDatabasePage = () => {
       setRLoading(true);
       setRResult(null);
       try {
-        const values = [1, 2, 3, 4, 5, 10, 20];
+        const values = [1, 2, 3, 4, 5, 10, 20, 30];
         const rCode = `
           vals <- as.numeric(vals)
           list(
