@@ -48,33 +48,41 @@ const ViewDatabasePage = () => {
     };
   }, []);
 
-  const handleRunRAnalysis = async () => {
-    if (!rReady || !webRInstance) return;
-    setRLoading(true);
-    setRResult(null);
-    try {
-      const values = [1, 2, 3, 4, 5, 10, 20];
-      const rCode = `
-        vals <- as.numeric(vals)
-        list(
-          n = length(vals),
-          mean = mean(vals),
-          sd = sd(vals)
-        )
-      `;
-      const rObj = await webRInstance.evalR(rCode, { env: { vals: values } });
-      const js = await rObj.toJs();
-     
-      console.log("R result from webR:", js);
-      setRResult(js); //Debug
+    const handleRunRAnalysis = async () => {
+      if (!rReady || !webRInstance) return;
+      setRLoading(true);
+      setRResult(null);
+      try {
+        const values = [1, 2, 3, 4, 5, 10, 20];
+        const rCode = `
+          vals <- as.numeric(vals)
+          list(
+            n = length(vals),
+            mean = mean(vals),
+            sd = sd(vals)
+          )
+        `;
+        const rObj = await webRInstance.evalR(rCode, { env: { vals: values } });
+        const js = await rObj.toJs();
 
-      setRResult(js);
-    } catch (e) {
-      console.error("R analysis error", e);
-    } finally {
-      setRLoading(false);
-    }
-  };
+        const names = js.names || [];
+        const vals = js.values || [];
+        const flattened = {};
+        names.forEach((name, idx) => {
+          const v = vals[idx];
+          if (v && Array.isArray(v.values) && v.values.length > 0) {
+            flattened[name] = v.values[0];
+          }
+        });
+
+        setRResult(flattened);
+      } catch (e) {
+        console.error("R analysis error", e);
+      } finally {
+        setRLoading(false);
+      }
+    };
+
 
   const handleSavePreset = () => {
     const presetName = prompt('Enter preset name:');
@@ -330,11 +338,12 @@ Modern Times (2000-present) (Time Period 3)<br />
           {rResult && (
             <div style={{ marginTop: "1rem", fontSize: "0.9rem" }}>
               <p>R result (demo data):</p>
-              <pre style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
-                {JSON.stringify(rResult, null, 2)}
-              </pre>
+              <p>n = {rResult.n}</p>
+              <p>mean = {Number(rResult.mean).toFixed(2)}</p>
+              <p>sd = {Number(rResult.sd).toFixed(2)}</p>
             </div>
           )}
+
 
         </div>
       </div>
