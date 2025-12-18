@@ -361,10 +361,19 @@ Modern Times (2000-present) (Time Period 3)<br />
           </button>
           {rResult && (
             <div style={{ marginTop: "1rem", fontSize: "0.9rem" }}>
-              <p>R result (test):</p>
-              <p>n = {rResult.n}</p>
-              <p>mean = {Number(rResult.mean).toFixed(2)}</p>
-              <p>sd = {Number(rResult.sd).toFixed(2)}</p>
+              <p><strong>Results for {rResult.columnName}:</strong></p>
+              
+              
+              {Object.entries(rResult).map(([key, value]) => {
+                
+                if (key === 'columnName' || key === 'count') return null;
+
+                return (
+                  <p key={key}>
+                    {key} = {typeof value === 'number' ? value.toFixed(2) : value}
+                  </p>
+                );
+              })}
             </div>
           )}
 
