@@ -26,19 +26,36 @@
 .navbar-links {
   display: flex;
   flex: 1;
-  justify-content: space-evenly;
   align-items: center;
-  gap: 20px;
+  justify-content: center; /* center the whole link group */
+  gap: 0;
   margin: 0 24px; /* breathing room between brand and user */
-}
+} 
 
 .navbar-links a {
+  display: block;
+  flex: 1; /* equal width items */
+  text-align: center; /* center text inside each item */
   text-decoration: none;
   font-size: 15px;
   font-weight: 500;
+  color: #ffffff; /* ensure text is white */
+  padding: 10px 8px;
+  min-width: 0; /* prevents overflow in flex */
+}
+
+/* ensure active indicator stays centered under the link */
+.navbar-links a.active {
   color: #ffffff;
-  padding-bottom: 4px;
-} 
+  border-bottom: 2px solid #ffffff;
+  display: block;
+}
+
+/* make sure hover doesn't change width */
+.navbar-links a:hover {
+  color: #ffffff;
+}
+ 
 
 .navbar-links a.active {
   color: #ffffff;

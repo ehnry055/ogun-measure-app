@@ -73,10 +73,11 @@ html, body {
 }
 
 .objective-inner {
-  max-width: 1200px;
   width: 100%;
-  padding: 0;
-}
+  max-width: none; /* allow inner to stretch full width */
+  padding: 0 32px; /* small side padding to prevent edge overlap */
+  box-sizing: border-box;
+} 
 
 
 @media (max-width: 900px) {
