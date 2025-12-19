@@ -17,6 +17,80 @@ html, body {
   margin: 0;
 }
 
+/* Objective section (home) */
+.objective-title {
+  text-align: center;
+  font-size: 34px;
+  color: #1f3c88;
+  margin: 8px 0 28px;
+  font-weight: 600;
+}
+
+.objective-row {
+  display: flex;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.objective-text {
+  flex: 1.05;
+}
+
+.objective-text p {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #333333;
+  margin: 0;
+}
+
+.objective-image {
+  flex: 0.95;
+  min-height: 220px;
+  border-radius: 12px;
+  background-color: #f3f5f8; /* subtle placeholder */
+  border: 1px dashed #d6dbe0;
+}
+
+.objective-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+}
+
+/* Card and band */
+.objective-band {
+  width: 100%;
+  padding: 40px 24px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+}
+
+.objective-card {
+  max-width: 1200px;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 32px;
+  box-shadow: 0 10px 30px rgba(16,24,40,0.06);
+}
+
+@media (max-width: 900px) {
+  .objective-row {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .objective-image {
+    width: 100%;
+    min-height: 180px;
+  }
+}
+
 
 /* HERO SECTION */
 .home-hero {
