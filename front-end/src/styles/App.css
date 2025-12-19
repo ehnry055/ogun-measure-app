@@ -4,9 +4,9 @@
 }
 
 html, body{
-  margin: 0;
-  padding: 0;
-  background-color: #ffffff;
+  height:100%;
+  background-color: #051225;
+  overflow-x: hidden;
 }
 
 .welcome-banner {
