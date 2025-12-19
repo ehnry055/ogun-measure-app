@@ -267,7 +267,10 @@ const ViewDatabasePage = () => {
               overflowX: "hidden", 
               width: "100%", 
               boxSizing: "border-box",
-              padding: "0 5px" 
+              display: "flex",        // Added flex to control children better
+              flexDirection: "column",
+              alignItems: "flex-start", // Force everything to the left
+              paddingRight: "10px"      // Extra room for the scrollbar on the right
             }}>
               {Object.entries(rResult).map(([colName, data]) => (
                 <div key={colName} style={{ 
@@ -276,10 +279,11 @@ const ViewDatabasePage = () => {
                   borderRadius: "8px", 
                   border: "1px solid #8C68CD",
                   marginBottom: "12px",
-                  width: "92%",         // Reduced slightly more to ensure the border is never hidden
-                  margin: "0 auto 12px auto", 
+                  
+                  /* THE CRITICAL FIXES */
+                  width: "calc(100% - 15px)", // Dynamically subtract space for the scrollbar
+                  marginLeft: "0",             // Ensure it stays left-aligned
                   boxSizing: "border-box", 
-                  display: "block",
                   wordBreak: "break-all",
                   boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
                 }}>
@@ -289,13 +293,14 @@ const ViewDatabasePage = () => {
                     color: '#333', 
                     margin: "0 0 8px 0",
                     borderBottom: '1px solid #eee',
-                    paddingBottom: '4px'
+                    paddingBottom: '4px',
+                    textAlign: 'left' // Explicitly left-aligned
                   }}>
-                    {colName} {/* Removed "Col:" prefix here */}
+                    {colName}
                   </p>
 
                   {!data.success ? (
-                    <p style={{ color: '#d9534f', fontSize: '0.75rem', margin: 0 }}>{data.error}</p>
+                    <p style={{ color: '#d9534f', fontSize: '0.75rem', margin: 0, textAlign: 'left' }}>{data.error}</p>
                   ) : (
                     Object.entries(data.stats).map(([statName, val]) => (
                       <div key={statName} style={{ 
@@ -306,7 +311,7 @@ const ViewDatabasePage = () => {
                         color: '#444' 
                       }}>
                         <span style={{ marginRight: '10px' }}>{statName}:</span>
-                        <span style={{ color: '#8C68CD', fontWeight: 'bold', textAlign: 'right' }}>
+                        <span style={{ color: '#8C68CD', fontWeight: 'bold' }}>
                           {typeof val === 'number' ? val.toFixed(3) : val}
                         </span>
                       </div>
