@@ -66,72 +66,73 @@ const ViewDatabasePage = () => {
 
   const handleRunRAnalysis = async () => {
     if (!rReady || !webRInstance) return;
+    if (selectedColumns.size === 0) {
+      alert("Please select at least one column from the table first.");
+      return;
+    }
+
     setRLoading(true);
     setRResult(null);
     setRError(null);
 
     try {
       const token = await getAccessTokenSilently();
-      const res = await axios.get(`/api/sample-column?limit=${entryLimit}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const columnList = Array.from(selectedColumns);
 
-      const { columnName, values } = res.data || {};
-      if (!values || values.length === 0) {
-        alert("No numeric data returned from server.");
-        setRLoading(false);
-        return;
-      }
+      // 1. Fetch data for ALL selected columns
+      const res = await axios.post('/api/analyze-columns', 
+        { columns: columnList, limit: entryLimit },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
-      // 1. Build the dynamic R code string from shellRows state
+      const allData = res.data; 
+      const finalResults = {}; // Will store { "ColName": { stats }, ... }
+
+      // 2. Prepare the R Shell script template
       const listContent = shellRows
         .filter(row => row.label.trim() !== '' && row.code.trim() !== '')
         .map(row => `\`${row.label}\` = ${row.code}`)
         .join(', ');
 
-      if (!listContent) {
-        alert("Please add at least one analysis variable.");
-        setRLoading(false);
-        return;
+      // 3. Loop through each column and run the R analysis
+      for (const colName of columnList) {
+        const columnValues = allData[colName];
+
+        try {
+          const rCode = `
+            vals <- as.numeric(c(${columnValues.join(',')}))
+            # Check if we have any valid numeric data after conversion
+            if(all(is.na(vals))) stop("Column contains no numeric data")
+            
+            list(${listContent})
+          `;
+
+          const rObj = await webRInstance.evalR(rCode);
+          const js = await rObj.toJs();
+          
+          // Parse R list to JS object
+          const stats = {};
+          js.names.forEach((name, idx) => {
+            const v = js.values[idx];
+            if (v && v.values) stats[name] = v.values[0];
+          });
+
+          finalResults[colName] = { success: true, stats };
+        } catch (colErr) {
+          // If one column fails, mark it so we can show the error in UI
+          finalResults[colName] = { success: false, error: "Non-numeric data" };
+        }
       }
 
-      const rCode = `
-        vals <- as.numeric(vals)
-        list(
-          ${listContent}
-        )
-      `;
-
-      // 2. Execute in R
-      const rObj = await webRInstance.evalR(rCode, { env: { vals: values } });
-      const js = await rObj.toJs();
-
-      // 3. Parse result dynamically
-      const names = js.names || [];
-      const outVals = js.values || [];
-      const flattened = {};
-      
-      names.forEach((name, idx) => {
-        const v = outVals[idx];
-        if (v && Array.isArray(v.values)) {
-          flattened[name] = v.values[0];
-        }
-      });
-
-      setRResult({
-        stats: flattened,
-        columnName,
-        count: values.length
-      });
+      setRResult(finalResults);
     } catch (e) {
-      console.error("R analysis error", e);
-      setRError(e.message);
+      console.error("Global R analysis error", e);
+      setRError("Failed to fetch data from server.");
     } finally {
       setRLoading(false);
     }
   };
 
-  // Rest of your existing preset/table functions...
   const handleSavePreset = () => {
     const presetName = prompt('Enter preset name:');
     if (!presetName) return;
@@ -258,37 +259,39 @@ const ViewDatabasePage = () => {
           {rError && <p style={{color: 'red', fontSize: '0.8rem'}}>{rError}</p>}
 
           {rResult && (
-            <div className="r-result-box" style={{ 
+            <div className="r-result-container" style={{ 
               marginTop: "1rem", 
-              padding: "10px", 
-              backgroundColor: "#f9f9f9", 
-              borderRadius: "5px", 
-              border: "1px solid #8C68CD",
-              textAlign: "left" // Ensures text aligns nicely
+              maxHeight: "400px", 
+              overflowY: "auto", 
+              width: "100%", 
+              boxSizing: "border-box" 
             }}>
-              <p style={{ 
-                fontWeight: 'bold', 
-                fontSize: '0.85rem', 
-                color: '#333', // Explicit dark color for the title
-                marginBottom: '8px',
-                borderBottom: '1px solid #ddd'
-              }}>
-                Results: {rResult.columnName}
-              </p>
-              
-              {Object.entries(rResult.stats).map(([key, val]) => (
-                <p key={key} style={{ 
-                  fontSize: '0.9rem', 
-                  margin: '4px 0', 
-                  color: '#444', // Explicit dark color for the labels
-                  display: 'flex',
-                  justifyContent: 'space-between'
+              {Object.entries(rResult).map(([colName, data]) => (
+                <div key={colName} style={{ 
+                  padding: "12px", 
+                  backgroundColor: "#f9f9f9", 
+                  borderRadius: "8px", 
+                  border: "1px solid #8C68CD",
+                  marginBottom: "10px",
+                  boxSizing: "border-box"
                 }}>
-                  <span style={{ fontWeight: '500' }}>{key}:</span> 
-                  <span style={{ color: '#8C68CD', fontWeight: 'bold' }}>
-                    {typeof val === 'number' ? val.toFixed(3) : val}
-                  </span>
-                </p>
+                  <p style={{ fontWeight: 'bold', fontSize: '0.85rem', color: '#333', borderBottom: '1px solid #ddd', pb: '5px' }}>
+                    Column: {colName}
+                  </p>
+
+                  {!data.success ? (
+                    <p style={{ color: 'red', fontSize: '0.75rem', fontStyle: 'italic' }}>{data.error}</p>
+                  ) : (
+                    Object.entries(data.stats).map(([statName, val]) => (
+                      <div key={statName} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', margin: '4px 0' }}>
+                        <span style={{ color: '#555' }}>{statName}:</span>
+                        <span style={{ color: '#8C68CD', fontWeight: 'bold' }}>
+                          {typeof val === 'number' ? val.toFixed(3) : val}
+                        </span>
+                      </div>
+                    ))
+                  )}
+                </div>
               ))}
             </div>
           )}

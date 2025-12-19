@@ -252,39 +252,35 @@ app.get('/api/notes', async (req, res) => {
   }
 });
 
-app.get('/api/sample-column', async (req, res) => {
+app.post('/api/analyze-columns', async (req, res) => {
   try {
-    const limit = parseInt(req.query.limit, 10) || 100;
+    const { columns, limit } = req.body; // Expecting { columns: ["Col1", "Col2"], limit: 20 }
+    const fetchLimit = parseInt(limit, 10) || 100;
 
+    if (!columns || !Array.isArray(columns) || columns.length === 0) {
+      return res.status(400).send("No columns selected for analysis.");
+    }
+
+    // Fetch only the requested columns
     const rows = await DynamicEntry.findAll({
-      limit,
-      attributes: { exclude: ['id'] },
+      limit: fetchLimit,
+      attributes: columns, 
       raw: true
     });
 
-    if (!rows || rows.length === 0) {
-      return res.json({ columnName: null, values: [] });
-    }
+    // Reshape data: { "RSG_SV1": [1, 2, 3], "PO_LRA2": [4, 5, 6] }
+    const result = {};
+    columns.forEach(col => {
+      result[col] = rows
+        .map(r => r[col])
+        // Filter out nulls/undefined, but keep values for now (R handles the rest)
+        .filter(v => v !== null && v !== undefined);
+    });
 
-    const firstRow = rows[0];
-    const keys = Object.keys(firstRow);
-    if (keys.length === 0) {
-      return res.json({ columnName: null, values: [] });
-    }
-
-    let numericKey = keys.find(k => typeof firstRow[k] === 'number');
-    if (!numericKey) {
-      numericKey = keys[0];
-    }
-
-    const values = rows
-      .map(r => Number(r[numericKey]))
-      .filter(v => !Number.isNaN(v));
-
-    return res.json({ columnName: numericKey, values });
+    res.json(result);
   } catch (err) {
-    console.error('sample-column error', err);
-    res.status(500).send('Error fetching sample column');
+    console.error('Analysis fetch error:', err);
+    res.status(500).send('Error fetching data for analysis');
   }
 });
 
