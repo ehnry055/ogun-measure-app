@@ -258,11 +258,36 @@ const ViewDatabasePage = () => {
           {rError && <p style={{color: 'red', fontSize: '0.8rem'}}>{rError}</p>}
 
           {rResult && (
-            <div className="r-result-box" style={{ marginTop: "1rem", padding: "10px", backgroundColor: "#f9f9f9", borderRadius: "5px", border: "1px solid #8C68CD" }}>
-              <p style={{fontWeight: 'bold', fontSize: '0.8rem'}}>Results: {rResult.columnName}</p>
+            <div className="r-result-box" style={{ 
+              marginTop: "1rem", 
+              padding: "10px", 
+              backgroundColor: "#f9f9f9", 
+              borderRadius: "5px", 
+              border: "1px solid #8C68CD",
+              textAlign: "left" // Ensures text aligns nicely
+            }}>
+              <p style={{ 
+                fontWeight: 'bold', 
+                fontSize: '0.85rem', 
+                color: '#333', // Explicit dark color for the title
+                marginBottom: '8px',
+                borderBottom: '1px solid #ddd'
+              }}>
+                Results: {rResult.columnName}
+              </p>
+              
               {Object.entries(rResult.stats).map(([key, val]) => (
-                <p key={key} style={{fontSize: '0.9rem', margin: '2px 0'}}>
-                  {key}: <span style={{color: '#8C68CD'}}>{typeof val === 'number' ? val.toFixed(3) : val}</span>
+                <p key={key} style={{ 
+                  fontSize: '0.9rem', 
+                  margin: '4px 0', 
+                  color: '#444', // Explicit dark color for the labels
+                  display: 'flex',
+                  justifyContent: 'space-between'
+                }}>
+                  <span style={{ fontWeight: '500' }}>{key}:</span> 
+                  <span style={{ color: '#8C68CD', fontWeight: 'bold' }}>
+                    {typeof val === 'number' ? val.toFixed(3) : val}
+                  </span>
                 </p>
               ))}
             </div>
@@ -274,3 +299,4 @@ const ViewDatabasePage = () => {
 };
 
 export default ViewDatabasePage;
+
