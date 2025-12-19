@@ -1,231 +1,93 @@
-@import url('https://fonts.googleapis.com/css2?family=Saira:ital,wght@0,100..900;1,100..900&display=swap');
+.home-container {
+  /* ensure the page background is white */
+  background-color: #ffffff;
+  min-height: calc(100vh - 64px); /* accounts for navbar height */
+  width: 100%;
 
-.homebtn {
-  border-radius: 0.5rem;   
-  /* background-color: #222222; */
-  background-color: #8C68CD26;
-  border: 1.75px solid #8C68CD;
-  color: #8C68CD;
-  text-align: center;
-  font-size: 24px;
-  padding: 20px;
-  width: 300px;
-  transition: all 0.5s;
-  cursor: pointer;
-  margin: 35px ;
-  justify-content: center;
-  transition: background-color 0.3s, color 0.1s; /* Set a faster transition for color */
+  margin: 0;
+  padding: 60px 80px;
+
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+html, body {
+  background-color: #ffffff;
+  height: 100%;
+  margin: 0;
 }
 
 
-.homebtn span {
-  cursor: pointer;
-  display: inline-block;
-  position: relative;
-  transition: 0.3s;
-}
-
-.homebtn span:after {
-  content: '\00bb';
-  position: absolute;
-  opacity: 0;
-  top: 0;
-  right: -20px;
-  transition: 0.5s;
-}
-
-.homebtn:hover span {
-  padding-right: 25px;
-}
-
-.homebtn:hover span:after {
-  opacity: 1;
-  right: 0;
-}
-
-.homebtn:hover {
-  background-color: #8C68CD;
-  color: white;
-}
-
-
- .home-container {
-    padding: 20px;
-    width: 100%; /* Ensure it spans the full width of the parent container */
-    max-width: 85vw; /* Set a maximum width to prevent it from becoming too wide */
-    margin: 0 auto; /* Center the container horizontally */
-    box-sizing: border-box; /* Include padding in the width calculation */
-    }
-  
-  .about-title {
-    color: #8C68CD;
-    font-size: 2.5rem;
-    /* font-weight: bold; */
-    margin-bottom: 20px;
-    text-align: center;
-    font-family: "Saira", sans-serif;
-  } 
- 
-  .about-content {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: rgb(196, 196, 196);
-    margin-bottom: 40px;
-    margin-top: 40px;
-    font-family: "Saira", sans-serif;
-    text-align: center;
-  }
-  
-  .about-grid {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-  
-  .reverse {
-    flex-direction: row-reverse;
-  }
-  
-  .text-box {
-    width: 50%;
-    padding: 20px;
-    font-size: 1rem;
-    color: rgb(196, 196, 196);
-  }
-  
-  .placeholder-box {
-    width: 45%;
-    height: 200px;
-    background-color: #d9d9d9;
-    border: 1px solid #ccc;
-  } 
-
-.container {
+/* HERO SECTION */
+.home-hero {
   display: flex;
-  flex-wrap: wrap;
+  gap: 60px;
+  max-width: 1200px;
+  margin: 0 auto;
   align-items: center;
-  justify-content: center;
-  gap: 20px;
-  width: 120vw;
 }
 
-table {
-  width: 90%;
-  margin: auto;
-  border-collapse: collapse;
-  border: 2px solid white;
+/* LEFT IMAGE */
+.home-hero-left {
+  flex: 1;
 }
-th, td {
-  border: 1px solid white;
-  padding: 15px;
-  text-align: center;
+
+.home-hero-image {
+  width: 100%;
+  border-radius: 12px;
+  object-fit: cover;
 }
-th {
-  background-color: black;
-  color: #8C68CD;
-  font-size: 18px;
+
+/* RIGHT CONTENT */
+.home-hero-right {
+  flex: 1.2;
 }
-.period {
-  color: #ffcc00;
-  font-weight: bold;
+
+.home-hero-right h1 {
+  font-size: 42px;
+  font-weight: 600;
+  color: #1f3c88;
+  margin-bottom: 20px;
+}
+
+.home-hero-right p {
   font-size: 16px;
+  line-height: 1.7;
+  color: #333333;
+  margin-bottom: 18px;
 }
 
-.edit-icon-btn {
-  background-color: #40BB8226;
-  border: 2px solid #40BB82;  
-  color: #40BB82;
-  width: 50px;
-  height: 50px;
-  border-radius: 0.5rem;   
+/* BUTTONS */
+.home-button-row {
   display: flex;
-  justify-content: center;
-  align-items: center;        
-  margin: auto;     
-  margin-bottom: 10px;  
-  transition: background-color 0.3s, color 0.1s; /* Set a faster transition for color */  
+  gap: 20px;
+  margin-top: 30px;
 }
 
-.edit-icon-btn:hover {
-  background-color: #40BB82;
-  border: 2px solid #40BB82;  
-  color: white;
-  width: 50px;
-  height: 50px;
-  border-radius: 0.5rem;   
-  display: flex;
-  justify-content: center;
-  align-items: center;        
-  margin: auto;     
-  margin-bottom: 10px;  
-  
+.home-button {
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
 }
 
-.save {
-  background-color: #40BB8226;
-  border: 2px solid #40BB82;  
-  color: #40BB82;
-  border-radius: 0.5rem;   
-  transition: background-color 0.3s, color 0.1s; /* Set a faster transition for color */
-
+.home-button.primary {
+  background-color: #1f3c88;
+  color: #ffffff;
 }
 
-.save:hover {
-  background-color: #40BB82;
-  border: 2px solid #40BB82;  
-  color: white;
-  border-radius: 0.5rem;   
+.home-button.primary:hover {
+  background-color: #162c63;
 }
 
-.cancel {
-  background-color: #EE635226;
-  border: 2px solid #EE6352;  
-  color: #EE6352;
-  border-radius: 0.5rem;   
-  transition: background-color 0.3s, color 0.1s; /* Set a faster transition for color */
-
+.home-button.secondary {
+  border: 2px solid #1f3c88;
+  color: #1f3c88;
+  background-color: transparent;
 }
 
-.cancel:hover {
-  background-color: #EE6352;
-  border: 2px solid #EE6352;  
-  color: white;
-  border-radius: 0.5rem;   
-}
-
-.form-container {
-  display: flex;
-  flex-direction: column;
-  margin-left: 20vw;
-  margin-right: 20vw;
-}
-
-.send {
-  background-color: #8C68CD26;
-  border: 1.75px solid #8C68CD;
-  color: #8C68CD;
-  padding: 20px;
-  border-radius: 0.5rem;
-  font-size: 2rem;
-  font-family: "Saira", sans-serif;
-  transition: background-color 0.3s, color 0.1s; /* Set a faster transition for color */
-}
-
-.send:hover {
-  background-color: #8C68CD;
-  border: 1.75px solid #8C68CD;
-  color: white;
-  padding: 20px;
-  border-radius: 0.5rem;
-  font-size: 2rem;
-  font-family: "Saira", sans-serif;
-}
-
-.table-header-edit{
-  width: 15%;
-}
-
-.highcharts-credits {
-  display: none;
+.home-button.secondary:hover {
+  background-color: #f0f4ff;
 }
