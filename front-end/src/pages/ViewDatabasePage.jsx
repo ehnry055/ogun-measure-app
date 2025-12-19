@@ -18,24 +18,23 @@ const ViewDatabasePage = () => {
   const [selectedColumns, setSelectedColumns] = useState(new Set());
   const [selectedPreset, setSelectedPreset] = useState(null);
   
-  // --- R ANALYSIS STATE ---
+  // --- NEW R ANALYSIS STATE ---
   const [rReady, setRReady] = useState(false);
   const [rLoading, setRLoading] = useState(false);
   const [rResult, setRResult] = useState(null);
   const [rError, setRError] = useState(null);
-
-  // --- R SHELL STATE (Dynamic Rows) ---
   const [shellRows, setShellRows] = useState([
     { label: 'Mean', code: 'mean(vals)' },
     { label: 'SD', code: 'sd(vals)' }
   ]);
 
-  // --- INITIALIZATION EFFECTS ---
+  // --- EFFECT: LOAD PRESETS ---
   useEffect(() => {
     const savedPresets = localStorage.getItem('columnPresets');
     if (savedPresets) setPresets(JSON.parse(savedPresets));
   }, []);
 
+  // --- EFFECT: INIT WEBR ---
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -54,20 +53,141 @@ const ViewDatabasePage = () => {
     return () => { cancelled = true; };
   }, []);
 
+  // --- PRESET FUNCTIONS ---
+  const handleSavePreset = () => {
+    const presetName = prompt('Enter preset name:');
+    if (!presetName) return;
+    const newPreset = { name: presetName, columns: Array.from(selectedColumns) };
+    const updatedPresets = [...presets, newPreset];
+    setPresets(updatedPresets);
+    localStorage.setItem('columnPresets', JSON.stringify(updatedPresets));
+  };  
+
+  const applyPreset = (preset) => {
+    if (selectedPreset === preset.name) {
+      setSelectedColumns(new Set());
+      setSelectedPreset(null);
+    } else {
+      setSelectedColumns(new Set(preset.columns));
+      setSelectedPreset(preset.name);
+    }
+  };
+    
+  const deletePreset = (presetName) => {
+    const updated = presets.filter(p => p.name !== presetName);
+    setPresets(updated);
+    localStorage.setItem('columnPresets', JSON.stringify(updated));
+  };
+  
+  const handleEntryLimitChange = (e) => {
+    const value = parseInt(e.target.value, 10);
+    if (!isNaN(value)) {
+      setEntryLimit(value >= 1 ? value : 1); 
+    }
+  };
+
   // --- R SHELL HELPER FUNCTIONS ---
   const addShellRow = () => setShellRows([...shellRows, { label: '', code: '' }]);
-  
   const updateShellRow = (index, field, value) => {
     const newRows = [...shellRows];
     newRows[index][field] = value;
     setShellRows(newRows);
   };
-
   const removeShellRow = (index) => {
     setShellRows(shellRows.filter((_, i) => i !== index));
   };
 
-  // --- MAIN ANALYSIS FUNCTION ---
+  // --- ORIGINAL DOWNLOAD & TABLE LOGIC (RESTORED) ---
+  const handleDownload = async () => {
+    try {
+      let token = await getAccessTokenSilently();
+      const selectedColumnsArray = Array.from(selectedColumns);
+      
+      const params = new URLSearchParams();
+      if (selectedColumnsArray.length > 0) {
+        params.append('columns', selectedColumnsArray.join(','));
+      }
+
+      let response = await axios.get(`/api/export-csv${params.toString() ? `?${params}` : ''}`, {
+        headers: { Authorization: `Bearer ${token}` },
+        responseType: 'text'
+      });
+
+      let blob = new Blob([response.data], { type: 'text/csv;charset=utf-8;' });
+      let url = URL.createObjectURL(blob);
+      let link = document.createElement('a');
+      link.href = url;
+      link.download = 'data.csv';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Download failed:', error);
+      alert('CSV download failed.');
+    }
+  };
+
+  const handleDownloadExcel = async () => {
+    try {
+      let token = await getAccessTokenSilently();
+      const selectedColumnsArray = Array.from(selectedColumns);
+
+      const params = new URLSearchParams();
+      if (selectedColumnsArray.length > 0) {
+        params.append('columns', selectedColumnsArray.join(','));
+      }
+
+      let response = await axios.get(`/api/export-excel${params.toString() ? `?${params}` : ''}`, {
+        headers: { Authorization: `Bearer ${token}` },
+        responseType: 'blob'
+      });
+
+      let blob = new Blob([response.data], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      });
+
+      let url = URL.createObjectURL(blob);
+      let link = document.createElement('a');
+      link.href = url;
+      link.download = 'data.xlsx';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Excel download failed:', error);
+      alert('Excel download failed.');
+    }
+  };
+
+  const handleSelectTable = async () => {
+    try {
+      const token = await getAccessTokenSilently();
+      const response = await axios.get(`/api/tables`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const tableNames = response.data;
+      const message = `Select a table from the following:\n-------------------------\n${tableNames.join('\n')}`;
+      const selected = window.prompt(message);
+      if (!selected) return;
+      if (!tableNames.includes(selected)) {
+        alert("Invalid table name selected.");
+        return;
+      }
+
+      await axios.post(`/api/select-table`, { tableName: selected }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setTableName(selected);
+      alert(`Current table set to ${selected}`);
+    } catch (error) {
+      console.error('Error selecting table:', error);
+      alert('Error selecting table');
+    }
+  }
+
+  // --- NEW R ANALYSIS LOGIC ---
   const handleRunRAnalysis = async () => {
     if (!rReady || !webRInstance) return;
     if (selectedColumns.size === 0) {
@@ -83,17 +203,15 @@ const ViewDatabasePage = () => {
       const token = await getAccessTokenSilently();
       const columnList = Array.from(selectedColumns);
 
-      // 1. Fetch data for ALL selected columns
-      // Note: Ensure your server.js has the /api/analyze-columns endpoint we created!
+      // Fetch data from new endpoint
       const res = await axios.post('/api/analyze-columns', 
         { columns: columnList, limit: entryLimit },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
       const allData = res.data; 
-      const finalResults = {}; // Will store { "ColName": { success: true, stats: {...} } }
+      const finalResults = {}; 
 
-      // 2. Build dynamic R command from shellRows
       const listContent = shellRows
         .filter(row => row.label.trim() !== '' && row.code.trim() !== '')
         .map(row => `\`${row.label}\` = ${row.code}`)
@@ -105,7 +223,6 @@ const ViewDatabasePage = () => {
         return;
       }
 
-      // 3. Loop through columns and run R script
       for (const colName of columnList) {
         try {
           const rawValues = allData[colName];
@@ -114,21 +231,18 @@ const ViewDatabasePage = () => {
              continue;
           }
 
-          // Inject specific column data into R as 'vals'
+          // Inject into R
           await webRInstance.objs.globalEnv.bind('vals', rawValues);
           
           const rCode = `
             vals <- as.numeric(vals)
-            # Safety check: if all values are NA, it's likely text data
             if(all(is.na(vals))) stop("Non-numeric data")
-            
             list(${listContent})
           `;
 
           const rObj = await webRInstance.evalR(rCode);
           const js = await rObj.toJs();
           
-          // Parse the R list structure
           const stats = {};
           const names = js.names || [];
           const values = js.values || [];
@@ -140,68 +254,21 @@ const ViewDatabasePage = () => {
 
           finalResults[colName] = { success: true, stats };
         } catch (colErr) {
-          // Gracefully handle non-numeric columns without crashing the loop
           finalResults[colName] = { success: false, error: "Non-numeric data" };
         }
       }
-
       setRResult(finalResults);
     } catch (e) {
-      console.error("Global R analysis error", e);
-      setRError("Failed to fetch or analyze data.");
+      console.error("Analysis error", e);
+      setRError("Failed to analyze data.");
     } finally {
       setRLoading(false);
     }
   };
 
-  // --- EXISTING HANDLERS (Placeholders - ensure these match your existing logic) ---
-  const handleSavePreset = () => {
-    const presetName = prompt('Enter preset name:');
-    if (!presetName) return;
-    const newPreset = { name: presetName, columns: Array.from(selectedColumns) };
-    const updatedPresets = [...presets, newPreset];
-    setPresets(updatedPresets);
-    localStorage.setItem('columnPresets', JSON.stringify(updatedPresets));
-  };
-
-  const applyPreset = (preset) => {
-    if (selectedPreset === preset.name) {
-      setSelectedColumns(new Set());
-      setSelectedPreset(null);
-    } else {
-      setSelectedColumns(new Set(preset.columns));
-      setSelectedPreset(preset.name);
-    }
-  };
-
-  const deletePreset = (presetName) => {
-    const updated = presets.filter(p => p.name !== presetName);
-    setPresets(updated);
-    localStorage.setItem('columnPresets', JSON.stringify(updated));
-  };
-
-  const handleEntryLimitChange = (e) => {
-    const value = parseInt(e.target.value, 10);
-    setEntryLimit(!isNaN(value) && value >= 1 ? value : 1);
-  };
-
-  // !!! IMPORTANT: Ensure these match your original implementation !!!
-  const handleDownload = async () => { 
-    alert("Download CSV triggered"); 
-    // ... insert your original CSV download logic here
-  };
-  const handleDownloadExcel = async () => { 
-    alert("Download Excel triggered"); 
-    // ... insert your original Excel download logic here
-  };
-  const handleSelectTable = async () => { 
-    alert("Select Table triggered"); 
-    // ... insert your original Select Table logic here
-  };
-
   return (
     <div className="page-layout-container">
-      {/* LEFT COLUMN: FILTERS & PRESETS */}
+      {/* LEFT SECTION (UNCHANGED) */}
       <div className="left-section">
         <div className="entry-limit-container">
           <label htmlFor="entryLimitInput" style={{ color: '#8C68CD'}}>Entries to display:</label>
@@ -219,13 +286,13 @@ const ViewDatabasePage = () => {
           {presets.map(preset => (
             <div key={preset.name} className="preset-item">
               <button className={`preset-button ${selectedPreset === preset.name ? 'active' : ''}`} onClick={() => applyPreset(preset)}>{preset.name}</button>
-              <button className="delete-preset" onClick={() => deletePreset(preset.name)}>×</button>
+              <button className="delete-preset" onClick={(e) => { e.stopPropagation(); deletePreset(preset.name); }}>×</button>
             </div>
           ))}
         </div>
       </div>
 
-      {/* MIDDLE COLUMN: DATA TABLE */}
+      {/* MIDDLE SECTION (UNCHANGED) */}
       <div className="middle-data-section">
         <div className="data-section">
           <div className="data-item">
@@ -254,13 +321,14 @@ const ViewDatabasePage = () => {
         </div>
       </div>
 
-      {/* RIGHT COLUMN: CONTROLS & ANALYSIS */}
+      {/* RIGHT SECTION - CONTROLS & R ANALYSIS */}
       <div className="control-section" style={{ boxSizing: 'border-box' }}>
         <h2 className="section-title">Database Controls</h2>
         
-        {/* Flex container to ensure left alignment of all children */}
-        <div className="controls" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%' }}>
+        {/* Buttons Container */}
+        <div className="controls" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
           
+          {/* ORIGINAL BUTTONS (RESTORED) */}
           <button className="download-button" onClick={handleDownload} style={{ width: '100%', marginBottom: '10px' }}> 
             Download as CSV 
           </button>
@@ -273,10 +341,10 @@ const ViewDatabasePage = () => {
           
           <hr style={{ width: '100%', margin: '15px 0', border: '0.5px solid #ddd' }} />
           
+          {/* R SHELL UI */}
           <h3 style={{ fontSize: '1rem', color: '#8C68CD', margin: '0 0 5px 0' }}>R Analysis Shell</h3>
           <p style={{ fontSize: '0.7rem', marginBottom: '10px', color: '#fff' }}>Use <b>vals</b> for the data vector</p>
           
-          {/* R Shell Inputs */}
           <div className="r-shell-container" style={{ width: '100%', maxHeight: '200px', overflowY: 'auto', marginBottom: '10px' }}>
             {shellRows.map((row, index) => (
               <div key={index} style={{ display: 'flex', gap: '5px', marginBottom: '8px', width: '100%' }}>
@@ -312,19 +380,16 @@ const ViewDatabasePage = () => {
 
           {rError && <p style={{ color: '#ff4d4d', fontSize: '0.8rem', marginTop: '10px' }}>{rError}</p>}
 
-          {/* RESULTS DISPLAY - Fixed for Perfect Alignment */}
+          {/* RESULT SECTION - The "Aesthetic" Centered Look (92% width) */}
           {rResult && (
             <div className="r-result-container" style={{ 
               marginTop: "1.5rem", 
-              maxHeight: "400px", 
+              maxHeight: "450px", 
               overflowY: "auto", 
               overflowX: "hidden", 
               width: "100%", 
               boxSizing: "border-box",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start", // Left align
-              paddingRight: "5px"
+              padding: "0 5px" 
             }}>
               {Object.entries(rResult).map(([colName, data]) => (
                 <div key={colName} style={{ 
@@ -333,24 +398,37 @@ const ViewDatabasePage = () => {
                   borderRadius: "8px", 
                   border: "1px solid #8C68CD",
                   marginBottom: "12px",
-                  // Width calc accounts for scrollbar space to prevent clipping or overlay
-                  width: "calc(100% - 10px)", 
-                  marginLeft: "0",
+                  width: "92%",         // The aesthetic breathing room
+                  margin: "0 auto 12px auto", // Centered
                   boxSizing: "border-box", 
+                  display: "block",
                   wordBreak: "break-all",
                   boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
                 }}>
-                  <p style={{ fontWeight: 'bold', fontSize: '0.85rem', color: '#333', margin: "0 0 8px 0", borderBottom: '1px solid #eee', paddingBottom: '4px', textAlign: 'left' }}>
+                  <p style={{ 
+                    fontWeight: 'bold', 
+                    fontSize: '0.85rem', 
+                    color: '#333', 
+                    margin: "0 0 8px 0",
+                    borderBottom: '1px solid #eee',
+                    paddingBottom: '4px'
+                  }}>
                     {colName}
                   </p>
 
                   {!data.success ? (
-                    <p style={{ color: '#d9534f', fontSize: '0.75rem', margin: 0, textAlign: 'left' }}>{data.error}</p>
+                    <p style={{ color: '#d9534f', fontSize: '0.75rem', margin: 0 }}>{data.error}</p>
                   ) : (
                     Object.entries(data.stats).map(([statName, val]) => (
-                      <div key={statName} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', margin: '4px 0', color: '#444' }}>
+                      <div key={statName} style={{ 
+                        display: 'flex', 
+                        justifyContent: 'space-between', 
+                        fontSize: '0.85rem', 
+                        margin: '4px 0',
+                        color: '#444' 
+                      }}>
                         <span style={{ marginRight: '10px' }}>{statName}:</span>
-                        <span style={{ color: '#8C68CD', fontWeight: 'bold' }}>
+                        <span style={{ color: '#8C68CD', fontWeight: 'bold', textAlign: 'right' }}>
                           {typeof val === 'number' ? val.toFixed(3) : val}
                         </span>
                       </div>
