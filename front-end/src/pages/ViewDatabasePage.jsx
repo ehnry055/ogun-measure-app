@@ -10,7 +10,7 @@ let webRInstance = null;
 const ViewDatabasePage = () => {
   const { isAuthenticated, user, loginWithRedirect, logout, getAccessTokenSilently } = useAuth0();
   
-  
+  // --- STATE ---
   const [entryLimit, setEntryLimit] = useState(20);
   const [tableName, setTableName] = useState("Default Table");
   const [stateFilter, setStateFilter] = useState('');
@@ -18,7 +18,7 @@ const ViewDatabasePage = () => {
   const [selectedColumns, setSelectedColumns] = useState(new Set());
   const [selectedPreset, setSelectedPreset] = useState(null);
   
-
+  // --- R ANALYSIS STATE ---
   const [rReady, setRReady] = useState(false);
   const [rLoading, setRLoading] = useState(false);
   const [rResult, setRResult] = useState(null);
@@ -28,7 +28,7 @@ const ViewDatabasePage = () => {
     { label: 'SD', code: 'sd(vals)' }
   ]);
 
-  
+  // --- INITIALIZATION ---
   useEffect(() => {
     const savedPresets = localStorage.getItem('columnPresets');
     if (savedPresets) setPresets(JSON.parse(savedPresets));
@@ -52,6 +52,7 @@ const ViewDatabasePage = () => {
     return () => { cancelled = true; };
   }, []);
 
+  // --- PRESET & LIMIT HANDLERS ---
   const handleSavePreset = () => {
     const presetName = prompt('Enter preset name:');
     if (!presetName) return;
@@ -82,7 +83,7 @@ const ViewDatabasePage = () => {
     if (!isNaN(value)) setEntryLimit(value >= 1 ? value : 1);
   };
 
-
+  // --- R SHELL ROW MANAGEMENT ---
   const addShellRow = () => setShellRows([...shellRows, { label: '', code: '' }]);
   const updateShellRow = (index, field, value) => {
     const newRows = [...shellRows];
@@ -91,7 +92,7 @@ const ViewDatabasePage = () => {
   };
   const removeShellRow = (index) => setShellRows(shellRows.filter((_, i) => i !== index));
 
-
+  // --- RESTORED ORIGINAL DOWNLOAD & SELECT LOGIC ---
   const handleDownload = async () => {
     try {
       let token = await getAccessTokenSilently();
@@ -144,7 +145,7 @@ const ViewDatabasePage = () => {
     } catch (error) { alert('Error selecting table'); }
   };
 
-
+  // --- R ANALYSIS LOGIC ---
   const handleRunRAnalysis = async () => {
     if (!rReady || !webRInstance) return;
     if (selectedColumns.size === 0) { alert("Please select columns first."); return; }
@@ -241,6 +242,7 @@ const ViewDatabasePage = () => {
           </button>
           {rError && <p style={{color: 'red', fontSize: '0.8rem'}}>{rError}</p>}
 
+          {/* YOUR PREFERRED UI DISPLAY CODE */}
           {rResult && (
             <div className="r-result-container" style={{ 
               marginTop: "1.5rem", maxHeight: "450px", overflowY: "auto", overflowX: "hidden", 
