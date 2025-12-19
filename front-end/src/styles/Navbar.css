@@ -20,8 +20,7 @@
   font-size: 20px;
   font-weight: 700;
   color: #ffffff;
-  font-family: 'Trajan Pro', 'Times New Roman', serif;
-}
+} 
 
 /* LINKS */
 .navbar-links {
@@ -37,9 +36,8 @@
   text-decoration: none;
   font-size: 15px;
   font-weight: 500;
-  color: rgba(255,255,255,0.9);
+  color: #ffffff;
   padding-bottom: 4px;
-  font-family: 'Trajan Pro', serif;
 } 
 
 .navbar-links a.active {
