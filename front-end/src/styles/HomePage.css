@@ -114,7 +114,7 @@ table {
   width: 90%;
   margin: auto;
   border-collapse: collapse;
-  border: 2px solid rgb(255, 255, 255);
+  border: 2px solid white;
 }
 th, td {
   border: 1px solid white;
@@ -122,8 +122,8 @@ th, td {
   text-align: center;
 }
 th {
-  background-color: rgb(255, 255, 255);
-  color: #1459e4;
+  background-color: black;
+  color: #8C68CD;
   font-size: 18px;
 }
 .period {
