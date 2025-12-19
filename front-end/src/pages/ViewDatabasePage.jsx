@@ -9,6 +9,8 @@ let webRInstance = null;
 
 const ViewDatabasePage = () => {
   const { isAuthenticated, user, loginWithRedirect, logout, getAccessTokenSilently } = useAuth0();
+  
+  // --- EXISTING STATE ---
   const [entryLimit, setEntryLimit] = useState(20);
   const [tableName, setTableName] = useState("Default Table");
   const [stateFilter, setStateFilter] = useState('');
@@ -16,18 +18,19 @@ const ViewDatabasePage = () => {
   const [selectedColumns, setSelectedColumns] = useState(new Set());
   const [selectedPreset, setSelectedPreset] = useState(null);
   
-  // R Analysis State
+  // --- R ANALYSIS STATE ---
   const [rReady, setRReady] = useState(false);
   const [rLoading, setRLoading] = useState(false);
   const [rResult, setRResult] = useState(null);
   const [rError, setRError] = useState(null);
 
-  // New R Shell State: Array of objects for dynamic inputs
+  // --- R SHELL STATE (Dynamic Rows) ---
   const [shellRows, setShellRows] = useState([
     { label: 'Mean', code: 'mean(vals)' },
     { label: 'SD', code: 'sd(vals)' }
   ]);
 
+  // --- INITIALIZATION EFFECTS ---
   useEffect(() => {
     const savedPresets = localStorage.getItem('columnPresets');
     if (savedPresets) setPresets(JSON.parse(savedPresets));
@@ -51,7 +54,7 @@ const ViewDatabasePage = () => {
     return () => { cancelled = true; };
   }, []);
 
-  // Functions to handle shell row changes
+  // --- R SHELL HELPER FUNCTIONS ---
   const addShellRow = () => setShellRows([...shellRows, { label: '', code: '' }]);
   
   const updateShellRow = (index, field, value) => {
@@ -64,6 +67,7 @@ const ViewDatabasePage = () => {
     setShellRows(shellRows.filter((_, i) => i !== index));
   };
 
+  // --- MAIN ANALYSIS FUNCTION ---
   const handleRunRAnalysis = async () => {
     if (!rReady || !webRInstance) return;
     if (selectedColumns.size === 0) {
@@ -80,29 +84,43 @@ const ViewDatabasePage = () => {
       const columnList = Array.from(selectedColumns);
 
       // 1. Fetch data for ALL selected columns
+      // Note: Ensure your server.js has the /api/analyze-columns endpoint we created!
       const res = await axios.post('/api/analyze-columns', 
         { columns: columnList, limit: entryLimit },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
       const allData = res.data; 
-      const finalResults = {}; // Will store { "ColName": { stats }, ... }
+      const finalResults = {}; // Will store { "ColName": { success: true, stats: {...} } }
 
-      // 2. Prepare the R Shell script template
+      // 2. Build dynamic R command from shellRows
       const listContent = shellRows
         .filter(row => row.label.trim() !== '' && row.code.trim() !== '')
         .map(row => `\`${row.label}\` = ${row.code}`)
         .join(', ');
 
-      // 3. Loop through each column and run the R analysis
-      for (const colName of columnList) {
-        const columnValues = allData[colName];
+      if (!listContent) {
+        alert("Please add at least one variable to the R Shell.");
+        setRLoading(false);
+        return;
+      }
 
+      // 3. Loop through columns and run R script
+      for (const colName of columnList) {
         try {
+          const rawValues = allData[colName];
+          if (!rawValues || rawValues.length === 0) {
+             finalResults[colName] = { success: false, error: "No data found" };
+             continue;
+          }
+
+          // Inject specific column data into R as 'vals'
+          await webRInstance.objs.globalEnv.bind('vals', rawValues);
+          
           const rCode = `
-            vals <- as.numeric(c(${columnValues.join(',')}))
-            # Check if we have any valid numeric data after conversion
-            if(all(is.na(vals))) stop("Column contains no numeric data")
+            vals <- as.numeric(vals)
+            # Safety check: if all values are NA, it's likely text data
+            if(all(is.na(vals))) stop("Non-numeric data")
             
             list(${listContent})
           `;
@@ -110,16 +128,19 @@ const ViewDatabasePage = () => {
           const rObj = await webRInstance.evalR(rCode);
           const js = await rObj.toJs();
           
-          // Parse R list to JS object
+          // Parse the R list structure
           const stats = {};
-          js.names.forEach((name, idx) => {
-            const v = js.values[idx];
+          const names = js.names || [];
+          const values = js.values || [];
+
+          names.forEach((name, idx) => {
+            const v = values[idx];
             if (v && v.values) stats[name] = v.values[0];
           });
 
           finalResults[colName] = { success: true, stats };
         } catch (colErr) {
-          // If one column fails, mark it so we can show the error in UI
+          // Gracefully handle non-numeric columns without crashing the loop
           finalResults[colName] = { success: false, error: "Non-numeric data" };
         }
       }
@@ -127,12 +148,13 @@ const ViewDatabasePage = () => {
       setRResult(finalResults);
     } catch (e) {
       console.error("Global R analysis error", e);
-      setRError("Failed to fetch data from server.");
+      setRError("Failed to fetch or analyze data.");
     } finally {
       setRLoading(false);
     }
   };
 
+  // --- EXISTING HANDLERS (Placeholders - ensure these match your existing logic) ---
   const handleSavePreset = () => {
     const presetName = prompt('Enter preset name:');
     if (!presetName) return;
@@ -163,12 +185,23 @@ const ViewDatabasePage = () => {
     setEntryLimit(!isNaN(value) && value >= 1 ? value : 1);
   };
 
-  const handleDownload = async () => { /* ... existing download code ... */ };
-  const handleDownloadExcel = async () => { /* ... existing download code ... */ };
-  const handleSelectTable = async () => { /* ... existing select code ... */ };
+  // !!! IMPORTANT: Ensure these match your original implementation !!!
+  const handleDownload = async () => { 
+    alert("Download CSV triggered"); 
+    // ... insert your original CSV download logic here
+  };
+  const handleDownloadExcel = async () => { 
+    alert("Download Excel triggered"); 
+    // ... insert your original Excel download logic here
+  };
+  const handleSelectTable = async () => { 
+    alert("Select Table triggered"); 
+    // ... insert your original Select Table logic here
+  };
 
   return (
     <div className="page-layout-container">
+      {/* LEFT COLUMN: FILTERS & PRESETS */}
       <div className="left-section">
         <div className="entry-limit-container">
           <label htmlFor="entryLimitInput" style={{ color: '#8C68CD'}}>Entries to display:</label>
@@ -192,6 +225,7 @@ const ViewDatabasePage = () => {
         </div>
       </div>
 
+      {/* MIDDLE COLUMN: DATA TABLE */}
       <div className="middle-data-section">
         <div className="data-section">
           <div className="data-item">
@@ -200,77 +234,97 @@ const ViewDatabasePage = () => {
               <InfoPopup>
                 <h2 style={{ color: '#8C68CD'}}>View Data </h2>
                 <p style={{ textAlign: 'left' , margin: '0 20px', fontSize: '16px'}}>
-                  Historical data info... (truncated for brevity)
+                  Select columns to view data. Click headers to sort. Use the controls on the right to analyze or download.
                 </p>
               </InfoPopup>
             </h2>
             <div className='table-container'>
               <NotesList 
-                key={tableName} limit={entryLimit} selectedColumns={selectedColumns} 
+                key={tableName} 
+                limit={entryLimit} 
+                selectedColumns={selectedColumns} 
                 onToggleColumn={(col) => setSelectedColumns(prev => {
                   const n = new Set(prev); n.has(col) ? n.delete(col) : n.add(col); return n;
                 })}
-                currentTableName={tableName} stateFilter={stateFilter}
+                currentTableName={tableName} 
+                stateFilter={stateFilter}
               />
             </div>
           </div>
         </div>
       </div>
 
-      <div className="control-section">
+      {/* RIGHT COLUMN: CONTROLS & ANALYSIS */}
+      <div className="control-section" style={{ boxSizing: 'border-box' }}>
         <h2 className="section-title">Database Controls</h2>
-        <div className="controls">
-          <button className="download-button" onClick={handleDownload}> Download as CSV </button>
-          <button className="download-button" onClick={handleDownloadExcel}> Download as XLSX </button>
-          <button className="select-button" onClick={handleSelectTable}> Select Table </button>
+        
+        {/* Flex container to ensure left alignment of all children */}
+        <div className="controls" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%' }}>
           
-          <hr style={{width: '100%', margin: '15px 0', border: '0.5px solid #ddd'}} />
+          <button className="download-button" onClick={handleDownload} style={{ width: '100%', marginBottom: '10px' }}> 
+            Download as CSV 
+          </button>
+          <button className="download-button" onClick={handleDownloadExcel} style={{ width: '100%', marginBottom: '10px' }}> 
+            Download as XLSX 
+          </button>
+          <button className="select-button" onClick={handleSelectTable} style={{ width: '100%', marginBottom: '15px' }}> 
+            Select Table 
+          </button>
           
-          <h3 style={{fontSize: '1rem', color: '#8C68CD'}}>R Analysis Shell</h3>
-          <p style={{fontSize: '0.7rem', marginBottom: '10px'}}>Use <b>vals</b> for the data vector</p>
+          <hr style={{ width: '100%', margin: '15px 0', border: '0.5px solid #ddd' }} />
           
-          <div className="r-shell-container" style={{maxHeight: '200px', overflowY: 'auto', marginBottom: '10px'}}>
+          <h3 style={{ fontSize: '1rem', color: '#8C68CD', margin: '0 0 5px 0' }}>R Analysis Shell</h3>
+          <p style={{ fontSize: '0.7rem', marginBottom: '10px', color: '#fff' }}>Use <b>vals</b> for the data vector</p>
+          
+          {/* R Shell Inputs */}
+          <div className="r-shell-container" style={{ width: '100%', maxHeight: '200px', overflowY: 'auto', marginBottom: '10px' }}>
             {shellRows.map((row, index) => (
-              <div key={index} style={{display: 'flex', gap: '5px', marginBottom: '5px'}}>
+              <div key={index} style={{ display: 'flex', gap: '5px', marginBottom: '8px', width: '100%' }}>
                 <input 
-                  placeholder="Label" style={{width: '35%'}} value={row.label}
+                  placeholder="Label" 
+                  style={{ width: '35%', padding: '5px', borderRadius: '4px', border: '1px solid #ccc' }} 
+                  value={row.label}
                   onChange={(e) => updateShellRow(index, 'label', e.target.value)}
                 />
                 <input 
-                  placeholder="R Code" style={{width: '55%'}} value={row.code}
+                  placeholder="R Code" 
+                  style={{ width: '55%', padding: '5px', borderRadius: '4px', border: '1px solid #ccc' }} 
+                  value={row.code}
                   onChange={(e) => updateShellRow(index, 'code', e.target.value)}
                 />
-                <button onClick={() => removeShellRow(index)} style={{background: 'none', border: 'none', color: 'red', cursor: 'pointer'}}>×</button>
+                <button onClick={() => removeShellRow(index)} style={{ background: 'none', border: 'none', color: '#ff4d4d', cursor: 'pointer', fontSize: '1.2rem' }}>×</button>
               </div>
             ))}
           </div>
           
-          <button className="select-button" style={{fontSize: '0.8rem', padding: '5px'}} onClick={addShellRow}>+ Add Row</button>
+          <button className="select-button" style={{ fontSize: '0.8rem', padding: '8px 12px', marginBottom: '10px' }} onClick={addShellRow}>
+            + Add Row
+          </button>
 
           <button
             className="download-button"
             onClick={handleRunRAnalysis}
             disabled={!rReady || rLoading}
-            style={{marginTop: '10px'}}
+            style={{ width: '100%', backgroundColor: rLoading ? '#555' : '#8C68CD', marginTop: '5px' }}
           >
             {!rReady ? "Loading R..." : rLoading ? "Analyzing..." : "Run Analysis"}
           </button>
 
-          {rError && <p style={{color: 'red', fontSize: '0.8rem'}}>{rError}</p>}
+          {rError && <p style={{ color: '#ff4d4d', fontSize: '0.8rem', marginTop: '10px' }}>{rError}</p>}
 
-     
+          {/* RESULTS DISPLAY - Fixed for Perfect Alignment */}
           {rResult && (
             <div className="r-result-container" style={{ 
               marginTop: "1.5rem", 
-              maxHeight: "450px", 
+              maxHeight: "400px", 
               overflowY: "auto", 
               overflowX: "hidden", 
               width: "100%", 
               boxSizing: "border-box",
-              display: "flex",        // Added flex to control children better
+              display: "flex",
               flexDirection: "column",
-              alignItems: "flex-start", // Force everything to the left
-              paddingRight: "10px"      // Extra room for the scrollbar on the right
+              alignItems: "flex-start", // Left align
+              paddingRight: "5px"
             }}>
               {Object.entries(rResult).map(([colName, data]) => (
                 <div key={colName} style={{ 
@@ -279,23 +333,14 @@ const ViewDatabasePage = () => {
                   borderRadius: "8px", 
                   border: "1px solid #8C68CD",
                   marginBottom: "12px",
-                  
-                  /* THE CRITICAL FIXES */
-                  width: "calc(100% - 15px)", // Dynamically subtract space for the scrollbar
-                  marginLeft: "0",             // Ensure it stays left-aligned
+                  // Width calc accounts for scrollbar space to prevent clipping or overlay
+                  width: "calc(100% - 10px)", 
+                  marginLeft: "0",
                   boxSizing: "border-box", 
                   wordBreak: "break-all",
                   boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
                 }}>
-                  <p style={{ 
-                    fontWeight: 'bold', 
-                    fontSize: '0.85rem', 
-                    color: '#333', 
-                    margin: "0 0 8px 0",
-                    borderBottom: '1px solid #eee',
-                    paddingBottom: '4px',
-                    textAlign: 'left' // Explicitly left-aligned
-                  }}>
+                  <p style={{ fontWeight: 'bold', fontSize: '0.85rem', color: '#333', margin: "0 0 8px 0", borderBottom: '1px solid #eee', paddingBottom: '4px', textAlign: 'left' }}>
                     {colName}
                   </p>
 
@@ -303,13 +348,7 @@ const ViewDatabasePage = () => {
                     <p style={{ color: '#d9534f', fontSize: '0.75rem', margin: 0, textAlign: 'left' }}>{data.error}</p>
                   ) : (
                     Object.entries(data.stats).map(([statName, val]) => (
-                      <div key={statName} style={{ 
-                        display: 'flex', 
-                        justifyContent: 'space-between', 
-                        fontSize: '0.85rem', 
-                        margin: '4px 0',
-                        color: '#444' 
-                      }}>
+                      <div key={statName} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', margin: '4px 0', color: '#444' }}>
                         <span style={{ marginRight: '10px' }}>{statName}:</span>
                         <span style={{ color: '#8C68CD', fontWeight: 'bold' }}>
                           {typeof val === 'number' ? val.toFixed(3) : val}
@@ -328,4 +367,3 @@ const ViewDatabasePage = () => {
 };
 
 export default ViewDatabasePage;
-
