@@ -1,20 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Saira:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Saira:ital,wght@0,100..900;1,100..900&display=swap');
 
 .homebtn {
-  border-radius: 0.5rem;
-  background-color: #E6EDFA;
-  border: 2px solid #1F3A8A;
-  color: #1F3A8A;
+  border-radius: 0.5rem;   
+  /* background-color: #222222; */
+  background-color: #8C68CD26;
+  border: 1.75px solid #8C68CD;
+  color: #8C68CD;
   text-align: center;
-  font-size: 22px;
-  padding: 18px;
+  font-size: 24px;
+  padding: 20px;
   width: 300px;
+  transition: all 0.5s;
   cursor: pointer;
-  margin: 35px;
-  transition: background-color 0.25s ease, color 0.15s ease;
-  font-family: "Saira", sans-serif;
+  margin: 35px ;
+  justify-content: center;
+  transition: background-color 0.3s, color 0.1s; /* Set a faster transition for color */
 }
-
 
 
 .homebtn span {
@@ -43,10 +44,9 @@
 }
 
 .homebtn:hover {
-  background-color: #1F3A8A;
+  background-color: #8C68CD;
   color: white;
 }
-
 
 
  .home-container {
