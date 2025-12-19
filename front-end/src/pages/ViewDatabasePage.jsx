@@ -260,32 +260,52 @@ const ViewDatabasePage = () => {
 
           {rResult && (
             <div className="r-result-container" style={{ 
-              marginTop: "1rem", 
-              maxHeight: "400px", 
+              marginTop: "1.5rem", 
+              maxHeight: "450px", 
               overflowY: "auto", 
+              overflowX: "hidden", 
               width: "100%", 
-              boxSizing: "border-box" 
+              maxWidth: "100%", 
+              boxSizing: "border-box",
+              paddingRight: "5px" 
             }}>
               {Object.entries(rResult).map(([colName, data]) => (
                 <div key={colName} style={{ 
                   padding: "12px", 
-                  backgroundColor: "#f9f9f9", 
+                  backgroundColor: "#fcfcfc", 
                   borderRadius: "8px", 
                   border: "1px solid #8C68CD",
-                  marginBottom: "10px",
-                  boxSizing: "border-box"
+                  marginBottom: "12px",
+                  width: "100%",        
+                  maxWidth: "100%", // Ensures it never exceeds the sidebar width
+                  boxSizing: "border-box", 
+                  display: "block",
+                  wordBreak: "break-all" // Force breaks for extremely long column names
                 }}>
-                  <p style={{ fontWeight: 'bold', fontSize: '0.85rem', color: '#333', borderBottom: '1px solid #ddd', pb: '5px' }}>
-                    Column: {colName}
+                  <p style={{ 
+                    fontWeight: 'bold', 
+                    fontSize: '0.8rem', 
+                    color: '#333', 
+                    margin: "0 0 8px 0",
+                    borderBottom: '1px solid #eee',
+                    paddingBottom: '4px'
+                  }}>
+                    Col: {colName}
                   </p>
 
                   {!data.success ? (
-                    <p style={{ color: 'red', fontSize: '0.75rem', fontStyle: 'italic' }}>{data.error}</p>
+                    <p style={{ color: '#d9534f', fontSize: '0.75rem', margin: 0 }}>{data.error}</p>
                   ) : (
                     Object.entries(data.stats).map(([statName, val]) => (
-                      <div key={statName} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', margin: '4px 0' }}>
-                        <span style={{ color: '#555' }}>{statName}:</span>
-                        <span style={{ color: '#8C68CD', fontWeight: 'bold' }}>
+                      <div key={statName} style={{ 
+                        display: 'flex', 
+                        justifyContent: 'space-between', 
+                        fontSize: '0.85rem', 
+                        margin: '4px 0',
+                        color: '#444' 
+                      }}>
+                        <span style={{ marginRight: '10px' }}>{statName}:</span>
+                        <span style={{ color: '#8C68CD', fontWeight: 'bold', textAlign: 'right' }}>
                           {typeof val === 'number' ? val.toFixed(3) : val}
                         </span>
                       </div>
