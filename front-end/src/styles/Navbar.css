@@ -6,7 +6,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #4E2D76;
+  background-color: #ffffff;
   color: white;
   padding: 10px 20px;
   font-family: "Saira", sans-serif;
@@ -103,22 +103,14 @@
 /* Style for the navbar links */
 
 .nav-link {
-  display: block;
-  align-items: center;
-  padding: 0rem 1.5rem;      
-  line-height: 4rem;
-  height: 100%;
-  color: white;          
-  text-decoration: none;   
-  font-family: "Saira", sans-serif;
+  color: white !important;
+  font-weight: 500;
 }
 
-.navbar a:not(.navbar-brand):hover {
-  background-color: #ab88ed; 
-  color: #371D33;     
-  transition: .3s ease;
-  border-radius: 5px;
+.nav-link:hover {
+  color: #BFDBFE !important;
 }
+
 
 .tba {
   color: white;
