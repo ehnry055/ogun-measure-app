@@ -1,219 +1,80 @@
-@import url('https://fonts.googleapis.com/css2?family=Saira:wght@300;400;500;600;700&display=swap');
-
-.homebtn {
-  border-radius: 0.5rem;
-  background-color: #E6EDFA;
-  border: 2px solid #1F3A8A;
-  color: #1F3A8A;
-  text-align: center;
-  font-size: 22px;
-  padding: 18px;
-  width: 300px;
-  cursor: pointer;
-  margin: 35px;
-  transition: background-color 0.25s ease, color 0.15s ease;
-  font-family: "Saira", sans-serif;
-}
-
-
-.homebtn span {
-  cursor: pointer;
-  display: inline-block;
-  position: relative;
-  transition: 0.3s;
-}
-
-.homebtn span:after {
-  content: '\00bb';
-  position: absolute;
-  opacity: 0;
-  top: 0;
-  right: -20px;
-  transition: 0.5s;
-}
-
-.homebtn:hover span {
-  padding-right: 25px;
-}
-
-.homebtn:hover span:after {
-  opacity: 1;
-  right: 0;
-}
-
-.homebtn:hover {
-  background-color: #1F3A8A;
-  color: white;
-}
-
-
-
 .home-container {
-  padding: 20px;
-  width: 100%;
-  max-width: 85vw;
-  margin: 0 auto;
+  background-color: #ffffff;
+  min-height: 100vh;
+  padding: 60px 80px;
   box-sizing: border-box;
-  background-color: #FFFFFF;
 }
 
-  
-.about-title {
-  color: #1F3A8A;
-  font-size: 2.75rem;
-  margin-bottom: 20px;
-  text-align: center;
-  font-family: "Saira", sans-serif;
+/* HERO SECTION */
+.home-hero {
+  display: flex;
+  gap: 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+/* LEFT IMAGE */
+.home-hero-left {
+  flex: 1;
+}
+
+.home-hero-image {
+  width: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+/* RIGHT CONTENT */
+.home-hero-right {
+  flex: 1.2;
+}
+
+.home-hero-right h1 {
+  font-size: 42px;
   font-weight: 600;
+  color: #1f3c88;
+  margin-bottom: 20px;
 }
 
- 
-.about-content {
-  font-size: 1.1rem;
+.home-hero-right p {
+  font-size: 16px;
   line-height: 1.7;
-  color: #374151;
-  margin: 40px auto;
-  font-family: "Saira", sans-serif;
-  text-align: center;
-  max-width: 900px;
+  color: #333333;
+  margin-bottom: 18px;
 }
 
-  
-.about-grid {
+/* BUTTONS */
+.home-button-row {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 40px;
-}
-
-.text-box {
-  width: 50%;
-  padding: 20px;
-  font-size: 1rem;
-  color: #4B5563;
-  font-family: "Saira", sans-serif;
-}
-
-  .reverse {
-    flex-direction: row-reverse;
-  }
-  
-  
-.placeholder-box {
-  width: 45%;
-  height: 260px;
-  background-color: #F3F4F6;
-  border: 1px solid #D1D5DB;
-  border-radius: 0.75rem;
-}
-
-.container {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
   gap: 20px;
-  width: 120vw;
+  margin-top: 30px;
 }
 
-table {
-  width: 90%;
-  margin: auto;
-  border-collapse: collapse;
-  border: 1px solid #D1D5DB;
-  background-color: white;
+.home-button {
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
 }
 
-th {
-  background-color: #1F3A8A;
-  color: white;
-  font-size: 16px;
-  padding: 15px;
+.home-button.primary {
+  background-color: #1f3c88;
+  color: #ffffff;
 }
 
-td {
-  border: 1px solid #E5E7EB;
-  padding: 14px;
-  text-align: center;
-  color: #374151;
+.home-button.primary:hover {
+  background-color: #162c63;
 }
 
-.period {
-  color: #ffcc00;
-  font-weight: bold;
-  font-size: 16px;
+.home-button.secondary {
+  border: 2px solid #1f3c88;
+  color: #1f3c88;
+  background-color: transparent;
 }
 
-.edit-icon-btn {
-  background-color: #E6EDFA;
-  border: 2px solid #2563EB;
-  color: #2563EB;
-  width: 50px;
-  height: 50px;
-  border-radius: 0.5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: background-color 0.25s ease, color 0.15s ease;
-}
-
-.edit-icon-btn:hover {
-  background-color: #2563EB;
-  color: white;
-}
-
-.save {
-  background-color: #E6EDFA;
-  border: 2px solid #2563EB;
-  color: #2563EB;
-  border-radius: 0.5rem;
-}
-
-.save:hover {
-  background-color: #2563EB;
-  color: white;
-}
-
-.cancel {
-  background-color: #FEE2E2;
-  border: 2px solid #DC2626;
-  color: #DC2626;
-}
-
-.cancel:hover {
-  background-color: #DC2626;
-  color: white;
-}
-
-
-.form-container {
-  display: flex;
-  flex-direction: column;
-  margin-left: 20vw;
-  margin-right: 20vw;
-}
-
-.send {
-  background-color: #E6EDFA;
-  border: 2px solid #1F3A8A;
-  color: #1F3A8A;
-  padding: 18px;
-  border-radius: 0.75rem;
-  font-size: 1.8rem;
-  font-family: "Saira", sans-serif;
-  transition: background-color 0.25s ease, color 0.15s ease;
-}
-
-.send:hover {
-  background-color: #1F3A8A;
-  color: white;
-}
-
-
-.table-header-edit{
-  width: 15%;
-}
-
-.highcharts-credits {
-  display: none;
+.home-button.secondary:hover {
+  background-color: #f0f4ff;
 }
