@@ -258,6 +258,7 @@ const ViewDatabasePage = () => {
 
           {rError && <p style={{color: 'red', fontSize: '0.8rem'}}>{rError}</p>}
 
+     
           {rResult && (
             <div className="r-result-container" style={{ 
               marginTop: "1.5rem", 
@@ -265,9 +266,8 @@ const ViewDatabasePage = () => {
               overflowY: "auto", 
               overflowX: "hidden", 
               width: "100%", 
-              maxWidth: "100%", 
               boxSizing: "border-box",
-              paddingRight: "5px" 
+              padding: "0 5px" 
             }}>
               {Object.entries(rResult).map(([colName, data]) => (
                 <div key={colName} style={{ 
@@ -276,21 +276,22 @@ const ViewDatabasePage = () => {
                   borderRadius: "8px", 
                   border: "1px solid #8C68CD",
                   marginBottom: "12px",
-                  width: "100%",        
-                  maxWidth: "100%", // Ensures it never exceeds the sidebar width
+                  width: "92%",         // Reduced slightly more to ensure the border is never hidden
+                  margin: "0 auto 12px auto", 
                   boxSizing: "border-box", 
                   display: "block",
-                  wordBreak: "break-all" // Force breaks for extremely long column names
+                  wordBreak: "break-all",
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
                 }}>
                   <p style={{ 
                     fontWeight: 'bold', 
-                    fontSize: '0.8rem', 
+                    fontSize: '0.85rem', 
                     color: '#333', 
                     margin: "0 0 8px 0",
                     borderBottom: '1px solid #eee',
                     paddingBottom: '4px'
                   }}>
-                    Col: {colName}
+                    {colName} {/* Removed "Col:" prefix here */}
                   </p>
 
                   {!data.success ? (
