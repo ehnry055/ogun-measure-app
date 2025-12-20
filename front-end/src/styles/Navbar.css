@@ -1,63 +1,129 @@
-.navbar {
-  width: 100%;
-  background-color: #1f3c88; /* primary blue */
-  border-bottom: 1px solid rgba(0,0,0,0.08);
-}
+/* Light Purple: #8C68CD */
+/* Font: Saira, San Serif */
+/* Mauve: #AC5180 */
 
-.navbar-inner {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 16px 32px;
-
+.top-navbar {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
+  background-color: #4E2D76;
+  color: white;
+  padding: 10px 20px;
+  font-family: "Saira", sans-serif;
+  width: 100%;
 }
 
-/* BRAND */
-.navbar-brand {
-  font-size: 20px;
-  font-weight: 600;
-  color: #ffffff;
-}
-
-/* LINKS */
-.navbar-links {
+.navbar-left {
   display: flex;
-  gap: 28px;
+  align-items: center;
 }
 
-.navbar-links a {
+.logo {
+  height: 40px;
+  margin-right: 10px;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.subtitle {
+  font-size: 1rem;
+  font-weight: lighter;
+}
+
+.navbar-center {
+  display: flex;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-link {
+  color: white;
   text-decoration: none;
-  font-size: 15px;
-  font-weight: 500;
-  color: rgba(255,255,255,0.9);
-  padding-bottom: 4px;
+  font-size: 1rem;
 }
 
-.navbar-links a.active {
-  color: #ffffff;
-  border-bottom: 2px solid #ffffff;
+.nav-link:hover {
+  text-decoration: underline;
 }
 
-.navbar-links a:hover {
-  color: #ffffff;
-}
-
-/* USER */
-.navbar-user {
+.navbar-right {
   display: flex;
   align-items: center;
 }
 
-.user-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background-color: rgba(255,255,255,0.15);
+.search-bar {
+  border: none;
+  padding: 5px 10px;
+  border-radius: 20px;
+  margin-right: 10px;
+  outline: none;
+}
+
+.sort {
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.navbar-gradient {
+  /* ab88ed */
+  background: linear-gradient(#8C68CD, #ab88ed); /* Purple gradient */
+}
+
+.navbar-brand {
   color: #ffffff;
-  display: flex;
+  font-weight: bold;
+  font-family: 'Courier New', Courier, monospace
+}
+
+.navbar-nav .nav-link {
+  text-decoration: none; /* Removes underline */
+  
+}
+
+.navbar-nav .nav-link:hover {
+  text-decoration: none; /* Ensures no underline on hover */
+}
+
+.navbar.sticky-top {
+  position: sticky;
+  top: 0;
+  z-index: 1000;  /* Ensure it stays above other content */
+  background-color: #371D33;  /* Make sure the background is solid */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Optional: Add some shadow for better visibility */
+}
+
+
+/* Style for the navbar links */
+
+.nav-link {
+  display: block;
   align-items: center;
-  justify-content: center;
-  font-weight: 600;
+  padding: 0rem 1.5rem;      
+  line-height: 4rem;
+  height: 100%;
+  color: white;          
+  text-decoration: none;   
+  font-family: "Saira", sans-serif;
+}
+
+.navbar a:not(.navbar-brand):hover {
+  background-color: #ab88ed; 
+  color: #371D33;     
+  transition: .3s ease;
+  border-radius: 5px;
+}
+
+.tba {
+  color: white;
+}
+
+.container-fluid {
+  width: 100%;
 }
