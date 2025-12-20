@@ -20,7 +20,7 @@ const HomePage = () => {
             </div>
 
             <div className="objective-image">
-              <img src="/columbia-university.svg" alt="Columbia University" />
+              <img src="/placeholder-objective.jpg" alt="Objective illustration" />
             </div>
           </div>
         </div>
