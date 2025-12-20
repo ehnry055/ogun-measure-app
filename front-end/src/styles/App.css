@@ -3,27 +3,6 @@
   flex-direction: column;
 }
 
-/* Trajan Pro fonts (place font files in `public/fonts/` with these filenames):
-   - TrajanPro-Regular.woff2
-   - TrajanPro-Bold.woff2
-   If you don't have Trajan Pro, the site will fall back to Times New Roman / serif. */
-@font-face {
-  font-family: 'Trajan Pro';
-  src: url('/fonts/TrajanPro-Regular.woff2') format('woff2'),
-       url('/fonts/TrajanPro-Regular.woff') format('woff');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Trajan Pro';
-  src: url('/fonts/TrajanPro-Bold.woff2') format('woff2'),
-       url('/fonts/TrajanPro-Bold.woff') format('woff');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
 html, body{
   height:100%;
   background-color: #ffffff;

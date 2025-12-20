@@ -5,7 +5,7 @@ const HomePage = () => {
   return (
     <div className="home-container">
       <section className="objective-band">
-        <div className="objective-inner">
+        <div className="objective-card">
           <h2 className="objective-title">Our objective</h2>
 
           <div className="objective-row">
