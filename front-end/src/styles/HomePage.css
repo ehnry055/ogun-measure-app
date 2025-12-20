@@ -24,7 +24,8 @@ html, body {
   color: #1f3c88;
   margin: 8px 0 28px;
   font-weight: 700;
-} 
+  font-family: 'Trajan Pro', 'Times New Roman', serif; /* add Trajan Pro to project/public/fonts for best rendering */
+}
 
 .objective-row {
   display: flex;
@@ -43,8 +44,9 @@ html, body {
   line-height: 1.7;
   color: #333333;
   margin: 0;
+  font-family: 'Trajan Pro', serif; /* use Trajan Pro for paragraph */
   font-weight: 400;
-} 
+}
 
 .objective-image {
   flex: 0.95;
