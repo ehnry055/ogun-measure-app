@@ -2,7 +2,10 @@
   display: flex;
   flex-wrap: nowrap;      
   width: 100vw;           
-  box-sizing: border-box; 
+  box-sizing: border-box;
+  /* Added to match App.css white theme */
+  background-color: white;
+  color: #333; 
 }
 
 .entry-limit-container {
@@ -14,7 +17,8 @@
 .entry-limit-container label {
   margin-right: 10px;
   font-weight: bold;
-  color: #2cd7ce;
+  /* Teal -> Blue to match theme */
+  color: #347ecc;
 }
 
 .limit-input {
@@ -60,20 +64,23 @@
 .profile-name {
   font-weight: bold;
   font-size: 1.2rem;
-  color: #6ab3e7;
+  /* Light Blue -> Darker Blue for visibility on white */
+  color: #1F3A8A;
 }
 
 .pie-chart {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background-color: #474E9E; 
+  /* Blurple -> Theme Blue */
+  background-color: #347ecc; 
   margin: 10px auto;
 }
 
 .chart-label {
   font-weight: bold;
-  color: #6ab3e7;
+  /* Light Blue -> Darker Blue */
+  color: #1F3A8A;
 }
 
 .data-section {
@@ -85,7 +92,8 @@
 }
 
 .section-title {
-  color: #8C68CD;
+  /* Purple -> Theme Blue */
+  color: #347ecc;
   font-size: 1.5rem;
   margin-bottom: 10px;
 }
@@ -101,11 +109,13 @@
 
 .data-item h3 {
   font-size: 1.2rem;
-  color: #474E9E;
+  /* Blurple -> Theme Blue */
+  color: #347ecc;
 }
 
 .data-item h2 {
-  color: #DDDDDD;
+  /* Light Grey -> Dark Grey */
+  color: #333333;
   text-align: center;
 }
 
@@ -115,7 +125,8 @@
 
 .delete-button,
 .edit-button {
-  background-color: #474E9E;
+  /* Blurple -> Theme Blue */
+  background-color: #347ecc;
   color: white;
   border: none;
   padding: 5px 10px;
@@ -128,6 +139,7 @@
   list-style: none;
   font-size: 1rem;
   margin: 5px 0;
+  /* Implicit black/dark grey from container */
 }
 
 .saved-graph {
@@ -136,7 +148,8 @@
 }
 
 .saved-graph h3 {
-  color: #474E9E;
+  /* Blurple -> Theme Blue */
+  color: #347ecc;
   font-size: 1.2rem;
 }
 
@@ -156,64 +169,69 @@
   flex-direction: column;
 }
 
+/* GHOST BUTTONS: 
+   The background opacity (26) is kept, but base colors are tweaked 
+   so the text is readable on white.
+*/
+
 .upload-button {
   padding: 0.5rem 1rem;
-  background: #A3FF7726;
-  color: #A3FF77;
-  border: solid 1px #A3FF77;
+  background: #22c55e26; /* Green tint */
+  color: #15803d;        /* Dark Green Text */
+  border: solid 1px #15803d;
   border-radius: 4px;
   cursor: pointer;
   width: 70%;
 }
 
 .upload-button:hover {
-  background: #A3FF77;
-  color: #051225;
+  background: #15803d;
+  color: white;
 }
 
 .download-button {
   padding: 0.5rem 1rem;
-  background: #00CFE826;
-  color: #00CFE8;
-  border: solid 1px #00CFE8;
+  background: #347ecc26; /* Blue tint */
+  color: #347ecc;        /* Theme Blue Text */
+  border: solid 1px #347ecc;
   border-radius: 4px;
   cursor: pointer;
   width: 70%;
 }
 
 .download-button:hover {
-  background: #00CFE8;
-  color: #051225;
+  background: #347ecc;
+  color: white;
 }
 
 .select-button {
   padding: 0.5rem 1rem;
-  background: #FFC85726;
-  color: #FFC857;
-  border: solid 1px #FFC857;
+  background: #f59e0b26; /* Orange tint */
+  color: #b45309;        /* Dark Orange Text */
+  border: solid 1px #b45309;
   border-radius: 4px;
   cursor: pointer;
   width: 70%;
 }
 
 .select-button:hover {
-  background: #FFC857;
-  color: #051225;
+  background: #b45309;
+  color: white;
 }
 
 .delete-table-button {
   padding: 0.5rem 1rem;
-  background: #EE635226;
-  color: #EE6352;
-  border: solid 1px #EE6352;
+  background: #ef444426; /* Red tint */
+  color: #b91c1c;        /* Dark Red Text */
+  border: solid 1px #b91c1c;
   border-radius: 4px;
   cursor: pointer;
   width: 70%;
 }
 
 .delete-table-button:hover {
-  background: #EE6352;
-  color: #051225;
+  background: #b91c1c;
+  color: white;
 }
 
 .table-container {
@@ -234,11 +252,15 @@
   padding: 12px 15px;
   text-align: left;
   white-space: nowrap;
+  /* Added dark color so text isn't white-on-white */
+  color: #333;
 }
 
 .styled-table th {
-  background-color: #5210cd26; 
+  /* Purple tint -> Blue tint */
+  background-color: #347ecc26; 
   font-weight: 600;
+  color: #333; /* Ensure header text is dark */
 }
 
 .column-header {
@@ -255,7 +277,8 @@
 
 .styled-table td.selected,
 .styled-table th.selected {
-  background-color: #17568d;
+  /* Dark Blue -> Lighter Blue selection */
+  background-color: #bfdbfe;
 }
 
 .state-filter-container {
@@ -322,15 +345,16 @@
 }
 
 .save-preset {
-  background: #40BB8226;
-  color: #40BB82;
-  border-color: #40BB82;
+  /* Green tint -> Solid Green/White combo for better vis */
+  background: #10b98126;
+  color: #059669;
+  border-color: #059669;
   text-align: center;
 }
 
 .save-preset:hover {
-background-color: #40BB82;
-color: white;
+  background-color: #059669;
+  color: white;
 }
 
 .preset-button.active.clearable {
@@ -352,16 +376,18 @@ input[type="number"] {
   font-size: 1rem;
   border-radius: 8px;
   border: solid 1px #DDDDDD;
-  background-color: #8C68CD26;
-  color: #DDDDDD;
+  /* Dark background -> White background */
+  background-color: white;
+  color: #333;
   outline: none;
 }
 
 
 /* might need to create new button */
 input[type="file"] { 
-  background-color: #262D3D; 
-  color: #DDDDDD;
+  /* Dark background -> Light Gray background */
+  background-color: #f3f4f6; 
+  color: #333;
   border: 2px solid #DDDDDD; 
   border-radius: 8px;
   padding: 8px;
