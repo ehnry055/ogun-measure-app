@@ -6,7 +6,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #347ecc;
+  background-color: #4E2D76;
   color: white;
   padding: 10px 20px;
   font-family: "Saira", sans-serif;
@@ -73,7 +73,7 @@
 
 .navbar-gradient {
   /* ab88ed */
-  background: linear-gradient(#8C68CD, #ab88ed); /* Purple gradient */
+  background: linear-gradient(#4588cf, #347ecc); /* Purple gradient */
 }
 
 .navbar-brand {
