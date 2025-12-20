@@ -177,7 +177,7 @@ const ViewDatabasePage = () => {
     <div className="page-layout-container">
       <div className="left-section">
         <div className="entry-limit-container">
-          <label style={{ color: '#8C68CD'}}>Entries to display:</label>
+          <label style={{ color: '#010a13ff'}}>Entries to display:</label>
           <input type="number" min="1" value={entryLimit} onChange={handleEntryLimitChange} className="limit-input" />
         </div>
         <div className="state-filter-container">
@@ -222,7 +222,7 @@ const ViewDatabasePage = () => {
           
           <hr style={{width: '100%', margin: '15px 0', border: '0.5px solid #ddd'}} />
           
-          <h3 style={{fontSize: '1rem', color: '#8C68CD'}}>R Analysis Shell</h3>
+          <h3 style={{fontSize: '1rem', color: '#ca6767ff'}}>R Analysis Shell</h3>
           <p style={{fontSize: '0.7rem', marginBottom: '10px'}}>Use <b>vals</b> for the data vector</p>
           
           <div className="r-shell-container" style={{maxHeight: '200px', overflowY: 'auto', marginBottom: '10px', width: '100%'}}>

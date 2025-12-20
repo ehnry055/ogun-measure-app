@@ -1,11 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Saira:ital,wght@0,100..900;1,100..900&display=swap');
 
+/* HOME BUTTON: Blue Outline -> Solid Blue on Hover */
 .homebtn {
   border-radius: 0.5rem;   
-  /* background-color: #222222; */
-  background-color: #8C68CD26;
-  border: 1.75px solid #8C68CD;
-  color: #8C68CD;
+  /* Changed from purple tint to transparent or very light blue */
+  background-color: transparent; 
+  /* Purple Border -> Blue Border */
+  border: 1.75px solid #347ecc;
+  /* Purple Text -> Blue Text */
+  color: #347ecc;
   text-align: center;
   font-size: 24px;
   padding: 20px;
@@ -14,9 +17,8 @@
   cursor: pointer;
   margin: 35px ;
   justify-content: center;
-  transition: background-color 0.3s, color 0.1s; /* Set a faster transition for color */
+  transition: background-color 0.3s, color 0.1s; 
 }
-
 
 .homebtn span {
   cursor: pointer;
@@ -44,23 +46,27 @@
 }
 
 .homebtn:hover {
-  background-color: #8C68CD;
+  /* Purple -> Blue */
+  background-color: #347ecc;
   color: white;
 }
 
 
  .home-container {
     padding: 20px;
-    width: 100%; /* Ensure it spans the full width of the parent container */
-    max-width: 85vw; /* Set a maximum width to prevent it from becoming too wide */
-    margin: 0 auto; /* Center the container horizontally */
-    box-sizing: border-box; /* Include padding in the width calculation */
-    }
+    width: 100%; 
+    max-width: 85vw; 
+    margin: 0 auto; 
+    box-sizing: border-box;
+    /* Added white background explicitly */
+    background-color: white;
+    color: #333;
+}
   
   .about-title {
-    color: #8C68CD;
+    /* Purple -> Blue */
+    color: #347ecc;
     font-size: 2.5rem;
-    /* font-weight: bold; */
     margin-bottom: 20px;
     text-align: center;
     font-family: "Saira", sans-serif;
@@ -69,7 +75,8 @@
   .about-content {
     font-size: 1.1rem;
     line-height: 1.6;
-    color: rgb(196, 196, 196);
+    /* Light Grey -> Dark Grey */
+    color: #333;
     margin-bottom: 40px;
     margin-top: 40px;
     font-family: "Saira", sans-serif;
@@ -91,7 +98,8 @@
     width: 50%;
     padding: 20px;
     font-size: 1rem;
-    color: rgb(196, 196, 196);
+    /* Light Grey -> Dark Grey */
+    color: #333;
   }
   
   .placeholder-box {
@@ -110,32 +118,39 @@
   width: 120vw;
 }
 
+/* TABLE STYLING FOR WHITE THEME */
 table {
   width: 90%;
   margin: auto;
   border-collapse: collapse;
-  border: 2px solid white;
+  /* White border -> Grey border (visible on white) */
+  border: 2px solid #ccc;
 }
 th, td {
-  border: 1px solid white;
+  /* White border -> Grey border */
+  border: 1px solid #ccc;
   padding: 15px;
   text-align: center;
+  color: #333;
 }
 th {
-  background-color: black;
-  color: #8C68CD;
+  /* Black header -> Blue header to match theme */
+  background-color: #347ecc;
+  color: white;
   font-size: 18px;
 }
 .period {
-  color: #ffcc00;
+  /* Yellow -> Dark Orange/Gold (readable on white) */
+  color: #d97706; 
   font-weight: bold;
   font-size: 16px;
 }
 
+/* EDIT ICON BUTTON (Green) */
 .edit-icon-btn {
-  background-color: #40BB8226;
-  border: 2px solid #40BB82;  
-  color: #40BB82;
+  background-color: #10b98126; /* Green tint */
+  border: 2px solid #10b981;  
+  color: #047857; /* Darker green text */
   width: 50px;
   height: 50px;
   border-radius: 0.5rem;   
@@ -144,12 +159,12 @@ th {
   align-items: center;        
   margin: auto;     
   margin-bottom: 10px;  
-  transition: background-color 0.3s, color 0.1s; /* Set a faster transition for color */  
+  transition: background-color 0.3s, color 0.1s; 
 }
 
 .edit-icon-btn:hover {
-  background-color: #40BB82;
-  border: 2px solid #40BB82;  
+  background-color: #10b981;
+  border: 2px solid #10b981;  
   color: white;
   width: 50px;
   height: 50px;
@@ -159,37 +174,36 @@ th {
   align-items: center;        
   margin: auto;     
   margin-bottom: 10px;  
-  
 }
 
+/* SAVE BUTTON (Green) */
 .save {
-  background-color: #40BB8226;
-  border: 2px solid #40BB82;  
-  color: #40BB82;
+  background-color: #10b98126;
+  border: 2px solid #10b981;  
+  color: #047857;
   border-radius: 0.5rem;   
-  transition: background-color 0.3s, color 0.1s; /* Set a faster transition for color */
-
+  transition: background-color 0.3s, color 0.1s;
 }
 
 .save:hover {
-  background-color: #40BB82;
-  border: 2px solid #40BB82;  
+  background-color: #10b981;
+  border: 2px solid #10b981;  
   color: white;
   border-radius: 0.5rem;   
 }
 
+/* CANCEL BUTTON (Red) */
 .cancel {
-  background-color: #EE635226;
-  border: 2px solid #EE6352;  
-  color: #EE6352;
+  background-color: #ef444426; /* Red tint */
+  border: 2px solid #ef4444;  
+  color: #b91c1c; /* Dark red text */
   border-radius: 0.5rem;   
-  transition: background-color 0.3s, color 0.1s; /* Set a faster transition for color */
-
+  transition: background-color 0.3s, color 0.1s;
 }
 
 .cancel:hover {
-  background-color: #EE6352;
-  border: 2px solid #EE6352;  
+  background-color: #ef4444;
+  border: 2px solid #ef4444;  
   color: white;
   border-radius: 0.5rem;   
 }
@@ -201,20 +215,23 @@ th {
   margin-right: 20vw;
 }
 
+/* SEND BUTTON: Matches Home Button Style */
 .send {
-  background-color: #8C68CD26;
-  border: 1.75px solid #8C68CD;
-  color: #8C68CD;
+  background-color: transparent;
+  /* Purple -> Blue */
+  border: 1.75px solid #347ecc;
+  color: #347ecc;
   padding: 20px;
   border-radius: 0.5rem;
   font-size: 2rem;
   font-family: "Saira", sans-serif;
-  transition: background-color 0.3s, color 0.1s; /* Set a faster transition for color */
+  transition: background-color 0.3s, color 0.1s;
 }
 
 .send:hover {
-  background-color: #8C68CD;
-  border: 1.75px solid #8C68CD;
+  /* Purple -> Blue */
+  background-color: #347ecc;
+  border: 1.75px solid #347ecc;
   color: white;
   padding: 20px;
   border-radius: 0.5rem;

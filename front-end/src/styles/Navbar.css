@@ -114,7 +114,7 @@
 }
 
 .navbar a:not(.navbar-brand):hover {
-  background-color: #ab88ed; 
+  background-color: #68a1de; 
   color: #371D33;     
   transition: .3s ease;
   border-radius: 5px;
