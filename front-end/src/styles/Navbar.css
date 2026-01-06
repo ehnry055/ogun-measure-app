@@ -1,129 +1,60 @@
-/* Light Purple: #8C68CD */
-/* Font: Saira, San Serif */
-/* Mauve: #AC5180 */
+:root {
+  --primary: #1f3a8a;
+  --primary-light: #e6edfa;
+  --text-light: #ffffff;
+  --text-dark: #374151;
+}
 
-.top-navbar {
+/* Navbar container */
+.navbar {
+  width: 100%;
+  background-color: var(--primary);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Inner layout */
+.navbar-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #4E2D76;
-  color: white;
-  padding: 10px 20px;
-  font-family: "Saira", sans-serif;
-  width: 100%;
 }
 
-.navbar-left {
+/* Logo */
+.navbar-logo {
+  color: var(--text-light);
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+/* Links */
+.navbar-links {
+  list-style: none;
   display: flex;
-  align-items: center;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
 }
 
-.logo {
-  height: 40px;
-  margin-right: 10px;
-}
-
-.title {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-right: 10px;
-}
-
-.subtitle {
-  font-size: 1rem;
-  font-weight: lighter;
-}
-
-.navbar-center {
-  display: flex;
-}
-
-.nav-links {
-  display: flex;
-  gap: 20px;
-}
-
-.nav-link {
-  color: white;
+.navbar-links a {
+  color: var(--text-light);
   text-decoration: none;
-  font-size: 1rem;
+  font-weight: 500;
 }
 
-.nav-link:hover {
+.navbar-links a:hover {
   text-decoration: underline;
 }
 
-.navbar-right {
-  display: flex;
-  align-items: center;
-}
-
-.search-bar {
-  border: none;
-  padding: 5px 10px;
-  border-radius: 20px;
-  margin-right: 10px;
-  outline: none;
-}
-
-.sort {
-  font-size: 0.9rem;
-  cursor: pointer;
-}
-
-.navbar-gradient {
-  /* ab88ed */
-  background: linear-gradient(#4588cf, #347ecc); /* Purple gradient */
-}
-
-.navbar-brand {
-  color: #ffffff;
-  font-weight: bold;
-  font-family: 'Courier New', Courier, monospace
-}
-
-.navbar-nav .nav-link {
-  text-decoration: none; /* Removes underline */
-  
-}
-
-.navbar-nav .nav-link:hover {
-  text-decoration: none; /* Ensures no underline on hover */
-}
-
-.navbar.sticky-top {
-  position: sticky;
-  top: 0;
-  z-index: 1000;  /* Ensure it stays above other content */
-  background-color: #371D33;  /* Make sure the background is solid */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Optional: Add some shadow for better visibility */
-}
-
-
-/* Style for the navbar links */
-
-.nav-link {
-  display: block;
-  align-items: center;
-  padding: 0rem 1.5rem;      
-  line-height: 4rem;
-  height: 100%;
-  color: white;          
-  text-decoration: none;   
-  font-family: "Saira", sans-serif;
-}
-
-.navbar a:not(.navbar-brand):hover {
-  background-color: #68a1de; 
-  color: #371D33;     
-  transition: .3s ease;
-  border-radius: 5px;
-}
-
-.tba {
-  color: white;
-}
-
-.container-fluid {
-  width: 100%;
+/* Mobile */
+@media (max-width: 768px) {
+  .navbar-inner {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
 }
