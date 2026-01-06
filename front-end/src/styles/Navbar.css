@@ -1,14 +1,15 @@
+/* Import Columbia-like font */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
+
 :root {
-  --primary: #1f3a8a;
-  --primary-light: #e6edfa;
-  --text-light: #ffffff;
-  --text-dark: #374151;
+  --columbia-blue: #1f3a8a;
+  --columbia-text: #f8fafc;
 }
 
-/* Navbar container */
+/* Navbar wrapper */
 .navbar {
   width: 100%;
-  background-color: var(--primary);
+  background-color: var(--columbia-blue);
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -18,43 +19,43 @@
 .navbar-inner {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 1rem 2rem;
+  padding: 0.75rem 2rem;
 
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto 1fr;
   align-items: center;
 }
 
 /* Logo */
-.navbar-logo {
-  color: var(--text-light);
-  font-size: 1.4rem;
-  font-weight: 700;
+.navbar-logo img {
+  height: 40px;
+}
+
+/* Centered nav */
+.navbar-nav {
+  display: flex;
+  justify-content: center;
 }
 
 /* Links */
 .navbar-links {
   list-style: none;
   display: flex;
-  gap: 1.5rem;
+  gap: 2rem;
   margin: 0;
   padding: 0;
+
+  font-family: "Inter", sans-serif;
 }
 
 .navbar-links a {
-  color: var(--text-light);
+  color: var(--columbia-text);
   text-decoration: none;
+  font-size: 0.95rem;
   font-weight: 500;
+  letter-spacing: 0.02em;
 }
 
 .navbar-links a:hover {
   text-decoration: underline;
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-  .navbar-inner {
-    flex-direction: column;
-    gap: 0.75rem;
-  }
 }
