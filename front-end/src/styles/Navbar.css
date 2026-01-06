@@ -127,18 +127,3 @@
 .container-fluid {
   width: 100%;
 }
-
-/* Top red banner shown above the main navbar */
-.top-banner {
-  background-color: #b30000; /* Columbia red-ish */
-  color: #ffffff;
-  text-align: center;
-  padding: 6px 0;
-  font-weight: 700;
-  font-family: "Saira", sans-serif;
-  font-size: 0.95rem;
-}
-
-.banner-text {
-  letter-spacing: 0.5px;
-}
