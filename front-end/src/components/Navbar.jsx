@@ -1,13 +1,14 @@
 import "../styles/Navbar.css";
 import columbiaLogo from "../assets/columbia-logo.svg";
 import { Link } from "react-router-dom";
+import LoginButton from "./login";
 
 function Navbar() {
   return (
     <header className="navbar">
       <div className="navbar-inner">
 
-        {/* LEFT */}
+        {/* LEFT: Columbia logo */}
         <div className="navbar-left">
           <img
             src={columbiaLogo}
@@ -16,17 +17,17 @@ function Navbar() {
           />
         </div>
 
-        {/* CENTER */}
+        {/* CENTER: original navigation behavior */}
         <div className="navbar-center">
           <Link to="/" className="nav-link">Home</Link>
-          <Link to="/measure" className="nav-link">Measure</Link>
-          <Link to="/data" className="nav-link">Data</Link>
-          <Link to="/about" className="nav-link">About</Link>
+          <Link to="/ogun" className="nav-link">Measure</Link>
+          <Link to="/viewdata" className="nav-link">Data</Link>
+          <Link to="/itemdevelopers" className="nav-link">About</Link>
         </div>
 
-        {/* RIGHT */}
+        {/* RIGHT: original Auth0 login */}
         <div className="navbar-right">
-          <Link to="/login" className="nav-link login">Login</Link>
+          <LoginButton />
         </div>
 
       </div>
