@@ -1,19 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&display=swap");
-
-:root {
-  --columbia-blue: #1f3a8a;
-  --text-light: #f8fafc;
-}
-
-/* Navbar background */
 .navbar {
   width: 100%;
-  background-color: var(--columbia-blue);
+  background-color: #1f3a8a;
 }
 
-/* Left | Center | Right layout */
 .navbar-inner {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0.75rem 2rem;
 
@@ -27,7 +18,7 @@
 }
 
 .navbar-logo {
-  height: 40px;
+  height: 42px;
 }
 
 /* CENTER */
@@ -37,17 +28,18 @@
   justify-content: center;
 }
 
+/* BUTTONS */
 .navbar-links {
   list-style: none;
   display: flex;
-  gap: 2rem;
+  gap: 2.5rem;   /* more breathing room */
   margin: 0;
   padding: 0;
 }
 
 .navbar-links a {
-  font-family: "Cinzel", serif; /* Trajan-style */
-  color: var(--text-light);
+  font-family: "Cinzel", serif;
+  color: #ffffff;
   text-decoration: none;
   font-size: 0.95rem;
   font-weight: 500;
@@ -64,7 +56,7 @@
 
 .login-button {
   font-family: "Cinzel", serif;
-  color: var(--text-light);
+  color: #ffffff;
   text-decoration: none;
-  font-weight: 500;
+  font-size: 0.95rem;
 }

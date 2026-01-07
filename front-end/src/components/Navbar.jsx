@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "../styles/Navbar.css";
 import columbiaLogo from "../assets/columbia-logo.svg";
 
@@ -6,7 +7,7 @@ function Navbar() {
     <header className="navbar">
       <div className="navbar-inner">
 
-        {/* Left: Columbia logo */}
+        {/* LEFT: Columbia logo */}
         <div className="navbar-left">
           <img
             src={columbiaLogo}
@@ -15,19 +16,21 @@ function Navbar() {
           />
         </div>
 
-        {/* Center: navigation buttons (UNCHANGED functionality) */}
+        {/* CENTER: navigation buttons */}
         <nav className="navbar-center">
           <ul className="navbar-links">
-            <li><a href="/">Home</a></li>
-            <li><a href="/measure">Measure</a></li>
-            <li><a href="/data">Data</a></li>
-            <li><a href="/about">About</a></li>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/measure">Measure</Link></li>
+            <li><Link to="/data">Data</Link></li>
+            <li><Link to="/about">About</Link></li>
           </ul>
         </nav>
 
-        {/* Right: Login */}
+        {/* RIGHT: Login */}
         <div className="navbar-right">
-          <a href="/login" className="login-button">Login</a>
+          <Link to="/login" className="login-button">
+            Login
+          </Link>
         </div>
 
       </div>
