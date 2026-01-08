@@ -51,8 +51,13 @@
 }
 
 .nav-link:hover {
-  text-decoration: underline;
+  text-decoration: bold;
 }
+
+.nav-link:active {
+  color: #6ba5ef; 
+}
+
 
 /* Login / Logout buttons */
 .login-button,
@@ -61,3 +66,4 @@
   color: #ffffff;
   font-size: 0.9rem;
 }
+
