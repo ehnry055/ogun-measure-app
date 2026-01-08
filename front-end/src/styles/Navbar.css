@@ -22,12 +22,13 @@
   height: 42px;
 }
 
-/* CENTER: Navigation links */
 .navbar-center {
   flex: 1;
   display: flex;
   justify-content: center;
+  gap: 2.5rem;
 }
+
 
 .navbar-links {
   list-style: none;
