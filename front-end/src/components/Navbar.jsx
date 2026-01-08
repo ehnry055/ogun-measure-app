@@ -21,13 +21,16 @@ function Navbar() {
           />
         </div>
 
-        {/* CENTER: navigation */}
-        <div className="navbar-center">
-          <Link to="/" className="nav-link">Home</Link>
-          <Link to="/ogun" className="nav-link">Measure</Link>
-          <Link to="/viewdata" className="nav-link">Data</Link>
-          <Link to="/itemdevelopers" className="nav-link">About</Link>
-        </div>
+{/* CENTER: thin bar with navigation */}
+<div className="navbar-center">
+  <div className="nav-strip">
+    <Link to="/" className="nav-link">Home</Link>
+    <Link to="/ogun" className="nav-link">Measure</Link>
+    <Link to="/viewdata" className="nav-link">Data</Link>
+    <Link to="/itemdevelopers" className="nav-link">About</Link>
+  </div>
+</div>
+
 
         {/* RIGHT: Auth button (stable, no disappearing) */}
         <div className="navbar-right">
