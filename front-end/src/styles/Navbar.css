@@ -3,6 +3,7 @@
   background-color: #1f3a8a;
 }
 
+/* Main container */
 .navbar-inner {
   max-width: 1400px;
   margin: 0 auto;
@@ -12,7 +13,7 @@
   align-items: center;
 }
 
-/* LEFT */
+/* LEFT: Logo */
 .navbar-left {
   flex: 0 0 auto;
 }
@@ -21,18 +22,17 @@
   height: 42px;
 }
 
-/* CENTER */
+/* CENTER: Navigation links */
 .navbar-center {
   flex: 1;
   display: flex;
   justify-content: center;
 }
 
-/* BUTTONS */
 .navbar-links {
   list-style: none;
   display: flex;
-  gap: 2.5rem;   /* more breathing room */
+  gap: 2.5rem;
   margin: 0;
   padding: 0;
 }
@@ -49,7 +49,7 @@
   text-decoration: underline;
 }
 
-/* RIGHT */
+/* RIGHT: Login / Logout */
 .navbar-right {
   flex: 0 0 auto;
 }
@@ -59,39 +59,4 @@
   color: #ffffff;
   text-decoration: none;
   font-size: 0.95rem;
-}
-.navbar-inner {
-  display: grid !important;
-  grid-template-columns: auto 1fr auto !important;
-  align-items: center !important;
-  width: 100%;
-}
-
-.navbar-left {
-  justify-self: start !important;
-}
-
-.navbar-center {
-  justify-self: center !important;
-  display: flex;
-  gap: 2.5rem;
-}
-
-.navbar-right {
-  justify-self: end !important;
-}
-
-.navbar-logo {
-  height: 40px;
-}
-
-.nav-link {
-  font-family: "Cinzel", "Trajan Pro", serif;
-  color: white;
-  text-decoration: none;
-  font-size: 0.95rem;
-}
-
-.nav-link:hover {
-  text-decoration: underline;
 }
