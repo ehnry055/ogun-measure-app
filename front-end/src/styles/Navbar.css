@@ -7,7 +7,7 @@
    TOP BAR
    ========================= */
 .navbar-top {
-  background-color: #1f3a8a;
+  background-color: #aed6fc;
   width: 100%;
 }
 
@@ -29,7 +29,7 @@
    BOTTOM THIN BAR
    ========================= */
 .navbar-bottom {
-  background-color: #16306f; /* slightly darker/lighter than top bar */
+  background-color: #1f3a8a; 
   width: 100%;
 }
 
