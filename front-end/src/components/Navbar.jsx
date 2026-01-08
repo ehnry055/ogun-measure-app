@@ -1,6 +1,6 @@
 import "../styles/Navbar.css";
 import columbiaLogo from "../assets/columbia-logo.svg";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 
 import LoginButton from "./login";
@@ -34,13 +34,26 @@ function Navbar() {
         </div>
       </div>
 
-      {/* BOTTOM THIN BAR */}
+      {/* BOTTOM NAV BAR */}
       <div className="navbar-bottom">
         <div className="navbar-bottom-inner">
-          <Link to="/" className="nav-link">Home</Link>
-          <Link to="/ogun" className="nav-link">Measure</Link>
-          <Link to="/viewdata" className="nav-link">Data</Link>
-          <Link to="/itemdevelopers" className="nav-link">About</Link>
+
+          <NavLink to="/" end className="nav-link">
+            Home
+          </NavLink>
+
+          <NavLink to="/ogun" className="nav-link">
+            Measure
+          </NavLink>
+
+          <NavLink to="/viewdata" className="nav-link">
+            Data
+          </NavLink>
+
+          <NavLink to="/itemdevelopers" className="nav-link">
+            About
+          </NavLink>
+
         </div>
       </div>
 
