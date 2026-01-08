@@ -8,49 +8,90 @@
   margin: 0 auto;
   padding: 0.75rem 2rem;
 
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
   align-items: center;
 }
 
 /* LEFT */
 .navbar-left {
-  justify-self: start;
+  flex: 0 0 auto;
+}
+
+.navbar-logo {
+  height: 42px;
+}
+
+/* CENTER */
+.navbar-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+/* BUTTONS */
+.navbar-links {
+  list-style: none;
+  display: flex;
+  gap: 2.5rem;   /* more breathing room */
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-links a {
+  font-family: "Cinzel", serif;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.navbar-links a:hover {
+  text-decoration: underline;
+}
+
+/* RIGHT */
+.navbar-right {
+  flex: 0 0 auto;
+}
+
+.login-button {
+  font-family: "Cinzel", serif;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+.navbar-inner {
+  display: grid !important;
+  grid-template-columns: auto 1fr auto !important;
+  align-items: center !important;
+  width: 100%;
+}
+
+.navbar-left {
+  justify-self: start !important;
+}
+
+.navbar-center {
+  justify-self: center !important;
+  display: flex;
+  gap: 2.5rem;
+}
+
+.navbar-right {
+  justify-self: end !important;
 }
 
 .navbar-logo {
   height: 40px;
 }
 
-/* CENTER */
-.navbar-center {
-  justify-self: center;
-  display: flex;
-  gap: 2.5rem;
-}
-
-/* NAV LINKS */
 .nav-link {
   font-family: "Cinzel", "Trajan Pro", serif;
-  color: #ffffff;
+  color: white;
   text-decoration: none;
   font-size: 0.95rem;
-  font-weight: 500;
-  white-space: nowrap;
 }
 
 .nav-link:hover {
   text-decoration: underline;
-}
-
-/* RIGHT */
-.navbar-right {
-  justify-self: end;
-}
-
-.login-button {
-  font-family: "Cinzel", "Trajan Pro", serif;
-  color: #ffffff;
-  text-decoration: none;
-  font-size: 0.95rem;
 }
