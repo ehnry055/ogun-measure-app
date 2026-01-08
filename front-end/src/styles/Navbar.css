@@ -1,16 +1,8 @@
-/* Override Bootstrap navbar behavior */
 .navbar {
   width: 100%;
   background-color: #1f3a8a;
-  padding: 0;
 }
 
-/* HARD RESET Bootstrap interference */
-.navbar * {
-  box-sizing: border-box;
-}
-
-/* Layout */
 .navbar-inner {
   max-width: 1400px;
   margin: 0 auto;
@@ -21,24 +13,23 @@
   align-items: center;
 }
 
-/* LEFT: Columbia logo */
+/* LEFT */
 .navbar-left {
   justify-self: start;
 }
 
 .navbar-logo {
   height: 40px;
-  display: block;
 }
 
-/* CENTER: navigation links */
+/* CENTER */
 .navbar-center {
   justify-self: center;
   display: flex;
   gap: 2.5rem;
 }
 
-/* Links */
+/* NAV LINKS */
 .nav-link {
   font-family: "Cinzel", "Trajan Pro", serif;
   color: #ffffff;
@@ -52,14 +43,14 @@
   text-decoration: underline;
 }
 
-/* RIGHT: Login / Logout */
+/* RIGHT */
 .navbar-right {
   justify-self: end;
 }
 
-.login-button,
-.logout-button {
+.login-button {
   font-family: "Cinzel", "Trajan Pro", serif;
   color: #ffffff;
+  text-decoration: none;
   font-size: 0.95rem;
 }
