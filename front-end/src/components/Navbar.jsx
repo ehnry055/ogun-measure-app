@@ -1,13 +1,9 @@
 import "../styles/Navbar.css";
 import columbiaLogo from "../assets/columbia-logo.svg";
 import { Link } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
 import LoginButton from "./login";
-import LogoutButton from "./logout";
 
 function Navbar() {
-  const { isAuthenticated, isLoading } = useAuth0();
-
   return (
     <header className="navbar">
       <div className="navbar-inner">
@@ -21,7 +17,7 @@ function Navbar() {
           />
         </div>
 
-        {/* CENTER: navigation */}
+        {/* CENTER: original navigation behavior */}
         <div className="navbar-center">
           <Link to="/" className="nav-link">Home</Link>
           <Link to="/ogun" className="nav-link">Measure</Link>
@@ -29,10 +25,9 @@ function Navbar() {
           <Link to="/itemdevelopers" className="nav-link">About</Link>
         </div>
 
-        {/* RIGHT: Auth buttons */}
+        {/* RIGHT: original Auth0 login */}
         <div className="navbar-right">
-          {!isLoading && !isAuthenticated && <LoginButton />}
-          {!isLoading && isAuthenticated && <LogoutButton />}
+          <LoginButton />
         </div>
 
       </div>
