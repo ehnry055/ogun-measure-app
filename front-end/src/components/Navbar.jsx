@@ -1,13 +1,17 @@
 import "../styles/Navbar.css";
 import columbiaLogo from "../assets/columbia-logo.svg";
 import { Link } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
+
 import LoginButton from "./login";
+import LogoutButton from "./logout";
 
 function Navbar() {
+  const { isAuthenticated, isLoading } = useAuth0();
+
   return (
     <header className="navbar">
       <div className="navbar-inner">
-
         {/* LEFT: Columbia logo */}
         <div className="navbar-left">
           <img
@@ -17,7 +21,7 @@ function Navbar() {
           />
         </div>
 
-        {/* CENTER: original navigation behavior */}
+        {/* CENTER: navigation */}
         <div className="navbar-center">
           <Link to="/" className="nav-link">Home</Link>
           <Link to="/ogun" className="nav-link">Measure</Link>
@@ -25,11 +29,14 @@ function Navbar() {
           <Link to="/itemdevelopers" className="nav-link">About</Link>
         </div>
 
-        {/* RIGHT: original Auth0 login */}
+        {/* RIGHT: Auth button (stable, no disappearing) */}
         <div className="navbar-right">
-          <LoginButton />
-        </div>
+          {!isLoading && !isAuthenticated && <LoginButton />}
+          {!isLoading && isAuthenticated && <LogoutButton />}
 
+          {/* Optional: keeps space stable while loading */}
+          {isLoading && <span style={{ visibility: "hidden" }}>Loading</span>}
+        </div>
       </div>
     </header>
   );
