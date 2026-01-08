@@ -10,37 +10,40 @@ function Navbar() {
   const { isAuthenticated, isLoading } = useAuth0();
 
   return (
-    <header className="navbar">
-      <div className="navbar-inner">
-        {/* LEFT: Columbia logo */}
-        <div className="navbar-left">
-          <img
-            src={columbiaLogo}
-            alt="Columbia University"
-            className="navbar-logo"
-          />
-        </div>
+    <header className="navbar-wrapper">
 
-{/* CENTER: thin bar with navigation */}
-<div className="navbar-center">
-  <div className="nav-strip">
-    <Link to="/" className="nav-link">Home</Link>
-    <Link to="/ogun" className="nav-link">Measure</Link>
-    <Link to="/viewdata" className="nav-link">Data</Link>
-    <Link to="/itemdevelopers" className="nav-link">About</Link>
-  </div>
-</div>
+      {/* TOP BAR */}
+      <div className="navbar-top">
+        <div className="navbar-top-inner">
 
+          {/* LEFT: Columbia logo */}
+          <div className="navbar-left">
+            <img
+              src={columbiaLogo}
+              alt="Columbia University"
+              className="navbar-logo"
+            />
+          </div>
 
-        {/* RIGHT: Auth button (stable, no disappearing) */}
-        <div className="navbar-right">
-          {!isLoading && !isAuthenticated && <LoginButton />}
-          {!isLoading && isAuthenticated && <LogoutButton />}
+          {/* RIGHT: Login / Logout */}
+          <div className="navbar-right">
+            {!isLoading && !isAuthenticated && <LoginButton />}
+            {!isLoading && isAuthenticated && <LogoutButton />}
+          </div>
 
-          {/* Optional: keeps space stable while loading */}
-          {isLoading && <span style={{ visibility: "hidden" }}>Loading</span>}
         </div>
       </div>
+
+      {/* BOTTOM THIN BAR */}
+      <div className="navbar-bottom">
+        <div className="navbar-bottom-inner">
+          <Link to="/" className="nav-link">Home</Link>
+          <Link to="/ogun" className="nav-link">Measure</Link>
+          <Link to="/viewdata" className="nav-link">Data</Link>
+          <Link to="/itemdevelopers" className="nav-link">About</Link>
+        </div>
+      </div>
+
     </header>
   );
 }

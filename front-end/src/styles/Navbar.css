@@ -1,75 +1,63 @@
-.navbar {
+/* Wrapper */
+.navbar-wrapper {
   width: 100%;
-  background-color: #1f3a8a;
 }
 
-/* Main container */
-.navbar-inner {
+/* =========================
+   TOP BAR
+   ========================= */
+.navbar-top {
+  background-color: #1f3a8a;
+  width: 100%;
+}
+
+.navbar-top-inner {
   width: 100%;
   padding: 0.75rem 2rem;
 
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
-/* LEFT: Logo */
-.navbar-left {
-  flex: 0 0 auto;
-}
-
+/* Logo */
 .navbar-logo {
   height: 42px;
 }
 
-/* CENTER: Links */
-.navbar-center {
-  flex: 1;
+/* =========================
+   BOTTOM THIN BAR
+   ========================= */
+.navbar-bottom {
+  background-color: #16306f; /* slightly darker/lighter than top bar */
+  width: 100%;
+}
+
+.navbar-bottom-inner {
+  padding: 0.35rem 2rem;
+
   display: flex;
   justify-content: center;
   gap: 2.5rem;
 }
 
-/* (Unused currently, but keeping since it was in your file) */
-.navbar-links {
-  list-style: none;
-  display: flex;
-  gap: 2.5rem;
-  margin: 0;
-  padding: 0;
-}
-
-.navbar-links a {
-  font-family: "Cinzel", serif;
+/* Nav links */
+.nav-link {
+  font-family: "Cinzel", "Trajan Pro", serif;
   color: #ffffff;
   text-decoration: none;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 500;
 }
 
-.navbar-links a:hover {
+.nav-link:hover {
   text-decoration: underline;
 }
 
-/* RIGHT: Login / Logout */
-.navbar-right {
-  flex: 0 0 auto;
-}
-
-.login-button {
+/* Login / Logout buttons */
+.login-button,
+.logout-button {
   font-family: "Cinzel", serif;
   color: #ffffff;
-  text-decoration: none;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
-
-/* Thin bar behind center nav */
-.nav-strip {
-  display: flex;
-  gap: 2.5rem;
-  padding: 0.35rem 1.25rem;
-  border-radius: 999px;
-
-  background-color: rgba(255, 255, 255, 0.12); /* subtle lighter strip */
-  backdrop-filter: blur(2px);
-}
-
