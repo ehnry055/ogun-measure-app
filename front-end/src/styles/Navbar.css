@@ -62,18 +62,11 @@
   color: white !important;
 }
 
-/* Optional: slight blue tint when clicking */
-.nav-link:active {
-  color: #dbeafe !important; /* light blue instead of black */
-}
-
 /* Active tab (current page) */
 .nav-link.active {
-  color: #4fa1ff;   /* light blue */
+  color: #aed6fc;   /* light blue */
   font-weight: 600;
 }
-
-
 
 /* Login / Logout buttons */
 .login-button,
