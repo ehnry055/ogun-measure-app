@@ -11,11 +11,9 @@ function Navbar() {
 
   return (
     <header className="navbar-wrapper">
-
       {/* TOP BAR */}
       <div className="navbar-top">
         <div className="navbar-top-inner">
-
           {/* LEFT: Columbia logo */}
           <div className="navbar-left">
             <img
@@ -30,14 +28,12 @@ function Navbar() {
             {!isLoading && !isAuthenticated && <LoginButton />}
             {!isLoading && isAuthenticated && <LogoutButton />}
           </div>
-
         </div>
       </div>
 
       {/* BOTTOM NAV BAR */}
       <div className="navbar-bottom">
         <div className="navbar-bottom-inner">
-
           <NavLink to="/" end className="nav-link">
             Home
           </NavLink>
@@ -50,13 +46,15 @@ function Navbar() {
             Data
           </NavLink>
 
+          <NavLink to="/map" className="nav-link">
+            Map
+          </NavLink>
+
           <NavLink to="/itemdevelopers" className="nav-link">
             About
           </NavLink>
-
         </div>
       </div>
-
     </header>
   );
 }
