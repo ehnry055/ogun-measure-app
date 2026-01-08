@@ -54,8 +54,17 @@
   text-decoration: bold;
 }
 
+/* Prevent Bootstrap from changing link colors after click */
+.nav-link,
+.nav-link:visited,
+.nav-link:active,
+.nav-link:focus {
+  color: white !important;
+}
+
+/* Optional: slight blue tint when clicking */
 .nav-link:active {
-  color: #6ba5ef; 
+  color: #dbeafe !important; /* light blue instead of black */
 }
 
 
