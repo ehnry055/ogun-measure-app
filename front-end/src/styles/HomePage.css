@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Saira:wght@300;400;600;700&display=swap');
 
 /* ===================== */
-/* HERO */
+/* HERO IMAGE SECTION */
 /* ===================== */
 
 .home-hero {
   width: 100%;
-  height: 380px;
+  height: 360px;
   position: relative;
   overflow: hidden;
 }
@@ -18,7 +18,7 @@
   filter: brightness(0.85);
 }
 
-/* Glass overlay */
+/* Optional overlay text */
 .home-hero-overlay {
   position: absolute;
   inset: 0;
@@ -28,16 +28,15 @@
   align-items: center;
   color: white;
   text-align: center;
-  padding: 1.5rem;
-}
-
-.glass {
-  background: rgba(255,255,255,0.15);
-  backdrop-filter: blur(8px);
+  padding: 1rem;
+  background: linear-gradient(
+    rgba(0,0,0,0.25),
+    rgba(0,0,0,0.35)
+  );
 }
 
 .home-hero-title {
-  font-size: 2.6rem;
+  font-size: 2.4rem;
   font-weight: 600;
   font-family: "Saira", sans-serif;
   margin-bottom: 0.5rem;
@@ -45,49 +44,43 @@
 
 .home-hero-subtitle {
   font-size: 1.1rem;
-  max-width: 720px;
+  max-width: 700px;
 }
 
 /* ===================== */
-/* FADE-IN */
+/* MAIN HOME CONTENT */
 /* ===================== */
 
-.fade-in {
-  opacity: 0;
-  transform: translateY(25px);
-  transition: all 0.7s ease;
+.home-page {
+  background-color: white;
 }
 
-.fade-in-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* ===================== */
-/* STORY BOX */
-/* ===================== */
-
-.story-section {
-  background-color: #e8f2ff;
-  padding: 60px 25px;
+.home-container {
+  padding: 40px 20px;
+  width: 100%;
+  max-width: 1100px;
   margin: 0 auto;
-  text-align: center;
+  box-sizing: border-box;
+  background-color: white;
+  color: #333;
 }
 
 .about-title {
-  color: #1f3a8a;
-  font-size: 2.4rem;
-  margin-bottom: 20px;
+  color: #347ecc;
+  font-size: 2.5rem;
+  margin-bottom: 25px;
+  text-align: center;
   font-family: "Saira", sans-serif;
 }
 
 .about-content {
   font-size: 1.05rem;
   line-height: 1.7;
-  max-width: 900px;
-  margin: 0 auto 35px auto;
-  color: #1f2937;
+  color: #333;
+  margin-bottom: 40px;
+  margin-top: 20px;
   font-family: "Saira", sans-serif;
+  text-align: center;
 }
 
 /* ===================== */
@@ -98,17 +91,20 @@
   display: flex;
   justify-content: center;
   gap: 30px;
+  margin-top: 40px;
   flex-wrap: wrap;
 }
 
+/* BUTTON STYLE */
 .homebtn {
-  border-radius: 0;
+  border-radius: 0; /* squared edges for clean academic look */
   background-color: transparent;
-  border: 1.75px solid #1f3a8a;
-  color: #1f3a8a;
-  font-size: 1.1rem;
-  padding: 16px 28px;
-  min-width: 240px;
+  border: 1.75px solid #347ecc;
+  color: #347ecc;
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 18px 28px;
+  min-width: 260px;
   transition: all 0.25s ease;
   cursor: pointer;
   text-decoration: none;
@@ -138,58 +134,24 @@
 }
 
 .homebtn:hover {
-  background-color: #1f3a8a;
+  background-color: #347ecc;
   color: white;
-}
-
-/* ===================== */
-/* FEATURE CARDS */
-/* ===================== */
-
-.feature-section {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
-  padding: 70px 40px;
-  max-width: 1200px;
-  margin: auto;
-}
-
-.feature-card {
-  background: white;
-  border: 1px solid #dbeafe;
-  padding: 30px;
-  text-align: center;
-  text-decoration: none;
-  color: #1f2937;
-  transition: all 0.25s ease;
-}
-
-.feature-card h3 {
-  color: #1f3a8a;
-  margin-bottom: 10px;
-  font-size: 1.3rem;
-}
-
-.feature-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
 }
 
 /* ===================== */
 /* RESPONSIVE */
 /* ===================== */
 
-@media (max-width: 900px) {
-  .feature-section {
-    grid-template-columns: 1fr;
-  }
-
+@media (max-width: 768px) {
   .home-hero {
     height: 260px;
   }
 
   .home-hero-title {
-    font-size: 1.9rem;
+    font-size: 1.8rem;
+  }
+
+  .home-actions {
+    gap: 20px;
   }
 }
