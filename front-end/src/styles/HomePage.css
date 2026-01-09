@@ -1,26 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Saira:wght@300;400;600;700&display=swap');
 
 /* ========================= */
-/* STORY PASTEL BOX */
+/* PAGE BASE */
 /* ========================= */
 
-.story-box {
-  background-color: #e8f2ff;  /* light pastel blue */
-  padding: 50px 35px;
-  border-radius: 8px;
-  max-width: 900px;
-  margin: 60px auto;          /* centers box on page */
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+.home-page {
+  background-color: white;
 }
 
-/* ===================== */
-/* HERO IMAGE SECTION */
-/* ===================== */
+/* ========================= */
+/* HERO IMAGE */
+/* ========================= */
 
 .home-hero {
   width: 100%;
-  height: 360px;
-  position: relative;
+  height: 320px;
   overflow: hidden;
 }
 
@@ -28,60 +22,44 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: brightness(0.85);
+  display: block;
 }
 
-/* Optional overlay text */
-.home-hero-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  text-align: center;
-  padding: 1rem;
-  background: linear-gradient(
-    rgba(0,0,0,0.25),
-    rgba(0,0,0,0.35)
-  );
-}
-
-.home-hero-title {
-  font-size: 2.4rem;
-  font-weight: 600;
-  font-family: "Saira", sans-serif;
-  margin-bottom: 0.5rem;
-}
-
-.home-hero-subtitle {
-  font-size: 1.1rem;
-  max-width: 700px;
-}
-
-/* ===================== */
-/* MAIN HOME CONTENT */
-/* ===================== */
-
-.home-page {
-  background-color: white;
-}
+/* ========================= */
+/* MAIN CONTAINER */
+/* ========================= */
 
 .home-container {
-  padding: 40px 20px;
+  padding: 20px;
   width: 100%;
-  max-width: 1100px;
+  max-width: 85vw;
   margin: 0 auto;
   box-sizing: border-box;
   background-color: white;
   color: #333;
 }
 
+/* ========================= */
+/* STORY PASTEL BOX */
+/* ========================= */
+
+.story-box {
+  background-color: #e8f2ff; /* light pastel blue */
+  padding: 50px 35px;
+  border-radius: 8px;
+  max-width: 900px;
+  margin: 50px auto;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+/* ========================= */
+/* TEXT */
+/* ========================= */
+
 .about-title {
-  color: #347ecc;
+  color: #1f3a8a;
   font-size: 2.5rem;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
   text-align: center;
   font-family: "Saira", sans-serif;
 }
@@ -89,35 +67,35 @@
 .about-content {
   font-size: 1.05rem;
   line-height: 1.7;
-  color: #333;
-  margin-bottom: 40px;
+  color: #1f2937;
+  margin-bottom: 35px;
   margin-top: 20px;
   font-family: "Saira", sans-serif;
   text-align: center;
 }
 
-/* ===================== */
-/* HOME BUTTONS */
-/* ===================== */
+/* ========================= */
+/* BUTTONS */
+/* ========================= */
 
 .home-actions {
   display: flex;
-  justify-content: center;
-  gap: 30px;
-  margin-top: 40px;
   flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
 }
 
-/* BUTTON STYLE */
+/* HOME BUTTON STYLE */
 .homebtn {
-  border-radius: 0; /* squared edges for clean academic look */
+  border-radius: 0;
   background-color: transparent;
-  border: 1.75px solid #347ecc;
-  color: #347ecc;
+  border: 1.75px solid #1f3a8a;
+  color: #1f3a8a;
   text-align: center;
-  font-size: 1.2rem;
-  padding: 18px 28px;
-  min-width: 260px;
+  font-size: 1.1rem;
+  padding: 16px 28px;
+  min-width: 240px;
   transition: all 0.25s ease;
   cursor: pointer;
   text-decoration: none;
@@ -125,6 +103,8 @@
 }
 
 .homebtn span {
+  cursor: pointer;
+  display: inline-block;
   position: relative;
   transition: 0.25s;
 }
@@ -147,24 +127,145 @@
 }
 
 .homebtn:hover {
+  background-color: #1f3a8a;
+  color: white;
+}
+
+/* ========================= */
+/* TABLE STYLING */
+/* ========================= */
+
+table {
+  width: 90%;
+  margin: auto;
+  border-collapse: collapse;
+  border: 2px solid #ccc;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 15px;
+  text-align: center;
+  color: #333;
+}
+
+th {
+  background-color: #347ecc;
+  color: white;
+  font-size: 18px;
+}
+
+.period {
+  color: #d97706;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* ========================= */
+/* EDIT / SAVE / CANCEL */
+/* ========================= */
+
+.edit-icon-btn {
+  background-color: #10b98126;
+  border: 2px solid #10b981;
+  color: #047857;
+  width: 50px;
+  height: 50px;
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  margin-bottom: 10px;
+  transition: background-color 0.3s, color 0.1s;
+}
+
+.edit-icon-btn:hover {
+  background-color: #10b981;
+  color: white;
+}
+
+.save {
+  background-color: #10b98126;
+  border: 2px solid #10b981;
+  color: #047857;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s, color 0.1s;
+}
+
+.save:hover {
+  background-color: #10b981;
+  color: white;
+}
+
+.cancel {
+  background-color: #ef444426;
+  border: 2px solid #ef4444;
+  color: #b91c1c;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s, color 0.1s;
+}
+
+.cancel:hover {
+  background-color: #ef4444;
+  color: white;
+}
+
+/* ========================= */
+/* FORMS */
+/* ========================= */
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20vw;
+  margin-right: 20vw;
+}
+
+/* SEND BUTTON */
+
+.send {
+  background-color: transparent;
+  border: 1.75px solid #347ecc;
+  color: #347ecc;
+  padding: 20px;
+  border-radius: 0.5rem;
+  font-size: 2rem;
+  font-family: "Saira", sans-serif;
+  transition: background-color 0.3s, color 0.1s;
+}
+
+.send:hover {
   background-color: #347ecc;
   color: white;
 }
 
-/* ===================== */
+/* ========================= */
+/* MISC */
+/* ========================= */
+
+.table-header-edit{
+  width: 15%;
+}
+
+.highcharts-credits {
+  display: none;
+}
+
+/* ========================= */
 /* RESPONSIVE */
-/* ===================== */
+/* ========================= */
 
 @media (max-width: 768px) {
   .home-hero {
-    height: 260px;
+    height: 220px;
   }
 
-  .home-hero-title {
-    font-size: 1.8rem;
+  .about-title {
+    font-size: 2rem;
   }
 
-  .home-actions {
-    gap: 20px;
+  .story-box {
+    padding: 35px 20px;
   }
 }
