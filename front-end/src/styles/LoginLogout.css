@@ -1,82 +1,46 @@
-.btn-primary {
-    padding: 0.75rem 1.5rem; /* Adjust button padding */
-    border-radius: 0.5rem;   /* Adjust button border radius */
-    /* background-color: #8C68CD26; */
-    background-color: #051225;
-    border-color: #8C68CD;
-    color: #8C68CD;
-    font-family: "Saira", sans-serif;
-  }
+/* =========================
+   AUTH BUTTONS (LOGIN / LOGOUT)
+   ========================= */
 
-.btn-primary:hover {
-    background-color: #8C68CD;
-    border-color: white;
-    color: white;
+/* Base button (override Bootstrap) */
+.btn {
+  padding: 0.5rem 1.25rem !important;
+  border-radius: 0 !important;              /* square corners */
+  background-color: #1f3a8a !important;     /* dark blue (mini nav bar) */
+  border: 1px solid white !important;       /* white border */
+  color: white !important;
+
+  font-family: "Cinzel", serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-.btn:focus,
+/* Hover */
+.btn:hover {
+  background-color: #b7dcff !important;  /* pastel blue (top bar) */
+  color: #1f3a8a !important;
+}
+
+/* Click / Active */
 .btn:active {
-  outline: 0 !important; /* Removes the default focus outline */
-  outline-color: transparent;
-  outline-style: none;
-  box-shadow: none !important; /* Removes the box-shadow */
-  border: none; /* Ensure there's no border appearing during click */
+  background-color: #b7dcff !important;
+  color: #1f3a8a !important;
 }
 
+/* Focus (keyboard users) */
+.btn:focus,
+.btn:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove Bootstrap differences */
+.btn-primary,
 .btn-secondary {
-    padding: 0.75rem 1.5rem; /* Adjust button padding */
-    border-radius: 0.5rem;   /* Adjust button border radius */
-    background-color: #222222;
-    border-color: white;
-    color: #8C68CD;
-  }
-
-.btn-secondary:hover {
-    background-color: transparent;
-    border-color: #8C68CD;
-    color: #8C68CD;
+  background-color: #1f3a8a !important;
+  border: 1px solid white !important;
+  color: white !important;
 }
-
-#dropdown-profile {
-    background-color: transparent;
-    border-color: white
-}
-
-#dropdown-profile:focus,
-#dropdown-profile:active {
-    border-color: white;
-    box-shadow: none; /* Remove any box shadow */
-}
-
-.custom-dropdown-toggle {
-    background-color: #8C68CD;  /* Set background color */
-    color: #fff;                /* Set text color to white */
-    /* border-color: #AC5180; */
-    padding: 8px 16px;          /* Adjust padding */
-    border-radius: 5px;         /* Rounded corners */
-    border: 1px solid #8C68CD;  /* Ensure the border is solid */
-  }
-  
- /* Add focus and active outline to ensure the border is maintained */
-.custom-dropdown-toggle:focus,
-.custom-dropdown-toggle:active {
-    border-color: #8C68CD; /* Add a colored outline when focused or active */
-    box-shadow: none;      /* Remove any box shadow */
-}
-  .custom-dropdown-menu {
-    background-color: #3a3a3a !important;  /* Set background color of the dropdown menu */
-    border-radius: 5px !important;         /* Rounded corners */
-    min-width: 200px !important;           /* Optional: Set minimum width for the dropdown */
-
-  }
-  
-  .custom-dropdown-item {
-    color: white !important;                /* Set text color of the items */
-
-  }
-  
-  .custom-dropdown-item:hover {
-    background-color: #3a3a3a !important;  /* Change background color on hover */
-    color: #8C68CD !important;             /* Change text color on hover */
-  }
-
