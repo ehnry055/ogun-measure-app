@@ -84,7 +84,8 @@
   font-size: 2.5rem;
   margin-bottom: 20px;
   text-align: center;
-  font-family: "Saira", sans-serif;
+  font-family: "Trajan Pro", "Cinzel", serif;
+  letter-spacing: 0.06em;
 }
 
 .about-content {
