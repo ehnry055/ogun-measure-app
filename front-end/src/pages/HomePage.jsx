@@ -7,18 +7,16 @@ const HomePage = () => {
   return (
     <div className="home-page">
 
-      {/* INTRO TEXT ABOVE IMAGE */}
-      <div className="home-intro">
-        <h1 className="home-intro-title">Ogun Measure Database</h1>
-        <p className="home-intro-subtitle">
-          A comprehensive framework for measuring anti-Black structural racism
-          across the life course in the United States.
-        </p>
-      </div>
-
-      {/* IMAGE UNDER INTRO */}
+      {/* IMAGE WITH OVERLAY TEXT */}
       <div className="home-hero">
         <img src={heroImage} alt="Columbia University Campus" />
+
+        <div className="hero-overlay">
+          <h1 className="hero-main-title">Ogun Measure</h1>
+          <p className="hero-subtitle">
+            A multifaceted life course measure of anti-Black structural racism
+          </p>
+        </div>
       </div>
 
       {/* STORY BOX */}
