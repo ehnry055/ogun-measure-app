@@ -24,6 +24,29 @@
   object-fit: cover;
   display: block;
 }
+/* ========================= */
+/* INTRO TEXT ABOVE IMAGE */
+/* ========================= */
+
+.home-intro {
+  text-align: center;
+  padding: 50px 20px 30px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.home-intro-title {
+  font-size: 2.6rem;
+  color: #1f3a8a;
+  font-family: "Saira", sans-serif;
+  margin-bottom: 10px;
+}
+
+.home-intro-subtitle {
+  font-size: 1.1rem;
+  color: #374151;
+  line-height: 1.6;
+}
 
 /* ========================= */
 /* MAIN CONTAINER */
