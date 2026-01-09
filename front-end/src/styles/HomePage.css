@@ -1,248 +1,157 @@
-@import url('https://fonts.googleapis.com/css2?family=Saira:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Saira:wght@300;400;600;700&display=swap');
 
-/* HOME BUTTON: Blue Outline -> Solid Blue on Hover */
+/* ===================== */
+/* HERO IMAGE SECTION */
+/* ===================== */
+
+.home-hero {
+  width: 100%;
+  height: 360px;
+  position: relative;
+  overflow: hidden;
+}
+
+.home-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.85);
+}
+
+/* Optional overlay text */
+.home-hero-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  background: linear-gradient(
+    rgba(0,0,0,0.25),
+    rgba(0,0,0,0.35)
+  );
+}
+
+.home-hero-title {
+  font-size: 2.4rem;
+  font-weight: 600;
+  font-family: "Saira", sans-serif;
+  margin-bottom: 0.5rem;
+}
+
+.home-hero-subtitle {
+  font-size: 1.1rem;
+  max-width: 700px;
+}
+
+/* ===================== */
+/* MAIN HOME CONTENT */
+/* ===================== */
+
+.home-page {
+  background-color: white;
+}
+
+.home-container {
+  padding: 40px 20px;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  background-color: white;
+  color: #333;
+}
+
+.about-title {
+  color: #347ecc;
+  font-size: 2.5rem;
+  margin-bottom: 25px;
+  text-align: center;
+  font-family: "Saira", sans-serif;
+}
+
+.about-content {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #333;
+  margin-bottom: 40px;
+  margin-top: 20px;
+  font-family: "Saira", sans-serif;
+  text-align: center;
+}
+
+/* ===================== */
+/* HOME BUTTONS */
+/* ===================== */
+
+.home-actions {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 40px;
+  flex-wrap: wrap;
+}
+
+/* BUTTON STYLE */
 .homebtn {
-  border-radius: 0.5rem;   
-  /* Changed from purple tint to transparent or very light blue */
-  background-color: transparent; 
-  /* Purple Border -> Blue Border */
+  border-radius: 0; /* squared edges for clean academic look */
+  background-color: transparent;
   border: 1.75px solid #347ecc;
-  /* Purple Text -> Blue Text */
   color: #347ecc;
   text-align: center;
-  font-size: 24px;
-  padding: 20px;
-  width: 300px;
-  transition: all 0.5s;
+  font-size: 1.2rem;
+  padding: 18px 28px;
+  min-width: 260px;
+  transition: all 0.25s ease;
   cursor: pointer;
-  margin: 35px ;
-  justify-content: center;
-  transition: background-color 0.3s, color 0.1s; 
+  text-decoration: none;
+  font-family: "Saira", sans-serif;
 }
 
 .homebtn span {
-  cursor: pointer;
-  display: inline-block;
   position: relative;
-  transition: 0.3s;
+  transition: 0.25s;
 }
 
-.homebtn span:after {
-  content: '\00bb';
+.homebtn span::after {
+  content: "»";
   position: absolute;
   opacity: 0;
-  top: 0;
-  right: -20px;
-  transition: 0.5s;
+  right: -18px;
+  transition: 0.25s;
 }
 
 .homebtn:hover span {
-  padding-right: 25px;
+  padding-right: 18px;
 }
 
-.homebtn:hover span:after {
+.homebtn:hover span::after {
   opacity: 1;
   right: 0;
 }
 
 .homebtn:hover {
-  /* Purple -> Blue */
   background-color: #347ecc;
   color: white;
 }
 
+/* ===================== */
+/* RESPONSIVE */
+/* ===================== */
 
- .home-container {
-    padding: 20px;
-    width: 100%; 
-    max-width: 85vw; 
-    margin: 0 auto; 
-    box-sizing: border-box;
-    /* Added white background explicitly */
-    background-color: white;
-    color: #333;
-}
-  
-  .about-title {
-    /* Purple -> Blue */
-    color: #347ecc;
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    text-align: center;
-    font-family: "Saira", sans-serif;
-  } 
- 
-  .about-content {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    /* Light Grey -> Dark Grey */
-    color: #333;
-    margin-bottom: 40px;
-    margin-top: 40px;
-    font-family: "Saira", sans-serif;
-    text-align: center;
+@media (max-width: 768px) {
+  .home-hero {
+    height: 260px;
   }
-  
-  .about-grid {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
+
+  .home-hero-title {
+    font-size: 1.8rem;
   }
-  
-  .reverse {
-    flex-direction: row-reverse;
+
+  .home-actions {
+    gap: 20px;
   }
-  
-  .text-box {
-    width: 50%;
-    padding: 20px;
-    font-size: 1rem;
-    /* Light Grey -> Dark Grey */
-    color: #333;
-  }
-  
-  .placeholder-box {
-    width: 45%;
-    height: 200px;
-    background-color: #d9d9d9;
-    border: 1px solid #ccc;
-  } 
-
-.container {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  width: 120vw;
-}
-
-/* TABLE STYLING FOR WHITE THEME */
-table {
-  width: 90%;
-  margin: auto;
-  border-collapse: collapse;
-  /* White border -> Grey border (visible on white) */
-  border: 2px solid #ccc;
-}
-th, td {
-  /* White border -> Grey border */
-  border: 1px solid #ccc;
-  padding: 15px;
-  text-align: center;
-  color: #333;
-}
-th {
-  /* Black header -> Blue header to match theme */
-  background-color: #347ecc;
-  color: white;
-  font-size: 18px;
-}
-.period {
-  /* Yellow -> Dark Orange/Gold (readable on white) */
-  color: #d97706; 
-  font-weight: bold;
-  font-size: 16px;
-}
-
-/* EDIT ICON BUTTON (Green) */
-.edit-icon-btn {
-  background-color: #10b98126; /* Green tint */
-  border: 2px solid #10b981;  
-  color: #047857; /* Darker green text */
-  width: 50px;
-  height: 50px;
-  border-radius: 0.5rem;   
-  display: flex;
-  justify-content: center;
-  align-items: center;        
-  margin: auto;     
-  margin-bottom: 10px;  
-  transition: background-color 0.3s, color 0.1s; 
-}
-
-.edit-icon-btn:hover {
-  background-color: #10b981;
-  border: 2px solid #10b981;  
-  color: white;
-  width: 50px;
-  height: 50px;
-  border-radius: 0.5rem;   
-  display: flex;
-  justify-content: center;
-  align-items: center;        
-  margin: auto;     
-  margin-bottom: 10px;  
-}
-
-/* SAVE BUTTON (Green) */
-.save {
-  background-color: #10b98126;
-  border: 2px solid #10b981;  
-  color: #047857;
-  border-radius: 0.5rem;   
-  transition: background-color 0.3s, color 0.1s;
-}
-
-.save:hover {
-  background-color: #10b981;
-  border: 2px solid #10b981;  
-  color: white;
-  border-radius: 0.5rem;   
-}
-
-/* CANCEL BUTTON (Red) */
-.cancel {
-  background-color: #ef444426; /* Red tint */
-  border: 2px solid #ef4444;  
-  color: #b91c1c; /* Dark red text */
-  border-radius: 0.5rem;   
-  transition: background-color 0.3s, color 0.1s;
-}
-
-.cancel:hover {
-  background-color: #ef4444;
-  border: 2px solid #ef4444;  
-  color: white;
-  border-radius: 0.5rem;   
-}
-
-.form-container {
-  display: flex;
-  flex-direction: column;
-  margin-left: 20vw;
-  margin-right: 20vw;
-}
-
-/* SEND BUTTON: Matches Home Button Style */
-.send {
-  background-color: transparent;
-  /* Purple -> Blue */
-  border: 1.75px solid #347ecc;
-  color: #347ecc;
-  padding: 20px;
-  border-radius: 0.5rem;
-  font-size: 2rem;
-  font-family: "Saira", sans-serif;
-  transition: background-color 0.3s, color 0.1s;
-}
-
-.send:hover {
-  /* Purple -> Blue */
-  background-color: #347ecc;
-  border: 1.75px solid #347ecc;
-  color: white;
-  padding: 20px;
-  border-radius: 0.5rem;
-  font-size: 2rem;
-  font-family: "Saira", sans-serif;
-}
-
-.table-header-edit{
-  width: 15%;
-}
-
-.highcharts-credits {
-  display: none;
 }
