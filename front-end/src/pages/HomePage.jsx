@@ -1,27 +1,13 @@
-import React from "react";
-import "../styles/HomePage.css";
-import heroImage from "../assets/Columbia-hero.png";
+import React from 'react';
+import '../styles/HomePage.css'; 
 import { Link } from "react-router-dom";
 
 const HomePage = () => {
   return (
-    <div className="home-page">
+    <div className="home-container">
 
-      {/* HERO IMAGE UNDER NAVBAR */}
-      <section className="home-hero">
-        <img src={heroImage} alt="Columbia University Campus" />
-
-        {/* Optional overlay text */}
-        <div className="home-hero-overlay">
-          <h1 className="home-hero-title">Ogun Measure Database</h1>
-          <p className="home-hero-subtitle">
-            Multifaceted Life Course Measure of Anti-Black Structural Racism
-          </p>
-        </div>
-      </section>
-
-      {/* MAIN CONTENT */}
-      <div className="home-container">
+      {/* STORY BOX */}
+      <div className="story-box">
         <h2 className="about-title">The Story</h2>
 
         <div className="about-content">
@@ -35,21 +21,16 @@ const HomePage = () => {
             Taks Calle, the Ogun measure underwent a rigorous data quality assurance process.
             In 2025, the measure was psychometrically validated and provided to the scientific
             community at-large. For more information on this measure, please read the manual
-            and the seminal article.
+            and the seminal article. 
           </p>
 
-          {/* BUTTONS */}
           <div className="home-actions">
-            <Link to="/gateway" className="homebtn">
-              <span>See Measure</span>
-            </Link>
-
-            <Link to="/itemdevelopers" className="homebtn">
-              <span>See Item Developers</span>
-            </Link>
+            <Link to="/gateway" className="homebtn"><span>See Measure</span></Link>
+            <Link to="/itemdevelopers" className="homebtn"><span>See Item Developers</span></Link>
           </div>
         </div>
       </div>
+
     </div>
   );
 };
