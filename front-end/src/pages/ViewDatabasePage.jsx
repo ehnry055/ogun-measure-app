@@ -10,7 +10,7 @@ let webRInstance = null;
 const ViewDatabasePage = () => {
   const { isAuthenticated, user, loginWithRedirect, logout, getAccessTokenSilently } = useAuth0();
   
-  
+  // --- STATE ---
   const [entryLimit, setEntryLimit] = useState(20);
   const [tableName, setTableName] = useState("Default Table");
   const [stateFilter, setStateFilter] = useState('');
@@ -18,17 +18,19 @@ const ViewDatabasePage = () => {
   const [selectedColumns, setSelectedColumns] = useState(new Set());
   const [selectedPreset, setSelectedPreset] = useState(null);
   
-
+  // --- R ANALYSIS STATE ---
   const [rReady, setRReady] = useState(false);
   const [rLoading, setRLoading] = useState(false);
   const [rResult, setRResult] = useState(null);
   const [rError, setRError] = useState(null);
+  
+  // UPDATED: Added 'expanded' property to initial state
   const [shellRows, setShellRows] = useState([
-    { label: 'Mean', code: 'mean(vals)' },
-    { label: 'SD', code: 'sd(vals)' }
+    { label: 'Mean', code: 'mean(vals)', expanded: false },
+    { label: 'SD', code: 'sd(vals)', expanded: false }
   ]);
 
-  
+  // --- INITIALIZATION ---
   useEffect(() => {
     const savedPresets = localStorage.getItem('columnPresets');
     if (savedPresets) setPresets(JSON.parse(savedPresets));
@@ -52,6 +54,7 @@ const ViewDatabasePage = () => {
     return () => { cancelled = true; };
   }, []);
 
+  // --- PRESET & LIMIT HANDLERS ---
   const handleSavePreset = () => {
     const presetName = prompt('Enter preset name:');
     if (!presetName) return;
@@ -82,16 +85,27 @@ const ViewDatabasePage = () => {
     if (!isNaN(value)) setEntryLimit(value >= 1 ? value : 1);
   };
 
-
-  const addShellRow = () => setShellRows([...shellRows, { label: '', code: '' }]);
+  // --- R SHELL ROW MANAGEMENT ---
+  
+  // UPDATED: Initialize new rows with expanded: false
+  const addShellRow = () => setShellRows([...shellRows, { label: '', code: '', expanded: false }]);
+  
   const updateShellRow = (index, field, value) => {
     const newRows = [...shellRows];
     newRows[index][field] = value;
     setShellRows(newRows);
   };
+  
   const removeShellRow = (index) => setShellRows(shellRows.filter((_, i) => i !== index));
 
+  // NEW: Function to toggle expansion of a specific row
+  const toggleShellRowExpand = (index) => {
+    const newRows = [...shellRows];
+    newRows[index].expanded = !newRows[index].expanded;
+    setShellRows(newRows);
+  };
 
+  // --- RESTORED ORIGINAL DOWNLOAD & SELECT LOGIC ---
   const handleDownload = async () => {
     try {
       let token = await getAccessTokenSilently();
@@ -144,7 +158,7 @@ const ViewDatabasePage = () => {
     } catch (error) { alert('Error selecting table'); }
   };
 
-
+  // --- R ANALYSIS LOGIC ---
   const handleRunRAnalysis = async () => {
     if (!rReady || !webRInstance) return;
     if (selectedColumns.size === 0) { alert("Please select columns first."); return; }
@@ -227,10 +241,67 @@ const ViewDatabasePage = () => {
           
           <div className="r-shell-container" style={{maxHeight: '200px', overflowY: 'auto', marginBottom: '10px', width: '100%'}}>
             {shellRows.map((row, index) => (
-              <div key={index} style={{display: 'flex', gap: '5px', marginBottom: '5px'}}>
-                <input placeholder="Label" style={{width: '35%'}} value={row.label} onChange={(e) => updateShellRow(index, 'label', e.target.value)} />
-                <input placeholder="R Code" style={{width: '55%'}} value={row.code} onChange={(e) => updateShellRow(index, 'code', e.target.value)} />
-                <button onClick={() => removeShellRow(index)} style={{background: 'none', border: 'none', color: 'red', cursor: 'pointer'}}>×</button>
+              <div key={index} style={{display: 'flex', gap: '5px', marginBottom: '5px', alignItems: 'flex-start'}}>
+                <input 
+                  placeholder="Label" 
+                  style={{width: '35%'}} 
+                  value={row.label} 
+                  onChange={(e) => updateShellRow(index, 'label', e.target.value)} 
+                />
+                
+                {/* CONDITIONAL RENDER: Input vs Textarea based on 'expanded' state */}
+                {row.expanded ? (
+                  <textarea 
+                    placeholder="R Code (Script)"
+                    style={{
+                      width: '55%', 
+                      fontFamily: 'monospace', 
+                      minHeight: '80px',
+                      padding: '5px',
+                      borderRadius: '4px',
+                      border: '1px solid #ccc',
+                      resize: 'vertical'
+                    }}
+                    value={row.code}
+                    onChange={(e) => updateShellRow(index, 'code', e.target.value)}
+                  />
+                ) : (
+                  <input 
+                    placeholder="R Code" 
+                    style={{width: '55%'}} 
+                    value={row.code} 
+                    onChange={(e) => updateShellRow(index, 'code', e.target.value)} 
+                  />
+                )}
+                
+                {/* Expand Toggle Button */}
+                <button 
+                  onClick={() => toggleShellRowExpand(index)} 
+                  style={{
+                    background: 'none', 
+                    border: 'none', 
+                    color: '#666', 
+                    cursor: 'pointer',
+                    fontSize: '0.8rem',
+                    marginTop: '5px'
+                  }}
+                  title={row.expanded ? "Collapse" : "Expand for long script"}
+                >
+                  {row.expanded ? '▲' : '▼'}
+                </button>
+
+                <button 
+                  onClick={() => removeShellRow(index)} 
+                  style={{
+                    background: 'none', 
+                    border: 'none', 
+                    color: 'red', 
+                    cursor: 'pointer',
+                    marginTop: '5px'
+                  }}
+                >
+                  ×
+                </button>
               </div>
             ))}
           </div>
