@@ -6,8 +6,8 @@ function UnAuthorized() {
     const { isLoading, error, user, loginWithRedirect, logout, isAuthenticated } = useAuth0();
     return (
         <div>
-            {isAuthenticated && <p>You do not have permission to view this page!</p>}
-            {!isAuthenticated && !isLoading && <p>You are not logged in!</p>}
+            {isAuthenticated && <p style={{ color: '#010a13ff'}}>You do not have permission to view this page!</p>}
+            {!isAuthenticated && !isLoading && <p style={{ color: '#010a13ff'}}>You are not logged in!</p>}
         </div>
     );
 };
