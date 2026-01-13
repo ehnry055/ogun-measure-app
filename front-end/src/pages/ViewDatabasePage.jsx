@@ -46,7 +46,7 @@ const ViewDatabasePage = () => {
           
           const roles = res.data; 
           // Check if they have the 'Registered' role (or 'Admin')
-          const hasAccess = roles.some(r => r.name === 'Registered' || r.name === 'Admin');
+          const hasAccess = roles.some(r => r.name === 'registered_role' || r.name === 'admin_role');
           
           if (hasAccess) {
             setIsAuthorized(true);
