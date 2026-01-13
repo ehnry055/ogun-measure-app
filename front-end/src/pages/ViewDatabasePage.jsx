@@ -8,9 +8,13 @@ import InfoPopup from '../components/InfoPopup';
 let webRInstance = null;
 
 const ViewDatabasePage = () => {
-  const { isAuthenticated, user, loginWithRedirect, logout, getAccessTokenSilently } = useAuth0();
+  const { isAuthenticated, user, loginWithRedirect, logout, getAccessTokenSilently, isLoading } = useAuth0();
   
-  // --- STATE ---
+  // --- AUTH STATE (NEW SECURITY GATE) ---
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [authLoading, setAuthLoading] = useState(true);
+
+  // --- APP STATE ---
   const [entryLimit, setEntryLimit] = useState(20);
   const [tableName, setTableName] = useState("Default Table");
   const [stateFilter, setStateFilter] = useState('');
@@ -24,18 +28,50 @@ const ViewDatabasePage = () => {
   const [rResult, setRResult] = useState(null);
   const [rError, setRError] = useState(null);
   
-  // UPDATED: Added 'expanded' property to initial state
   const [shellRows, setShellRows] = useState([
     { label: 'Mean', code: 'mean(vals)', expanded: false },
     { label: 'SD', code: 'sd(vals)', expanded: false }
   ]);
 
-  // --- INITIALIZATION ---
+  // --- EFFECT: CHECK AUTHORIZATION (RESTORED SECURITY) ---
+  useEffect(() => {
+    const checkUserRole = async () => {
+      if (isAuthenticated && user) {
+        try {
+          const token = await getAccessTokenSilently();
+          // Use your existing server endpoint to check roles
+          const res = await axios.get(`/api/admin/get-user-roles?userId=${user.sub}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          
+          const roles = res.data; 
+          // Check if they have the 'Registered' role (or 'Admin')
+          const hasAccess = roles.some(r => r.name === 'Registered' || r.name === 'Admin');
+          
+          if (hasAccess) {
+            setIsAuthorized(true);
+          } else {
+            console.warn("User logged in but missing 'Registered' role.");
+          }
+        } catch (error) {
+          console.error("Error checking authorization:", error);
+        }
+      }
+      setAuthLoading(false);
+    };
+
+    if (!isLoading) {
+      checkUserRole();
+    }
+  }, [isAuthenticated, user, isLoading, getAccessTokenSilently]);
+
+  // --- EFFECT: LOAD PRESETS ---
   useEffect(() => {
     const savedPresets = localStorage.getItem('columnPresets');
     if (savedPresets) setPresets(JSON.parse(savedPresets));
   }, []);
 
+  // --- EFFECT: INIT WEBR ---
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -86,8 +122,6 @@ const ViewDatabasePage = () => {
   };
 
   // --- R SHELL ROW MANAGEMENT ---
-  
-  // UPDATED: Initialize new rows with expanded: false
   const addShellRow = () => setShellRows([...shellRows, { label: '', code: '', expanded: false }]);
   
   const updateShellRow = (index, field, value) => {
@@ -98,14 +132,13 @@ const ViewDatabasePage = () => {
   
   const removeShellRow = (index) => setShellRows(shellRows.filter((_, i) => i !== index));
 
-  // NEW: Function to toggle expansion of a specific row
   const toggleShellRowExpand = (index) => {
     const newRows = [...shellRows];
     newRows[index].expanded = !newRows[index].expanded;
     setShellRows(newRows);
   };
 
-  // --- RESTORED ORIGINAL DOWNLOAD & SELECT LOGIC ---
+  // --- DOWNLOAD & SELECT LOGIC ---
   const handleDownload = async () => {
     try {
       let token = await getAccessTokenSilently();
@@ -187,6 +220,36 @@ const ViewDatabasePage = () => {
     } catch (e) { setRError("Analysis failed."); } finally { setRLoading(false); }
   };
 
+  // --- RENDERING: SECURITY GATES ---
+  
+  if (isLoading || authLoading) {
+    return <div style={{ color: '#333', textAlign: 'center', marginTop: '50px' }}>Loading Database...</div>;
+  }
+
+  // Gate 1: Not Logged In
+  if (!isAuthenticated) {
+    return (
+      <div style={{ color: '#333', textAlign: 'center', marginTop: '50px' }}>
+        <h2>Access Denied</h2>
+        <p>Please log in to view the database.</p>
+        <button onClick={() => loginWithRedirect()} style={{ padding: '10px 20px', cursor: 'pointer', backgroundColor: '#347ecc', color: 'white', border: 'none', borderRadius: '5px' }}>Log In</button>
+      </div>
+    );
+  }
+
+  // Gate 2: Logged In but Unauthorized (No 'Registered' Role)
+  if (!isAuthorized) {
+    return (
+      <div style={{ color: '#333', textAlign: 'center', marginTop: '50px' }}>
+        <h2 style={{ color: '#b91c1c' }}>Unauthorized Access</h2>
+        <p>Your account does not have permission to view this database.</p>
+        <p>Please contact an administrator to request access.</p>
+        <button onClick={() => logout()} style={{ marginTop: '20px', padding: '10px 20px', cursor: 'pointer', backgroundColor: '#333', color: 'white', border: 'none', borderRadius: '5px' }}>Log Out</button>
+      </div>
+    );
+  }
+
+  // --- MAIN CONTENT (Authorized) ---
   return (
     <div className="page-layout-container">
       <div className="left-section">
@@ -249,7 +312,7 @@ const ViewDatabasePage = () => {
                   onChange={(e) => updateShellRow(index, 'label', e.target.value)} 
                 />
                 
-                {/* CONDITIONAL RENDER: Input vs Textarea based on 'expanded' state */}
+                {/* Expandable R Code Area */}
                 {row.expanded ? (
                   <textarea 
                     placeholder="R Code (Script)"
@@ -274,7 +337,6 @@ const ViewDatabasePage = () => {
                   />
                 )}
                 
-                {/* Expand Toggle Button */}
                 <button 
                   onClick={() => toggleShellRowExpand(index)} 
                   style={{
