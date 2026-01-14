@@ -19,3 +19,12 @@
   flex-wrap: wrap;         
   margin: 0 auto 12px;
 }
+
+.map-subtitle {
+  max-width: 900px;
+  margin: 6px auto 16px;
+  text-align: center;
+  color: #aed6fc;
+  font-size: 14px;
+  line-height: 1.4;
+}
