@@ -1,11 +1,8 @@
-/* Wrapper */
 .navbar-wrapper {
   width: 100%;
 }
 
-/* =========================
-   TOP BAR
-   ========================= */
+/* TOP BAR */
 .navbar-top {
   background-color: #aed6fc;
   width: 100%;
@@ -20,14 +17,11 @@
   justify-content: space-between;
 }
 
-/* Logo */
 .navbar-logo {
   height: 42px;
 }
 
-/* =========================
-   BOTTOM THIN BAR
-   ========================= */
+/* BOTTOM BAR */
 .navbar-bottom {
   background-color: #1f3a8a; 
   width: 100%;
@@ -41,7 +35,6 @@
   gap: 2.5rem;
 }
 
-/* Nav links */
 .nav-link {
   font-family: "Cinzel", "Trajan Pro", serif;
   color: #ffffff;
@@ -54,7 +47,6 @@
   text-decoration: bold;
 }
 
-/* Prevent Bootstrap from changing link colors after click */
 .nav-link,
 .nav-link:visited,
 .nav-link:active,
@@ -62,17 +54,14 @@
   color: white !important;
 }
 
-/* Active tab (current page) */
 .nav-link.active {
-  color: #aed6fc;   /* light blue */
+  color: #aed6fc;   
   font-weight: 600;
 }
 
-/* Login / Logout buttons */
 .login-button,
 .logout-button {
   font-family: "Cinzel", serif;
   color: #ffffff;
   font-size: 0.9rem;
 }
-

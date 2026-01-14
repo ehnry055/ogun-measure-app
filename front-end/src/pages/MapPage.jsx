@@ -137,7 +137,7 @@ const MapPage = () => {
 
       {/* SUBTITLE / DESCRIPTION (VISIBLE WITHOUT CLICKING) */}
       <p className="map-subtitle">
-        <strong>Total Structural Racism</strong> represents the overall (composite)
+        <strong>Total Structural Racism</strong> represents the composite
         level of structural racism in each county based on the Ogun Measure
         indicators. Higher values indicate greater structural racism.
       </p>
