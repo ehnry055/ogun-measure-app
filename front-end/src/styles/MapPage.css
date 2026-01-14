@@ -8,7 +8,14 @@
 }
 
 .map-title {
-    font-size: 30px;
-    text-align: left;
-    font-family: "Saira", sans-serif;
+  font-size: 30px;
+  font-family: "Trajan Pro", "Cinzel", serif;
+  color: #1F3A8A;          
+  text-align: center;      
+  display: flex;           
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;         
+  margin: 0 auto 12px;
 }
