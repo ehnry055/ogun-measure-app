@@ -38,7 +38,7 @@ function Navbar() {
             Home
           </NavLink>
 
-          <NavLink to="/ogun" className="nav-link">
+          <NavLink to="/gateway" className="nav-link">
             Measure
           </NavLink>
 
