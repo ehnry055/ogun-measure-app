@@ -8,13 +8,9 @@ import InfoPopup from '../components/InfoPopup';
 let webRInstance = null;
 
 const ViewDatabasePage = () => {
-  const { isAuthenticated, user, loginWithRedirect, logout, getAccessTokenSilently, isLoading } = useAuth0();
+  const { isAuthenticated, user, loginWithRedirect, logout, getAccessTokenSilently } = useAuth0();
   
-  // --- AUTH STATE (SECURITY GATE) ---
-  const [isAuthorized, setIsAuthorized] = useState(false);
-  const [authLoading, setAuthLoading] = useState(true);
 
-  // --- APP STATE ---
   const [entryLimit, setEntryLimit] = useState(20);
   const [tableName, setTableName] = useState("Default Table");
   const [stateFilter, setStateFilter] = useState('');
@@ -22,79 +18,24 @@ const ViewDatabasePage = () => {
   const [selectedColumns, setSelectedColumns] = useState(new Set());
   const [selectedPreset, setSelectedPreset] = useState(null);
   
-  // --- R ANALYSIS STATE ---
+
   const [rReady, setRReady] = useState(false);
   const [rLoading, setRLoading] = useState(false);
   const [rResult, setRResult] = useState(null);
   const [rError, setRError] = useState(null);
   
+
   const [shellRows, setShellRows] = useState([
     { label: 'Mean', code: 'mean(vals)', expanded: false },
     { label: 'SD', code: 'sd(vals)', expanded: false }
   ]);
 
-  // --- AUTHORIZATION CHECKER (ROBUST VERSION) ---
-  const checkUserRole = async () => {
-    if (isAuthenticated && user) {
-      try {
-        const token = await getAccessTokenSilently();
-        
-        console.log("DEBUG: Checking roles for User ID:", user.sub);
-
-        // FIX 1: Use 'params' to automatically handle special characters like '|'
-        const res = await axios.get('/api/admin/get-user-roles', {
-          headers: { Authorization: `Bearer ${token}` },
-          params: { userId: user.sub } 
-        });
-        
-        const rawData = res.data; 
-        console.log("DEBUG: Raw Roles Response from Server:", rawData); 
-
-        // FIX 2: Normalize data (Handle if response is Array directly OR Object wrapper)
-        const rolesArray = Array.isArray(rawData) ? rawData : (rawData.roles || []);
-
-        // FIX 3: Robust check (Strings vs Objects + Case Insensitive)
-        const hasAccess = rolesArray.some(r => {
-          // If 'r' is a string, use it; otherwise look for '.name'
-          const roleName = (typeof r === 'string') ? r : r.name;
-          
-          if (!roleName) return false;
-
-          const lowerName = roleName.toLowerCase();
-          // Checks for your specific roles from the screenshot
-          return lowerName === 'registered_role' || lowerName === 'admin_role';
-        });
-        
-        if (hasAccess) {
-          console.log("DEBUG: Access Granted.");
-          setIsAuthorized(true);
-        } else {
-          console.warn("DEBUG: Access Denied. No matching roles found in:", rolesArray);
-          setIsAuthorized(false);
-        }
-      } catch (error) {
-        console.error("DEBUG: Error checking authorization:", error);
-        setIsAuthorized(false);
-      }
-    }
-    setAuthLoading(false);
-  };
-
-  // Run auth check on load
-  useEffect(() => {
-    if (!isLoading) {
-      checkUserRole();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated, user?.sub, isLoading]);
-
-  // --- EFFECT: LOAD PRESETS ---
+  
   useEffect(() => {
     const savedPresets = localStorage.getItem('columnPresets');
     if (savedPresets) setPresets(JSON.parse(savedPresets));
   }, []);
 
-  // --- EFFECT: INIT WEBR ---
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -113,7 +54,7 @@ const ViewDatabasePage = () => {
     return () => { cancelled = true; };
   }, []);
 
-  // --- PRESET & LIMIT HANDLERS ---
+
   const handleSavePreset = () => {
     const presetName = prompt('Enter preset name:');
     if (!presetName) return;
@@ -144,7 +85,7 @@ const ViewDatabasePage = () => {
     if (!isNaN(value)) setEntryLimit(value >= 1 ? value : 1);
   };
 
-  // --- R SHELL ROW MANAGEMENT ---
+ 
   const addShellRow = () => setShellRows([...shellRows, { label: '', code: '', expanded: false }]);
   
   const updateShellRow = (index, field, value) => {
@@ -155,13 +96,14 @@ const ViewDatabasePage = () => {
   
   const removeShellRow = (index) => setShellRows(shellRows.filter((_, i) => i !== index));
 
+ 
   const toggleShellRowExpand = (index) => {
     const newRows = [...shellRows];
     newRows[index].expanded = !newRows[index].expanded;
     setShellRows(newRows);
   };
 
-  // --- DOWNLOAD & SELECT LOGIC ---
+
   const handleDownload = async () => {
     try {
       let token = await getAccessTokenSilently();
@@ -243,36 +185,6 @@ const ViewDatabasePage = () => {
     } catch (e) { setRError("Analysis failed."); } finally { setRLoading(false); }
   };
 
-  // --- RENDERING: SECURITY GATES ---
-  
-  if (isLoading || authLoading) {
-    return <div style={{ color: '#333', textAlign: 'center', marginTop: '50px' }}>Loading Database Permissions...</div>;
-  }
-
-  // Gate 1: Not Logged In
-  if (!isAuthenticated) {
-    return (
-      <div style={{ color: '#333', textAlign: 'center', marginTop: '50px' }}>
-        <h2>Access Denied</h2>
-        <p>Please log in to view the database.</p>
-        <button onClick={() => loginWithRedirect()} style={{ padding: '10px 20px', cursor: 'pointer', backgroundColor: '#347ecc', color: 'white', border: 'none', borderRadius: '5px' }}>Log In</button>
-      </div>
-    );
-  }
-
-  // Gate 2: Logged In but Unauthorized
-  if (!isAuthorized) {
-    return (
-      <div style={{ color: '#333', textAlign: 'center', marginTop: '50px' }}>
-        <h2 style={{ color: '#b91c1c' }}>Unauthorized Access</h2>
-        <p>Your account does not have permission to view this database.</p>
-        <p>Please contact an administrator to request access.</p>
-        <button onClick={() => logout()} style={{ marginTop: '20px', padding: '10px 20px', cursor: 'pointer', backgroundColor: '#333', color: 'white', border: 'none', borderRadius: '5px' }}>Log Out</button>
-      </div>
-    );
-  }
-
-  // --- MAIN CONTENT (Authorized) ---
   return (
     <div className="page-layout-container">
       <div className="left-section">
@@ -335,7 +247,7 @@ const ViewDatabasePage = () => {
                   onChange={(e) => updateShellRow(index, 'label', e.target.value)} 
                 />
                 
-                {/* Expandable R Code Area */}
+          
                 {row.expanded ? (
                   <textarea 
                     placeholder="R Code (Script)"
@@ -360,6 +272,7 @@ const ViewDatabasePage = () => {
                   />
                 )}
                 
+          
                 <button 
                   onClick={() => toggleShellRowExpand(index)} 
                   style={{
