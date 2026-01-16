@@ -39,39 +39,41 @@ const ViewDatabasePage = () => {
       try {
         const token = await getAccessTokenSilently();
         
-        // FIX 1: Encode userId to handle pipes '|' and special chars
-        const safeUserId = encodeURIComponent(user.sub);
-        
-        const res = await axios.get(`/api/admin/get-user-roles?userId=${safeUserId}`, {
-          headers: { Authorization: `Bearer ${token}` }
+        console.log("DEBUG: Checking roles for User ID:", user.sub);
+
+        // FIX 1: Use 'params' to automatically handle special characters like '|'
+        const res = await axios.get('/api/admin/get-user-roles', {
+          headers: { Authorization: `Bearer ${token}` },
+          params: { userId: user.sub } 
         });
         
         const rawData = res.data; 
-        console.log("DEBUG: Raw Roles Response:", rawData); 
+        console.log("DEBUG: Raw Roles Response from Server:", rawData); 
 
-        // FIX 2: Handle if response is Array directly OR Object wrapper { roles: [...] }
+        // FIX 2: Normalize data (Handle if response is Array directly OR Object wrapper)
         const rolesArray = Array.isArray(rawData) ? rawData : (rawData.roles || []);
 
-        // FIX 3: Check both "String" roles and "Object" roles
+        // FIX 3: Robust check (Strings vs Objects + Case Insensitive)
         const hasAccess = rolesArray.some(r => {
           // If 'r' is a string, use it; otherwise look for '.name'
           const roleName = (typeof r === 'string') ? r : r.name;
           
           if (!roleName) return false;
 
-          // FIX 4: Case-insensitive check
           const lowerName = roleName.toLowerCase();
+          // Checks for your specific roles from the screenshot
           return lowerName === 'registered_role' || lowerName === 'admin_role';
         });
         
         if (hasAccess) {
+          console.log("DEBUG: Access Granted.");
           setIsAuthorized(true);
         } else {
-          console.warn("DEBUG: Access Denied. User roles:", rolesArray);
+          console.warn("DEBUG: Access Denied. No matching roles found in:", rolesArray);
           setIsAuthorized(false);
         }
       } catch (error) {
-        console.error("Error checking authorization:", error);
+        console.error("DEBUG: Error checking authorization:", error);
         setIsAuthorized(false);
       }
     }
