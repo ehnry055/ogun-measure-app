@@ -10,7 +10,7 @@ let webRInstance = null;
 const ViewDatabasePage = () => {
   const { isAuthenticated, user, loginWithRedirect, logout, getAccessTokenSilently, isLoading } = useAuth0();
   
-  // --- AUTH STATE (NEW SECURITY GATE) ---
+  // --- AUTH STATE (SECURITY GATE) ---
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [authLoading, setAuthLoading] = useState(true);
 
@@ -33,37 +33,58 @@ const ViewDatabasePage = () => {
     { label: 'SD', code: 'sd(vals)', expanded: false }
   ]);
 
-  // --- EFFECT: CHECK AUTHORIZATION (RESTORED SECURITY) ---
-  useEffect(() => {
-    const checkUserRole = async () => {
-      if (isAuthenticated && user) {
-        try {
-          const token = await getAccessTokenSilently();
-          // Use your existing server endpoint to check roles
-          const res = await axios.get(`/api/admin/get-user-roles?userId=${user.sub}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          
-          const roles = res.data; 
-          // Check if they have the 'Registered' role (or 'Admin')
-          const hasAccess = roles.some(r => r.name === 'registered_role' || r.name === 'admin_role');
-          
-          if (hasAccess) {
-            setIsAuthorized(true);
-          } else {
-            console.warn("User logged in but missing 'Registered' role.");
-          }
-        } catch (error) {
-          console.error("Error checking authorization:", error);
-        }
-      }
-      setAuthLoading(false);
-    };
+  // --- AUTHORIZATION CHECKER (ROBUST VERSION) ---
+  const checkUserRole = async () => {
+    if (isAuthenticated && user) {
+      try {
+        const token = await getAccessTokenSilently();
+        
+        // FIX 1: Encode userId to handle pipes '|' and special chars
+        const safeUserId = encodeURIComponent(user.sub);
+        
+        const res = await axios.get(`/api/admin/get-user-roles?userId=${safeUserId}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        
+        const rawData = res.data; 
+        console.log("DEBUG: Raw Roles Response:", rawData); 
 
+        // FIX 2: Handle if response is Array directly OR Object wrapper { roles: [...] }
+        const rolesArray = Array.isArray(rawData) ? rawData : (rawData.roles || []);
+
+        // FIX 3: Check both "String" roles and "Object" roles
+        const hasAccess = rolesArray.some(r => {
+          // If 'r' is a string, use it; otherwise look for '.name'
+          const roleName = (typeof r === 'string') ? r : r.name;
+          
+          if (!roleName) return false;
+
+          // FIX 4: Case-insensitive check
+          const lowerName = roleName.toLowerCase();
+          return lowerName === 'registered_role' || lowerName === 'admin_role';
+        });
+        
+        if (hasAccess) {
+          setIsAuthorized(true);
+        } else {
+          console.warn("DEBUG: Access Denied. User roles:", rolesArray);
+          setIsAuthorized(false);
+        }
+      } catch (error) {
+        console.error("Error checking authorization:", error);
+        setIsAuthorized(false);
+      }
+    }
+    setAuthLoading(false);
+  };
+
+  // Run auth check on load
+  useEffect(() => {
     if (!isLoading) {
       checkUserRole();
     }
-  }, [isAuthenticated, user, isLoading, getAccessTokenSilently]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, user?.sub, isLoading]);
 
   // --- EFFECT: LOAD PRESETS ---
   useEffect(() => {
@@ -223,7 +244,7 @@ const ViewDatabasePage = () => {
   // --- RENDERING: SECURITY GATES ---
   
   if (isLoading || authLoading) {
-    return <div style={{ color: '#333', textAlign: 'center', marginTop: '50px' }}>Loading Database...</div>;
+    return <div style={{ color: '#333', textAlign: 'center', marginTop: '50px' }}>Loading Database Permissions...</div>;
   }
 
   // Gate 1: Not Logged In
@@ -237,7 +258,7 @@ const ViewDatabasePage = () => {
     );
   }
 
-  // Gate 2: Logged In but Unauthorized (No 'Registered' Role)
+  // Gate 2: Logged In but Unauthorized
   if (!isAuthorized) {
     return (
       <div style={{ color: '#333', textAlign: 'center', marginTop: '50px' }}>
