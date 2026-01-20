@@ -21,6 +21,13 @@
   height: 42px;
 }
 
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+
 /* BOTTOM BAR */
 .navbar-bottom {
   background-color: #1f3a8a; 
