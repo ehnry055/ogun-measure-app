@@ -23,8 +23,18 @@ function Navbar() {
             />
           </div>
 
-          {/* RIGHT: Login / Logout */}
+          {/* RIGHT: Request Data + Login / Logout */}
           <div className="navbar-right">
+            {!isLoading && (
+              <NavLink
+                to="/requests"
+                className="btn btn-primary"
+                style={{ textDecoration: "none" }}
+              >
+                Request Data
+              </NavLink>
+            )}
+
             {!isLoading && !isAuthenticated && <LoginButton />}
             {!isLoading && isAuthenticated && <LogoutButton />}
           </div>
