@@ -503,7 +503,7 @@ app.get('/api/ogun-pages/load', async (req, res) => {
   
       const sendMailData = {
         from: process.env.EMAIL_USER, // Your verified email address
-        to: process.env.EMAIL_USER, // Send the email to yourself
+        to: "deanelbayar@gmail.com", // Send the email to yourself
         subject: `Request for Data Access by ${name}`,
         html: `
           <p>Name: ${name}</p>
