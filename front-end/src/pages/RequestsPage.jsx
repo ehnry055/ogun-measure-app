@@ -195,7 +195,11 @@ const RequestsPage = () => {
           <textarea value={data} onChange={(e) => setData(e.target.value)} />
         </div>
 
-        <button type="button" className="send" onClick={sendMail}>
+        <button
+          type="button"
+          className="btn btn-primary rounded-send"
+          onClick={sendMail}
+        >
           Send Email
         </button>
       </div>
