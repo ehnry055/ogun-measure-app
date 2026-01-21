@@ -19,6 +19,7 @@ const RequestsPage = () => {
 
   const { user, getAccessTokenSilently } = useAuth0();
 
+  // Prefill form from URL parameters
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
@@ -55,7 +56,9 @@ const RequestsPage = () => {
 
   const sendMail = async () => {
     try {
-      const token = await getAccessTokenSilently(); // kept in case your backend expects auth
+      // Keep this in case your backend expects an authenticated user/session
+      await getAccessTokenSilently();
+
       const email = user?.email;
 
       await axios.get("/api/user/send-email", {
@@ -88,97 +91,105 @@ const RequestsPage = () => {
           Request Form{" "}
           <InfoPopup>
             <h2 style={{ color: "#8C68CD" }}>Request Page</h2>
-            <p style={{ textAlign: "center", margin: "0 20px", fontSize: "22px" }}>
-              To request Registered User permissions, fill out the fields and click send
-              email. This will send an email to an admin with the inputted information.
-              An email will also be sent to the email address of the current user account.
+            <p
+              style={{
+                textAlign: "center",
+                margin: "0 20px",
+                fontSize: "22px",
+              }}
+            >
+              To request Registered User permissions, fill out the fields and
+              click send email. This will send an email to an admin with the
+              inputted information. An email will also be sent to the email
+              address of the current user account.
               <br />
               <br />
-              Registered Users will be able to access the Upload/Delete Data page for
-              changing data.
+              Registered Users will be able to access the Upload/Delete Data
+              page for changing data.
             </p>
           </InfoPopup>
         </h2>
 
         <div className="request-question">
+          <label>Name</label>
           <input
             type="text"
-            placeholder="Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
         </div>
 
         <div className="request-question">
-          <textarea
-            placeholder="Role (e.g., Student, Postdoc, Faculty, Researcher, Policy Analyst, other)"
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-          />
+          <label>
+            Role (e.g., Student, Postdoc, Faculty, Researcher, Policy Analyst,
+            other)
+          </label>
+          <textarea value={role} onChange={(e) => setRole(e.target.value)} />
         </div>
 
         <div className="request-question">
+          <label>
+            Affiliation (e.g., Academic, Government, Non-Profit, Private Sector,
+            other)
+          </label>
           <textarea
-            placeholder="Affiliation (e.g., Academic, Government, Non-Profit, Private Sector, other)"
             value={affiliation}
             onChange={(e) => setAffiliation(e.target.value)}
           />
         </div>
 
         <div className="request-question">
+          <label>Funding Source (if applicable)</label>
           <textarea
-            placeholder="Funding Source (if applicable)"
             value={funding}
             onChange={(e) => setFunding(e.target.value)}
           />
         </div>
 
         <div className="request-question">
+          <label>
+            Data Use Intentions (e.g., Publication, Policy Report, Internal
+            Analysis, other)
+          </label>
           <textarea
-            placeholder="Data Use Intentions (e.g., Publication, Policy Report, Internal Analysis, other)"
             value={intention}
             onChange={(e) => setIntention(e.target.value)}
           />
         </div>
 
         <div className="request-question">
-          <textarea
-            placeholder="How and when will you share your findings with community members and organizations?"
-            value={share}
-            onChange={(e) => setShare(e.target.value)}
-          />
+          <label>
+            How and when will you share your findings with community members and
+            organizations?
+          </label>
+          <textarea value={share} onChange={(e) => setShare(e.target.value)} />
         </div>
 
         <div className="request-question">
-          <textarea
-            placeholder="When will you complete the final document based on this research?"
-            value={when}
-            onChange={(e) => setWhen(e.target.value)}
-          />
+          <label>
+            When will you complete the final document based on this research?
+          </label>
+          <textarea value={when} onChange={(e) => setWhen(e.target.value)} />
         </div>
 
         <div className="request-question">
-          <textarea
-            placeholder="Which geographic area of the US are you interested in exploring?"
-            value={area}
-            onChange={(e) => setArea(e.target.value)}
-          />
+          <label>
+            Which geographic area of the US are you interested in exploring?
+          </label>
+          <textarea value={area} onChange={(e) => setArea(e.target.value)} />
         </div>
 
         <div className="request-question">
+          <label>Target Population</label>
           <textarea
-            placeholder="Target Population"
             value={target}
             onChange={(e) => setTarget(e.target.value)}
           />
         </div>
 
         <div className="request-question">
-          <textarea
-            placeholder="Data analysis program"
-            value={data}
-            onChange={(e) => setData(e.target.value)}
-          />
+          <label>Data analysis program</label>
+          <textarea value={data} onChange={(e) => setData(e.target.value)} />
         </div>
 
         <button type="button" className="send" onClick={sendMail}>

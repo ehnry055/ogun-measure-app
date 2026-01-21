@@ -46,35 +46,38 @@ html, body{
 .content {
   flex-grow: 1;
   padding: 20px;
-  /* background-color: #222222; */
   background-color: #ffffff;
   color: white;  
 }
 
-/* Center the whole request form area */
+
 .requests-center {
   display: flex;
   justify-content: center;
   padding: 40px 20px;
 }
 
-/* Even spacing between each field */
 .requests-form {
   width: 100%;
-  max-width: 520px; /* adjust wider if you want */
+  max-width: 520px; 
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
 
-/* Make each question take full width */
 .request-question {
   width: 100%;
 }
 
-/* Ensure inputs fill container */
 .requests-form input,
 .requests-form textarea {
   width: 100%;
   box-sizing: border-box;
+}
+
+.request-question label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+  color: #1f3a8a; 
 }
