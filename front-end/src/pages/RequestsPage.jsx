@@ -56,9 +56,7 @@ const RequestsPage = () => {
 
   const sendMail = async () => {
     try {
-      // Keep this in case your backend expects an authenticated user/session
       await getAccessTokenSilently();
-
       const email = user?.email;
 
       await axios.get("/api/user/send-email", {
@@ -109,6 +107,11 @@ const RequestsPage = () => {
             </p>
           </InfoPopup>
         </h2>
+
+        {/* ✅ Subtitle */}
+        <p className="request-subtitle">
+          Answer the following questions to request Registered User permissions.
+        </p>
 
         <div className="request-question">
           <label>Name</label>
