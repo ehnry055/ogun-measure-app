@@ -84,12 +84,12 @@ html, body{
 
 .request-subtitle {
   text-align: center;
-  color: #6b7280;
-  margin-top: -6px;
-  margin-bottom: 18px;
+  color: #1f3a8a;
+  margin-top: 0px;
+  margin-bottom: 10px;
   font-size: 16px;
 }
 
 .rounded-send {
-  border-radius: 999px; 
+  border-radius: 12px; 
 }
