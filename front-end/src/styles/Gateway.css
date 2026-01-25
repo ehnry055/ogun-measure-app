@@ -1,4 +1,4 @@
-/* Gateway.css — Full-bleed left image + right content (flush under navbar) */
+/* Gateway.css — full-bleed split that starts flush under navbar */
 
 :root {
   --navy: #1f3a8a;
@@ -6,30 +6,43 @@
   --border: rgba(31, 58, 138, 0.18);
 }
 
-/* IMPORTANT:
-   HomePage.css gives .home-container padding: 20px and max-width.
-   This wrapper makes Gateway ignore that so the split touches the navbar. */
-.home-container.gateway-container {
-  padding: 0 !important;
+/* ===== PAGE RESET (Gateway only) ===== */
+.gateway-page {
   margin: 0 !important;
-  max-width: none !important;
+  padding: 0 !important;
   width: 100% !important;
-  box-sizing: border-box;
+  max-width: none !important;
 }
 
-/* Break out of any centered layout and go full viewport width */
+/* Kill common “container” gutters that often create that same home-page gap */
+.gateway-page .container,
+.gateway-page .container-fluid,
+.gateway-page main,
+.gateway-page .content,
+.gateway-page .page,
+.gateway-page #root,
+.gateway-page .App {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* ===== SPLIT LAYOUT ===== */
 .gateway-split {
   display: grid;
   grid-template-columns: 1fr 1fr;
   width: 100vw;
   margin-left: calc(50% - 50vw);
   min-height: 100vh;
-  padding: 0;
   gap: 0;
+  padding: 0;
   box-sizing: border-box;
+
+  /* THIS is the reliable fix when margin changes "do nothing" */
+  position: relative;
+  top: -20px; /* matches the home-container padding gap */
 }
 
-/* LEFT: full-bleed image */
+/* LEFT */
 .gateway-left {
   position: relative;
   overflow: hidden;
@@ -44,7 +57,7 @@
   object-fit: cover;
 }
 
-/* RIGHT: content */
+/* RIGHT */
 .gateway-right {
   display: flex;
   flex-direction: column;
@@ -53,7 +66,6 @@
   box-sizing: border-box;
 }
 
-/* make sure the title doesn’t add any weird extra spacing */
 .gateway-title {
   margin-top: 0 !important;
 }
@@ -71,11 +83,7 @@
   margin: 0 0 16px 0;
 }
 
-.text-content p:last-child {
-  margin-bottom: 0;
-}
-
-/* Dropdown + button row */
+/* ACTIONS */
 .gateway-dropdown-container {
   margin-top: 32px;
   display: flex;
@@ -84,21 +92,15 @@
   flex-wrap: wrap;
 }
 
-.gateway-dropdown {
-  display: flex;
-}
-
 .gateway-dropdown-toggle {
   border-radius: 0;
   background-color: transparent;
   border: 1.75px solid var(--navy);
   color: var(--navy) !important;
-
   font-family: "Saira", sans-serif;
   font-size: 1.1rem;
   padding: 16px 28px;
   min-width: 280px;
-
   transition: all 0.25s ease;
 }
 
@@ -143,7 +145,7 @@
   color: var(--navy) !important;
 }
 
-/* Generate Data button */
+/* Generate button */
 #gendata {
   background-color: rgba(185, 28, 28, 0.08);
   border: 1.75px solid #b91c1c;
@@ -155,11 +157,12 @@
   color: #fff;
 }
 
-/* Mobile: stack */
+/* MOBILE */
 @media (max-width: 900px) {
   .gateway-split {
     grid-template-columns: 1fr;
     min-height: auto;
+    top: -20px; /* keep consistent */
   }
 
   .gateway-left {
@@ -180,41 +183,3 @@
     max-width: 100%;
   }
 }
-
-/* ===== Remove the same top gap you see on the Home page (Gateway only) ===== */
-/* This is usually caused by the header/nav having margin-bottom or padding-bottom */
-
-.gateway-container nav,
-.gateway-container header,
-.gateway-container .navbar,
-.gateway-container .navbar-nav,
-.gateway-container .navbar-expand,
-.gateway-container .nav-bar,
-.gateway-container .topbar,
-.gateway-container .header-bar,
-.gateway-container .columbia-header {
-  margin-bottom: 0 !important;
-  padding-bottom: 0 !important;
-}
-
-/* Extra safety: if the element right above the split has bottom-margin,
-   pulling the split up fixes it without affecting the navbar itself */
-.gateway-container .gateway-split {
-  margin-top: 0 !important;
-  padding-top: 0 !important;
-}
-
-/* Fallback: remove any inherited top spacing from the immediate page wrapper */
-.gateway-container {
-  padding-top: 0 !important;
-  margin-top: 0 !important;
-}
-
-/* ===== GUARANTEED: remove the persistent top gap by pulling the split up ===== */
-/* This gap matches your Home page gap, usually ~20px from a global layout wrapper */
-
-.gateway-split {
-  margin-top: -20px !important; /* adjust to -24px or -30px if needed */
-}
-
-
