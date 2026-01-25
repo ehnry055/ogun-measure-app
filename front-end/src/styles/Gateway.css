@@ -180,3 +180,33 @@
     max-width: 100%;
   }
 }
+
+/* ===== Remove the same top gap you see on the Home page (Gateway only) ===== */
+/* This is usually caused by the header/nav having margin-bottom or padding-bottom */
+
+.gateway-container nav,
+.gateway-container header,
+.gateway-container .navbar,
+.gateway-container .navbar-nav,
+.gateway-container .navbar-expand,
+.gateway-container .nav-bar,
+.gateway-container .topbar,
+.gateway-container .header-bar,
+.gateway-container .columbia-header {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Extra safety: if the element right above the split has bottom-margin,
+   pulling the split up fixes it without affecting the navbar itself */
+.gateway-container .gateway-split {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Fallback: remove any inherited top spacing from the immediate page wrapper */
+.gateway-container {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
