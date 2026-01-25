@@ -209,3 +209,15 @@
     max-width: 100%;
   }
 }
+
+/* ===== Disable scrolling on Gateway page only ===== */
+.gateway-page {
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Extra safety: prevent body scroll when Gateway is mounted */
+body:has(.gateway-page) {
+  overflow: hidden;
+}
+
