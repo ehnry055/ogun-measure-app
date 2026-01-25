@@ -210,3 +210,11 @@
   margin-top: 0 !important;
 }
 
+/* ===== GUARANTEED: remove the persistent top gap by pulling the split up ===== */
+/* This gap matches your Home page gap, usually ~20px from a global layout wrapper */
+
+.gateway-split {
+  margin-top: -20px !important; /* adjust to -24px or -30px if needed */
+}
+
+
