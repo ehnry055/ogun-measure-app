@@ -1,35 +1,47 @@
-/* Gateway.css — Full Split Layout with Full-Bleed Image */
+/* Gateway.css — Full-bleed left image + right content */
 
 :root {
   --navy: #1f3a8a;
   --ink: #1f2937;
-  --soft-blue: #f3f7ff;
   --border: rgba(31, 58, 138, 0.18);
 }
 
-/* Remove padding inherited from HomePage layout */
+/* Don’t let the page wrapper add gutters */
 .home-container {
   padding: 0 !important;
+  margin: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
 }
 
-/* ===== Split Screen Layout ===== */
+/* ===== Split Screen Layout (BREAK OUT of centered container) ===== */
 .gateway-split {
   display: grid;
   grid-template-columns: 1fr 1fr;
+
+  /* This is the key: full viewport width even inside a centered wrapper */
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+
+  /* Remove any gaps */
+  padding: 0;
+  gap: 0;
+
+  /* Fill viewport height (below navbar) */
   min-height: 100vh;
-  width: 100%;
 }
 
-/* ===== LEFT SIDE — FULL IMAGE ===== */
+/* ===== LEFT SIDE — FULL BLEED IMAGE ===== */
 .gateway-left {
   position: relative;
   overflow: hidden;
   padding: 0;
   margin: 0;
+
   border-right: 1px solid var(--border);
 }
 
-/* Image fills entire left panel */
+/* Image fills the entire left half */
 .ogunimg-full {
   position: absolute;
   inset: 0;
@@ -43,6 +55,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+
   padding: 80px 70px;
 }
 
@@ -73,12 +86,7 @@
   flex-wrap: wrap;
 }
 
-/* Dropdown wrapper */
-.gateway-dropdown {
-  display: flex;
-}
-
-/* Toggle button */
+/* Dropdown toggle */
 .gateway-dropdown-toggle {
   border-radius: 0;
   background-color: transparent;
@@ -123,7 +131,6 @@
   overflow-y: auto;
 }
 
-/* Items */
 .gateway-dropdown-item {
   color: var(--ink) !important;
   border-radius: 10px;
@@ -138,7 +145,7 @@
   color: var(--navy) !important;
 }
 
-/* ===== Generate Data Button ===== */
+/* Generate Data */
 #gendata {
   background-color: rgba(185, 28, 28, 0.08);
   border: 1.75px solid #b91c1c;
@@ -150,14 +157,15 @@
   color: #fff;
 }
 
-/* ===== MOBILE: STACKED LAYOUT ===== */
+/* ===== MOBILE ===== */
 @media (max-width: 900px) {
   .gateway-split {
     grid-template-columns: 1fr;
+    min-height: auto;
   }
 
   .gateway-left {
-    height: 300px; /* hero image height */
+    height: 320px; /* hero banner */
     border-right: none;
     border-bottom: 1px solid var(--border);
   }
