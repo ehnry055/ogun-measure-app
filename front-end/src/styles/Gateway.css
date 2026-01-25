@@ -1,126 +1,179 @@
-.center-text-container {
-    display: flex; /* Use flexbox to align items horizontally */
-    align-items: center; /* Vertically align the image and text */
-    justify-content: center; /* Optional: Center the entire container */
-    gap: 20px; /* Add spacing between the image and text */
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
-  }
-  
-  .text-content {
-    flex: 1; /* Allow the text to take up remaining space */
-    font-size: 1.1rem;
-    line-height: 1.6;
-    /* Light Grey -> Dark Grey */
-    color: #333;
-    font-family: "Saira", sans-serif;
-  }
+/* Gateway.css */
 
-.gateway-dropdown {
-    display: flex;
-    padding: 20px;
-    justify-content: center;
+:root {
+  --navy: #1f3a8a;
+  --ink: #1f2937;
+  --muted: #4b5563;
+  --soft-blue: #f3f7ff;
+  --border: rgba(31, 58, 138, 0.16);
+  --shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
 }
 
+/* ===== Split Layout ===== */
+.gateway-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 50/50 */
+  min-height: calc(100vh - 90px); /* adjust if your navbar height differs */
+}
+
+/* LEFT: image panel */
+.gateway-left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 34px;
+
+  background: var(--soft-blue);
+  border-right: 1px solid var(--border);
+}
+
+/* Image styling */
+.ogunimg {
+  width: min(360px, 70%);
+  height: auto;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: var(--shadow);
+}
+
+/* RIGHT: content panel */
+.gateway-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 70px 64px;
+}
+
+/* Text block */
+.text-content {
+  max-width: 620px;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--ink);
+  font-family: "Saira", sans-serif;
+  margin-top: 10px;
+}
+
+.text-content p {
+  margin: 0 0 14px 0;
+}
+
+.text-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== Dropdown & Actions ===== */
 .gateway-dropdown-container {
-    margin-top: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center; 
-    gap: 20px; 
-    flex-direction: row;
-  }
-
-@media (max-width: 1000px) {
-    .gateway-dropdown-container {
-      flex-direction: column;
-    }
-  }  
-
-#dropdown-profile:focus,
-#dropdown-profile:active {
-    border-color: transparent;
-    box-shadow: none; /* Remove any box shadow */
+  margin-top: 28px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
 }
 
-/* DROPDOWN TOGGLE BUTTON */
+/* dropdown wrapper */
+.gateway-dropdown {
+  display: flex;
+}
+
+/* toggle button */
 .gateway-dropdown-toggle {
-    /* Purple Border -> Blue Border */
-    border: 1.75px solid #347ecc;
-    /* Purple Tint -> Transparent (Outline style) */
-    background-color: transparent;
-    font-size: 24px;
-    /* Purple Text -> Blue Text */
-    color: #347ecc !important;             
-    padding: 20px;
-    width: 300px;
-    border-radius: 0.5rem;   
-    transition: all 0.3s ease;
-  }
-  
- /* Focus State */
+  border-radius: 0;
+  background-color: transparent;
+  border: 1.75px solid var(--navy);
+  color: var(--navy) !important;
+
+  font-family: "Saira", sans-serif;
+  font-size: 1.1rem;
+  padding: 16px 28px;
+  min-width: 280px;
+
+  transition: all 0.25s ease;
+}
+
+.gateway-dropdown-toggle:hover {
+  background-color: var(--navy) !important;
+  border-color: var(--navy);
+  color: #fff !important;
+}
+
 .gateway-dropdown-toggle:focus,
-.gateway-dropdown-toggle:active {
-    /* Purple -> Blue */
-    background-color: #347ecc; 
-    border: 1.75px solid #347ecc;
-    color: white !important;
+.gateway-dropdown-toggle:active,
+.gateway-dropdown-toggle:focus-visible {
+  background-color: var(--navy) !important;
+  border-color: var(--navy);
+  color: #fff !important;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.25) !important;
+  outline: none !important;
 }
 
-/* DROPDOWN MENU CONTAINER */
-  .gateway-dropdown-menu {
-    /* Dark Grey Background -> White Background */
-    background-color: white !important;
-    /* Added a subtle shadow since it's white-on-white now */
-    border: 1px solid #ddd !important;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    border-radius: 5px !important;         
-    min-width: 300px !important;           
-    width: auto !important;                
-    padding: 10px !important;              
-  }
-  
-  .gateway-dropdown-item {
-    /* White Text -> Dark Text */
-    color: #333 !important;
-  }
-  
-  .gateway-dropdown-item:hover {
-    /* Purple Hover -> Blue Hover */
-    background-color: #347ecc !important;  
-    color: white !important;
-    border-radius: 0.5rem;
-  }
+/* dropdown menu */
+.gateway-dropdown-menu {
+  background-color: #fff !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.14);
+  border-radius: 12px !important;
 
-  .gateway-dropdown-toggle:hover {
-    /* Purple Hover -> Blue Hover */
-    background-color: #347ecc !important;  
-    border-color: #347ecc;
-    color: white !important;
-  }
+  min-width: 280px !important;
+  padding: 10px !important;
 
-
-  .return {
-    display: flex;
-    justify-content: center;
-    margin-top: 50px;
-  }
-
-  .ogunimg {
-    max-width: 200px;
-    flex-shrink: 0;
-    height: auto;
-    /* Black border is fine, matches text */
-    border: 5px solid #333;
+  max-height: 320px;
+  overflow: auto;
 }
 
-/* GEN DATA BUTTON (Red Action) */
+/* items */
+.gateway-dropdown-item {
+  color: var(--ink) !important;
+  border-radius: 10px;
+  padding: 10px 12px !important;
+  font-family: "Saira", sans-serif;
+  font-size: 0.98rem;
+}
+
+.gateway-dropdown-item:hover,
+.gateway-dropdown-item:focus {
+  background-color: rgba(31, 58, 138, 0.1) !important;
+  color: var(--navy) !important;
+}
+
+/* ===== Generate Data Button (your #gendata) ===== */
 #gendata {
-  background-color: #ef444426; /* Red tint */
-  border-color: #b91c1c;       /* Dark Red Border */
-  color: #b91c1c;              /* Dark Red Text */
+  background-color: rgba(185, 28, 28, 0.08);
+  border: 1.75px solid #b91c1c;
+  color: #b91c1c;
 }
 
 #gendata:hover {
-  background-color: #b91c1c;   /* Solid Dark Red */
-  color: white;
+  background-color: #b91c1c;
+  color: #fff;
+}
+
+/* ===== Responsive: stack layout ===== */
+@media (max-width: 900px) {
+  .gateway-split {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .gateway-left {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 40px 18px;
+  }
+
+  .gateway-right {
+    padding: 40px 18px;
+  }
+
+  .gateway-dropdown-container {
+    justify-content: center;
+  }
+
+  .text-content {
+    max-width: 100%;
+  }
+
+  .ogunimg {
+    width: min(320px, 85%);
+  }
 }
