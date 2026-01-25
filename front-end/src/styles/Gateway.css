@@ -1,15 +1,10 @@
-/* Gateway.css — full-bleed split that starts flush under navbar and reaches bottom */
+/* Gateway.css — full-bleed split, flush top/bottom, unified right-side buttons */
 
 :root {
   --navy: #1f3a8a;
   --ink: #1f2937;
   --border: rgba(31, 58, 138, 0.18);
-}
-
-/* The pull-up amount that fixed your top gap.
-   If you ever change this, update both the top and the + height calc. */
-:root {
-  --gateway-offset: 20px;
+  --gateway-offset: 20px; /* pull-up amount used to remove the top gap */
 }
 
 /* ===== PAGE RESET (Gateway only) ===== */
@@ -49,7 +44,7 @@
   top: calc(var(--gateway-offset) * -1);
 }
 
-/* LEFT */
+/* ===== LEFT ===== */
 .gateway-left {
   position: relative;
   overflow: hidden;
@@ -64,7 +59,7 @@
   object-fit: cover;
 }
 
-/* RIGHT */
+/* ===== RIGHT ===== */
 .gateway-right {
   display: flex;
   flex-direction: column;
@@ -94,9 +89,9 @@
   margin-bottom: 0;
 }
 
-/* ACTIONS */
+/* ===== ACTIONS ===== */
 .gateway-dropdown-container {
-  margin-top: 32px;
+  margin-top: 36px;
   display: flex;
   align-items: center;
   gap: 18px;
@@ -107,25 +102,39 @@
   display: flex;
 }
 
-/* Dropdown toggle */
+/* --- Unified button sizing for BOTH controls --- */
+.gateway-dropdown-toggle,
+#gendata {
+  min-width: 280px;
+  height: 56px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: "Saira", sans-serif;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+
+  border-width: 1.75px;
+  padding: 0 28px; /* horizontal only; height handled above */
+
+  transition: all 0.25s ease;
+}
+
+/* Blue (dropdown toggle) */
 .gateway-dropdown-toggle {
   border-radius: 0;
   background-color: transparent;
   border: 1.75px solid var(--navy);
   color: var(--navy) !important;
-
-  font-family: "Saira", sans-serif;
-  font-size: 1.1rem;
-  padding: 16px 28px;
-  min-width: 280px;
-
-  transition: all 0.25s ease;
 }
 
 .gateway-dropdown-toggle:hover {
   background-color: var(--navy) !important;
   border-color: var(--navy);
   color: #fff !important;
+  transform: translateY(-1px);
 }
 
 .gateway-dropdown-toggle:focus,
@@ -135,6 +144,26 @@
   border-color: var(--navy);
   color: #fff !important;
   box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.25) !important;
+  outline: none !important;
+}
+
+/* Red action button — same shape, different color */
+#gendata {
+  background-color: transparent;
+  border: 1.75px solid #b91c1c;
+  color: #b91c1c;
+}
+
+#gendata:hover {
+  background-color: #b91c1c;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+#gendata:focus,
+#gendata:active,
+#gendata:focus-visible {
+  box-shadow: 0 0 0 4px rgba(185, 28, 28, 0.18) !important;
   outline: none !important;
 }
 
@@ -167,19 +196,7 @@
   color: var(--navy) !important;
 }
 
-/* Generate button */
-#gendata {
-  background-color: rgba(185, 28, 28, 0.08);
-  border: 1.75px solid #b91c1c;
-  color: #b91c1c;
-}
-
-#gendata:hover {
-  background-color: #b91c1c;
-  color: #fff;
-}
-
-/* MOBILE */
+/* ===== MOBILE ===== */
 @media (max-width: 900px) {
   .gateway-split {
     grid-template-columns: 1fr;
@@ -209,15 +226,3 @@
     max-width: 100%;
   }
 }
-
-/* ===== Disable scrolling on Gateway page only ===== */
-.gateway-page {
-  height: 100vh;
-  overflow: hidden;
-}
-
-/* Extra safety: prevent body scroll when Gateway is mounted */
-body:has(.gateway-page) {
-  overflow: hidden;
-}
-

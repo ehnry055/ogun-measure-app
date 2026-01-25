@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "../styles/HomePage.css";
 import "../styles/Gateway.css";
 import { Dropdown } from "react-bootstrap";
@@ -7,26 +7,15 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import OGUN from "../assets/OGUN.jpg";
 
 const Gateway = () => {
-  useEffect(() => {
-    // Disable scrolling on this page
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    // Re-enable scrolling when leaving this page
-    return () => {
-      document.body.style.overflow = prevOverflow || "auto";
-    };
-  }, []);
-
   return (
     <div className="gateway-page">
       <div className="gateway-split">
-        {/* LEFT: FULL BLEED IMAGE */}
+        {/* LEFT */}
         <div className="gateway-left">
           <img src={OGUN} alt="Ogun statue" className="ogunimg-full" />
         </div>
 
-        {/* RIGHT: CONTENT */}
+        {/* RIGHT */}
         <div className="gateway-right">
           <h2 className="about-title gateway-title">Ogun Measure</h2>
 
