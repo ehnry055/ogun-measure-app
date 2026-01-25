@@ -1,9 +1,15 @@
-/* Gateway.css — full-bleed split that starts flush under navbar */
+/* Gateway.css — full-bleed split that starts flush under navbar and reaches bottom */
 
 :root {
   --navy: #1f3a8a;
   --ink: #1f2937;
   --border: rgba(31, 58, 138, 0.18);
+}
+
+/* The pull-up amount that fixed your top gap.
+   If you ever change this, update both the top and the + height calc. */
+:root {
+  --gateway-offset: 20px;
 }
 
 /* ===== PAGE RESET (Gateway only) ===== */
@@ -14,14 +20,12 @@
   max-width: none !important;
 }
 
-/* Kill common “container” gutters that often create that same home-page gap */
+/* Kill common “container” gutters that can create the home-page-like gap */
 .gateway-page .container,
 .gateway-page .container-fluid,
 .gateway-page main,
 .gateway-page .content,
-.gateway-page .page,
-.gateway-page #root,
-.gateway-page .App {
+.gateway-page .page {
   margin-top: 0 !important;
   padding-top: 0 !important;
 }
@@ -32,14 +36,17 @@
   grid-template-columns: 1fr 1fr;
   width: 100vw;
   margin-left: calc(50% - 50vw);
-  min-height: 100vh;
   gap: 0;
   padding: 0;
   box-sizing: border-box;
 
-  /* THIS is the reliable fix when margin changes "do nothing" */
+  /* Fill the screen AND compensate for the pull-up (fixes bottom white gap) */
+  height: calc(100vh + var(--gateway-offset));
+  min-height: calc(100vh + var(--gateway-offset));
+
+  /* Pull up to remove top white gap */
   position: relative;
-  top: -20px; /* matches the home-container padding gap */
+  top: calc(var(--gateway-offset) * -1);
 }
 
 /* LEFT */
@@ -83,6 +90,10 @@
   margin: 0 0 16px 0;
 }
 
+.text-content p:last-child {
+  margin-bottom: 0;
+}
+
 /* ACTIONS */
 .gateway-dropdown-container {
   margin-top: 32px;
@@ -92,15 +103,22 @@
   flex-wrap: wrap;
 }
 
+.gateway-dropdown {
+  display: flex;
+}
+
+/* Dropdown toggle */
 .gateway-dropdown-toggle {
   border-radius: 0;
   background-color: transparent;
   border: 1.75px solid var(--navy);
   color: var(--navy) !important;
+
   font-family: "Saira", sans-serif;
   font-size: 1.1rem;
   padding: 16px 28px;
   min-width: 280px;
+
   transition: all 0.25s ease;
 }
 
@@ -120,17 +138,21 @@
   outline: none !important;
 }
 
+/* Dropdown menu */
 .gateway-dropdown-menu {
   background-color: #fff !important;
   border: 1px solid rgba(0, 0, 0, 0.12) !important;
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.14);
   border-radius: 12px !important;
+
   min-width: 280px !important;
   padding: 10px !important;
+
   max-height: 320px;
   overflow-y: auto;
 }
 
+/* Dropdown items */
 .gateway-dropdown-item {
   color: var(--ink) !important;
   border-radius: 10px;
@@ -161,8 +183,12 @@
 @media (max-width: 900px) {
   .gateway-split {
     grid-template-columns: 1fr;
-    min-height: auto;
-    top: -20px; /* keep consistent */
+
+    /* keep the same “flush” behavior on mobile too */
+    height: calc(100vh + var(--gateway-offset));
+    min-height: calc(100vh + var(--gateway-offset));
+    position: relative;
+    top: calc(var(--gateway-offset) * -1);
   }
 
   .gateway-left {
