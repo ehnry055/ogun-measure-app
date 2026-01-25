@@ -182,3 +182,29 @@
     max-width: 100%;
   }
 }
+
+/* ==== TOP GAP FIX (force gateway to touch the blue bar) ==== */
+
+/* Some pages add spacing above the main content */
+.home-container {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* If any global wrapper adds a top margin, this prevents it from affecting the split */
+.gateway-split {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Sometimes h2 margin collapses and creates space above content */
+.gateway-right .about-title {
+  margin-top: 0 !important;
+}
+
+/* Prevent nav-bottom spacing from pushing the split down */
+nav,
+.navbar,
+.navbar + * {
+  margin-bottom: 0 !important;
+}
