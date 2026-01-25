@@ -17,15 +17,22 @@
 }
 
 /* LEFT: image panel */
+/* LEFT: full-bleed image panel */
 .gateway-left {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 34px;
-
-  background: var(--soft-blue);
+  position: relative;
+  overflow: hidden;
   border-right: 1px solid var(--border);
 }
+
+/* Image fills entire left half */
+.ogunimg-full {
+  position: absolute;
+  inset: 0; /* top right bottom left = 0 */
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* crop, don’t squish */
+}
+
 
 /* Image styling */
 .ogunimg {

@@ -11,9 +11,10 @@ const Gateway = () => {
     <div className="home-container">
       <div className="gateway-split">
         {/* LEFT SIDE: IMAGE */}
-        <div className="gateway-left">
-          <img src={OGUN} alt="Ogun statue" className="ogunimg" />
-        </div>
+    <div className="gateway-left">
+        <img src={OGUN} alt="Ogun statue" className="ogunimg-full" />
+    </div>
+
 
         {/* RIGHT SIDE: CONTENT */}
         <div className="gateway-right">
