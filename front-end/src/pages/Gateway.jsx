@@ -8,17 +8,16 @@ import OGUN from "../assets/OGUN.jpg";
 
 const Gateway = () => {
   return (
-    <div className="home-container">
+    <div className="home-container gateway-container">
       <div className="gateway-split">
-        {/* LEFT SIDE: IMAGE */}
-    <div className="gateway-left">
-        <img src={OGUN} alt="Ogun statue" className="ogunimg-full" />
-    </div>
-
+        {/* LEFT SIDE: FULL BLEED IMAGE */}
+        <div className="gateway-left">
+          <img src={OGUN} alt="Ogun statue" className="ogunimg-full" />
+        </div>
 
         {/* RIGHT SIDE: CONTENT */}
         <div className="gateway-right">
-          <h2 className="about-title">Ogun Measure</h2>
+          <h2 className="about-title gateway-title">Ogun Measure</h2>
 
           <div className="text-content">
             <p>

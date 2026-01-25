@@ -1,4 +1,4 @@
-/* Gateway.css — Full-bleed left image + right content */
+/* Gateway.css — Full-bleed left image + right content (flush under navbar) */
 
 :root {
   --navy: #1f3a8a;
@@ -6,42 +6,36 @@
   --border: rgba(31, 58, 138, 0.18);
 }
 
-/* Don’t let the page wrapper add gutters */
-.home-container {
+/* IMPORTANT:
+   HomePage.css gives .home-container padding: 20px and max-width.
+   This wrapper makes Gateway ignore that so the split touches the navbar. */
+.home-container.gateway-container {
   padding: 0 !important;
   margin: 0 !important;
-  width: 100% !important;
   max-width: none !important;
+  width: 100% !important;
+  box-sizing: border-box;
 }
 
-/* ===== Split Screen Layout (BREAK OUT of centered container) ===== */
+/* Break out of any centered layout and go full viewport width */
 .gateway-split {
   display: grid;
   grid-template-columns: 1fr 1fr;
-
-  /* This is the key: full viewport width even inside a centered wrapper */
   width: 100vw;
   margin-left: calc(50% - 50vw);
-
-  /* Remove any gaps */
+  min-height: 100vh;
   padding: 0;
   gap: 0;
-
-  /* Fill viewport height (below navbar) */
-  min-height: 100vh;
+  box-sizing: border-box;
 }
 
-/* ===== LEFT SIDE — FULL BLEED IMAGE ===== */
+/* LEFT: full-bleed image */
 .gateway-left {
   position: relative;
   overflow: hidden;
-  padding: 0;
-  margin: 0;
-
   border-right: 1px solid var(--border);
 }
 
-/* Image fills the entire left half */
 .ogunimg-full {
   position: absolute;
   inset: 0;
@@ -50,16 +44,20 @@
   object-fit: cover;
 }
 
-/* ===== RIGHT SIDE — CONTENT ===== */
+/* RIGHT: content */
 .gateway-right {
   display: flex;
   flex-direction: column;
   justify-content: center;
-
   padding: 80px 70px;
+  box-sizing: border-box;
 }
 
-/* Text block */
+/* make sure the title doesn’t add any weird extra spacing */
+.gateway-title {
+  margin-top: 0 !important;
+}
+
 .text-content {
   max-width: 620px;
   font-size: 1.05rem;
@@ -77,7 +75,7 @@
   margin-bottom: 0;
 }
 
-/* ===== DROPDOWN + BUTTONS ===== */
+/* Dropdown + button row */
 .gateway-dropdown-container {
   margin-top: 32px;
   display: flex;
@@ -86,7 +84,10 @@
   flex-wrap: wrap;
 }
 
-/* Dropdown toggle */
+.gateway-dropdown {
+  display: flex;
+}
+
 .gateway-dropdown-toggle {
   border-radius: 0;
   background-color: transparent;
@@ -117,16 +118,13 @@
   outline: none !important;
 }
 
-/* Dropdown menu */
 .gateway-dropdown-menu {
   background-color: #fff !important;
   border: 1px solid rgba(0, 0, 0, 0.12) !important;
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.14);
   border-radius: 12px !important;
-
   min-width: 280px !important;
   padding: 10px !important;
-
   max-height: 320px;
   overflow-y: auto;
 }
@@ -145,7 +143,7 @@
   color: var(--navy) !important;
 }
 
-/* Generate Data */
+/* Generate Data button */
 #gendata {
   background-color: rgba(185, 28, 28, 0.08);
   border: 1.75px solid #b91c1c;
@@ -157,7 +155,7 @@
   color: #fff;
 }
 
-/* ===== MOBILE ===== */
+/* Mobile: stack */
 @media (max-width: 900px) {
   .gateway-split {
     grid-template-columns: 1fr;
@@ -165,7 +163,7 @@
   }
 
   .gateway-left {
-    height: 320px; /* hero banner */
+    height: 320px;
     border-right: none;
     border-bottom: 1px solid var(--border);
   }
@@ -181,30 +179,4 @@
   .text-content {
     max-width: 100%;
   }
-}
-
-/* ==== TOP GAP FIX (force gateway to touch the blue bar) ==== */
-
-/* Some pages add spacing above the main content */
-.home-container {
-  padding-top: 0 !important;
-  margin-top: 0 !important;
-}
-
-/* If any global wrapper adds a top margin, this prevents it from affecting the split */
-.gateway-split {
-  margin-top: 0 !important;
-  padding-top: 0 !important;
-}
-
-/* Sometimes h2 margin collapses and creates space above content */
-.gateway-right .about-title {
-  margin-top: 0 !important;
-}
-
-/* Prevent nav-bottom spacing from pushing the split down */
-nav,
-.navbar,
-.navbar + * {
-  margin-bottom: 0 !important;
 }
