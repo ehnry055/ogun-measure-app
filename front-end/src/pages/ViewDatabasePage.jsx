@@ -10,7 +10,6 @@ let webRInstance = null;
 const ViewDatabasePage = () => {
   const { isAuthenticated, user, loginWithRedirect, logout, getAccessTokenSilently } = useAuth0();
   
-
   const [entryLimit, setEntryLimit] = useState(20);
   const [tableName, setTableName] = useState("Default Table");
   const [stateFilter, setStateFilter] = useState('');
@@ -18,6 +17,9 @@ const ViewDatabasePage = () => {
   const [selectedColumns, setSelectedColumns] = useState(new Set());
   const [selectedPreset, setSelectedPreset] = useState(null);
   
+
+  const [availableTables, setAvailableTables] = useState([]);
+  const [showTableSelector, setShowTableSelector] = useState(false);
 
   const [rReady, setRReady] = useState(false);
   const [rLoading, setRLoading] = useState(false);
@@ -30,7 +32,6 @@ const ViewDatabasePage = () => {
     { label: 'SD', code: 'sd(vals)', expanded: false }
   ]);
 
-  
   useEffect(() => {
     const savedPresets = localStorage.getItem('columnPresets');
     if (savedPresets) setPresets(JSON.parse(savedPresets));
@@ -85,7 +86,6 @@ const ViewDatabasePage = () => {
     if (!isNaN(value)) setEntryLimit(value >= 1 ? value : 1);
   };
 
- 
   const addShellRow = () => setShellRows([...shellRows, { label: '', code: '', expanded: false }]);
   
   const updateShellRow = (index, field, value) => {
@@ -95,14 +95,12 @@ const ViewDatabasePage = () => {
   };
   
   const removeShellRow = (index) => setShellRows(shellRows.filter((_, i) => i !== index));
-
  
   const toggleShellRowExpand = (index) => {
     const newRows = [...shellRows];
     newRows[index].expanded = !newRows[index].expanded;
     setShellRows(newRows);
   };
-
 
   const handleDownload = async () => {
     try {
@@ -142,18 +140,32 @@ const ViewDatabasePage = () => {
     } catch (error) { alert('Excel download failed.'); }
   };
 
-  const handleSelectTable = async () => {
+ 
+  const toggleTableSelector = async () => {
+    if (!showTableSelector) {
+      try {
+        const token = await getAccessTokenSilently();
+        const response = await axios.get(`/api/tables`, { headers: { Authorization: `Bearer ${token}` } });
+        setAvailableTables(response.data);
+      } catch (error) { 
+        console.error(error);
+        alert('Error fetching table list'); 
+        return;
+      }
+    }
+    setShowTableSelector(!showTableSelector);
+  };
+
+
+  const handleTableSelection = async (selectedName) => {
     try {
       const token = await getAccessTokenSilently();
-      const response = await axios.get(`/api/tables`, { headers: { Authorization: `Bearer ${token}` } });
-      const tableNames = response.data;
-      const message = `Select a table from the following:\n-------------------------\n${tableNames.join('\n')}`;
-      const selected = window.prompt(message);
-      if (!selected || !tableNames.includes(selected)) return;
-      await axios.post(`/api/select-table`, { tableName: selected }, { headers: { Authorization: `Bearer ${token}` } });
-      setTableName(selected);
-      alert(`Current table set to ${selected}`);
-    } catch (error) { alert('Error selecting table'); }
+      await axios.post(`/api/select-table`, { tableName: selectedName }, { headers: { Authorization: `Bearer ${token}` } });
+      setTableName(selectedName);
+      setShowTableSelector(false); 
+    } catch (error) { 
+      alert(`Error setting table to ${selectedName}`); 
+    }
   };
 
   // --- R ANALYSIS LOGIC ---
@@ -230,7 +242,53 @@ const ViewDatabasePage = () => {
         <div className="controls">
           <button className="download-button" onClick={handleDownload}> Download as CSV </button>
           <button className="download-button" onClick={handleDownloadExcel}> Download as XLSX </button>
-          <button className="select-button" onClick={handleSelectTable}> Select Table </button>
+          
+          {/* --- UPDATED SELECT TABLE UI --- */}
+          <button 
+            className="select-button" 
+            onClick={toggleTableSelector}
+            style={{ marginBottom: showTableSelector ? '5px' : '10px'}}
+          > 
+            {showTableSelector ? "▼ Close Table List" : "▶ Select Table"} 
+          </button>
+
+          {showTableSelector && (
+            <div className="table-selector-list" style={{
+              maxHeight: '150px', 
+              overflowY: 'auto', 
+              border: '1px solid #ccc', 
+              borderRadius: '4px', 
+              marginBottom: '10px',
+              backgroundColor: '#fff'
+            }}>
+              {availableTables.length === 0 ? (
+                <p style={{padding: '10px', fontSize: '0.8rem', color: '#666'}}>No tables found.</p>
+              ) : (
+                availableTables.map((tName) => (
+                  <div 
+                    key={tName}
+                    onClick={() => handleTableSelection(tName)}
+                    style={{
+                      padding: '8px 10px',
+                      cursor: 'pointer',
+                      borderBottom: '1px solid #eee',
+                      backgroundColor: tableName === tName ? '#f0f8ff' : 'transparent',
+                      color: tableName === tName ? '#000' : '#333',
+                      fontSize: '0.9rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f5f5f5'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = tableName === tName ? '#f0f8ff' : 'transparent'}
+                  >
+                    {tName}
+                    {tableName === tName && <span style={{color: 'green', fontSize: '0.8rem'}}>●</span>}
+                  </div>
+                ))
+              )}
+            </div>
+          )}
           
           <hr style={{width: '100%', margin: '15px 0', border: '0.5px solid #ddd'}} />
           
@@ -247,7 +305,6 @@ const ViewDatabasePage = () => {
                   onChange={(e) => updateShellRow(index, 'label', e.target.value)} 
                 />
                 
-          
                 {row.expanded ? (
                   <textarea 
                     placeholder="R Code (Script)"
@@ -272,7 +329,6 @@ const ViewDatabasePage = () => {
                   />
                 )}
                 
-          
                 <button 
                   onClick={() => toggleShellRowExpand(index)} 
                   style={{
