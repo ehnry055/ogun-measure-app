@@ -17,7 +17,6 @@ const ViewDatabasePage = () => {
   const [selectedColumns, setSelectedColumns] = useState(new Set());
   const [selectedPreset, setSelectedPreset] = useState(null);
   
-
   const [availableTables, setAvailableTables] = useState([]);
   const [showTableSelector, setShowTableSelector] = useState(false);
 
@@ -26,15 +25,18 @@ const ViewDatabasePage = () => {
   const [rResult, setRResult] = useState(null);
   const [rError, setRError] = useState(null);
   
-
   const [shellRows, setShellRows] = useState([
     { label: 'Mean', code: 'mean(vals)', expanded: false },
     { label: 'SD', code: 'sd(vals)', expanded: false }
   ]);
+  const [rPresets, setRPresets] = useState([]);
 
   useEffect(() => {
     const savedPresets = localStorage.getItem('columnPresets');
     if (savedPresets) setPresets(JSON.parse(savedPresets));
+
+    const savedRPresets = localStorage.getItem('rShellPresets');
+    if (savedRPresets) setRPresets(JSON.parse(savedRPresets));
   }, []);
 
   useEffect(() => {
@@ -102,6 +104,25 @@ const ViewDatabasePage = () => {
     setShellRows(newRows);
   };
 
+  const handleSaveRPreset = () => {
+    const presetName = prompt('Enter name for this R analysis configuration:');
+    if (!presetName) return;
+    const newPreset = { name: presetName, rows: shellRows };
+    const updated = [...rPresets, newPreset];
+    setRPresets(updated);
+    localStorage.setItem('rShellPresets', JSON.stringify(updated));
+  };
+
+  const applyRPreset = (preset) => {
+    setShellRows(preset.rows);
+  };
+
+  const deleteRPreset = (presetName) => {
+    const updated = rPresets.filter(p => p.name !== presetName);
+    setRPresets(updated);
+    localStorage.setItem('rShellPresets', JSON.stringify(updated));
+  };
+
   const handleDownload = async () => {
     try {
       let token = await getAccessTokenSilently();
@@ -140,7 +161,6 @@ const ViewDatabasePage = () => {
     } catch (error) { alert('Excel download failed.'); }
   };
 
- 
   const toggleTableSelector = async () => {
     if (!showTableSelector) {
       try {
@@ -156,19 +176,17 @@ const ViewDatabasePage = () => {
     setShowTableSelector(!showTableSelector);
   };
 
-
   const handleTableSelection = async (selectedName) => {
     try {
       const token = await getAccessTokenSilently();
       await axios.post(`/api/select-table`, { tableName: selectedName }, { headers: { Authorization: `Bearer ${token}` } });
       setTableName(selectedName);
-      setShowTableSelector(false); 
+      setShowTableSelector(false);
     } catch (error) { 
       alert(`Error setting table to ${selectedName}`); 
     }
   };
 
-  // --- R ANALYSIS LOGIC ---
   const handleRunRAnalysis = async () => {
     if (!rReady || !webRInstance) return;
     if (selectedColumns.size === 0) { alert("Please select columns first."); return; }
@@ -243,7 +261,6 @@ const ViewDatabasePage = () => {
           <button className="download-button" onClick={handleDownload}> Download as CSV </button>
           <button className="download-button" onClick={handleDownloadExcel}> Download as XLSX </button>
           
-          {/* --- UPDATED SELECT TABLE UI --- */}
           <button 
             className="select-button" 
             onClick={toggleTableSelector}
@@ -359,9 +376,24 @@ const ViewDatabasePage = () => {
               </div>
             ))}
           </div>
-          
-          <button className="select-button" style={{fontSize: '0.8rem', padding: '5px'}} onClick={addShellRow}>+ Add Row</button>
-          <button className="download-button" onClick={handleRunRAnalysis} disabled={!rReady || rLoading} style={{marginTop: '10px'}}>
+
+          <div style={{display: 'flex', gap: '10px', marginBottom: '10px'}}>
+             <button className="select-button" style={{fontSize: '0.8rem', padding: '5px', flex: 1}} onClick={addShellRow}>+ Add Row</button>
+             <button className="select-button" style={{fontSize: '0.8rem', padding: '5px', flex: 1, backgroundColor: '#f0f8ff', borderColor: '#8C68CD', color: '#8C68CD'}} onClick={handleSaveRPreset}>Save Preset</button>
+          </div>
+
+          {rPresets.length > 0 && (
+            <div style={{display: 'flex', flexWrap: 'wrap', gap: '5px', marginBottom: '10px'}}>
+              {rPresets.map(preset => (
+                <div key={preset.name} style={{ display: 'flex', alignItems: 'center', background: '#eee', borderRadius: '4px', paddingLeft: '8px', fontSize: '0.8rem' }}>
+                  <span onClick={() => applyRPreset(preset)} style={{ cursor: 'pointer', marginRight: '5px' }}>{preset.name}</span>
+                  <button onClick={() => deleteRPreset(preset.name)} style={{ border: 'none', background: 'none', color: '#d9534f', cursor: 'pointer', padding: '4px 8px', borderLeft: '1px solid #ddd' }}>×</button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <button className="download-button" onClick={handleRunRAnalysis} disabled={!rReady || rLoading} style={{marginTop: '5px'}}>
             {!rReady ? "Loading R..." : rLoading ? "Analyzing..." : "Run Analysis"}
           </button>
           {rError && <p style={{color: 'red', fontSize: '0.8rem'}}>{rError}</p>}
