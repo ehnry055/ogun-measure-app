@@ -72,8 +72,6 @@ const RequestsPage = () => {
           area,
           target,
           data,
-          baseUrl: window.location.origin
-
         },
       });
 
