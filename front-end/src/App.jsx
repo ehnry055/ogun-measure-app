@@ -18,6 +18,8 @@ import ViewDatabasePage from './pages/ViewDatabasePage';
 import ItemDevelopers from './pages/ItemDevelopers';
 import OgunMeasure from './pages/OgunMeasure';
 import Gateway from './pages/Gateway';
+import ReviewRequest from './pages/ReviewRequest';
+
 
 import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';

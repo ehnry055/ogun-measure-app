@@ -25,7 +25,7 @@ const { Op } = require('sequelize');
 
 const corsOptions = {
   origin: [
-    'http://localhost:4000', 
+    'http://localhost:4000',
     'https://ogun-measure-app.herokuapp.com'
   ],
   credentials: true
@@ -112,7 +112,7 @@ app.get('/api/tables', async (req, res) => {
     const key = `Tables_in_${sequelize.config.database}`;
     const tableNames = tables
       .map(row => row[key])
-      .filter(name => name !== 'ogun_pages' && name !== 'OgunPage'); 
+      .filter(name => name !== 'ogun_pages' && name !== 'OgunPage');
     res.json(tableNames);
   } catch (err) {
     console.error('Error fetching tables:', err);
@@ -195,7 +195,7 @@ app.post('/api/delete-table', async (req, res) => {
   if (!/^[\w.]+$/.test(tableName)) {
     return res.status(400).send("Invalid table name. Only letters, numbers, underscores and periods are allowed.");
   }
-  
+
   // block protected tables
   if (tableName === 'AggregatedData' || tableName === "ogun_pages" || tableName === "OgunPage") {
     return res.status(403).send("Cannot delete this table.");
@@ -204,19 +204,19 @@ app.post('/api/delete-table', async (req, res) => {
   try {
     const [tables] = await sequelize.query("SHOW TABLES");
     const key = `Tables_in_${sequelize.config.database}`;
-    
+
     const tableNames = tables.map(row => row[key]);
-    
+
     const tableExists = tableNames.includes(tableName);
-    
+
     if (!tableExists) return res.status(404).send("Table not found");
 
     await sequelize.query(`DROP TABLE IF EXISTS \`${tableName}\``);
-    
+
     if (DynamicEntry && DynamicEntry.getTableName() === tableName) {
       DynamicEntry = AggregatedData;
     }
-    
+
     res.status(200).send(`Table ${tableName} dropped successfully`);
   } catch (err) {
     console.error('Error deleting table:', err);
@@ -228,12 +228,12 @@ app.get('/api/notes', async (req, res) => {
   try {
     const limit = parseInt(req.query.limit) || 20;
     const state = req.query.state;
-    
+
     const options = {
       limit,
       attributes: { exclude: ['id'] }
     };
-    
+
     // add state filter if provided
     if (state) {
       options.where = {
@@ -244,7 +244,7 @@ app.get('/api/notes', async (req, res) => {
     }
 
     const notes = await DynamicEntry.findAll(options);
-    
+
     res.json(notes);
   } catch (err) {
     console.error('Error fetching notes:', err);
@@ -264,7 +264,7 @@ app.post('/api/analyze-columns', async (req, res) => {
     // Fetch only the requested columns
     const rows = await DynamicEntry.findAll({
       limit: fetchLimit,
-      attributes: columns, 
+      attributes: columns,
       raw: true
     });
 
@@ -284,18 +284,14 @@ app.post('/api/analyze-columns', async (req, res) => {
   }
 });
 
-
-
-
-
 app.get('/api/export-csv', async (req, res) => {
   try {
     const columns = req.query.columns ? req.query.columns.split(',') : [];
-    
+
     // always use columns from the CURRENT dynamic table if none are specified
-    const attributes = columns.length > 0 
-      ? columns 
-      : Object.keys(DynamicEntry.rawAttributes); 
+    const attributes = columns.length > 0
+      ? columns
+      : Object.keys(DynamicEntry.rawAttributes);
 
     const filteredAttributes = attributes.filter(attr => attr !== 'id');
 
@@ -322,8 +318,8 @@ app.get('/api/export-csv', async (req, res) => {
 app.get("/api/export-excel", async (req, res) => {
   try {
     const columns = req.query.columns ? req.query.columns.split(",") : [];
-    const attributes = columns.length > 0 
-      ? columns 
+    const attributes = columns.length > 0
+      ? columns
       : Object.keys(DynamicEntry.rawAttributes);
 
     const filteredAttributes = attributes.filter(attr => attr !== "id");
@@ -363,7 +359,7 @@ app.post('/api/upload', upload.single('csv'), async (req, res) => {
   if (!req.file) return res.status(400).send('No file uploaded');
   const tableName = req.body.tableName;
   const filePath = req.file.path;
-  
+
   if (!tableName) {
     fs.unlinkSync(filePath);
     return res.status(400).send('No table name');
@@ -376,7 +372,7 @@ app.post('/api/upload', upload.single('csv'), async (req, res) => {
 
   try {
     await sequelize.query(`DROP TABLE IF EXISTS \`${tableName}\``);
-    
+
     const headers = await new Promise((resolve, reject) => {
       fs.createReadStream(filePath)
         .pipe(csv())
@@ -401,10 +397,10 @@ app.post('/api/upload', upload.single('csv'), async (req, res) => {
 
     if (results.length > 0) {
       const columns = headers.map(h => `\`${h}\``).join(', ');
-      const values = results.map(row => 
+      const values = results.map(row =>
         `(${headers.map(h => row[h] ? sequelize.escape(row[h]) : 'NULL').join(', ')})`
       ).join(', ');
-      
+
       await sequelize.query(`
         INSERT INTO \`${tableName}\` (${columns})
         VALUES ${values}
@@ -414,18 +410,18 @@ app.post('/api/upload', upload.single('csv'), async (req, res) => {
     if (sequelize.models[tableName]) {
       delete sequelize.models[tableName];
     }
-    
+
     const [columns] = await sequelize.query(`
         SELECT COLUMN_NAME 
         FROM INFORMATION_SCHEMA.COLUMNS 
         WHERE TABLE_NAME = '${tableName}'
       `);
 
-    DynamicEntry = sequelize.define(tableName, 
+    DynamicEntry = sequelize.define(tableName,
       columns.reduce((acc, col) => {
         acc[col.COLUMN_NAME] = { type: Sequelize.TEXT };
         return acc;
-      }, {}), 
+      }, {}),
       {
         tableName: tableName,
         timestamps: false
@@ -439,7 +435,6 @@ app.post('/api/upload', upload.single('csv'), async (req, res) => {
     res.status(500).send('Upload failed: ' + err.message);
   }
 });
-
 
 app.get('/api/columns', async (req, res) => {
   try {
@@ -458,7 +453,7 @@ app.get('/api/columns', async (req, res) => {
 app.post('/api/ogun-pages/save', async (req, res) => {
   try {
     const { pageId, tableData } = req.body;
-    
+
     await ogun_pages.upsert({
       pageId: pageId,
       content: tableData
@@ -475,7 +470,7 @@ app.get('/api/ogun-pages/load', async (req, res) => {
   try {
     const { pageId } = req.query;
     const page = await ogun_pages.findByPk(pageId);
-    
+
     if (page) {
       res.json(page.content);
     } else {
@@ -487,25 +482,25 @@ app.get('/api/ogun-pages/load', async (req, res) => {
   }
 });
 
-  //email sending funtions
-  const sendEmail = ({ email, name, role, affiliation, funding, intention, share, when, area, target, data }) => {
-    console.log("Sending email with the following data:")
-    return new Promise((resolve, reject) => {
-      const transporter = nodemailer.createTransport({
-        service: "Gmail",
-        host: "smtp.gmail.com",
-        port: 587,
-        auth: {
-          user: process.env.EMAIL_USER, // Your verified email address
-          pass: process.env.EMAIL_PASS, // App-specific password
-        },
-      });
-  
-      const sendMailData = {
-        from: process.env.EMAIL_USER, // Your verified email address
-        to: "pa2629@cumc.columbia.edu", // Sends the email to admin (Dr. AJ)
-        subject: `Request for Data Access by ${name}`,
-        html: `
+// email sending functions
+const sendEmail = ({ email, name, role, affiliation, funding, intention, share, when, area, target, data }) => {
+  console.log("Sending email with the following data:");
+  return new Promise((resolve, reject) => {
+    const transporter = nodemailer.createTransport({
+      service: "Gmail",
+      host: "smtp.gmail.com",
+      port: 587,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const sendMailData = {
+      from: process.env.EMAIL_USER,
+      to: "deanelbayar@gmail.com", //EMAIL HERE pa2629@cumc.columbia.edu
+      subject: `Request for Data Access by ${name}`,
+      html: `
           <p>Name: ${name}</p>
           <p>Email: ${email}</p>
           <p>Role: ${role}</p>
@@ -518,13 +513,13 @@ app.get('/api/ogun-pages/load', async (req, res) => {
           <p>Target Population: ${target}</p>
           <p>Data analysis program: ${data}</p>
         `,
-      };
-      
-      const confirmMailData = {
-        from: process.env.EMAIL_USER, // Your verified email address
-        to: email, // Send the confirmation email to the user
-        subject: "Confirmation of Data Access Request",
-        html: `
+    };
+
+    const confirmMailData = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "Confirmation of Data Access Request",
+      html: `
           <p>Thank you for your request for data access.</p>
           <p>Name: ${name}</p>
           <p>Email: ${email}</p>
@@ -538,34 +533,70 @@ app.get('/api/ogun-pages/load', async (req, res) => {
           <p>Target Population: ${target}</p>
           <p>Data analysis program: ${data}</p>
         `,
-      };
-      
-      transporter.sendMail(sendMailData, (err, info) => {
-        if (err) {
-          return reject(err); // Reject the promise with the error
-        }
-        resolve(info); // Resolve the promise with the info
-      });
-      
-      transporter.sendMail(confirmMailData, (err, info) => {
-        if (err) {
-          return reject(err); // Reject the promise with the error
-        }
-        resolve(info); // Resolve the promise with the info
-      });
-      
-    });
-  };
+    };
 
-  app.get("/api/user/send-email", (req, res) => {
-    sendEmail(req.query)
-      .then((response) => res.send(response.message))
-      .catch((error) => res.status(500).send(error.message));
+    transporter.sendMail(sendMailData, (err, info) => {
+      if (err) return reject(err);
+      resolve(info);
+    });
+
+    transporter.sendMail(confirmMailData, (err, info) => {
+      if (err) return reject(err);
+      resolve(info);
+    });
   });
+};
+
+app.get("/api/user/send-email", (req, res) => {
+  sendEmail(req.query)
+    .then((response) => res.send(response.message))
+    .catch((error) => res.status(500).send(error.message));
+});
+
+/**
+ * NEW: send decision email to requester after approve/reject
+ */
+const sendDecisionEmail = ({ email, name, decision }) => {
+  return new Promise((resolve, reject) => {
+    const transporter = nodemailer.createTransport({
+      service: "Gmail",
+      host: "smtp.gmail.com",
+      port: 587,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const approved = decision === "approved";
+
+    const mailData = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: approved
+        ? "Your Ogun Measure data access request was approved"
+        : "Your Ogun Measure data access request update",
+      html: `
+        <p>Hi${name ? ` ${name}` : ""},</p>
+        <p>Your request for data access has been <b>${approved ? "APPROVED" : "NOT APPROVED"}</b>.</p>
+        ${
+          approved
+            ? `<p>You can now log in and access the protected features.</p>`
+            : `<p>If you have questions, please reply to this email.</p>`
+        }
+        <p>— Ogun Measure Team</p>
+      `,
+    };
+
+    transporter.sendMail(mailData, (err, info) => {
+      if (err) return reject(err);
+      resolve(info);
+    });
+  });
+};
 
 // auth0 management api
-
-app.get("/api/admin/get-users",  async (req, res) => {
+app.get("/api/admin/get-users", async (req, res) => {
   try {
     const userList = await auth0Management.getAllUsers();
     res.json(userList);
@@ -575,7 +606,7 @@ app.get("/api/admin/get-users",  async (req, res) => {
   }
 });
 
-app.get("/api/admin/get-user-roles",  async (req, res) => {
+app.get("/api/admin/get-user-roles", async (req, res) => {
   try {
     const { userId } = req.query;
     if (!userId) {
@@ -589,7 +620,7 @@ app.get("/api/admin/get-user-roles",  async (req, res) => {
   }
 });
 
-app.get("/api/admin/delete-user",  async (req, res) => {
+app.get("/api/admin/delete-user", async (req, res) => {
   console.log("Deleting user");
   try {
     const { userId } = req.query;
@@ -604,7 +635,7 @@ app.get("/api/admin/delete-user",  async (req, res) => {
   }
 });
 
-app.post("/api/admin/assign-registered",  async (req, res) => {
+app.post("/api/admin/assign-registered", async (req, res) => {
   try {
     console.log("add");
     const { userId } = req.body;
@@ -619,7 +650,7 @@ app.post("/api/admin/assign-registered",  async (req, res) => {
   }
 });
 
-app.delete("/api/admin/remove-registered",  async (req, res) => {
+app.delete("/api/admin/remove-registered", async (req, res) => {
   console.log("remove");
   try {
     console.log("removig reg");
@@ -635,6 +666,58 @@ app.delete("/api/admin/remove-registered",  async (req, res) => {
   }
 });
 
+/**
+ * NEW: Approve request by email:
+ * - find Auth0 user by email
+ * - assign Registered role
+ * - email requester approved
+ */
+app.post("/api/admin/approve-request", async (req, res) => {
+  try {
+    const { email, name } = req.body;
+
+    if (!email) {
+      return res.status(400).send("Email is required to approve a request.");
+    }
+
+    // Requires auth0.js to have getUserIdByEmail(email)
+    const userId = await auth0Management.getUserIdByEmail(email);
+
+    if (!userId) {
+      return res.status(404).send(`No Auth0 user found for email: ${email}`);
+    }
+
+    await auth0Management.assignRegistered(userId);
+    await sendDecisionEmail({ email, name, decision: "approved" });
+
+    res.status(200).send("Approved: role assigned and decision email sent.");
+  } catch (error) {
+    console.error("Approve request error:", error);
+    res.status(500).send("Error approving request. Check server logs.");
+  }
+});
+
+/**
+ * NEW: Reject request by email:
+ * - no role changes
+ * - email requester rejected
+ */
+app.post("/api/admin/reject-request", async (req, res) => {
+  try {
+    const { email, name } = req.body;
+
+    if (!email) {
+      return res.status(400).send("Email is required to reject a request.");
+    }
+
+    await sendDecisionEmail({ email, name, decision: "rejected" });
+
+    res.status(200).send("Rejected: decision email sent.");
+  } catch (error) {
+    console.error("Reject request error:", error);
+    res.status(500).send("Error rejecting request. Check server logs.");
+  }
+});
 
 // Catch-all handler for any other requests
 app.get('*', (req, res) => {
