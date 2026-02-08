@@ -1,6 +1,6 @@
 import React from "react";
 import "../styles/HomePage.css";
-import heroImage from "../assets/Columbia-hero.png";
+import heroImage from "front-end/src/assets/encouraging.png";
 import { Link } from "react-router-dom";
 
 const HomePage = () => {
