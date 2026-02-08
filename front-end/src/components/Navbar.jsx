@@ -1,13 +1,41 @@
 import "../styles/Navbar.css";
 import columbiaLogo from "../assets/columbia-logo.svg";
 import { NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import { jwtDecode } from "jwt-decode";
 
 import LoginButton from "./login";
 import LogoutButton from "./logout";
 
 function Navbar() {
-  const { isAuthenticated, isLoading } = useAuth0();
+  const { isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const setPermissionState = async () => {
+      if (!isAuthenticated) {
+        setIsAdmin(false);
+        return;
+      }
+
+      try {
+        const token = await getAccessTokenSilently();
+        const decodedToken = jwtDecode(token);
+        const hasAdminPermission =
+          decodedToken.permissions &&
+          decodedToken.permissions.includes("adminView");
+        setIsAdmin(Boolean(hasAdminPermission));
+      } catch (error) {
+        console.error("Unable to read admin permissions", error);
+        setIsAdmin(false);
+      }
+    };
+
+    if (!isLoading) {
+      setPermissionState();
+    }
+  }, [isAuthenticated, isLoading, getAccessTokenSilently]);
 
   return (
     <header className="navbar-wrapper">
@@ -32,6 +60,15 @@ function Navbar() {
                 style={{ textDecoration: "none" }}
               >
                 Request Data
+              </NavLink>
+            )}
+            {!isLoading && isAdmin && (
+              <NavLink
+                to="/admin/requests"
+                className="btn btn-outline-primary"
+                style={{ textDecoration: "none", marginLeft: "10px" }}
+              >
+                Review Requests
               </NavLink>
             )}
 

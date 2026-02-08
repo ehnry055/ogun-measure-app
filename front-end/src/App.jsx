@@ -18,6 +18,7 @@ import ViewDatabasePage from './pages/ViewDatabasePage';
 import ItemDevelopers from './pages/ItemDevelopers';
 import OgunMeasure from './pages/OgunMeasure';
 import Gateway from './pages/Gateway';
+import AdminRequestsPage from './pages/AdminRequestsPage';
 
 import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
@@ -60,6 +61,7 @@ function App() {
 
             {/* Admin */}
             <Route path="/users" element={<AdminRoute Component={EditUsers} />} />
+            <Route path="/admin/requests" element={<AdminRoute Component={AdminRequestsPage} />} />
 
             {/* Facets */}
             <Route path="/ResidentialSegregationGentrification" element={<RSG />} />

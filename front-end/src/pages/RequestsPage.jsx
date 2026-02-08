@@ -58,10 +58,15 @@ const RequestsPage = () => {
     try {
       await getAccessTokenSilently();
       const email = user?.email;
+      const reviewLink =
+        typeof window !== "undefined"
+          ? `${window.location.origin}/admin/requests?requesterEmail=${encodeURIComponent(email || "")}`
+          : "";
 
       await axios.get("/api/user/send-email", {
         params: {
           email,
+          reviewLink,
           name,
           role,
           affiliation,

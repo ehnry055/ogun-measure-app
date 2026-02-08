@@ -90,4 +90,84 @@ html, body{
   font-size: 16px;
 }
 
+.admin-requests-page {
+  color: #1f2937;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.admin-requests-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.admin-requests-subtitle {
+  margin-bottom: 12px;
+}
+
+.admin-requests-summary {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 14px;
+  font-weight: 600;
+  color: #1f3a8a;
+}
+
+.admin-requests-error {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.admin-requests-table-wrap {
+  overflow-x: auto;
+}
+
+.admin-requests-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-requests-table th,
+.admin-requests-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #e5e7eb;
+  color: #1f2937;
+  text-align: left;
+}
+
+.admin-requests-table th {
+  background: #f8fafc;
+}
+
+.admin-requests-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.admin-requests-target-row {
+  background: #eff6ff;
+}
+
+.status-approved,
+.status-pending {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.status-approved {
+  color: #166534;
+  background: #dcfce7;
+}
+
+.status-pending {
+  color: #92400e;
+  background: #fef3c7;
+}
+
 

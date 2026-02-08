@@ -488,7 +488,7 @@ app.get('/api/ogun-pages/load', async (req, res) => {
 });
 
   //email sending funtions
-  const sendEmail = ({ email, name, role, affiliation, funding, intention, share, when, area, target, data }) => {
+  const sendEmail = ({ email, reviewLink, name, role, affiliation, funding, intention, share, when, area, target, data }) => {
     console.log("Sending email with the following data:")
     return new Promise((resolve, reject) => {
       const transporter = nodemailer.createTransport({
@@ -517,6 +517,11 @@ app.get('/api/ogun-pages/load', async (req, res) => {
           <p>Which geographic area of the US are you interested in exploring?: ${area}</p>
           <p>Target Population: ${target}</p>
           <p>Data analysis program: ${data}</p>
+          ${
+            reviewLink
+              ? `<p><a href="${reviewLink}" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:10px 14px;background:#2563eb;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;">Review this request</a></p>`
+              : ""
+          }
         `,
       };
       
