@@ -31,6 +31,18 @@ const AdminRequestsPage = () => {
   };
 
   const getStatusFromRole = (isRegistered) => (isRegistered ? "approved" : "pending");
+  const formatDateTime = (dateValue) => {
+    if (!dateValue) {
+      return "N/A";
+    }
+
+    const parsed = new Date(dateValue);
+    if (Number.isNaN(parsed.getTime())) {
+      return "N/A";
+    }
+
+    return parsed.toLocaleString();
+  };
 
   const fetchRequests = async () => {
     try {
@@ -39,9 +51,21 @@ const AdminRequestsPage = () => {
 
       const token = await getAccessTokenSilently();
 
-      const usersResponse = await axios.get("/api/admin/get-users", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const [usersResponse, requestMetadataResponse] = await Promise.all([
+        axios.get("/api/admin/get-users", {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+        axios.get("/api/admin/access-requests", {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+      ]);
+
+      const requestMetadataByEmail = new Map(
+        (requestMetadataResponse.data || []).map((request) => [
+          (request.email || "").toLowerCase(),
+          request,
+        ])
+      );
 
       const rawUsers = Array.isArray(usersResponse.data)
         ? usersResponse.data
@@ -57,15 +81,19 @@ const AdminRequestsPage = () => {
           const roles = parseRoles(roleResponse.data).map((role) => role.name);
           const isAdmin = roles.includes("admin_role");
           const isRegistered = roles.includes("registered_role");
+          const normalizedEmail = (user.email || "").toLowerCase();
+          const requestMetadata = requestMetadataByEmail.get(normalizedEmail);
+          const status = requestMetadata?.decisionStatus || getStatusFromRole(isRegistered);
 
           return {
             userId: user.user_id,
             name: user.name || "Unknown",
             email: user.email || "No email",
-            lastLogin: user.last_login || "Never",
+            requestSubmittedAt: requestMetadata?.requestSubmittedAt || null,
+            decisionAt: requestMetadata?.decisionAt || null,
             isAdmin,
             isRegistered,
-            status: getStatusFromRole(isRegistered),
+            status,
           };
         })
       );
@@ -103,20 +131,22 @@ const AdminRequestsPage = () => {
     return rows.filter((row) => (row.email || "").toLowerCase() === targetEmail);
   }, [rows, targetEmail]);
 
-  const approveRequest = async (userId) => {
+  const approveRequest = async (userId, rowEmail) => {
     try {
       setActingUserId(userId);
       const token = await getAccessTokenSilently();
 
       await axios.post(
         "/api/admin/assign-registered",
-        { userId },
+        { userId, requesterEmail: rowEmail },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
       setRows((prev) =>
         prev.map((row) =>
-          row.userId === userId ? { ...row, isRegistered: true, status: "approved" } : row
+          row.userId === userId
+            ? { ...row, isRegistered: true, status: "approved", decisionAt: new Date().toISOString() }
+            : row
         )
       );
     } catch (actionError) {
@@ -127,19 +157,21 @@ const AdminRequestsPage = () => {
     }
   };
 
-  const rejectRequest = async (userId) => {
+  const rejectRequest = async (userId, rowEmail) => {
     try {
       setActingUserId(userId);
       const token = await getAccessTokenSilently();
 
       await axios.delete("/api/admin/remove-registered", {
-        params: { userId },
+        params: { userId, requesterEmail: rowEmail },
         headers: { Authorization: `Bearer ${token}` },
       });
 
       setRows((prev) =>
         prev.map((row) =>
-          row.userId === userId ? { ...row, isRegistered: false, status: "rejected" } : row
+          row.userId === userId
+            ? { ...row, isRegistered: false, status: "rejected", decisionAt: new Date().toISOString() }
+            : row
         )
       );
     } catch (actionError) {
@@ -188,7 +220,7 @@ const AdminRequestsPage = () => {
               <tr>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Last Login</th>
+                <th>Request Sent At</th>
                 <th>Status</th>
                 <th>Actions</th>
               </tr>
@@ -202,7 +234,7 @@ const AdminRequestsPage = () => {
                   <tr key={row.userId} className={isTargeted ? "admin-requests-target-row" : ""}>
                     <td>{row.name}</td>
                     <td>{row.email}</td>
-                    <td>{row.lastLogin}</td>
+                    <td>{formatDateTime(row.requestSubmittedAt)}</td>
                     <td>
                       <span className={`status-${row.status}`}>
                         {row.status === "approved"
@@ -211,13 +243,18 @@ const AdminRequestsPage = () => {
                           ? "Rejected"
                           : "Pending"}
                       </span>
+                      {row.decisionAt ? (
+                        <div className="admin-decision-time">
+                          {formatDateTime(row.decisionAt)}
+                        </div>
+                      ) : null}
                     </td>
                     <td className="admin-requests-actions">
                       <button
                         type="button"
                         className="btn btn-sm btn-success"
                         disabled={isBusy || row.status === "approved"}
-                        onClick={() => approveRequest(row.userId)}
+                        onClick={() => approveRequest(row.userId, row.email)}
                       >
                         Approve
                       </button>
@@ -225,7 +262,7 @@ const AdminRequestsPage = () => {
                         type="button"
                         className="btn btn-sm btn-danger"
                         disabled={isBusy || row.status === "rejected"}
-                        onClick={() => rejectRequest(row.userId)}
+                        onClick={() => rejectRequest(row.userId, row.email)}
                       >
                         Reject
                       </button>

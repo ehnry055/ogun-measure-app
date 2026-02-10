@@ -93,6 +93,37 @@ const ogun_pages = sequelize.define('ogun_pages', {
   createdAt: false
 });
 
+const AccessRequest = sequelize.define('access_requests', {
+  email: {
+    type: DataTypes.STRING,
+    primaryKey: true
+  },
+  requesterName: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    field: 'requester_name'
+  },
+  requestSubmittedAt: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    field: 'request_submitted_at'
+  },
+  decisionStatus: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: 'pending',
+    field: 'decision_status'
+  },
+  decisionAt: {
+    type: DataTypes.DATE,
+    allowNull: true,
+    field: 'decision_at'
+  }
+}, {
+  tableName: 'access_requests',
+  timestamps: false
+});
+
 let DynamicEntry = AggregatedData;
 
 const upload = multer({ dest: 'uploads/' });
@@ -562,11 +593,42 @@ app.get('/api/ogun-pages/load', async (req, res) => {
     });
   };
 
-  app.get("/api/user/send-email", (req, res) => {
-    sendEmail(req.query)
-      .then((response) => res.send(response.message))
-      .catch((error) => res.status(500).send(error.message));
+  app.get("/api/user/send-email", async (req, res) => {
+    try {
+      const { email, name } = req.query;
+      if (email) {
+        await AccessRequest.upsert({
+          email: email.toLowerCase(),
+          requesterName: name || null,
+          requestSubmittedAt: new Date(),
+          decisionStatus: 'pending',
+          decisionAt: null
+        });
+      }
+
+      const response = await sendEmail(req.query);
+      res.send(response.message);
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
   });
+
+const updateRequestDecision = async (requesterEmail, decisionStatus) => {
+  if (!requesterEmail) {
+    return;
+  }
+
+  const normalizedEmail = requesterEmail.toLowerCase();
+  const existing = await AccessRequest.findByPk(normalizedEmail);
+
+  await AccessRequest.upsert({
+    email: normalizedEmail,
+    requesterName: existing?.requesterName || null,
+    requestSubmittedAt: existing?.requestSubmittedAt || new Date(),
+    decisionStatus,
+    decisionAt: new Date()
+  });
+};
 
 // auth0 management api
 
@@ -612,11 +674,12 @@ app.get("/api/admin/delete-user",  async (req, res) => {
 app.post("/api/admin/assign-registered",  async (req, res) => {
   try {
     console.log("add");
-    const { userId } = req.body;
+    const { userId, requesterEmail } = req.body;
     if (!userId) {
       return res.status(400).send('User ID is required');
     }
     const assignRegistered = await auth0Management.assignRegistered(userId);
+    await updateRequestDecision(requesterEmail, 'approved');
     res.json(assignRegistered);
   } catch (error) {
     console.error('Error fetching users:', error);
@@ -628,15 +691,26 @@ app.delete("/api/admin/remove-registered",  async (req, res) => {
   console.log("remove");
   try {
     console.log("removig reg");
-    const { userId } = req.query;
+    const { userId, requesterEmail } = req.query;
     if (!userId) {
       return res.status(400).send('User ID is required');
     }
     const removeRegistered = await auth0Management.removeRegistered(userId);
+    await updateRequestDecision(requesterEmail, 'rejected');
     res.json(removeRegistered);
   } catch (error) {
     console.error('Error fetching users:', error);
     res.status(500).send('Error fetching users');
+  }
+});
+
+app.get("/api/admin/access-requests", async (req, res) => {
+  try {
+    const requests = await AccessRequest.findAll();
+    res.json(requests);
+  } catch (error) {
+    console.error('Error fetching access requests:', error);
+    res.status(500).send('Error fetching access requests');
   }
 });
 
