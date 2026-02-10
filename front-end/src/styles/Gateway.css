@@ -9,6 +9,7 @@
 /* ===== PAGE RESET (Gateway only) ===== */
 .gateway-page {
   margin: 0 !important;
+  margin-top: -20px !important;
   padding: 0 !important;
   width: 100% !important;
   max-width: none !important;
