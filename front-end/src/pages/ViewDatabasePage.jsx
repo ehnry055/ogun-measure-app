@@ -9,7 +9,6 @@ let webRInstance = null;
 const ViewDatabasePage = () => {
   const { getAccessTokenSilently } = useAuth0();
   
-  // CHANGE 1: Set default limit to 1000 (effectively "max" for a view without lagging)
   const [entryLimit, setEntryLimit] = useState(1000);
   const [tableName, setTableName] = useState("Default Table");
   const [stateFilter, setStateFilter] = useState('');
@@ -26,7 +25,6 @@ const ViewDatabasePage = () => {
   const [rResult, setRResult] = useState(null);
   const [rError, setRError] = useState(null);
   
-  // Analysis Mode & Help
   const [analysisMode, setAnalysisMode] = useState('batch'); // 'batch' or 'multi'
   const [showHelp, setShowHelp] = useState(false);
   
@@ -67,10 +65,7 @@ const ViewDatabasePage = () => {
     return () => { cancelled = true; };
   }, []);
 
-
   // --- Helper Functions ---
-  
-  // CHANGE 2: New Reset Function
   const handleResetColumns = () => {
     setSelectedColumns(new Set());
     setSelectedPreset(null);
@@ -271,13 +266,15 @@ const ViewDatabasePage = () => {
     } catch (e) { setRError("Analysis failed."); } finally { setRLoading(false); }
   };
 
-  // --- GRID STYLE CONSTANTS ---
+  // --- GRID STYLE CONSTANTS (WIDTH FIX) ---
   const rowGridStyle = {
     display: 'grid',
     gridTemplateColumns: '1fr 2fr 25px 30px', 
     gap: '5px',
     marginBottom: '5px',
-    alignItems: 'start'
+    alignItems: 'start',
+    width: '100%', // Enforce containment
+    boxSizing: 'border-box'
   };
 
   const varGridStyle = {
@@ -285,11 +282,15 @@ const ViewDatabasePage = () => {
     gridTemplateColumns: 'minmax(40px, 60px) 15px 1fr 30px',
     gap: '5px',
     marginBottom: '5px',
-    alignItems: 'center'
+    alignItems: 'center',
+    width: '100%', // Enforce containment
+    boxSizing: 'border-box'
   };
 
+  // Updated input style: Added minWidth: 0 to prevent grid blowout
   const inputStyle = {
     width: '100%', 
+    minWidth: '0', // CRITICAL FIX for Grid Overflow
     padding: '4px', 
     border: '1px solid #ccc', 
     borderRadius: '4px', 
@@ -327,7 +328,6 @@ const ViewDatabasePage = () => {
         <div className="preset-controls">
           <button className="preset-button save-preset" onClick={handleSavePreset}>Save Preset</button>
           
-          {/* CHANGE 3: Reset Column Selections Button */}
           <button 
             className="preset-button" 
             onClick={handleResetColumns}
@@ -335,7 +335,7 @@ const ViewDatabasePage = () => {
               marginBottom: '10px', 
               color: '#d9534f', 
               borderColor: '#d9534f',
-              width: '100%' // Full width for visibility
+              width: '100%'
             }}
           >
             Reset Column Selections
@@ -405,133 +405,138 @@ const ViewDatabasePage = () => {
           <hr style={{width: '100%', margin: '15px 0', border: '0.5px solid #ddd'}} />
           
           {/* --- R Shell Header --- */}
-          <div style={{display: 'flex', justifyContent: 'flex-start', alignItems: 'center', marginBottom: '10px', flexWrap: 'wrap', gap: '15px'}}>
-            <h3 style={{fontSize: '1rem', color: '#ca6767ff', margin: 0, display: 'flex', alignItems: 'center', whiteSpace: 'nowrap'}}>
-              R Analysis Shell
-              <span 
-                onClick={() => setShowHelp(!showHelp)}
-                style={{
-                  marginLeft: '8px', cursor: 'pointer', fontSize: '0.8rem', border: '1px solid #ca6767ff', 
-                  borderRadius: '50%', width: '18px', height: '18px', display: 'inline-flex', 
-                  alignItems: 'center', justifyContent: 'center', color: '#ca6767ff'
-                }}
-                title="Help"
-              >?</span>
-            </h3>
+          {/* Main Container for R Shell to enforce width */}
+          <div className="r-shell-wrapper" style={{width: '100%', boxSizing: 'border-box'}}>
             
-            <div style={{fontSize: '0.7rem', display: 'flex', gap: '5px', background: '#f5f5f5', padding: '3px', borderRadius: '4px'}}>
-              <button 
-                onClick={() => setAnalysisMode('batch')}
-                style={{
-                  border: 'none', background: analysisMode === 'batch' ? '#fff' : 'transparent', 
-                  color: analysisMode === 'batch' ? '#333' : '#999',
-                  boxShadow: analysisMode === 'batch' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
-                  borderRadius: '3px', cursor: 'pointer', padding: '4px 8px'
-                }}
-              >Batch</button>
-              <button 
-                onClick={() => setAnalysisMode('multi')}
-                style={{
-                  border: 'none', background: analysisMode === 'multi' ? '#fff' : 'transparent', 
-                  color: analysisMode === 'multi' ? '#333' : '#999',
-                  boxShadow: analysisMode === 'multi' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
-                  borderRadius: '3px', cursor: 'pointer', padding: '4px 8px'
-                }}
-              >Multi</button>
-            </div>
-          </div>
-          
-          {showHelp && (
-            <div style={{backgroundColor: '#fff', border: '1px solid #eee', borderRadius: '4px', padding: '10px', fontSize: '0.75rem', marginBottom: '10px', boxShadow: '0 2px 5px rgba(0,0,0,0.05)'}}>
-              <p style={{margin: '0 0 5px 0'}}><strong>Batch:</strong> Runs code on each selected column individually. Use variable <code>vals</code>.</p>
-              <p style={{margin: 0}}><strong>Multi:</strong> Define variables (x, y) mapped to columns, then write one script using them.</p>
-            </div>
-          )}
-          
-          {/* Multi-Mode Inputs */}
-          {analysisMode === 'multi' && (
-             <div style={{backgroundColor: '#f9f9f9', padding: '5px', borderRadius: '4px', marginBottom: '10px', border: '1px solid #eee', boxSizing: 'border-box'}}>
-               {rVariables.map((v, idx) => (
-                 <div key={idx} style={varGridStyle}>
-                   <input 
-                     placeholder="Var" value={v.name} 
-                     onChange={(e) => updateRVariable(idx, 'name', e.target.value)}
-                     style={inputStyle}
-                   />
-                   <span style={{textAlign: 'center', fontSize: '0.8rem'}}>=</span>
-                   <select 
-                     value={v.column} onChange={(e) => updateRVariable(idx, 'column', e.target.value)}
-                     style={inputStyle}
-                   >
-                     <option value="">Column</option>
-                     {Array.from(selectedColumns).map(col => <option key={col} value={col}>{col}</option>)}
-                   </select>
-                   <button onClick={() => removeRVariable(idx)} style={deleteBtnStyle}>×</button>
-                 </div>
-               ))}
-               <button onClick={addRVariable} style={{border: 'none', background: 'none', color: '#8C68CD', fontSize: '0.75rem', cursor: 'pointer', padding: 0}}>+ Add Variable</button>
-             </div>
-          )}
-          
-          {/* Shell Rows */}
-          <div className="r-shell-container" style={{maxHeight: '200px', overflowY: 'auto', marginBottom: '10px', width: '100%'}}>
-            {shellRows.map((row, index) => (
-              <div key={index} style={rowGridStyle}>
-                
-                <input 
-                  placeholder="Label" 
-                  style={inputStyle} 
-                  value={row.label} 
-                  onChange={(e) => updateShellRow(index, 'label', e.target.value)} 
-                />
-                
-                {row.expanded ? (
-                  <textarea 
-                    placeholder="R Code"
-                    style={{...inputStyle, minHeight: '80px', resize: 'vertical'}}
-                    value={row.code}
-                    onChange={(e) => updateShellRow(index, 'code', e.target.value)}
-                  />
-                ) : (
-                  <input 
-                    placeholder={analysisMode === 'batch' ? "mean(vals)" : "cor(var1, var2)"}
-                    style={inputStyle} 
-                    value={row.code} 
-                    onChange={(e) => updateShellRow(index, 'code', e.target.value)} 
-                  />
-                )}
-                
-                <button onClick={() => toggleShellRowExpand(index)} style={{background: 'none', border: 'none', color: '#666', cursor: 'pointer', padding: '5px 0', fontSize: '0.8rem'}}>
-                  {row.expanded ? '▲' : '▼'}
-                </button>
-                <button onClick={() => removeShellRow(index)} style={deleteBtnStyle}>
-                  ×
-                </button>
+            <div style={{display: 'flex', justifyContent: 'flex-start', alignItems: 'center', marginBottom: '10px', flexWrap: 'wrap', gap: '15px'}}>
+              <h3 style={{fontSize: '1rem', color: '#ca6767ff', margin: 0, display: 'flex', alignItems: 'center', whiteSpace: 'nowrap'}}>
+                R Analysis Shell
+                <span 
+                  onClick={() => setShowHelp(!showHelp)}
+                  style={{
+                    marginLeft: '8px', cursor: 'pointer', fontSize: '0.8rem', border: '1px solid #ca6767ff', 
+                    borderRadius: '50%', width: '18px', height: '18px', display: 'inline-flex', 
+                    alignItems: 'center', justifyContent: 'center', color: '#ca6767ff'
+                  }}
+                  title="Help"
+                >?</span>
+              </h3>
+              
+              <div style={{fontSize: '0.7rem', display: 'flex', gap: '5px', background: '#f5f5f5', padding: '3px', borderRadius: '4px'}}>
+                <button 
+                  onClick={() => setAnalysisMode('batch')}
+                  style={{
+                    border: 'none', background: analysisMode === 'batch' ? '#fff' : 'transparent', 
+                    color: analysisMode === 'batch' ? '#333' : '#999',
+                    boxShadow: analysisMode === 'batch' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+                    borderRadius: '3px', cursor: 'pointer', padding: '4px 8px'
+                  }}
+                >Batch</button>
+                <button 
+                  onClick={() => setAnalysisMode('multi')}
+                  style={{
+                    border: 'none', background: analysisMode === 'multi' ? '#fff' : 'transparent', 
+                    color: analysisMode === 'multi' ? '#333' : '#999',
+                    boxShadow: analysisMode === 'multi' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+                    borderRadius: '3px', cursor: 'pointer', padding: '4px 8px'
+                  }}
+                >Multi</button>
               </div>
-            ))}
-          </div>
-
-          <div style={{display: 'flex', gap: '10px', marginBottom: '10px'}}>
-             <button className="select-button" style={{fontSize: '0.8rem', padding: '5px', flex: 1}} onClick={addShellRow}>+ Add Row</button>
-             <button className="select-button" style={{fontSize: '0.8rem', padding: '5px', flex: 1, backgroundColor: '#f0f8ff', borderColor: '#8C68CD', color: '#8C68CD'}} onClick={handleSaveRPreset}>Save Preset</button>
-          </div>
-
-           {/* Presets List */}
-           {rPresets.length > 0 && (
-            <div style={{display: 'flex', flexWrap: 'wrap', gap: '5px', marginBottom: '10px'}}>
-              {rPresets.map(preset => (
-                <div key={preset.name} style={{ display: 'flex', alignItems: 'center', background: '#eee', borderRadius: '4px', paddingLeft: '8px', fontSize: '0.8rem' }}>
-                  <span onClick={() => applyRPreset(preset)} style={{ cursor: 'pointer', marginRight: '5px' }}>{preset.name}</span>
-                  <button onClick={() => deleteRPreset(preset.name)} style={{ border: 'none', background: 'none', color: '#d9534f', cursor: 'pointer', padding: '4px 8px', borderLeft: '1px solid #ddd' }}>×</button>
+            </div>
+            
+            {showHelp && (
+              <div style={{backgroundColor: '#fff', border: '1px solid #eee', borderRadius: '4px', padding: '10px', fontSize: '0.75rem', marginBottom: '10px', boxShadow: '0 2px 5px rgba(0,0,0,0.05)'}}>
+                <p style={{margin: '0 0 5px 0'}}><strong>Batch:</strong> Runs code on each selected column individually. Use variable <code>vals</code>.</p>
+                <p style={{margin: 0}}><strong>Multi:</strong> Define variables (x, y) mapped to columns, then write one script using them.</p>
+              </div>
+            )}
+            
+            {/* Multi-Mode Inputs */}
+            {analysisMode === 'multi' && (
+              <div style={{backgroundColor: '#f9f9f9', padding: '10px', borderRadius: '4px', marginBottom: '10px', border: '1px solid #eee', boxSizing: 'border-box', width: '100%'}}>
+                {rVariables.map((v, idx) => (
+                  <div key={idx} style={varGridStyle}>
+                    <input 
+                      placeholder="Var" value={v.name} 
+                      onChange={(e) => updateRVariable(idx, 'name', e.target.value)}
+                      style={inputStyle}
+                    />
+                    <span style={{textAlign: 'center', fontSize: '0.8rem'}}>=</span>
+                    <select 
+                      value={v.column} onChange={(e) => updateRVariable(idx, 'column', e.target.value)}
+                      style={inputStyle}
+                    >
+                      <option value="">-- Column --</option>
+                      {Array.from(selectedColumns).map(col => <option key={col} value={col}>{col}</option>)}
+                    </select>
+                    <button onClick={() => removeRVariable(idx)} style={deleteBtnStyle}>×</button>
+                  </div>
+                ))}
+                <button onClick={addRVariable} style={{border: 'none', background: 'none', color: '#8C68CD', fontSize: '0.75rem', cursor: 'pointer', padding: 0}}>+ Add Variable</button>
+              </div>
+            )}
+            
+            {/* Shell Rows */}
+            <div className="r-shell-container" style={{maxHeight: '200px', overflowY: 'auto', marginBottom: '10px', width: '100%', boxSizing: 'border-box'}}>
+              {shellRows.map((row, index) => (
+                <div key={index} style={rowGridStyle}>
+                  
+                  <input 
+                    placeholder="Label" 
+                    style={inputStyle} 
+                    value={row.label} 
+                    onChange={(e) => updateShellRow(index, 'label', e.target.value)} 
+                  />
+                  
+                  {row.expanded ? (
+                    <textarea 
+                      placeholder="R Code"
+                      style={{...inputStyle, minHeight: '80px', resize: 'vertical'}}
+                      value={row.code}
+                      onChange={(e) => updateShellRow(index, 'code', e.target.value)}
+                    />
+                  ) : (
+                    <input 
+                      placeholder={analysisMode === 'batch' ? "mean(vals)" : "cor(var1, var2)"}
+                      style={inputStyle} 
+                      value={row.code} 
+                      onChange={(e) => updateShellRow(index, 'code', e.target.value)} 
+                    />
+                  )}
+                  
+                  <button onClick={() => toggleShellRowExpand(index)} style={{background: 'none', border: 'none', color: '#666', cursor: 'pointer', padding: '5px 0', fontSize: '0.8rem'}}>
+                    {row.expanded ? '▲' : '▼'}
+                  </button>
+                  <button onClick={() => removeShellRow(index)} style={deleteBtnStyle}>
+                    ×
+                  </button>
                 </div>
               ))}
             </div>
-          )}
 
-          <button className="download-button" onClick={handleRunRAnalysis} disabled={!rReady || rLoading} style={{marginTop: '5px'}}>
-            {!rReady ? "Loading R..." : rLoading ? "Analyzing..." : "Run Analysis"}
-          </button>
+            <div style={{display: 'flex', gap: '10px', marginBottom: '10px', width: '100%'}}>
+              <button className="select-button" style={{fontSize: '0.8rem', padding: '5px', flex: 1}} onClick={addShellRow}>+ Add Row</button>
+              <button className="select-button" style={{fontSize: '0.8rem', padding: '5px', flex: 1, backgroundColor: '#f0f8ff', borderColor: '#8C68CD', color: '#8C68CD'}} onClick={handleSaveRPreset}>Save Preset</button>
+            </div>
+
+            {/* Presets List */}
+            {rPresets.length > 0 && (
+              <div style={{display: 'flex', flexWrap: 'wrap', gap: '5px', marginBottom: '10px', width: '100%'}}>
+                {rPresets.map(preset => (
+                  <div key={preset.name} style={{ display: 'flex', alignItems: 'center', background: '#eee', borderRadius: '4px', paddingLeft: '8px', fontSize: '0.8rem' }}>
+                    <span onClick={() => applyRPreset(preset)} style={{ cursor: 'pointer', marginRight: '5px' }}>{preset.name}</span>
+                    <button onClick={() => deleteRPreset(preset.name)} style={{ border: 'none', background: 'none', color: '#d9534f', cursor: 'pointer', padding: '4px 8px', borderLeft: '1px solid #ddd' }}>×</button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <button className="download-button" onClick={handleRunRAnalysis} disabled={!rReady || rLoading} style={{marginTop: '5px', width: '100%'}}>
+              {!rReady ? "Loading R..." : rLoading ? "Analyzing..." : "Run Analysis"}
+            </button>
           
+          </div> {/* End R Shell Wrapper */}
+
           {rError && <p style={{color: 'red', fontSize: '0.8rem'}}>{rError}</p>}
 
           {rResult && (
