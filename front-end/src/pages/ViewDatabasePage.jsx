@@ -25,8 +25,8 @@ const ViewDatabasePage = () => {
   const [rResult, setRResult] = useState(null);
   const [rError, setRError] = useState(null);
   
-  // Analysis Mode & Help
-  const [analysisMode, setAnalysisMode] = useState('batch');
+  // New: Analysis Mode & Help
+  const [analysisMode, setAnalysisMode] = useState('batch'); // 'batch' or 'multi'
   const [showHelp, setShowHelp] = useState(false);
   
   const [rVariables, setRVariables] = useState([
@@ -67,7 +67,7 @@ const ViewDatabasePage = () => {
   }, []);
 
 
-  // --- Helper Functions (Same as before) ---
+  // --- Helper Functions ---
   const handleSavePreset = () => {
     const presetName = prompt('Enter preset name:');
     if (!presetName) return;
@@ -225,6 +225,7 @@ const ViewDatabasePage = () => {
       const finalResults = {};
 
       if (analysisMode === 'batch') {
+        // Batch Mode
         for (const colName of columnList) {
           try {
             const rawValues = allData[colName];
@@ -238,6 +239,7 @@ const ViewDatabasePage = () => {
           } catch (e) { finalResults[colName] = { success: false, error: "Analysis error" }; }
         }
       } else {
+        // Multi Mode
         try {
           for (const v of rVariables) {
             if (!v.name || !v.column) continue;
@@ -256,56 +258,31 @@ const ViewDatabasePage = () => {
           finalResults["Multi-Column Result"] = { success: true, stats };
         } catch (e) {
             console.error(e);
-            finalResults["Analysis Error"] = { success: false, error: "Failed to run multi-column script." }; 
+            finalResults["Analysis Error"] = { success: false, error: e.message || "Failed to run multi-column script." }; 
         }
       }
       setRResult(finalResults);
     } catch (e) { setRError("Analysis failed."); } finally { setRLoading(false); }
   };
 
-  // --- Styles for that "High School / Elementary" Look ---
-  const boxStyle = {
-    border: '2px solid #333',
-    padding: '10px',
-    marginBottom: '15px',
-    backgroundColor: '#fff'
-  };
-
-  const simpleButtonStyle = {
-    border: '2px solid #555',
-    backgroundColor: '#e0e0e0',
-    color: 'black',
-    padding: '5px 10px',
-    cursor: 'pointer',
-    fontWeight: 'bold',
-    marginRight: '5px',
-    fontSize: '0.85rem'
-  };
-
-  const inputStyle = {
-    border: '2px solid #888',
-    padding: '5px',
-    borderRadius: '0px' // Boxy look
-  };
-
   return (
-    <div className="page-layout-container" style={{ fontFamily: 'Arial, sans-serif' }}>
-      <div className="left-section" style={{ borderRight: '2px solid #333' }}>
+    <div className="page-layout-container">
+      <div className="left-section">
         <div className="entry-limit-container">
-          <label style={{ fontWeight: 'bold' }}>Entries to display:</label>
-          <input type="number" min="1" value={entryLimit} onChange={handleEntryLimitChange} style={inputStyle} />
+          <label style={{ color: '#010a13ff'}}>Entries to display:</label>
+          <input type="number" min="1" value={entryLimit} onChange={handleEntryLimitChange} className="limit-input" />
         </div>
         <div className="state-filter-container">
-          <label style={{ fontWeight: 'bold' }}>Filter by State:</label>
-          <input type="text" placeholder="Enter state name" value={stateFilter} onChange={(e) => setStateFilter(e.target.value)} style={inputStyle} />
+          <label>Filter by State:</label>
+          <input type="text" placeholder="Enter state name" value={stateFilter} onChange={(e) => setStateFilter(e.target.value)} />
         </div>
-        <div className="preset-controls" style={{ marginTop: '20px', borderTop: '2px solid #ccc', paddingTop: '10px' }}>
-          <button style={simpleButtonStyle} onClick={handleSavePreset}>Save Preset</button>
-          {presets.length > 0 && <h3>Saved Presets:</h3>}
+        <div className="preset-controls">
+          <button className="preset-button save-preset" onClick={handleSavePreset}>Save Preset</button>
+          {presets.length > 0 && <h3 className="presets-title">Saved Presets:</h3>}
           {presets.map(preset => (
-            <div key={preset.name} style={{ margin: '5px 0' }}>
-              <button style={{ ...simpleButtonStyle, backgroundColor: selectedPreset === preset.name ? '#ccc' : '#fff' }} onClick={() => applyPreset(preset)}>{preset.name}</button>
-              <button onClick={() => deletePreset(preset.name)} style={{ border: 'none', color: 'red', cursor: 'pointer', fontWeight: 'bold' }}>[x]</button>
+            <div key={preset.name} className="preset-item">
+              <button className={`preset-button ${selectedPreset === preset.name ? 'active' : ''}`} onClick={() => applyPreset(preset)}>{preset.name}</button>
+              <button className="delete-preset" onClick={() => deletePreset(preset.name)}>×</button>
             </div>
           ))}
         </div>
@@ -314,8 +291,8 @@ const ViewDatabasePage = () => {
       <div className="middle-data-section">
         <div className="data-section">
           <div className="data-item">
-            <h2 style={{ borderBottom: '2px solid black', paddingBottom: '5px' }}>{tableName || "Select a table"}</h2>
-            <div className='table-container' style={{ border: '2px solid #333' }}>
+            <h2>{tableName || "Select a table to view"}</h2>
+            <div className='table-container'>
               <NotesList 
                 key={tableName} limit={entryLimit} selectedColumns={selectedColumns} 
                 onToggleColumn={(col) => setSelectedColumns(prev => {
@@ -328,162 +305,195 @@ const ViewDatabasePage = () => {
         </div>
       </div>
 
-      <div className="control-section" style={{ borderLeft: '2px solid #333' }}>
-        <h2 className="section-title" style={{ textDecoration: 'underline' }}>Database Controls</h2>
+      <div className="control-section">
+        <h2 className="section-title">Database Controls</h2>
         <div className="controls">
-          <button style={{ ...simpleButtonStyle, width: '100%', marginBottom: '5px' }} onClick={handleDownload}> Download CSV </button>
-          <button style={{ ...simpleButtonStyle, width: '100%', marginBottom: '15px' }} onClick={handleDownloadExcel}> Download XLSX </button>
+          <button className="download-button" onClick={handleDownload}> Download as CSV </button>
+          <button className="download-button" onClick={handleDownloadExcel}> Download as XLSX </button>
           
-          <button style={{ ...simpleButtonStyle, width: '100%' }} onClick={toggleTableSelector}> 
-            {showTableSelector ? "▼ Close List" : "▶ Select Table"} 
+          <button 
+            className="select-button" 
+            onClick={toggleTableSelector}
+            style={{ marginBottom: showTableSelector ? '5px' : '10px'}}
+          > 
+            {showTableSelector ? "▼ Close Table List" : "▶ Select Table"} 
           </button>
 
           {showTableSelector && (
-            <div style={{ ...boxStyle, maxHeight: '150px', overflowY: 'auto' }}>
+            <div className="table-selector-list" style={{
+              maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc', borderRadius: '4px', marginBottom: '10px', backgroundColor: '#fff'
+            }}>
               {availableTables.map((tName) => (
                   <div key={tName} onClick={() => handleTableSelection(tName)} style={{
-                      padding: '5px', cursor: 'pointer', borderBottom: '1px solid #ccc',
-                      backgroundColor: tableName === tName ? '#ffffcc' : 'transparent',
-                      fontWeight: tableName === tName ? 'bold' : 'normal'
+                      padding: '8px 10px', cursor: 'pointer', borderBottom: '1px solid #eee',
+                      backgroundColor: tableName === tName ? '#f0f8ff' : 'transparent',
+                      color: tableName === tName ? '#000' : '#333', fontSize: '0.9rem',
+                      display: 'flex', alignItems: 'center', justifyContent: 'space-between'
                     }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f5f5f5'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = tableName === tName ? '#f0f8ff' : 'transparent'}
                   >
-                    {tName}
+                    {tName} {tableName === tName && <span style={{color: 'green', fontSize: '0.8rem'}}>●</span>}
                   </div>
                 ))}
             </div>
           )}
           
-          <hr style={{ borderTop: '2px solid #333', margin: '20px 0' }} />
+          <hr style={{width: '100%', margin: '15px 0', border: '0.5px solid #ddd'}} />
           
-          {/* --- R Shell Area --- */}
-          <div style={{ ...boxStyle, backgroundColor: '#fffbe6' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-              <h3 style={{ margin: 0, color: '#d32f2f' }}>R Analysis Shell</h3>
-              
-              {/* The "Elementary" Help Bubble */}
-              <button 
+          {/* --- R Shell Header --- */}
+          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px'}}>
+            <h3 style={{fontSize: '1rem', color: '#ca6767ff', margin: 0}}>
+              R Analysis Shell
+              <span 
                 onClick={() => setShowHelp(!showHelp)}
                 style={{
-                  borderRadius: '50%', width: '24px', height: '24px', border: '2px solid #d32f2f', 
-                  backgroundColor: '#fff', color: '#d32f2f', fontWeight: 'bold', cursor: 'pointer'
+                  marginLeft: '8px', cursor: 'pointer', fontSize: '0.8rem', border: '1px solid #ca6767ff', 
+                  borderRadius: '50%', width: '18px', height: '18px', display: 'inline-flex', 
+                  alignItems: 'center', justifyContent: 'center', color: '#ca6767ff'
                 }}
-                title="Click for instructions"
-              >
-                ?
-              </button>
+                title="Help"
+              >?</span>
+            </h3>
+            
+            {/* Mode Toggle Pills */}
+            <div style={{fontSize: '0.7rem', display: 'flex', gap: '5px', background: '#f5f5f5', padding: '3px', borderRadius: '4px'}}>
+              <button 
+                onClick={() => setAnalysisMode('batch')}
+                style={{
+                  border: 'none', background: analysisMode === 'batch' ? '#fff' : 'transparent', 
+                  color: analysisMode === 'batch' ? '#333' : '#999',
+                  boxShadow: analysisMode === 'batch' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+                  borderRadius: '3px', cursor: 'pointer', padding: '2px 6px'
+                }}
+              >Batch</button>
+              <button 
+                onClick={() => setAnalysisMode('multi')}
+                style={{
+                  border: 'none', background: analysisMode === 'multi' ? '#fff' : 'transparent', 
+                  color: analysisMode === 'multi' ? '#333' : '#999',
+                  boxShadow: analysisMode === 'multi' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
+                  borderRadius: '3px', cursor: 'pointer', padding: '2px 6px'
+                }}
+              >Multi</button>
             </div>
-
-            {/* Instruction Bubble (Conditional) */}
-            {showHelp && (
-              <div style={{ border: '2px dashed #d32f2f', padding: '10px', backgroundColor: '#fff', fontSize: '0.8rem', marginBottom: '10px' }}>
-                <strong>How to use:</strong>
-                <ul style={{ paddingLeft: '20px', margin: '5px 0' }}>
-                  <li><strong>Batch Mode:</strong> Runs your code on each selected column separately. Use <code>vals</code> to refer to the data.</li>
-                  <li><strong>Multi-Column:</strong> Define variable names (like x, y) and link them to columns. Then write one script using those names.</li>
-                </ul>
+          </div>
+          
+          {/* Help Bubble Content */}
+          {showHelp && (
+            <div style={{backgroundColor: '#fff', border: '1px solid #eee', borderRadius: '4px', padding: '10px', fontSize: '0.75rem', marginBottom: '10px', boxShadow: '0 2px 5px rgba(0,0,0,0.05)'}}>
+              <p style={{margin: '0 0 5px 0'}}><strong>Batch:</strong> Runs code on each selected column individually. Use variable <code>vals</code>.</p>
+              <p style={{margin: 0}}><strong>Multi:</strong> Define variables (x, y) mapped to columns, then write one script using them.</p>
+            </div>
+          )}
+          
+          {/* Multi-Mode Inputs */}
+          {analysisMode === 'multi' && (
+             <div style={{backgroundColor: '#f9f9f9', padding: '10px', borderRadius: '4px', marginBottom: '10px', border: '1px solid #eee'}}>
+               {rVariables.map((v, idx) => (
+                 <div key={idx} style={{display: 'flex', gap: '5px', marginBottom: '5px'}}>
+                   <input 
+                     placeholder="Var Name" value={v.name} 
+                     onChange={(e) => updateRVariable(idx, 'name', e.target.value)}
+                     style={{width: '60px', padding: '4px', fontSize: '0.8rem', border: '1px solid #ccc', borderRadius: '4px'}}
+                   />
+                   <span style={{alignSelf: 'center', fontSize: '0.8rem'}}>=</span>
+                   <select 
+                     value={v.column} onChange={(e) => updateRVariable(idx, 'column', e.target.value)}
+                     style={{flex: 1, padding: '4px', fontSize: '0.8rem', border: '1px solid #ccc', borderRadius: '4px'}}
+                   >
+                     <option value="">-- Column --</option>
+                     {Array.from(selectedColumns).map(col => <option key={col} value={col}>{col}</option>)}
+                   </select>
+                   <button onClick={() => removeRVariable(idx)} style={{border: 'none', background: 'none', color: '#d9534f', cursor: 'pointer', fontSize: '1rem'}}>×</button>
+                 </div>
+               ))}
+               <button onClick={addRVariable} style={{border: 'none', background: 'none', color: '#8C68CD', fontSize: '0.75rem', cursor: 'pointer', padding: 0}}>+ Add Variable</button>
+             </div>
+          )}
+          
+          {/* Shell Rows */}
+          <div className="r-shell-container" style={{maxHeight: '200px', overflowY: 'auto', marginBottom: '10px', width: '100%'}}>
+            {shellRows.map((row, index) => (
+              <div key={index} style={{display: 'flex', gap: '5px', marginBottom: '5px', alignItems: 'flex-start'}}>
+                <input 
+                  placeholder="Label" 
+                  style={{width: '30%'}} 
+                  value={row.label} 
+                  onChange={(e) => updateShellRow(index, 'label', e.target.value)} 
+                />
+                
+                {row.expanded ? (
+                  <textarea 
+                    placeholder="R Code"
+                    style={{width: '55%', fontFamily: 'monospace', minHeight: '80px', padding: '5px', borderRadius: '4px', border: '1px solid #ccc', resize: 'vertical'}}
+                    value={row.code}
+                    onChange={(e) => updateShellRow(index, 'code', e.target.value)}
+                  />
+                ) : (
+                  <input 
+                    placeholder={analysisMode === 'batch' ? "mean(vals)" : "cor(var1, var2)"}
+                    style={{width: '55%'}} 
+                    value={row.code} 
+                    onChange={(e) => updateShellRow(index, 'code', e.target.value)} 
+                  />
+                )}
+                
+                <button onClick={() => toggleShellRowExpand(index)} style={{background: 'none', border: 'none', color: '#666', cursor: 'pointer', marginTop: '5px'}}>
+                  {row.expanded ? '▲' : '▼'}
+                </button>
+                <button onClick={() => removeShellRow(index)} style={{background: 'none', border: 'none', color: '#d9534f', cursor: 'pointer', marginTop: '5px'}}>
+                  ×
+                </button>
               </div>
-            )}
-            
-            {/* Mode Switcher */}
-            <div style={{ marginBottom: '10px', borderBottom: '1px solid #ccc', paddingBottom: '10px' }}>
-              <label style={{ marginRight: '10px', fontWeight: 'bold' }}>Mode:</label>
-              <select 
-                value={analysisMode} 
-                onChange={(e) => setAnalysisMode(e.target.value)}
-                style={inputStyle}
-              >
-                <option value="batch">Batch (Single Column)</option>
-                <option value="multi">Multi-Column (Custom)</option>
-              </select>
-            </div>
-            
-            {/* Multi-Mode Inputs (No text, just inputs) */}
-            {analysisMode === 'multi' && (
-               <div style={{ marginBottom: '10px' }}>
-                 {rVariables.map((v, idx) => (
-                   <div key={idx} style={{ display: 'flex', gap: '5px', marginBottom: '5px' }}>
-                     <input 
-                       placeholder="Var" value={v.name} 
-                       onChange={(e) => updateRVariable(idx, 'name', e.target.value)}
-                       style={{ ...inputStyle, width: '50px' }}
-                     />
-                     <span style={{ alignSelf: 'center' }}>=</span>
-                     <select 
-                       value={v.column} onChange={(e) => updateRVariable(idx, 'column', e.target.value)}
-                       style={{ ...inputStyle, flex: 1 }}
-                     >
-                       <option value="">-- Col --</option>
-                       {Array.from(selectedColumns).map(col => <option key={col} value={col}>{col}</option>)}
-                     </select>
-                     <button onClick={() => removeRVariable(idx)} style={{ border: 'none', color: 'red', fontWeight: 'bold', cursor: 'pointer' }}>X</button>
-                   </div>
-                 ))}
-                 <button onClick={addRVariable} style={{ ...simpleButtonStyle, fontSize: '0.7rem' }}>+ Add Var</button>
-               </div>
-            )}
-            
-            {/* Shell Rows */}
-            <div style={{ marginBottom: '10px' }}>
-              {shellRows.map((row, index) => (
-                <div key={index} style={{ display: 'flex', gap: '5px', marginBottom: '5px', alignItems: 'flex-start' }}>
-                  <input placeholder="Label" value={row.label} onChange={(e) => updateShellRow(index, 'label', e.target.value)} style={{ ...inputStyle, width: '30%' }} />
-                  
-                  {row.expanded ? (
-                    <textarea 
-                      placeholder="Code..." 
-                      style={{ ...inputStyle, width: '50%', minHeight: '60px', fontFamily: 'monospace' }}
-                      value={row.code} onChange={(e) => updateShellRow(index, 'code', e.target.value)}
-                    />
-                  ) : (
-                    <input 
-                      placeholder="Code..." 
-                      style={{ ...inputStyle, width: '50%', fontFamily: 'monospace' }} 
-                      value={row.code} onChange={(e) => updateShellRow(index, 'code', e.target.value)} 
-                    />
-                  )}
-                  
-                  <button onClick={() => toggleShellRowExpand(index)} style={{ border: '1px solid #ccc', cursor: 'pointer' }}>{row.expanded ? '▲' : '▼'}</button>
-                  <button onClick={() => removeShellRow(index)} style={{ border: 'none', color: 'red', fontWeight: 'bold', cursor: 'pointer' }}>X</button>
+            ))}
+          </div>
+
+          <div style={{display: 'flex', gap: '10px', marginBottom: '10px'}}>
+             <button className="select-button" style={{fontSize: '0.8rem', padding: '5px', flex: 1}} onClick={addShellRow}>+ Add Row</button>
+             <button className="select-button" style={{fontSize: '0.8rem', padding: '5px', flex: 1, backgroundColor: '#f0f8ff', borderColor: '#8C68CD', color: '#8C68CD'}} onClick={handleSaveRPreset}>Save Preset</button>
+          </div>
+
+           {/* Presets List */}
+           {rPresets.length > 0 && (
+            <div style={{display: 'flex', flexWrap: 'wrap', gap: '5px', marginBottom: '10px'}}>
+              {rPresets.map(preset => (
+                <div key={preset.name} style={{ display: 'flex', alignItems: 'center', background: '#eee', borderRadius: '4px', paddingLeft: '8px', fontSize: '0.8rem' }}>
+                  <span onClick={() => applyRPreset(preset)} style={{ cursor: 'pointer', marginRight: '5px' }}>{preset.name}</span>
+                  <button onClick={() => deleteRPreset(preset.name)} style={{ border: 'none', background: 'none', color: '#d9534f', cursor: 'pointer', padding: '4px 8px', borderLeft: '1px solid #ddd' }}>×</button>
                 </div>
               ))}
             </div>
+          )}
 
-            <div style={{ display: 'flex', gap: '5px' }}>
-               <button style={simpleButtonStyle} onClick={addShellRow}>+ Row</button>
-               <button style={simpleButtonStyle} onClick={handleSaveRPreset}>Save Set</button>
-            </div>
-
-             {/* R Presets List */}
-            {rPresets.length > 0 && (
-              <div style={{ marginTop: '10px', fontSize: '0.8rem' }}>
-                {rPresets.map(preset => (
-                  <span key={preset.name} style={{ display: 'inline-block', border: '1px solid #999', padding: '2px 5px', marginRight: '5px', backgroundColor: '#eee' }}>
-                    <span onClick={() => applyRPreset(preset)} style={{ cursor: 'pointer' }}>{preset.name}</span>
-                    <button onClick={() => deleteRPreset(preset.name)} style={{ marginLeft: '5px', color: 'red', border: 'none', background: 'none', cursor: 'pointer' }}>x</button>
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <button onClick={handleRunRAnalysis} disabled={!rReady || rLoading} style={{ ...simpleButtonStyle, width: '100%', backgroundColor: '#d32f2f', color: 'white', border: '2px solid black' }}>
-            {!rReady ? "Loading..." : rLoading ? "Processing..." : "RUN ANALYSIS"}
+          <button className="download-button" onClick={handleRunRAnalysis} disabled={!rReady || rLoading} style={{marginTop: '5px'}}>
+            {!rReady ? "Loading R..." : rLoading ? "Analyzing..." : "Run Analysis"}
           </button>
           
-          {rError && <p style={{ color: 'red', fontWeight: 'bold' }}>Error: {rError}</p>}
+          {rError && <p style={{color: 'red', fontSize: '0.8rem'}}>{rError}</p>}
 
           {rResult && (
-            <div style={{ marginTop: "20px", borderTop: '2px solid #333', paddingTop: '10px' }}>
+            <div className="r-result-container" style={{ 
+              marginTop: "1.5rem", maxHeight: "450px", overflowY: "auto", overflowX: "hidden", 
+              width: "100%", boxSizing: "border-box", display: "flex", flexDirection: "column", 
+              alignItems: "flex-start", paddingRight: "10px"
+            }}>
               {Object.entries(rResult).map(([colName, data]) => (
-                <div key={colName} style={{ border: "2px solid #333", marginBottom: "10px", padding: "10px", backgroundColor: "#f9f9f9" }}>
-                  <h4 style={{ margin: "0 0 5px 0", textDecoration: "underline" }}>{colName}</h4>
+                <div key={colName} style={{ 
+                  padding: "12px", backgroundColor: "#fcfcfc", borderRadius: "8px", border: "1px solid #8C68CD",
+                  marginBottom: "12px", width: "calc(100% - 15px)", marginLeft: "0", boxSizing: "border-box", 
+                  wordBreak: "break-all", boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
+                }}>
+                  <p style={{ fontWeight: 'bold', fontSize: '0.85rem', color: '#333', margin: "0 0 8px 0", borderBottom: '1px solid #eee', paddingBottom: '4px', textAlign: 'left' }}>
+                    {colName}
+                  </p>
                   {!data.success ? (
-                    <span style={{ color: 'red' }}>{data.error}</span>
+                    <p style={{ color: '#d9534f', fontSize: '0.75rem', margin: 0, textAlign: 'left' }}>{data.error}</p>
                   ) : (
                     Object.entries(data.stats).map(([statName, val]) => (
-                      <div key={statName} style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'monospace' }}>
-                        <span>{statName}:</span>
-                        <span style={{ fontWeight: 'bold' }}>{typeof val === 'number' ? val.toFixed(3) : val}</span>
+                      <div key={statName} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', margin: '4px 0', color: '#444' }}>
+                        <span style={{ marginRight: '10px' }}>{statName}:</span>
+                        <span style={{ color: '#8C68CD', fontWeight: 'bold' }}>{typeof val === 'number' ? val.toFixed(3) : val}</span>
                       </div>
                     ))
                   )}
