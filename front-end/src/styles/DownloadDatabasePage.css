@@ -1,371 +1,64 @@
+/* ===== FIXED 3-COLUMN LAYOUT (NO CLIPPING) ===== */
+
 .page-layout-container {
   display: flex;
-  flex-wrap: nowrap;      
-  width: 100vw;           
+  flex-wrap: nowrap;
+  width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
   background-color: white;
-  color: #333; 
+  color: #333;
+  overflow-x: hidden; /* safety net */
 }
 
-.entry-limit-container {
-  margin-bottom: 20px;
-  text-align: center;
-  display: inline-block;
-}
-
-.entry-limit-container label {
-  margin-right: 10px;
-  font-weight: bold;
-  color: #347ecc;
-}
-
-.limit-input {
-  padding: 5px;
-  border: 1px solid #ddd; 
-  border-radius: 3px; 
-  width: 60px;
-  text-align: center;
-  font-family: Arial, sans-serif; 
-}
-
-/* CHANGE: Reduced from 70% to 65% to prevent Right Side clipping */
-.middle-data-section {
-  display: flex;
-  gap: 20px;
-  padding: 20px;
-  width: 100vw;            
-  overflow-x: hidden;     
-  box-sizing: border-box;
-  flex: 0 0 65%;
-}
-
-.middle-data-section > * {
-  flex-shrink: 1;
-  min-width: 0;
-}
-
+/* Left column */
 .left-section {
-  flex: 0 0 10%;
+  flex: 0 0 220px;     /* fixed sidebar width (change if you want) */
+  min-width: 180px;
   box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
-/* CHANGE: Added flex: 1 to fill the remaining space (25%) */
+/* Middle column (table area) */
+.middle-data-section {
+  flex: 1 1 auto;      /* fills remaining space */
+  width: auto;         /* IMPORTANT: do NOT use 100vw here */
+  min-width: 0;        /* IMPORTANT: allows flex child to shrink */
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-x: hidden;  /* table scroll happens inside .table-container */
+}
+
+/* Right column (controls) */
 .control-section {
-  flex: 1;
+  flex: 0 0 340px;     /* fixed controls width (change if you want) */
+  min-width: 280px;
+  box-sizing: border-box;
   margin-bottom: 2rem;
   padding: 1rem;
   border-radius: 8px;
-  overflow-x: hidden; /* Safety net for small screens */
+  overflow-x: hidden;
 }
 
-/* --- EVERYTHING BELOW IS IDENTICAL TO YOUR VERSION --- */
-
-.profile-circle {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  background-color: #c0c0c0;
-  margin: 0 auto 10px;
-}
-
-.profile-name {
-  font-weight: bold;
-  font-size: 1.2rem;
-  color: #1F3A8A;
-}
-
-.pie-chart {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background-color: #347ecc; 
-  margin: 10px auto;
-}
-
-.chart-label {
-  font-weight: bold;
-  color: #1F3A8A;
-}
-
-.data-section {
-  flex: 1;
-  min-width: 0;
-}
-.saved-section {
-  flex: 1;
-}
-
-.section-title {
-  color: #347ecc;
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-}
-
-.data-item {
-  margin-bottom: 20px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 0.8rem;
-  min-width: 0;
-}
-
-.data-item h3 {
-  font-size: 1.2rem;
-  color: #347ecc;
-}
-
-.data-item h2 {
-  color: #333333;
-  text-align: center;
-}
-
-.action-buttons {
-  margin-top: 10px;
-}
-
-.delete-button,
-.edit-button {
-  background-color: #347ecc;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  margin-right: 10px;
-  cursor: pointer;
-  border-radius: 3px;
-}
-
-.saved-users li {
-  list-style: none;
-  font-size: 1rem;
-  margin: 5px 0;
-}
-
-.saved-graph {
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.saved-graph h3 {
-  color: #347ecc;
-  font-size: 1.2rem;
-}
-
-.noteslist p {
-  position: relative;
-}
-
-.controls {
-  display: flex;
-  gap: 1rem;
-  flex-direction: column;
-}
-
-/* GHOST BUTTONS (Unchanged) */
-
-.upload-button {
-  padding: 0.5rem 1rem;
-  background: #22c55e26; 
-  color: #15803d;        
-  border: solid 1px #15803d;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 70%;
-}
-.upload-button:hover {
-  background: #15803d;
-  color: white;
-}
-
-.download-button {
-  padding: 0.5rem 1rem;
-  background: #347ecc26; 
-  color: #347ecc;        
-  border: solid 1px #347ecc;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 70%;
-}
-.download-button:hover {
-  background: #347ecc;
-  color: white;
-}
-
-.select-button {
-  padding: 0.5rem 1rem;
-  background: #f59e0b26; 
-  color: #b45309;        
-  border: solid 1px #b45309;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 70%;
-}
-.select-button:hover {
-  background: #b45309;
-  color: white;
-}
-
+/* Make buttons fill the control panel nicely */
+.upload-button,
+.download-button,
+.select-button,
 .delete-table-button {
-  padding: 0.5rem 1rem;
-  background: #ef444426; 
-  color: #b91c1c;        
-  border: solid 1px #b91c1c;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 70%;
-}
-.delete-table-button:hover {
-  background: #b91c1c;
-  color: white;
+  width: 100%;
 }
 
+/* Ensure table can scroll horizontally instead of pushing layout */
 .table-container {
-  width: 100%;           
-  overflow-x: auto;      
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
 
-.table-container::-webkit-scrollbar {
-  height: 6px;
-}
-.table-container::-webkit-scrollbar-thumb {
-  background: rgba(0,0,0,0.2);
-  border-radius: 3px;
-}
-
-.styled-table td {
-  padding: 12px 15px;
-  text-align: left;
-  white-space: nowrap;
-  color: #333;
-}
-
-.styled-table th {
-  background-color: #347ecc26; 
-  font-weight: 600;
-  color: #333; 
-}
-
-.column-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-}
-
-.column-header input {
-  margin: 0;
-  cursor: pointer;
-}
-
-.styled-table td.selected,
-.styled-table th.selected {
-  background-color: #bfdbfe;
-}
-
-.state-filter-container {
-  margin-top: 15px;
-  margin-bottom: 20px;
-}
-
-.state-filter-container label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-.state-filter-container input {
-  width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-.preset-controls {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  margin: 1rem 0;
-  flex-wrap: wrap;
-}
-
-.preset-item {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  background: #f5f5f5;
-  border-radius: 20px;
-  padding-right: 8px;
-}
-
-.preset-button {
-  padding: 8px 16px;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  background: white;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.preset-button.active {
-  background: #e3f2fd;
-  border-color: #2196f3;
-  color: #2196f3;
-}
-
-.delete-preset {
-  background: none;
-  border: none;
-  color: #999;
-  cursor: pointer;
-  padding: 0;
-}
-.delete-preset:hover {
-  color: #ff4444;
-}
-
-.save-preset {
-  background: #10b98126;
-  color: #059669;
-  border-color: #059669;
-  text-align: center;
-}
-.save-preset:hover {
-  background-color: #059669;
-  color: white;
-}
-
-.preset-button.active.clearable {
-  background: #ffebee;
-  border-color: #f44336;
-  color: #f44336;
-}
-
-.left-section {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-
-input[type="number"] {
-  -moz-appearance: textfield;
-  appearance: textfield;
-  padding: 10px;
-  font-size: 1rem;
-  border-radius: 8px;
-  border: solid 1px #DDDDDD;
-  background-color: white;
-  color: #333;
-  outline: none;
-}
-
-input[type="file"] { 
-  background-color: #f3f4f6; 
-  color: #333;
-  border: 2px solid #DDDDDD; 
-  border-radius: 8px;
-  padding: 8px;
-  font-family: inherit;
-  cursor: pointer;
+/* Optional: extra safety for very wide table cells */
+.styled-table {
+  max-width: 100%;
 }
