@@ -152,7 +152,8 @@ html, body{
 }
 
 .status-approved,
-.status-pending {
+.status-pending,
+.status-rejected {
   display: inline-block;
   border-radius: 999px;
   padding: 2px 10px;
@@ -168,6 +169,11 @@ html, body{
 .status-pending {
   color: #92400e;
   background: #fef3c7;
+}
+
+.status-rejected {
+  color: #991b1b;
+  background: #fee2e2;
 }
 
 

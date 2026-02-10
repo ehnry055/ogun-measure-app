@@ -30,6 +30,8 @@ const AdminRequestsPage = () => {
     return [];
   };
 
+  const getStatusFromRole = (isRegistered) => (isRegistered ? "approved" : "pending");
+
   const fetchRequests = async () => {
     try {
       setLoading(true);
@@ -63,6 +65,7 @@ const AdminRequestsPage = () => {
             lastLogin: user.last_login || "Never",
             isAdmin,
             isRegistered,
+            status: getStatusFromRole(isRegistered),
           };
         })
       );
@@ -87,9 +90,10 @@ const AdminRequestsPage = () => {
   }, [isAuthenticated, isLoading]);
 
   const requestSummary = useMemo(() => {
-    const approved = rows.filter((row) => row.isRegistered).length;
-    const pending = rows.length - approved;
-    return { approved, pending };
+    const approved = rows.filter((row) => row.status === "approved").length;
+    const pending = rows.filter((row) => row.status === "pending").length;
+    const rejected = rows.filter((row) => row.status === "rejected").length;
+    return { approved, pending, rejected };
   }, [rows]);
   const visibleRows = useMemo(() => {
     if (!targetEmail) {
@@ -110,7 +114,11 @@ const AdminRequestsPage = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      setRows((prev) => prev.map((row) => (row.userId === userId ? { ...row, isRegistered: true } : row)));
+      setRows((prev) =>
+        prev.map((row) =>
+          row.userId === userId ? { ...row, isRegistered: true, status: "approved" } : row
+        )
+      );
     } catch (actionError) {
       console.error("Error approving request:", actionError);
       alert("Unable to approve this request.");
@@ -129,7 +137,11 @@ const AdminRequestsPage = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      setRows((prev) => prev.map((row) => (row.userId === userId ? { ...row, isRegistered: false } : row)));
+      setRows((prev) =>
+        prev.map((row) =>
+          row.userId === userId ? { ...row, isRegistered: false, status: "rejected" } : row
+        )
+      );
     } catch (actionError) {
       console.error("Error rejecting request:", actionError);
       alert("Unable to reject this request.");
@@ -152,7 +164,7 @@ const AdminRequestsPage = () => {
       </div>
 
       <p className="admin-requests-subtitle">
-        Pending requests are users without registered access. Approve grants registered access, reject removes it.
+        Pending requests are users without registered access. Approve grants registered access, reject marks the request rejected.
       </p>
       {targetEmail ? (
         <p className="admin-requests-subtitle">
@@ -163,6 +175,7 @@ const AdminRequestsPage = () => {
       <div className="admin-requests-summary">
         <span>Pending: {requestSummary.pending}</span>
         <span>Approved: {requestSummary.approved}</span>
+        <span>Rejected: {requestSummary.rejected}</span>
       </div>
 
       {loading ? <p>Loading requests...</p> : null}
@@ -191,15 +204,19 @@ const AdminRequestsPage = () => {
                     <td>{row.email}</td>
                     <td>{row.lastLogin}</td>
                     <td>
-                      <span className={row.isRegistered ? "status-approved" : "status-pending"}>
-                        {row.isRegistered ? "Approved" : "Pending"}
+                      <span className={`status-${row.status}`}>
+                        {row.status === "approved"
+                          ? "Approved"
+                          : row.status === "rejected"
+                          ? "Rejected"
+                          : "Pending"}
                       </span>
                     </td>
                     <td className="admin-requests-actions">
                       <button
                         type="button"
                         className="btn btn-sm btn-success"
-                        disabled={isBusy || row.isRegistered}
+                        disabled={isBusy || row.status === "approved"}
                         onClick={() => approveRequest(row.userId)}
                       >
                         Approve
@@ -207,7 +224,7 @@ const AdminRequestsPage = () => {
                       <button
                         type="button"
                         className="btn btn-sm btn-danger"
-                        disabled={isBusy || !row.isRegistered}
+                        disabled={isBusy || row.status === "rejected"}
                         onClick={() => rejectRequest(row.userId)}
                       >
                         Reject
