@@ -20,11 +20,21 @@ const ViewDatabasePage = () => {
   const [availableTables, setAvailableTables] = useState([]);
   const [showTableSelector, setShowTableSelector] = useState(false);
 
+  // R Analysis State
   const [rReady, setRReady] = useState(false);
   const [rLoading, setRLoading] = useState(false);
   const [rResult, setRResult] = useState(null);
   const [rError, setRError] = useState(null);
   
+  // New: Analysis Mode ('batch' = apply to each, 'multi' = use multiple vars)
+  const [analysisMode, setAnalysisMode] = useState('batch');
+  
+  // New: Variable Mapping for Multi Mode
+  const [rVariables, setRVariables] = useState([
+    { name: 'var1', column: '' },
+    { name: 'var2', column: '' }
+  ]);
+
   const [shellRows, setShellRows] = useState([
     { label: 'Mean', code: 'mean(vals)', expanded: false },
     { label: 'SD', code: 'sd(vals)', expanded: false }
@@ -88,6 +98,7 @@ const ViewDatabasePage = () => {
     if (!isNaN(value)) setEntryLimit(value >= 1 ? value : 1);
   };
 
+  // --- R Shell Helpers ---
   const addShellRow = () => setShellRows([...shellRows, { label: '', code: '', expanded: false }]);
   
   const updateShellRow = (index, field, value) => {
@@ -104,10 +115,21 @@ const ViewDatabasePage = () => {
     setShellRows(newRows);
   };
 
+  // --- Variable Mapping Helpers (Multi Mode) ---
+  const addRVariable = () => setRVariables([...rVariables, { name: `var${rVariables.length + 1}`, column: '' }]);
+  
+  const updateRVariable = (index, field, value) => {
+    const newVars = [...rVariables];
+    newVars[index][field] = value;
+    setRVariables(newVars);
+  };
+  
+  const removeRVariable = (index) => setRVariables(rVariables.filter((_, i) => i !== index));
+
   const handleSaveRPreset = () => {
     const presetName = prompt('Enter name for this R analysis configuration:');
     if (!presetName) return;
-    const newPreset = { name: presetName, rows: shellRows };
+    const newPreset = { name: presetName, rows: shellRows, mode: analysisMode, variables: rVariables };
     const updated = [...rPresets, newPreset];
     setRPresets(updated);
     localStorage.setItem('rShellPresets', JSON.stringify(updated));
@@ -115,6 +137,8 @@ const ViewDatabasePage = () => {
 
   const applyRPreset = (preset) => {
     setShellRows(preset.rows);
+    if (preset.mode) setAnalysisMode(preset.mode);
+    if (preset.variables) setRVariables(preset.variables);
   };
 
   const deleteRPreset = (presetName) => {
@@ -189,28 +213,65 @@ const ViewDatabasePage = () => {
 
   const handleRunRAnalysis = async () => {
     if (!rReady || !webRInstance) return;
-    if (selectedColumns.size === 0) { alert("Please select columns first."); return; }
+    if (selectedColumns.size === 0) { alert("Please select columns in the table above first."); return; }
+    
     setRLoading(true); setRResult(null); setRError(null);
+    
     try {
       const token = await getAccessTokenSilently();
       const columnList = Array.from(selectedColumns);
       const res = await axios.post('/api/analyze-columns', { columns: columnList, limit: entryLimit }, { headers: { Authorization: `Bearer ${token}` } });
       const allData = res.data;
-      const finalResults = {};
       const listContent = shellRows.filter(r => r.label.trim() && r.code.trim()).map(r => `\`${r.label}\` = ${r.code}`).join(', ');
       
-      for (const colName of columnList) {
+      const finalResults = {};
+
+      if (analysisMode === 'batch') {
+        // --- Batch Mode: Run same code on every column individually ---
+        for (const colName of columnList) {
+          try {
+            const rawValues = allData[colName];
+            if (!rawValues) continue;
+            await webRInstance.objs.globalEnv.bind('vals', rawValues);
+            const rObj = await webRInstance.evalR(`vals <- as.numeric(vals); list(${listContent})`);
+            const js = await rObj.toJs();
+            const stats = {};
+            js.names.forEach((name, idx) => { stats[name] = js.values[idx].values[0]; });
+            finalResults[colName] = { success: true, stats };
+          } catch (e) { finalResults[colName] = { success: false, error: "Analysis error (check data type)" }; }
+        }
+      } else {
+        // --- Multi Mode: Bind multiple specific columns, run code once ---
         try {
-          const rawValues = allData[colName];
-          if (!rawValues) continue;
-          await webRInstance.objs.globalEnv.bind('vals', rawValues);
-          const rObj = await webRInstance.evalR(`vals <- as.numeric(vals); list(${listContent})`);
+          // 1. Bind all defined variables
+          for (const v of rVariables) {
+            if (!v.name || !v.column) continue;
+            const rawValues = allData[v.column];
+            if (rawValues) {
+              await webRInstance.objs.globalEnv.bind(v.name, rawValues);
+              // Ensure numeric in R
+              await webRInstance.evalR(`${v.name} <- as.numeric(${v.name})`);
+            }
+          }
+
+          // 2. Run the script once
+          const rObj = await webRInstance.evalR(`list(${listContent})`);
           const js = await rObj.toJs();
           const stats = {};
-          js.names.forEach((name, idx) => { stats[name] = js.values[idx].values[0]; });
-          finalResults[colName] = { success: true, stats };
-        } catch (e) { finalResults[colName] = { success: false, error: "Non-numeric data" }; }
+          js.names.forEach((name, idx) => { 
+             // Handle single values vs vectors slightly differently if needed, 
+             // but usually [0] is fine for scalar stats
+             stats[name] = js.values[idx].values[0]; 
+          });
+          
+          finalResults["Multi-Column Result"] = { success: true, stats };
+
+        } catch (e) {
+            console.error(e);
+            finalResults["Analysis Error"] = { success: false, error: e.message || "Failed to run multi-column script." }; 
+        }
       }
+
       setRResult(finalResults);
     } catch (e) { setRError("Analysis failed."); } finally { setRLoading(false); }
   };
@@ -218,6 +279,7 @@ const ViewDatabasePage = () => {
   return (
     <div className="page-layout-container">
       <div className="left-section">
+        {/* ... (Existing Filters) ... */}
         <div className="entry-limit-container">
           <label style={{ color: '#010a13ff'}}>Entries to display:</label>
           <input type="number" min="1" value={entryLimit} onChange={handleEntryLimitChange} className="limit-input" />
@@ -271,53 +333,94 @@ const ViewDatabasePage = () => {
 
           {showTableSelector && (
             <div className="table-selector-list" style={{
-              maxHeight: '150px', 
-              overflowY: 'auto', 
-              border: '1px solid #ccc', 
-              borderRadius: '4px', 
-              marginBottom: '10px',
-              backgroundColor: '#fff'
+              maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc', borderRadius: '4px', marginBottom: '10px', backgroundColor: '#fff'
             }}>
-              {availableTables.length === 0 ? (
-                <p style={{padding: '10px', fontSize: '0.8rem', color: '#666'}}>No tables found.</p>
-              ) : (
-                availableTables.map((tName) => (
-                  <div 
-                    key={tName}
-                    onClick={() => handleTableSelection(tName)}
-                    style={{
-                      padding: '8px 10px',
-                      cursor: 'pointer',
-                      borderBottom: '1px solid #eee',
+              {/* ... (Existing Table List) ... */}
+              {availableTables.map((tName) => (
+                  <div key={tName} onClick={() => handleTableSelection(tName)} style={{
+                      padding: '8px 10px', cursor: 'pointer', borderBottom: '1px solid #eee',
                       backgroundColor: tableName === tName ? '#f0f8ff' : 'transparent',
-                      color: tableName === tName ? '#000' : '#333',
-                      fontSize: '0.9rem',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between'
+                      color: tableName === tName ? '#000' : '#333', fontSize: '0.9rem',
+                      display: 'flex', alignItems: 'center', justifyContent: 'space-between'
                     }}
                     onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f5f5f5'}
                     onMouseLeave={(e) => e.currentTarget.style.backgroundColor = tableName === tName ? '#f0f8ff' : 'transparent'}
                   >
-                    {tName}
-                    {tableName === tName && <span style={{color: 'green', fontSize: '0.8rem'}}>●</span>}
+                    {tName} {tableName === tName && <span style={{color: 'green', fontSize: '0.8rem'}}>●</span>}
                   </div>
-                ))
-              )}
+                ))}
             </div>
           )}
           
           <hr style={{width: '100%', margin: '15px 0', border: '0.5px solid #ddd'}} />
           
-          <h3 style={{fontSize: '1rem', color: '#ca6767ff'}}>R Analysis Shell</h3>
-          <p style={{fontSize: '0.7rem', marginBottom: '10px'}}>Use <b>vals</b> for the data vector</p>
+          {/* --- R Shell Header --- */}
+          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px'}}>
+            <h3 style={{fontSize: '1rem', color: '#ca6767ff', margin: 0}}>R Analysis Shell</h3>
+            <div style={{fontSize: '0.7rem', display: 'flex', gap: '5px', background: '#f5f5f5', padding: '3px', borderRadius: '4px'}}>
+              <button 
+                onClick={() => setAnalysisMode('batch')}
+                style={{
+                  border: 'none', background: analysisMode === 'batch' ? '#fff' : 'transparent', 
+                  color: analysisMode === 'batch' ? '#333' : '#999',
+                  boxShadow: analysisMode === 'batch' ? '0 1px 3px rgba(0,0,0,0.2)' : 'none',
+                  borderRadius: '3px', cursor: 'pointer', padding: '2px 6px'
+                }}
+              >Batch (vals)</button>
+              <button 
+                onClick={() => setAnalysisMode('multi')}
+                style={{
+                  border: 'none', background: analysisMode === 'multi' ? '#fff' : 'transparent', 
+                  color: analysisMode === 'multi' ? '#333' : '#999',
+                  boxShadow: analysisMode === 'multi' ? '0 1px 3px rgba(0,0,0,0.2)' : 'none',
+                  borderRadius: '3px', cursor: 'pointer', padding: '2px 6px'
+                }}
+              >Multi-Column</button>
+            </div>
+          </div>
           
+          {/* --- Mode Instructions --- */}
+          {analysisMode === 'batch' ? (
+            <p style={{fontSize: '0.7rem', marginBottom: '10px'}}>
+              Runs the code below on <b>each selected column</b> individually. Use <b>vals</b> as the variable.
+            </p>
+          ) : (
+             <div style={{backgroundColor: '#f9f9f9', padding: '10px', borderRadius: '4px', marginBottom: '10px', border: '1px solid #eee'}}>
+               <p style={{fontSize: '0.7rem', margin: '0 0 5px 0', fontWeight: 'bold'}}>1. Define Variables</p>
+               {rVariables.map((v, idx) => (
+                 <div key={idx} style={{display: 'flex', gap: '5px', marginBottom: '5px'}}>
+                   <input 
+                     placeholder="Var Name (e.g. x)" 
+                     value={v.name} 
+                     onChange={(e) => updateRVariable(idx, 'name', e.target.value)}
+                     style={{width: '60px', padding: '4px', fontSize: '0.8rem'}}
+                   />
+                   <span style={{alignSelf: 'center', fontSize: '0.8rem'}}>=</span>
+                   <select 
+                     value={v.column} 
+                     onChange={(e) => updateRVariable(idx, 'column', e.target.value)}
+                     style={{flex: 1, padding: '4px', fontSize: '0.8rem'}}
+                   >
+                     <option value="">-- Select Column --</option>
+                     {Array.from(selectedColumns).map(col => (
+                       <option key={col} value={col}>{col}</option>
+                     ))}
+                   </select>
+                   <button onClick={() => removeRVariable(idx)} style={{border: 'none', background: 'none', color: 'red', cursor: 'pointer'}}>×</button>
+                 </div>
+               ))}
+               <button onClick={addRVariable} style={{border: 'none', background: 'none', color: '#8C68CD', fontSize: '0.7rem', cursor: 'pointer', padding: 0}}>+ Add Variable Mapping</button>
+               <p style={{fontSize: '0.7rem', margin: '8px 0 0 0', fontWeight: 'bold'}}>2. Write Script using defined names</p>
+             </div>
+          )}
+          
+          {/* --- Shell Rows --- */}
           <div className="r-shell-container" style={{maxHeight: '200px', overflowY: 'auto', marginBottom: '10px', width: '100%'}}>
             {shellRows.map((row, index) => (
               <div key={index} style={{display: 'flex', gap: '5px', marginBottom: '5px', alignItems: 'flex-start'}}>
                 <input 
                   placeholder="Label" 
-                  style={{width: '35%'}} 
+                  style={{width: '30%'}} 
                   value={row.label} 
                   onChange={(e) => updateShellRow(index, 'label', e.target.value)} 
                 />
@@ -325,52 +428,23 @@ const ViewDatabasePage = () => {
                 {row.expanded ? (
                   <textarea 
                     placeholder="R Code (Script)"
-                    style={{
-                      width: '55%', 
-                      fontFamily: 'monospace', 
-                      minHeight: '80px',
-                      padding: '5px',
-                      borderRadius: '4px',
-                      border: '1px solid #ccc',
-                      resize: 'vertical'
-                    }}
+                    style={{width: '55%', fontFamily: 'monospace', minHeight: '80px', padding: '5px', resize: 'vertical'}}
                     value={row.code}
                     onChange={(e) => updateShellRow(index, 'code', e.target.value)}
                   />
                 ) : (
                   <input 
-                    placeholder="R Code" 
+                    placeholder={analysisMode === 'batch' ? "mean(vals)" : "cor(var1, var2)"}
                     style={{width: '55%'}} 
                     value={row.code} 
                     onChange={(e) => updateShellRow(index, 'code', e.target.value)} 
                   />
                 )}
                 
-                <button 
-                  onClick={() => toggleShellRowExpand(index)} 
-                  style={{
-                    background: 'none', 
-                    border: 'none', 
-                    color: '#666', 
-                    cursor: 'pointer',
-                    fontSize: '0.8rem',
-                    marginTop: '5px'
-                  }}
-                  title={row.expanded ? "Collapse" : "Expand for long script"}
-                >
+                <button onClick={() => toggleShellRowExpand(index)} style={{background: 'none', border: 'none', cursor: 'pointer', marginTop: '5px'}} title="Expand">
                   {row.expanded ? '▲' : '▼'}
                 </button>
-
-                <button 
-                  onClick={() => removeShellRow(index)} 
-                  style={{
-                    background: 'none', 
-                    border: 'none', 
-                    color: 'red', 
-                    cursor: 'pointer',
-                    marginTop: '5px'
-                  }}
-                >
+                <button onClick={() => removeShellRow(index)} style={{background: 'none', border: 'none', color: 'red', cursor: 'pointer', marginTop: '5px'}}>
                   ×
                 </button>
               </div>
@@ -382,7 +456,8 @@ const ViewDatabasePage = () => {
              <button className="select-button" style={{fontSize: '0.8rem', padding: '5px', flex: 1, backgroundColor: '#f0f8ff', borderColor: '#8C68CD', color: '#8C68CD'}} onClick={handleSaveRPreset}>Save Preset</button>
           </div>
 
-          {rPresets.length > 0 && (
+          {/* ... (Existing Presets display) ... */}
+           {rPresets.length > 0 && (
             <div style={{display: 'flex', flexWrap: 'wrap', gap: '5px', marginBottom: '10px'}}>
               {rPresets.map(preset => (
                 <div key={preset.name} style={{ display: 'flex', alignItems: 'center', background: '#eee', borderRadius: '4px', paddingLeft: '8px', fontSize: '0.8rem' }}>
