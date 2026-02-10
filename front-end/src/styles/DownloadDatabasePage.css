@@ -1,23 +1,64 @@
+
 .page-layout-container {
   display: flex;
-  flex-wrap: nowrap;      
-  width: 100vw;           
+  flex-direction: row;
+  height: 100vh;          /* Full viewport height */
+  width: 100vw;           /* Full viewport width */
+  overflow: hidden;       /* Prevent outer scrollbars */
   box-sizing: border-box;
-  /* Added to match App.css white theme */
   background-color: white;
-  color: #333; 
+  color: #333;
 }
+
+/* --- LEFT SIDEBAR (Filters/Presets) --- */
+.left-section {
+  flex: 0 0 260px;        /* Fixed width: Prevents shrinking/crushing */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border-right: 1px solid #eee; /* Subtle separator */
+  overflow-y: auto;       /* Scroll independently */
+  box-sizing: border-box;
+  background-color: #fcfcfc;
+}
+
+/* --- MIDDLE SECTION (Data Table) --- */
+.middle-data-section {
+  flex: 1;                /* Take all remaining space */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  overflow-y: auto;       /* Scroll independently */
+  overflow-x: hidden;
+  box-sizing: border-box;
+  min-width: 0;           /* CSS Trick: Prevents flex child from overflowing */
+}
+
+/* --- RIGHT SIDEBAR (Controls/R Shell) --- */
+.control-section {
+  flex: 0 0 340px;        /* Fixed width: Wide enough for R inputs */
+  padding: 20px;
+  border-left: 1px solid #eee;
+  overflow-y: auto;       /* Scroll independently */
+  box-sizing: border-box;
+  background-color: white;
+  margin-bottom: 0;       /* Removed margin to fit height */
+}
+
+/* --- COMPONENT STYLES --- */
 
 .entry-limit-container {
   margin-bottom: 20px;
   text-align: center;
   display: inline-block;
+  width: 100%;
 }
 
 .entry-limit-container label {
   margin-right: 10px;
   font-weight: bold;
-  /* Teal -> Blue to match theme */
   color: #347ecc;
 }
 
@@ -30,32 +71,9 @@
   font-family: Arial, sans-serif; 
 }
 
-.middle-data-section {
-  display: flex;
-  gap: 20px;
-  padding: 20px;
-  width: 100vw;            
-  overflow-x: hidden;     
-  box-sizing: border-box;
-  flex: 0 0 70%;
-}
-
-
-.middle-data-section > * {
-  flex-shrink: 1;
-  min-width: 0;
-}
-
-.left-section {
-  flex: 0 0 10%;
-  /* width: 25%;
-  text-align: center; */
-  box-sizing: border-box;
-}
-
 .profile-circle {
-  width: 150px;
-  height: 150px;
+  width: 120px;           /* Slightly smaller to fit sidebar */
+  height: 120px;
   border-radius: 50%;
   background-color: #c0c0c0;
   margin: 0 auto 10px;
@@ -63,225 +81,144 @@
 
 .profile-name {
   font-weight: bold;
-  font-size: 1.2rem;
-  /* Light Blue -> Darker Blue for visibility on white */
+  font-size: 1.1rem;
   color: #1F3A8A;
-}
-
-.pie-chart {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  /* Blurple -> Theme Blue */
-  background-color: #347ecc; 
-  margin: 10px auto;
-}
-
-.chart-label {
-  font-weight: bold;
-  /* Light Blue -> Darker Blue */
-  color: #1F3A8A;
+  text-align: center;
 }
 
 .data-section {
   flex: 1;
-  min-width: 0;
-}
-.saved-section {
-  flex: 1;
+  width: 100%;
 }
 
 .section-title {
-  /* Purple -> Theme Blue */
   color: #347ecc;
   font-size: 1.5rem;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 10px;
 }
 
 .data-item {
   margin-bottom: 20px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 0.8rem;
-  min-width: 0;
-}
-
-.data-item h3 {
-  font-size: 1.2rem;
-  /* Blurple -> Theme Blue */
-  color: #347ecc;
+  padding: 0; /* Remove padding to let table fill space */
+  border: none;
 }
 
 .data-item h2 {
-  /* Light Grey -> Dark Grey */
   color: #333333;
-  text-align: center;
+  text-align: left;
+  margin-bottom: 10px;
 }
 
-.action-buttons {
-  margin-top: 10px;
-}
-
-.delete-button,
-.edit-button {
-  /* Blurple -> Theme Blue */
-  background-color: #347ecc;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  margin-right: 10px;
-  cursor: pointer;
-  border-radius: 3px;
-}
-
-.saved-users li {
-  list-style: none;
-  font-size: 1rem;
-  margin: 5px 0;
-  /* Implicit black/dark grey from container */
-}
-
-.saved-graph {
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.saved-graph h3 {
-  /* Blurple -> Theme Blue */
-  color: #347ecc;
-  font-size: 1.2rem;
-}
-
-.noteslist p {
-  position: relative;
-}
-
-.control-section {
-  margin-bottom: 2rem;
-  padding: 1rem;
-  border-radius: 8px;
-}
+/* --- BUTTONS & CONTROLS --- */
 
 .controls {
   display: flex;
-  gap: 1rem;
   flex-direction: column;
+  gap: 10px;
+  width: 100%;
 }
 
-/* GHOST BUTTONS: 
-   The background opacity (26) is kept, but base colors are tweaked 
-   so the text is readable on white.
-*/
-
-.upload-button {
-  padding: 0.5rem 1rem;
-  background: #22c55e26; /* Green tint */
-  color: #15803d;        /* Dark Green Text */
-  border: solid 1px #15803d;
-  border-radius: 4px;
+/* Ghost Button Base Style */
+.download-button,
+.upload-button,
+.select-button,
+.delete-table-button {
+  width: 100%;            /* Fill sidebar width */
+  padding: 10px;
+  border-radius: 6px;
   cursor: pointer;
-  width: 70%;
+  font-weight: 500;
+  text-align: center;
+  transition: all 0.2s;
+  box-sizing: border-box;
 }
 
-.upload-button:hover {
-  background: #15803d;
-  color: white;
-}
-
+/* Blue Buttons (Download) */
 .download-button {
-  padding: 0.5rem 1rem;
-  background: #347ecc26; /* Blue tint */
-  color: #347ecc;        /* Theme Blue Text */
-  border: solid 1px #347ecc;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 70%;
+  background: #347ecc1a; 
+  color: #347ecc;        
+  border: 1px solid #347ecc;
 }
-
 .download-button:hover {
   background: #347ecc;
   color: white;
 }
 
-.select-button {
-  padding: 0.5rem 1rem;
-  background: #f59e0b26; /* Orange tint */
-  color: #b45309;        /* Dark Orange Text */
-  border: solid 1px #b45309;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 70%;
+/* Green Buttons (Upload/Save) */
+.upload-button {
+  background: #22c55e1a; 
+  color: #15803d;        
+  border: 1px solid #15803d;
+}
+.upload-button:hover {
+  background: #15803d;
+  color: white;
 }
 
+/* Orange Buttons (Select) */
+.select-button {
+  background: #f59e0b1a; 
+  color: #b45309;        
+  border: 1px solid #b45309;
+}
 .select-button:hover {
   background: #b45309;
   color: white;
 }
 
+/* Red Buttons (Delete) */
 .delete-table-button {
-  padding: 0.5rem 1rem;
-  background: #ef444426; /* Red tint */
-  color: #b91c1c;        /* Dark Red Text */
-  border: solid 1px #b91c1c;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 70%;
+  background: #ef44441a; 
+  color: #b91c1c;        
+  border: 1px solid #b91c1c;
 }
-
 .delete-table-button:hover {
   background: #b91c1c;
   color: white;
 }
 
+/* --- TABLE STYLES --- */
 .table-container {
   width: 100%;           
   overflow-x: auto;      
-  -webkit-overflow-scrolling: touch;
+  border: 1px solid #eee;
+  border-radius: 4px;
 }
 
-.table-container::-webkit-scrollbar {
-  height: 6px;
-}
-.table-container::-webkit-scrollbar-thumb {
-  background: rgba(0,0,0,0.2);
-  border-radius: 3px;
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
 .styled-table td {
-  padding: 12px 15px;
+  padding: 10px 12px;
   text-align: left;
   white-space: nowrap;
-  /* Added dark color so text isn't white-on-white */
   color: #333;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .styled-table th {
-  /* Purple tint -> Blue tint */
-  background-color: #347ecc26; 
+  background-color: #347ecc1a; 
+  padding: 10px 12px;
   font-weight: 600;
-  color: #333; /* Ensure header text is dark */
-}
-
-.column-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-}
-
-.column-header input {
-  margin: 0;
-  cursor: pointer;
+  color: #333;
+  text-align: left;
+  position: sticky;
+  top: 0;
 }
 
 .styled-table td.selected,
 .styled-table th.selected {
-  /* Dark Blue -> Lighter Blue selection */
   background-color: #bfdbfe;
 }
 
+/* --- FILTERS & PRESETS --- */
+
 .state-filter-container {
+  width: 100%;
   margin-top: 15px;
   margin-bottom: 20px;
 }
@@ -294,103 +231,79 @@
 
 .state-filter-container input {
   width: 100%;
-  padding: 8px 12px;
+  padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  font-size: 14px;
+  box-sizing: border-box;
 }
 
 .preset-controls {
   display: flex;
-  gap: 1rem;
-  align-items: center;
-  margin: 1rem 0;
-  flex-wrap: wrap;
+  flex-direction: column; /* Stack presets vertically in sidebar */
+  gap: 10px;
+  width: 100%;
+  align-items: flex-start;
+  margin-top: 10px;
 }
 
 .preset-item {
   display: flex;
-  align-items: center;
-  gap: 4px;
-  background: #f5f5f5;
-  border-radius: 20px;
-  padding-right: 8px;
+  justify-content: space-between;
+  width: 100%;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 5px;
+  box-sizing: border-box;
 }
 
 .preset-button {
-  padding: 8px 16px;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  background: white;
+  border: none;
+  background: none;
   cursor: pointer;
-  transition: all 0.2s;
+  text-align: left;
+  flex: 1;
+  font-size: 0.9rem;
 }
 
 .preset-button.active {
-  background: #e3f2fd;
-  border-color: #2196f3;
-  color: #2196f3;
+  color: #347ecc;
+  font-weight: bold;
+}
+
+.save-preset {
+  width: 100%;
+  background: #10b9811a;
+  color: #059669;
+  border: 1px solid #059669;
+  border-radius: 4px;
+  padding: 8px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.save-preset:hover {
+  background: #059669;
+  color: white;
 }
 
 .delete-preset {
   background: none;
   border: none;
-  color: #999;
+  color: #ef4444;
   cursor: pointer;
-  padding: 0;
+  padding: 0 5px;
+  font-weight: bold;
 }
 
-.delete-preset:hover {
-  color: #ff4444;
+/* --- SCROLLBARS --- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
-
-.save-preset {
-  /* Green tint -> Solid Green/White combo for better vis */
-  background: #10b98126;
-  color: #059669;
-  border-color: #059669;
-  text-align: center;
+::-webkit-scrollbar-thumb {
+  background: #ddd;
+  border-radius: 4px;
 }
-
-.save-preset:hover {
-  background-color: #059669;
-  color: white;
-}
-
-.preset-button.active.clearable {
-  background: #ffebee;
-  border-color: #f44336;
-  color: #f44336;
-}
-
-.left-section {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-
-input[type="number"] {
-  -moz-appearance: textfield;
-  appearance: textfield;
-  padding: 10px;
-  font-size: 1rem;
-  border-radius: 8px;
-  border: solid 1px #DDDDDD;
-  /* Dark background -> White background */
-  background-color: white;
-  color: #333;
-  outline: none;
-}
-
-
-/* might need to create new button */
-input[type="file"] { 
-  /* Dark background -> Light Gray background */
-  background-color: #f3f4f6; 
-  color: #333;
-  border: 2px solid #DDDDDD; 
-  border-radius: 8px;
-  padding: 8px;
-  font-family: inherit;
-  cursor: pointer;
+::-webkit-scrollbar-thumb:hover {
+  background: #ccc;
 }
