@@ -1,50 +1,49 @@
-
+/* --- MAIN LAYOUT CONTAINER --- */
 .page-layout-container {
   display: flex;
   flex-direction: row;
-  height: 100vh;          /* Full viewport height */
-  width: 100vw;           /* Full viewport width */
-  overflow: hidden;       /* Prevent outer scrollbars */
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
   box-sizing: border-box;
   background-color: white;
   color: #333;
 }
 
-/* --- LEFT SIDEBAR (Filters/Presets) --- */
+/* --- LEFT SIDEBAR (Fixed Width) --- */
 .left-section {
-  flex: 0 0 260px;        /* Fixed width: Prevents shrinking/crushing */
+  flex: 0 0 250px;        /* Fixed width: Clean and consistent */
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  border-right: 1px solid #eee; /* Subtle separator */
-  overflow-y: auto;       /* Scroll independently */
+  border-right: 1px solid #eee; 
+  overflow-y: auto;
   box-sizing: border-box;
   background-color: #fcfcfc;
 }
 
-/* --- MIDDLE SECTION (Data Table) --- */
+/* --- MIDDLE SECTION (Fluid) --- */
 .middle-data-section {
-  flex: 1;                /* Take all remaining space */
+  flex: 1;                /* Takes remaining space */
   display: flex;
   flex-direction: column;
   gap: 20px;
   padding: 20px;
-  overflow-y: auto;       /* Scroll independently */
+  overflow-y: auto;
   overflow-x: hidden;
   box-sizing: border-box;
-  min-width: 0;           /* CSS Trick: Prevents flex child from overflowing */
+  min-width: 0;
 }
 
-/* --- RIGHT SIDEBAR (Controls/R Shell) --- */
+/* --- RIGHT SIDEBAR (Fixed Width) --- */
 .control-section {
-  flex: 0 0 340px;        /* Fixed width: Wide enough for R inputs */
+  flex: 0 0 320px;        /* Fixed width: Perfectly fits R inputs */
   padding: 20px;
   border-left: 1px solid #eee;
-  overflow-y: auto;       /* Scroll independently */
+  overflow-y: auto;
   box-sizing: border-box;
   background-color: white;
-  margin-bottom: 0;       /* Removed margin to fit height */
 }
 
 /* --- COMPONENT STYLES --- */
@@ -71,21 +70,6 @@
   font-family: Arial, sans-serif; 
 }
 
-.profile-circle {
-  width: 120px;           /* Slightly smaller to fit sidebar */
-  height: 120px;
-  border-radius: 50%;
-  background-color: #c0c0c0;
-  margin: 0 auto 10px;
-}
-
-.profile-name {
-  font-weight: bold;
-  font-size: 1.1rem;
-  color: #1F3A8A;
-  text-align: center;
-}
-
 .data-section {
   flex: 1;
   width: 100%;
@@ -101,7 +85,7 @@
 
 .data-item {
   margin-bottom: 20px;
-  padding: 0; /* Remove padding to let table fill space */
+  padding: 0;
   border: none;
 }
 
@@ -112,7 +96,6 @@
 }
 
 /* --- BUTTONS & CONTROLS --- */
-
 .controls {
   display: flex;
   flex-direction: column;
@@ -120,12 +103,12 @@
   width: 100%;
 }
 
-/* Ghost Button Base Style */
+/* Standard Buttons - Full width of the fixed sidebar */
 .download-button,
 .upload-button,
 .select-button,
 .delete-table-button {
-  width: 100%;            /* Fill sidebar width */
+  width: 100%;
   padding: 10px;
   border-radius: 6px;
   cursor: pointer;
@@ -135,7 +118,6 @@
   box-sizing: border-box;
 }
 
-/* Blue Buttons (Download) */
 .download-button {
   background: #347ecc1a; 
   color: #347ecc;        
@@ -146,7 +128,6 @@
   color: white;
 }
 
-/* Green Buttons (Upload/Save) */
 .upload-button {
   background: #22c55e1a; 
   color: #15803d;        
@@ -157,7 +138,6 @@
   color: white;
 }
 
-/* Orange Buttons (Select) */
 .select-button {
   background: #f59e0b1a; 
   color: #b45309;        
@@ -168,7 +148,6 @@
   color: white;
 }
 
-/* Red Buttons (Delete) */
 .delete-table-button {
   background: #ef44441a; 
   color: #b91c1c;        
@@ -179,44 +158,7 @@
   color: white;
 }
 
-/* --- TABLE STYLES --- */
-.table-container {
-  width: 100%;           
-  overflow-x: auto;      
-  border: 1px solid #eee;
-  border-radius: 4px;
-}
-
-.styled-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.styled-table td {
-  padding: 10px 12px;
-  text-align: left;
-  white-space: nowrap;
-  color: #333;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.styled-table th {
-  background-color: #347ecc1a; 
-  padding: 10px 12px;
-  font-weight: 600;
-  color: #333;
-  text-align: left;
-  position: sticky;
-  top: 0;
-}
-
-.styled-table td.selected,
-.styled-table th.selected {
-  background-color: #bfdbfe;
-}
-
 /* --- FILTERS & PRESETS --- */
-
 .state-filter-container {
   width: 100%;
   margin-top: 15px;
@@ -239,7 +181,7 @@
 
 .preset-controls {
   display: flex;
-  flex-direction: column; /* Stack presets vertically in sidebar */
+  flex-direction: column;
   gap: 10px;
   width: 100%;
   align-items: flex-start;
@@ -293,6 +235,14 @@
   cursor: pointer;
   padding: 0 5px;
   font-weight: bold;
+}
+
+/* --- TABLE STYLES --- */
+.table-container {
+  width: 100%;           
+  overflow-x: auto;      
+  border: 1px solid #eee;
+  border-radius: 4px;
 }
 
 /* --- SCROLLBARS --- */

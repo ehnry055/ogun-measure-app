@@ -225,7 +225,6 @@ const ViewDatabasePage = () => {
       const finalResults = {};
 
       if (analysisMode === 'batch') {
-        // Batch Mode
         for (const colName of columnList) {
           try {
             const rawValues = allData[colName];
@@ -239,7 +238,6 @@ const ViewDatabasePage = () => {
           } catch (e) { finalResults[colName] = { success: false, error: "Analysis error" }; }
         }
       } else {
-        // Multi Mode
         try {
           for (const v of rVariables) {
             if (!v.name || !v.column) continue;
@@ -266,10 +264,9 @@ const ViewDatabasePage = () => {
   };
 
   // --- GRID STYLE CONSTANTS ---
-  // Using Grid ensures the delete button ALWAYS gets its space, and the inputs share the rest.
   const rowGridStyle = {
     display: 'grid',
-    gridTemplateColumns: '1fr 2fr 25px 25px', // Label | Code | Expand | Delete
+    gridTemplateColumns: '1fr 2fr 25px 25px', 
     gap: '5px',
     marginBottom: '5px',
     alignItems: 'start'
@@ -277,7 +274,7 @@ const ViewDatabasePage = () => {
 
   const varGridStyle = {
     display: 'grid',
-    gridTemplateColumns: 'minmax(40px, 60px) 15px 1fr 20px', // VarName | = | Select | Delete
+    gridTemplateColumns: 'minmax(40px, 60px) 15px 1fr 20px',
     gap: '5px',
     marginBottom: '5px',
     alignItems: 'center'
@@ -359,9 +356,8 @@ const ViewDatabasePage = () => {
           
           <hr style={{width: '100%', margin: '15px 0', border: '0.5px solid #ddd'}} />
           
-          {/* --- R Shell Header --- */}
-          {/* Changed: flex-wrap: wrap ensures buttons drop to next line if container is too narrow */}
-          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', flexWrap: 'wrap', gap: '5px'}}>
+          {/* --- R Shell Header (FIXED: Buttons moved left) --- */}
+          <div style={{display: 'flex', justifyContent: 'flex-start', alignItems: 'center', marginBottom: '10px', flexWrap: 'wrap', gap: '15px'}}>
             <h3 style={{fontSize: '1rem', color: '#ca6767ff', margin: 0, display: 'flex', alignItems: 'center', whiteSpace: 'nowrap'}}>
               R Analysis Shell
               <span 
@@ -375,7 +371,7 @@ const ViewDatabasePage = () => {
               >?</span>
             </h3>
             
-            {/* Mode Toggle Pills */}
+            {/* Mode Toggle Pills - Now aligned left with title */}
             <div style={{fontSize: '0.7rem', display: 'flex', gap: '5px', background: '#f5f5f5', padding: '3px', borderRadius: '4px'}}>
               <button 
                 onClick={() => setAnalysisMode('batch')}
