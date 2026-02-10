@@ -25,7 +25,7 @@ const ViewDatabasePage = () => {
   const [rResult, setRResult] = useState(null);
   const [rError, setRError] = useState(null);
   
-  // New: Analysis Mode & Help
+  // Analysis Mode & Help
   const [analysisMode, setAnalysisMode] = useState('batch'); // 'batch' or 'multi'
   const [showHelp, setShowHelp] = useState(false);
   
@@ -305,9 +305,13 @@ const ViewDatabasePage = () => {
         </div>
       </div>
 
-      <div className="control-section">
+      {/* --- RIGHT SIDE CONTROL SECTION --- */}
+      {/* Added boxSizing to wrapper to prevent padding from expanding width */}
+      <div className="control-section" style={{boxSizing: 'border-box', overflowX: 'hidden'}}>
         <h2 className="section-title">Database Controls</h2>
-        <div className="controls">
+        
+        {/* Added width: 100% to controls wrapper */}
+        <div className="controls" style={{width: '100%', boxSizing: 'border-box'}}>
           <button className="download-button" onClick={handleDownload}> Download as CSV </button>
           <button className="download-button" onClick={handleDownloadExcel}> Download as XLSX </button>
           
@@ -342,8 +346,8 @@ const ViewDatabasePage = () => {
           <hr style={{width: '100%', margin: '15px 0', border: '0.5px solid #ddd'}} />
           
           {/* --- R Shell Header --- */}
-          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px'}}>
-            <h3 style={{fontSize: '1rem', color: '#ca6767ff', margin: 0}}>
+          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', flexWrap: 'wrap', gap: '5px'}}>
+            <h3 style={{fontSize: '1rem', color: '#ca6767ff', margin: 0, display: 'flex', alignItems: 'center'}}>
               R Analysis Shell
               <span 
                 onClick={() => setShowHelp(!showHelp)}
@@ -356,15 +360,15 @@ const ViewDatabasePage = () => {
               >?</span>
             </h3>
             
-            {/* Mode Toggle Pills */}
-            <div style={{fontSize: '0.7rem', display: 'flex', gap: '5px', background: '#f5f5f5', padding: '3px', borderRadius: '4px'}}>
+            {/* Mode Toggle Pills - Switched to wrap to prevent cutoff */}
+            <div style={{fontSize: '0.7rem', display: 'flex', gap: '5px', background: '#f5f5f5', padding: '3px', borderRadius: '4px', flexShrink: 0}}>
               <button 
                 onClick={() => setAnalysisMode('batch')}
                 style={{
                   border: 'none', background: analysisMode === 'batch' ? '#fff' : 'transparent', 
                   color: analysisMode === 'batch' ? '#333' : '#999',
                   boxShadow: analysisMode === 'batch' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
-                  borderRadius: '3px', cursor: 'pointer', padding: '2px 6px'
+                  borderRadius: '3px', cursor: 'pointer', padding: '4px 8px'
                 }}
               >Batch</button>
               <button 
@@ -373,7 +377,7 @@ const ViewDatabasePage = () => {
                   border: 'none', background: analysisMode === 'multi' ? '#fff' : 'transparent', 
                   color: analysisMode === 'multi' ? '#333' : '#999',
                   boxShadow: analysisMode === 'multi' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
-                  borderRadius: '3px', cursor: 'pointer', padding: '2px 6px'
+                  borderRadius: '3px', cursor: 'pointer', padding: '4px 8px'
                 }}
               >Multi</button>
             </div>
@@ -389,23 +393,24 @@ const ViewDatabasePage = () => {
           
           {/* Multi-Mode Inputs */}
           {analysisMode === 'multi' && (
-             <div style={{backgroundColor: '#f9f9f9', padding: '10px', borderRadius: '4px', marginBottom: '10px', border: '1px solid #eee'}}>
+             <div style={{backgroundColor: '#f9f9f9', padding: '10px', borderRadius: '4px', marginBottom: '10px', border: '1px solid #eee', boxSizing: 'border-box'}}>
                {rVariables.map((v, idx) => (
-                 <div key={idx} style={{display: 'flex', gap: '5px', marginBottom: '5px'}}>
+                 <div key={idx} style={{display: 'flex', gap: '5px', marginBottom: '5px', alignItems: 'center'}}>
+                   {/* Flex grow inputs instead of fixed width */}
                    <input 
-                     placeholder="Var Name" value={v.name} 
+                     placeholder="Var" value={v.name} 
                      onChange={(e) => updateRVariable(idx, 'name', e.target.value)}
-                     style={{width: '60px', padding: '4px', fontSize: '0.8rem', border: '1px solid #ccc', borderRadius: '4px'}}
+                     style={{flex: '0 0 50px', padding: '4px', fontSize: '0.8rem', border: '1px solid #ccc', borderRadius: '4px'}}
                    />
                    <span style={{alignSelf: 'center', fontSize: '0.8rem'}}>=</span>
                    <select 
                      value={v.column} onChange={(e) => updateRVariable(idx, 'column', e.target.value)}
-                     style={{flex: 1, padding: '4px', fontSize: '0.8rem', border: '1px solid #ccc', borderRadius: '4px'}}
+                     style={{flex: 1, minWidth: 0, padding: '4px', fontSize: '0.8rem', border: '1px solid #ccc', borderRadius: '4px'}}
                    >
                      <option value="">-- Column --</option>
                      {Array.from(selectedColumns).map(col => <option key={col} value={col}>{col}</option>)}
                    </select>
-                   <button onClick={() => removeRVariable(idx)} style={{border: 'none', background: 'none', color: '#d9534f', cursor: 'pointer', fontSize: '1rem'}}>×</button>
+                   <button onClick={() => removeRVariable(idx)} style={{border: 'none', background: 'none', color: '#d9534f', cursor: 'pointer', fontSize: '1rem', padding: '0 5px'}}>×</button>
                  </div>
                ))}
                <button onClick={addRVariable} style={{border: 'none', background: 'none', color: '#8C68CD', fontSize: '0.75rem', cursor: 'pointer', padding: 0}}>+ Add Variable</button>
@@ -413,43 +418,46 @@ const ViewDatabasePage = () => {
           )}
           
           {/* Shell Rows */}
-          <div className="r-shell-container" style={{maxHeight: '200px', overflowY: 'auto', marginBottom: '10px', width: '100%'}}>
+          <div className="r-shell-container" style={{maxHeight: '200px', overflowY: 'auto', marginBottom: '10px', width: '100%', boxSizing: 'border-box'}}>
             {shellRows.map((row, index) => (
-              <div key={index} style={{display: 'flex', gap: '5px', marginBottom: '5px', alignItems: 'flex-start'}}>
+              <div key={index} style={{display: 'flex', gap: '5px', marginBottom: '5px', alignItems: 'flex-start', width: '100%'}}>
+                {/* Changed from width:30% to flex:1 */}
                 <input 
                   placeholder="Label" 
-                  style={{width: '30%'}} 
+                  style={{flex: 1, minWidth: '60px', padding: '4px', border: '1px solid #ccc', borderRadius: '4px'}} 
                   value={row.label} 
                   onChange={(e) => updateShellRow(index, 'label', e.target.value)} 
                 />
                 
+                {/* Changed from width:55% to flex:2 */}
                 {row.expanded ? (
                   <textarea 
                     placeholder="R Code"
-                    style={{width: '55%', fontFamily: 'monospace', minHeight: '80px', padding: '5px', borderRadius: '4px', border: '1px solid #ccc', resize: 'vertical'}}
+                    style={{flex: 2, fontFamily: 'monospace', minHeight: '80px', padding: '5px', borderRadius: '4px', border: '1px solid #ccc', resize: 'vertical'}}
                     value={row.code}
                     onChange={(e) => updateShellRow(index, 'code', e.target.value)}
                   />
                 ) : (
                   <input 
                     placeholder={analysisMode === 'batch' ? "mean(vals)" : "cor(var1, var2)"}
-                    style={{width: '55%'}} 
+                    style={{flex: 2, fontFamily: 'monospace', padding: '4px', border: '1px solid #ccc', borderRadius: '4px'}} 
                     value={row.code} 
                     onChange={(e) => updateShellRow(index, 'code', e.target.value)} 
                   />
                 )}
                 
-                <button onClick={() => toggleShellRowExpand(index)} style={{background: 'none', border: 'none', color: '#666', cursor: 'pointer', marginTop: '5px'}}>
+                <button onClick={() => toggleShellRowExpand(index)} style={{background: 'none', border: 'none', color: '#666', cursor: 'pointer', marginTop: '5px', padding: '0 2px'}}>
                   {row.expanded ? '▲' : '▼'}
                 </button>
-                <button onClick={() => removeShellRow(index)} style={{background: 'none', border: 'none', color: '#d9534f', cursor: 'pointer', marginTop: '5px'}}>
+                <button onClick={() => removeShellRow(index)} style={{background: 'none', border: 'none', color: '#d9534f', cursor: 'pointer', marginTop: '5px', padding: '0 2px'}}>
                   ×
                 </button>
               </div>
             ))}
           </div>
 
-          <div style={{display: 'flex', gap: '10px', marginBottom: '10px'}}>
+          {/* Button Row - Added padding right to ensure shadow/border isn't cut */}
+          <div style={{display: 'flex', gap: '10px', marginBottom: '10px', paddingRight: '2px'}}>
              <button className="select-button" style={{fontSize: '0.8rem', padding: '5px', flex: 1}} onClick={addShellRow}>+ Add Row</button>
              <button className="select-button" style={{fontSize: '0.8rem', padding: '5px', flex: 1, backgroundColor: '#f0f8ff', borderColor: '#8C68CD', color: '#8C68CD'}} onClick={handleSaveRPreset}>Save Preset</button>
           </div>
@@ -466,7 +474,7 @@ const ViewDatabasePage = () => {
             </div>
           )}
 
-          <button className="download-button" onClick={handleRunRAnalysis} disabled={!rReady || rLoading} style={{marginTop: '5px'}}>
+          <button className="download-button" onClick={handleRunRAnalysis} disabled={!rReady || rLoading} style={{marginTop: '5px', width: '100%'}}>
             {!rReady ? "Loading R..." : rLoading ? "Analyzing..." : "Run Analysis"}
           </button>
           
@@ -481,7 +489,7 @@ const ViewDatabasePage = () => {
               {Object.entries(rResult).map(([colName, data]) => (
                 <div key={colName} style={{ 
                   padding: "12px", backgroundColor: "#fcfcfc", borderRadius: "8px", border: "1px solid #8C68CD",
-                  marginBottom: "12px", width: "calc(100% - 15px)", marginLeft: "0", boxSizing: "border-box", 
+                  marginBottom: "12px", width: "calc(100% - 2px)", marginLeft: "0", boxSizing: "border-box", 
                   wordBreak: "break-all", boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
                 }}>
                   <p style={{ fontWeight: 'bold', fontSize: '0.85rem', color: '#333', margin: "0 0 8px 0", borderBottom: '1px solid #eee', paddingBottom: '4px', textAlign: 'left' }}>
