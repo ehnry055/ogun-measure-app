@@ -3,7 +3,6 @@
   flex-wrap: nowrap;      
   width: 100vw;           
   box-sizing: border-box;
-  /* Added to match App.css white theme */
   background-color: white;
   color: #333; 
 }
@@ -17,7 +16,6 @@
 .entry-limit-container label {
   margin-right: 10px;
   font-weight: bold;
-  /* Teal -> Blue to match theme */
   color: #347ecc;
 }
 
@@ -30,6 +28,7 @@
   font-family: Arial, sans-serif; 
 }
 
+/* CHANGE: Reduced from 70% to 65% to prevent Right Side clipping */
 .middle-data-section {
   display: flex;
   gap: 20px;
@@ -37,9 +36,8 @@
   width: 100vw;            
   overflow-x: hidden;     
   box-sizing: border-box;
-  flex: 0 0 70%;
+  flex: 0 0 65%;
 }
-
 
 .middle-data-section > * {
   flex-shrink: 1;
@@ -48,10 +46,19 @@
 
 .left-section {
   flex: 0 0 10%;
-  /* width: 25%;
-  text-align: center; */
   box-sizing: border-box;
 }
+
+/* CHANGE: Added flex: 1 to fill the remaining space (25%) */
+.control-section {
+  flex: 1;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: hidden; /* Safety net for small screens */
+}
+
+/* --- EVERYTHING BELOW IS IDENTICAL TO YOUR VERSION --- */
 
 .profile-circle {
   width: 150px;
@@ -64,7 +71,6 @@
 .profile-name {
   font-weight: bold;
   font-size: 1.2rem;
-  /* Light Blue -> Darker Blue for visibility on white */
   color: #1F3A8A;
 }
 
@@ -72,14 +78,12 @@
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  /* Blurple -> Theme Blue */
   background-color: #347ecc; 
   margin: 10px auto;
 }
 
 .chart-label {
   font-weight: bold;
-  /* Light Blue -> Darker Blue */
   color: #1F3A8A;
 }
 
@@ -92,7 +96,6 @@
 }
 
 .section-title {
-  /* Purple -> Theme Blue */
   color: #347ecc;
   font-size: 1.5rem;
   margin-bottom: 10px;
@@ -109,12 +112,10 @@
 
 .data-item h3 {
   font-size: 1.2rem;
-  /* Blurple -> Theme Blue */
   color: #347ecc;
 }
 
 .data-item h2 {
-  /* Light Grey -> Dark Grey */
   color: #333333;
   text-align: center;
 }
@@ -125,7 +126,6 @@
 
 .delete-button,
 .edit-button {
-  /* Blurple -> Theme Blue */
   background-color: #347ecc;
   color: white;
   border: none;
@@ -139,7 +139,6 @@
   list-style: none;
   font-size: 1rem;
   margin: 5px 0;
-  /* Implicit black/dark grey from container */
 }
 
 .saved-graph {
@@ -148,7 +147,6 @@
 }
 
 .saved-graph h3 {
-  /* Blurple -> Theme Blue */
   color: #347ecc;
   font-size: 1.2rem;
 }
@@ -157,33 +155,23 @@
   position: relative;
 }
 
-.control-section {
-  margin-bottom: 2rem;
-  padding: 1rem;
-  border-radius: 8px;
-}
-
 .controls {
   display: flex;
   gap: 1rem;
   flex-direction: column;
 }
 
-/* GHOST BUTTONS: 
-   The background opacity (26) is kept, but base colors are tweaked 
-   so the text is readable on white.
-*/
+/* GHOST BUTTONS (Unchanged) */
 
 .upload-button {
   padding: 0.5rem 1rem;
-  background: #22c55e26; /* Green tint */
-  color: #15803d;        /* Dark Green Text */
+  background: #22c55e26; 
+  color: #15803d;        
   border: solid 1px #15803d;
   border-radius: 4px;
   cursor: pointer;
   width: 70%;
 }
-
 .upload-button:hover {
   background: #15803d;
   color: white;
@@ -191,14 +179,13 @@
 
 .download-button {
   padding: 0.5rem 1rem;
-  background: #347ecc26; /* Blue tint */
-  color: #347ecc;        /* Theme Blue Text */
+  background: #347ecc26; 
+  color: #347ecc;        
   border: solid 1px #347ecc;
   border-radius: 4px;
   cursor: pointer;
   width: 70%;
 }
-
 .download-button:hover {
   background: #347ecc;
   color: white;
@@ -206,14 +193,13 @@
 
 .select-button {
   padding: 0.5rem 1rem;
-  background: #f59e0b26; /* Orange tint */
-  color: #b45309;        /* Dark Orange Text */
+  background: #f59e0b26; 
+  color: #b45309;        
   border: solid 1px #b45309;
   border-radius: 4px;
   cursor: pointer;
   width: 70%;
 }
-
 .select-button:hover {
   background: #b45309;
   color: white;
@@ -221,14 +207,13 @@
 
 .delete-table-button {
   padding: 0.5rem 1rem;
-  background: #ef444426; /* Red tint */
-  color: #b91c1c;        /* Dark Red Text */
+  background: #ef444426; 
+  color: #b91c1c;        
   border: solid 1px #b91c1c;
   border-radius: 4px;
   cursor: pointer;
   width: 70%;
 }
-
 .delete-table-button:hover {
   background: #b91c1c;
   color: white;
@@ -252,15 +237,13 @@
   padding: 12px 15px;
   text-align: left;
   white-space: nowrap;
-  /* Added dark color so text isn't white-on-white */
   color: #333;
 }
 
 .styled-table th {
-  /* Purple tint -> Blue tint */
   background-color: #347ecc26; 
   font-weight: 600;
-  color: #333; /* Ensure header text is dark */
+  color: #333; 
 }
 
 .column-header {
@@ -277,7 +260,6 @@
 
 .styled-table td.selected,
 .styled-table th.selected {
-  /* Dark Blue -> Lighter Blue selection */
   background-color: #bfdbfe;
 }
 
@@ -339,19 +321,16 @@
   cursor: pointer;
   padding: 0;
 }
-
 .delete-preset:hover {
   color: #ff4444;
 }
 
 .save-preset {
-  /* Green tint -> Solid Green/White combo for better vis */
   background: #10b98126;
   color: #059669;
   border-color: #059669;
   text-align: center;
 }
-
 .save-preset:hover {
   background-color: #059669;
   color: white;
@@ -376,16 +355,12 @@ input[type="number"] {
   font-size: 1rem;
   border-radius: 8px;
   border: solid 1px #DDDDDD;
-  /* Dark background -> White background */
   background-color: white;
   color: #333;
   outline: none;
 }
 
-
-/* might need to create new button */
 input[type="file"] { 
-  /* Dark background -> Light Gray background */
   background-color: #f3f4f6; 
   color: #333;
   border: 2px solid #DDDDDD; 
