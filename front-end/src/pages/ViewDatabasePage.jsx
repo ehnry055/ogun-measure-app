@@ -266,7 +266,8 @@ const ViewDatabasePage = () => {
   // --- GRID STYLE CONSTANTS ---
   const rowGridStyle = {
     display: 'grid',
-    gridTemplateColumns: '1fr 2fr 25px 25px', 
+    // Adjusted: 1fr label, 2fr code, 25px Expand, 20px Delete (More precision to avoid overflow)
+    gridTemplateColumns: '1fr 2fr 25px 20px', 
     gap: '5px',
     marginBottom: '5px',
     alignItems: 'start'
@@ -278,6 +279,30 @@ const ViewDatabasePage = () => {
     gap: '5px',
     marginBottom: '5px',
     alignItems: 'center'
+  };
+
+  // Unified Input Style (Matches standard font, no monospace unless needed)
+  const inputStyle = {
+    width: '100%', 
+    padding: '4px', 
+    border: '1px solid #ccc', 
+    borderRadius: '4px', 
+    boxSizing: 'border-box',
+    fontFamily: 'inherit', // Fixes font consistency
+    fontSize: '0.8rem'
+  };
+
+  const deleteBtnStyle = {
+    border: 'none', 
+    background: 'none', 
+    color: '#d9534f', 
+    cursor: 'pointer', 
+    fontSize: '1rem', 
+    padding: 0,
+    lineHeight: '1',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   };
 
   return (
@@ -356,7 +381,7 @@ const ViewDatabasePage = () => {
           
           <hr style={{width: '100%', margin: '15px 0', border: '0.5px solid #ddd'}} />
           
-          {/* --- R Shell Header (FIXED: Buttons moved left) --- */}
+          {/* --- R Shell Header --- */}
           <div style={{display: 'flex', justifyContent: 'flex-start', alignItems: 'center', marginBottom: '10px', flexWrap: 'wrap', gap: '15px'}}>
             <h3 style={{fontSize: '1rem', color: '#ca6767ff', margin: 0, display: 'flex', alignItems: 'center', whiteSpace: 'nowrap'}}>
               R Analysis Shell
@@ -371,7 +396,6 @@ const ViewDatabasePage = () => {
               >?</span>
             </h3>
             
-            {/* Mode Toggle Pills - Now aligned left with title */}
             <div style={{fontSize: '0.7rem', display: 'flex', gap: '5px', background: '#f5f5f5', padding: '3px', borderRadius: '4px'}}>
               <button 
                 onClick={() => setAnalysisMode('batch')}
@@ -394,7 +418,6 @@ const ViewDatabasePage = () => {
             </div>
           </div>
           
-          {/* Help Bubble Content */}
           {showHelp && (
             <div style={{backgroundColor: '#fff', border: '1px solid #eee', borderRadius: '4px', padding: '10px', fontSize: '0.75rem', marginBottom: '10px', boxShadow: '0 2px 5px rgba(0,0,0,0.05)'}}>
               <p style={{margin: '0 0 5px 0'}}><strong>Batch:</strong> Runs code on each selected column individually. Use variable <code>vals</code>.</p>
@@ -410,31 +433,31 @@ const ViewDatabasePage = () => {
                    <input 
                      placeholder="Var" value={v.name} 
                      onChange={(e) => updateRVariable(idx, 'name', e.target.value)}
-                     style={{width: '100%', padding: '4px', fontSize: '0.8rem', border: '1px solid #ccc', borderRadius: '4px', boxSizing: 'border-box'}}
+                     style={inputStyle}
                    />
                    <span style={{textAlign: 'center', fontSize: '0.8rem'}}>=</span>
                    <select 
                      value={v.column} onChange={(e) => updateRVariable(idx, 'column', e.target.value)}
-                     style={{width: '100%', padding: '4px', fontSize: '0.8rem', border: '1px solid #ccc', borderRadius: '4px', boxSizing: 'border-box'}}
+                     style={inputStyle}
                    >
                      <option value="">-- Column --</option>
                      {Array.from(selectedColumns).map(col => <option key={col} value={col}>{col}</option>)}
                    </select>
-                   <button onClick={() => removeRVariable(idx)} style={{border: 'none', background: 'none', color: '#d9534f', cursor: 'pointer', fontSize: '1rem', padding: 0}}>×</button>
+                   <button onClick={() => removeRVariable(idx)} style={deleteBtnStyle}>×</button>
                  </div>
                ))}
                <button onClick={addRVariable} style={{border: 'none', background: 'none', color: '#8C68CD', fontSize: '0.75rem', cursor: 'pointer', padding: 0}}>+ Add Variable</button>
              </div>
           )}
           
-          {/* Shell Rows */}
+          {/* Shell Rows (Fixed: Now uses standard inputs and matching X button) */}
           <div className="r-shell-container" style={{maxHeight: '200px', overflowY: 'auto', marginBottom: '10px', width: '100%'}}>
             {shellRows.map((row, index) => (
               <div key={index} style={rowGridStyle}>
                 
                 <input 
                   placeholder="Label" 
-                  style={{width: '100%', padding: '4px', border: '1px solid #ccc', borderRadius: '4px', boxSizing: 'border-box'}} 
+                  style={inputStyle} 
                   value={row.label} 
                   onChange={(e) => updateShellRow(index, 'label', e.target.value)} 
                 />
@@ -442,23 +465,23 @@ const ViewDatabasePage = () => {
                 {row.expanded ? (
                   <textarea 
                     placeholder="R Code"
-                    style={{width: '100%', fontFamily: 'monospace', minHeight: '80px', padding: '5px', borderRadius: '4px', border: '1px solid #ccc', resize: 'vertical', boxSizing: 'border-box'}}
+                    style={{...inputStyle, minHeight: '80px', resize: 'vertical'}}
                     value={row.code}
                     onChange={(e) => updateShellRow(index, 'code', e.target.value)}
                   />
                 ) : (
                   <input 
                     placeholder={analysisMode === 'batch' ? "mean(vals)" : "cor(var1, var2)"}
-                    style={{width: '100%', fontFamily: 'monospace', padding: '4px', border: '1px solid #ccc', borderRadius: '4px', boxSizing: 'border-box'}} 
+                    style={inputStyle} 
                     value={row.code} 
                     onChange={(e) => updateShellRow(index, 'code', e.target.value)} 
                   />
                 )}
                 
-                <button onClick={() => toggleShellRowExpand(index)} style={{background: 'none', border: 'none', color: '#666', cursor: 'pointer', padding: '5px 0'}}>
+                <button onClick={() => toggleShellRowExpand(index)} style={{background: 'none', border: 'none', color: '#666', cursor: 'pointer', padding: '5px 0', fontSize: '0.8rem'}}>
                   {row.expanded ? '▲' : '▼'}
                 </button>
-                <button onClick={() => removeShellRow(index)} style={{background: 'none', border: 'none', color: '#d9534f', cursor: 'pointer', padding: '5px 0'}}>
+                <button onClick={() => removeShellRow(index)} style={deleteBtnStyle}>
                   ×
                 </button>
               </div>
