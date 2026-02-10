@@ -446,12 +446,12 @@ const ViewDatabasePage = () => {
             
             {showHelp && (
               <div style={{backgroundColor: '#fff', border: '1px solid #eee', borderRadius: '4px', padding: '10px', fontSize: '0.75rem', marginBottom: '10px', boxShadow: '0 2px 5px rgba(0,0,0,0.05)'}}>
-                <p style={{margin: '0 0 5px 0'}}><strong>Batch:</strong> Runs code on each selected column individually. Use variable <code>vals</code>.</p>
-                <p style={{margin: 0}}><strong>Multi:</strong> Define variables (x, y) mapped to columns, then write one script using them.</p>
+                <p style={{margin: '0 0 5px 0'}}><strong>Batch:</strong> Runs code on each selected column individually. Use variable vals to represent column data.</p>
+                <p style={{margin: 0}}><strong>Multi:</strong> Analyze multiple columns. Map columns to variables, then write one script using them.</p>
               </div>
             )}
             
-            {/* Multi-Mode Inputs */}
+   
             {analysisMode === 'multi' && (
               <div style={{backgroundColor: '#f9f9f9', padding: '10px', borderRadius: '4px', marginBottom: '10px', border: '1px solid #eee', boxSizing: 'border-box', width: '100%'}}>
                 {rVariables.map((v, idx) => (
@@ -466,7 +466,7 @@ const ViewDatabasePage = () => {
                       value={v.column} onChange={(e) => updateRVariable(idx, 'column', e.target.value)}
                       style={inputStyle}
                     >
-                      <option value="">-- Column --</option>
+                      <option value="">Select Column</option>
                       {Array.from(selectedColumns).map(col => <option key={col} value={col}>{col}</option>)}
                     </select>
                     <button onClick={() => removeRVariable(idx)} style={deleteBtnStyle}>×</button>

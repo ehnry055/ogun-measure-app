@@ -6,6 +6,7 @@ import { jwtDecode } from "jwt-decode";
 
 import LoginButton from "./login";
 import LogoutButton from "./logout";
+import logo from "../assets/mosr.png";
 
 function Navbar() {
   const { isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
@@ -42,7 +43,15 @@ function Navbar() {
       <div className="navbar-top">
         <div className="navbar-top-inner">
           {/* LEFT: intentionally empty */}
-          <div className="navbar-left" />
+          <div className="navbar-left">
+             <NavLink to="/">
+                <img 
+                  src={logo} 
+                  alt="Logo" 
+                  style={{ height: "50px", width: "auto" }} // Adjust height as needed
+                />
+             </NavLink>
+          </div>
 
           {/* RIGHT: Request Data + Login / Logout */}
           <div className="navbar-right">
