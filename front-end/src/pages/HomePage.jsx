@@ -1,6 +1,6 @@
 import React from "react";
 import "../styles/HomePage.css";
-import heroImage from "../assets/Columbia-hero.png";
+import heroImage from "../assets/encouraging.png";
 import { Link } from "react-router-dom";
 
 const HomePage = () => {
@@ -9,7 +9,7 @@ const HomePage = () => {
 
       {/* IMAGE WITH OVERLAY TEXT */}
       <div className="home-hero">
-        <img src={heroImage} alt="Columbia University Campus" />
+        <img src={heroImage} alt="Encouraging" />
 
         <div className="hero-overlay">
           <h1 className="hero-main-title">Ogun Measure</h1>

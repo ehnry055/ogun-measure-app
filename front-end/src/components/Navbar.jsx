@@ -1,5 +1,4 @@
 import "../styles/Navbar.css";
-import columbiaLogo from "../assets/columbia-logo.svg";
 import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -42,14 +41,8 @@ function Navbar() {
       {/* TOP BAR */}
       <div className="navbar-top">
         <div className="navbar-top-inner">
-          {/* LEFT: Columbia logo */}
-          <div className="navbar-left">
-            <img
-              src={columbiaLogo}
-              alt="Columbia University"
-              className="navbar-logo"
-            />
-          </div>
+          {/* LEFT: intentionally empty */}
+          <div className="navbar-left" />
 
           {/* RIGHT: Request Data + Login / Logout */}
           <div className="navbar-right">
