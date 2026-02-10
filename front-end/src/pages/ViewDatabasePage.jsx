@@ -9,7 +9,8 @@ let webRInstance = null;
 const ViewDatabasePage = () => {
   const { getAccessTokenSilently } = useAuth0();
   
-  const [entryLimit, setEntryLimit] = useState(20);
+  // CHANGE 1: Set default limit to 1000 (effectively "max" for a view without lagging)
+  const [entryLimit, setEntryLimit] = useState(1000);
   const [tableName, setTableName] = useState("Default Table");
   const [stateFilter, setStateFilter] = useState('');
   const [presets, setPresets] = useState([]);
@@ -68,6 +69,13 @@ const ViewDatabasePage = () => {
 
 
   // --- Helper Functions ---
+  
+  // CHANGE 2: New Reset Function
+  const handleResetColumns = () => {
+    setSelectedColumns(new Set());
+    setSelectedPreset(null);
+  };
+
   const handleSavePreset = () => {
     const presetName = prompt('Enter preset name:');
     if (!presetName) return;
@@ -266,8 +274,7 @@ const ViewDatabasePage = () => {
   // --- GRID STYLE CONSTANTS ---
   const rowGridStyle = {
     display: 'grid',
-    // Adjusted: 1fr label, 2fr code, 25px Expand, 20px Delete (More precision to avoid overflow)
-    gridTemplateColumns: '1fr 2fr 25px 20px', 
+    gridTemplateColumns: '1fr 2fr 25px 30px', 
     gap: '5px',
     marginBottom: '5px',
     alignItems: 'start'
@@ -275,20 +282,19 @@ const ViewDatabasePage = () => {
 
   const varGridStyle = {
     display: 'grid',
-    gridTemplateColumns: 'minmax(40px, 60px) 15px 1fr 20px',
+    gridTemplateColumns: 'minmax(40px, 60px) 15px 1fr 30px',
     gap: '5px',
     marginBottom: '5px',
     alignItems: 'center'
   };
 
-  // Unified Input Style (Matches standard font, no monospace unless needed)
   const inputStyle = {
     width: '100%', 
     padding: '4px', 
     border: '1px solid #ccc', 
     borderRadius: '4px', 
     boxSizing: 'border-box',
-    fontFamily: 'inherit', // Fixes font consistency
+    fontFamily: 'inherit',
     fontSize: '0.8rem'
   };
 
@@ -297,12 +303,14 @@ const ViewDatabasePage = () => {
     background: 'none', 
     color: '#d9534f', 
     cursor: 'pointer', 
-    fontSize: '1rem', 
+    fontSize: '1.2rem', 
+    fontWeight: 'bold',
     padding: 0,
     lineHeight: '1',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    height: '100%'
   };
 
   return (
@@ -318,6 +326,21 @@ const ViewDatabasePage = () => {
         </div>
         <div className="preset-controls">
           <button className="preset-button save-preset" onClick={handleSavePreset}>Save Preset</button>
+          
+          {/* CHANGE 3: Reset Column Selections Button */}
+          <button 
+            className="preset-button" 
+            onClick={handleResetColumns}
+            style={{ 
+              marginBottom: '10px', 
+              color: '#d9534f', 
+              borderColor: '#d9534f',
+              width: '100%' // Full width for visibility
+            }}
+          >
+            Reset Column Selections
+          </button>
+
           {presets.length > 0 && <h3 className="presets-title">Saved Presets:</h3>}
           {presets.map(preset => (
             <div key={preset.name} className="preset-item">
@@ -427,7 +450,7 @@ const ViewDatabasePage = () => {
           
           {/* Multi-Mode Inputs */}
           {analysisMode === 'multi' && (
-             <div style={{backgroundColor: '#f9f9f9', padding: '10px', borderRadius: '4px', marginBottom: '10px', border: '1px solid #eee', boxSizing: 'border-box'}}>
+             <div style={{backgroundColor: '#f9f9f9', padding: '5px', borderRadius: '4px', marginBottom: '10px', border: '1px solid #eee', boxSizing: 'border-box'}}>
                {rVariables.map((v, idx) => (
                  <div key={idx} style={varGridStyle}>
                    <input 
@@ -440,7 +463,7 @@ const ViewDatabasePage = () => {
                      value={v.column} onChange={(e) => updateRVariable(idx, 'column', e.target.value)}
                      style={inputStyle}
                    >
-                     <option value="">-- Column --</option>
+                     <option value="">Column</option>
                      {Array.from(selectedColumns).map(col => <option key={col} value={col}>{col}</option>)}
                    </select>
                    <button onClick={() => removeRVariable(idx)} style={deleteBtnStyle}>×</button>
@@ -450,7 +473,7 @@ const ViewDatabasePage = () => {
              </div>
           )}
           
-          {/* Shell Rows (Fixed: Now uses standard inputs and matching X button) */}
+          {/* Shell Rows */}
           <div className="r-shell-container" style={{maxHeight: '200px', overflowY: 'auto', marginBottom: '10px', width: '100%'}}>
             {shellRows.map((row, index) => (
               <div key={index} style={rowGridStyle}>
