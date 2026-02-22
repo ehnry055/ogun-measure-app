@@ -8,8 +8,8 @@
   .info-icon {
     width: 18px;
     height: 18px;
-    background-color: #E2E2E2;
-    color: #9B9B9B;
+    background-color: #475569;
+    color: #f8fafc;
     font-weight: bold;
     border-radius: 50%;
     text-align: center;
@@ -47,7 +47,7 @@
     width: 30vw;
     height: 60vh;
     background-color: #222222;
-    color: rgb(196, 196, 196);
+    color: #e2e8f0;
     padding: 20px;
     box-sizing: border-box;
     overflow-y: auto; /* allows content inside to scroll */

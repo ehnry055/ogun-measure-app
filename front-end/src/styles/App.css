@@ -3,6 +3,8 @@
   --app-surface: #111a2d;
   --app-surface-alt: #0f172a;
   --app-text: #e2e8f0;
+  --app-text-soft: #cbd5e1;
+  --app-accent: #bfdbfe;
 }
 
 .app-container {
@@ -22,7 +24,7 @@ html, body, #root{
 .welcome-banner {
   background-color: #AC5180;
   padding: 10px;
-  color: #371D33;
+  color: #fdf2f8;
   text-align: center;
   font-size: 1.2rem;
   font-weight: bold;
@@ -90,19 +92,19 @@ html, body, #root{
   font-weight: 600;
   margin-bottom: 6px;
   display: block;
-  color: #1f3a8a; 
+  color: var(--app-accent); 
 }
 
 .request-subtitle {
   text-align: center;
-  color: #1f3a8a;
+  color: var(--app-accent);
   margin-top: -10px;
   margin-bottom: 10px;
   font-size: 16px;
 }
 
 .admin-requests-page {
-  color: #1f2937;
+  color: var(--app-text);
   max-width: 1100px;
   margin: 0 auto;
 }
@@ -124,11 +126,11 @@ html, body, #root{
   gap: 14px;
   margin-bottom: 14px;
   font-weight: 600;
-  color: #1f3a8a;
+  color: var(--app-accent);
 }
 
 .admin-requests-error {
-  color: #dc2626;
+  color: #f87171;
   font-weight: 600;
 }
 
@@ -144,13 +146,14 @@ html, body, #root{
 .admin-requests-table th,
 .admin-requests-table td {
   padding: 10px 12px;
-  border-bottom: 1px solid #e5e7eb;
-  color: #1f2937;
+  border-bottom: 1px solid #334155;
+  color: var(--app-text);
   text-align: left;
 }
 
 .admin-requests-table th {
-  background: #f8fafc;
+  background: #1e293b;
+  color: var(--app-accent);
 }
 
 .admin-requests-actions {
@@ -159,7 +162,7 @@ html, body, #root{
 }
 
 .admin-requests-target-row {
-  background: #eff6ff;
+  background: #1e3a5f;
 }
 
 .status-approved,
@@ -173,23 +176,23 @@ html, body, #root{
 }
 
 .status-approved {
-  color: #166534;
-  background: #dcfce7;
+  color: #86efac;
+  background: rgba(22, 101, 52, 0.28);
 }
 
 .status-pending {
-  color: #92400e;
-  background: #fef3c7;
+  color: #fcd34d;
+  background: rgba(180, 83, 9, 0.28);
 }
 
 .status-rejected {
-  color: #991b1b;
-  background: #fee2e2;
+  color: #fca5a5;
+  background: rgba(153, 27, 27, 0.28);
 }
 
 .admin-decision-time {
   margin-top: 4px;
-  color: #6b7280;
+  color: #94a3b8;
   font-size: 0.8rem;
 }
 

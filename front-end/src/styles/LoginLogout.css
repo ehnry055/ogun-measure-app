@@ -21,13 +21,13 @@
 /* Hover */
 .btn:hover {
   background-color: #b7dcff !important;  /* pastel blue (top bar) */
-  color: #1f3a8a !important;
+  color: #f8fafc !important;
 }
 
 /* Click / Active */
 .btn:active {
   background-color: #b7dcff !important;
-  color: #1f3a8a !important;
+  color: #f8fafc !important;
 }
 
 /* Focus (keyboard users) */

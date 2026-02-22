@@ -10,7 +10,7 @@
 .map-title {
   font-size: 30px;
   font-family: "Trajan Pro", "Cinzel", serif;
-  color: #1F3A8A;          
+  color: #dbeafe;          
   text-align: center;      
   display: flex;           
   justify-content: center;
@@ -24,7 +24,7 @@
   max-width: 900px;
   margin: 6px auto 16px;
   text-align: center;
-  color: #1F3A8A;
+  color: #cbd5e1;
   font-size: 14px;
   line-height: 1.4;
 }

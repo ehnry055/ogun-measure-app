@@ -99,9 +99,6 @@ function Navbar() {
             Map
           </NavLink>
 
-          <NavLink to="/itemdevelopers" className="nav-link">
-            About
-          </NavLink>
         </div>
       </div>
     </header>
