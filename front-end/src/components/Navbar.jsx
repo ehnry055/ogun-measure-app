@@ -11,24 +11,31 @@ import logo from "../assets/mosr.png";
 function Navbar() {
   const { isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
   const [isAdmin, setIsAdmin] = useState(false);
+  const [hasDataAccess, setHasDataAccess] = useState(false);
 
   useEffect(() => {
     const setPermissionState = async () => {
       if (!isAuthenticated) {
         setIsAdmin(false);
+        setHasDataAccess(false);
         return;
       }
 
       try {
         const token = await getAccessTokenSilently();
         const decodedToken = jwtDecode(token);
+        const permissions = decodedToken.permissions || [];
         const hasAdminPermission =
-          decodedToken.permissions &&
-          decodedToken.permissions.includes("adminView");
+          permissions.includes("adminView");
+        const hasRegisteredPermission =
+          permissions.includes("registeredView");
+
         setIsAdmin(Boolean(hasAdminPermission));
+        setHasDataAccess(Boolean(hasAdminPermission || hasRegisteredPermission));
       } catch (error) {
         console.error("Unable to read admin permissions", error);
         setIsAdmin(false);
+        setHasDataAccess(false);
       }
     };
 
@@ -91,9 +98,11 @@ function Navbar() {
             Measure
           </NavLink>
 
-          <NavLink to="/viewdata" className="nav-link">
-            Data
-          </NavLink>
+          {!isLoading && isAuthenticated && hasDataAccess && (
+            <NavLink to="/viewdata" className="nav-link">
+              Data
+            </NavLink>
+          )}
 
           <NavLink to="/map" className="nav-link">
             Map

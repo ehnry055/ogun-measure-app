@@ -52,7 +52,15 @@ function App() {
             <Route path="/map" element={<MapPage />} />
 
             {/* Protected */}
-            <Route path="/viewdata" element={<PrivateRoute Component={ViewDatabasePage} />} />
+            <Route
+              path="/viewdata"
+              element={
+                <PrivateRoute
+                  Component={ViewDatabasePage}
+                  requiredPermissions={["registeredView", "adminView"]}
+                />
+              }
+            />
             <Route path="/changedata" element={<PrivateRoute Component={ChangeDatabasePage} />} />
             <Route path="/graphs" element={<PrivateRoute Component={VisualizeDataPage} />} />
             <Route path="/profile" element={<PrivateRoute Component={ProfilePage} />} />
