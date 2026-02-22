@@ -56,7 +56,7 @@ function Navbar() {
 
           {/* RIGHT: Request Data + Login / Logout */}
           <div className="navbar-right">
-            {!isLoading && (
+            {!isLoading && !isAdmin && (
               <NavLink
                 to="/requests"
                 className="btn btn-primary"
