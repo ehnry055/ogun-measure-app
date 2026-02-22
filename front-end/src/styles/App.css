@@ -1,21 +1,11 @@
-:root {
-  --app-bg: #0b1220;
-  --app-surface: #111a2d;
-  --app-surface-alt: #0f172a;
-  --app-text: #e2e8f0;
-}
-
 .app-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  background: radial-gradient(circle at 20% 0%, #16213b 0%, var(--app-bg) 45%);
 }
 
-html, body, #root{
+html, body{
   height:100%;
-  background-color: var(--app-bg);
-  color: var(--app-text);
+  background-color: #ffffff;
   overflow-x: hidden;
 }
 
@@ -31,7 +21,6 @@ html, body, #root{
 .main-layout {
   display: flex;
   height: calc(100vh - 60px);
-  background: transparent;
 }
 
 /* .sidebar {
@@ -57,8 +46,8 @@ html, body, #root{
 .content {
   flex-grow: 1;
   padding: 20px;
-  background: linear-gradient(180deg, var(--app-surface) 0%, var(--app-surface-alt) 100%);
-  color: var(--app-text);
+  background-color: #ffffff;
+  color: white;  
 }
 
 
