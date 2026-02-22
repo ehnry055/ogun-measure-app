@@ -2,7 +2,7 @@
 
 
 .home-page {
-  background-color: white;
+  background-color: transparent;
 }
 
 .home-hero {
@@ -14,17 +14,31 @@
   overflow: hidden;
 }
 
+.home-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(7, 12, 22, 0.2) 0%,
+    rgba(7, 12, 22, 0.55) 45%,
+    rgba(7, 12, 22, 0.75) 100%
+  );
+  pointer-events: none;
+}
+
 .home-hero img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  filter: brightness(0.7); 
+  filter: brightness(0.62) contrast(1.08);
 }
 
 .hero-overlay {
   position: absolute;
   inset: 0;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -40,14 +54,20 @@
   letter-spacing: 0.1em;
   margin-bottom: 10px;
   text-transform: uppercase;
+  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.85);
 }
 
 .hero-subtitle {
-  color: white;
+  color: #f8fafc;
   font-size: 1.1rem;
   max-width: 700px;
   font-family: "Saira", sans-serif;
   line-height: 1.5;
+  background: rgba(2, 6, 23, 0.5);
+  border: 1px solid rgba(226, 232, 240, 0.2);
+  border-radius: 8px;
+  padding: 10px 14px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
 }
 
 .home-container {
@@ -56,21 +76,21 @@
   max-width: 1100px;
   margin: 0 auto;
   box-sizing: border-box;
-  background-color: white;
-  color: #333;
+  background-color: transparent;
+  color: #e2e8f0;
 }
 
 .measures-box {
-  background-color: #e8f2ff;
+  background-color: #14213b;
   padding: 50px 35px;
   border-radius: 8px;
   max-width: 980px;
   margin: 50px auto;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  box-shadow: 0 12px 26px rgba(2, 6, 23, 0.45);
 }
 
 .about-title {
-  color: #1f3a8a;
+  color: #dbeafe;
   font-size: 2.5rem;
   margin-bottom: 20px;
   text-align: center;
@@ -81,7 +101,7 @@
 .about-content {
   font-size: 1.05rem;
   line-height: 1.7;
-  color: #1f2937;
+  color: #cbd5e1;
   margin: 10px auto 0 auto;
   font-family: "Saira", sans-serif;
   text-align: center;
@@ -95,8 +115,8 @@
 }
 
 .measure-card {
-  background: #fff;
-  border: 1px solid #d6e3f7;
+  background: #0f1a2e;
+  border: 1px solid #2f456f;
   padding: 24px 20px;
   border-radius: 8px;
   min-height: 220px;
@@ -109,7 +129,7 @@
 
 .measure-title {
   margin: 0 0 20px 0;
-  color: #1f3a8a;
+  color: #dbeafe;
   font-size: 1.2rem;
   font-family: "Saira", sans-serif;
   line-height: 1.5;
@@ -126,8 +146,8 @@
 .homebtn {
   border-radius: 0;
   background-color: transparent;
-  border: 1.75px solid #1f3a8a;
-  color: #1f3a8a;
+  border: 1.75px solid #93c5fd;
+  color: #dbeafe;
   text-align: center;
   font-size: 1.1rem;
   padding: 16px 28px;
@@ -163,8 +183,8 @@
 }
 
 .homebtn:hover {
-  background-color: #1f3a8a;
-  color: white;
+  background-color: #1d4ed8;
+  color: #ffffff;
 }
 
 @media (max-width: 768px) {
