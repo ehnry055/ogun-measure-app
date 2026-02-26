@@ -4,10 +4,6 @@ import NotesList from '../components/NotesList';
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from 'axios';
 
-import CodeMirror from '@uiw/react-codemirror';
-import { StreamLanguage } from '@codemirror/language';
-import { r } from '@codemirror/legacy-modes/mode/r';
-
 let webRInstance = null;
 
 const ViewDatabasePage = () => {
@@ -23,12 +19,13 @@ const ViewDatabasePage = () => {
   const [availableTables, setAvailableTables] = useState([]);
   const [showTableSelector, setShowTableSelector] = useState(false);
 
+  // R Analysis State
   const [rReady, setRReady] = useState(false);
   const [rLoading, setRLoading] = useState(false);
   const [rResult, setRResult] = useState(null);
   const [rError, setRError] = useState(null);
   
-  const [analysisMode, setAnalysisMode] = useState('batch');
+  const [analysisMode, setAnalysisMode] = useState('batch'); // 'batch' or 'multi'
   const [showHelp, setShowHelp] = useState(false);
   
   const [rVariables, setRVariables] = useState([
@@ -68,6 +65,7 @@ const ViewDatabasePage = () => {
     return () => { cancelled = true; };
   }, []);
 
+  // --- Helper Functions ---
   const handleResetColumns = () => {
     setSelectedColumns(new Set());
     setSelectedPreset(null);
@@ -268,13 +266,14 @@ const ViewDatabasePage = () => {
     } catch (e) { setRError("Analysis failed."); } finally { setRLoading(false); }
   };
 
+  // --- GRID STYLE CONSTANTS (WIDTH FIX) ---
   const rowGridStyle = {
     display: 'grid',
     gridTemplateColumns: '1fr 2fr 25px 30px', 
     gap: '5px',
     marginBottom: '5px',
     alignItems: 'start',
-    width: '100%',
+    width: '100%', // Enforce containment
     boxSizing: 'border-box'
   };
 
@@ -284,13 +283,14 @@ const ViewDatabasePage = () => {
     gap: '5px',
     marginBottom: '5px',
     alignItems: 'center',
-    width: '100%',
+    width: '100%', // Enforce containment
     boxSizing: 'border-box'
   };
 
+  // Updated input style: Added minWidth: 0 to prevent grid blowout
   const inputStyle = {
     width: '100%', 
-    minWidth: '0', 
+    minWidth: '0', // CRITICAL FIX for Grid Overflow
     padding: '4px', 
     border: '1px solid #ccc', 
     borderRadius: '4px', 
@@ -404,6 +404,8 @@ const ViewDatabasePage = () => {
           
           <hr style={{width: '100%', margin: '15px 0', border: '0.5px solid #ddd'}} />
           
+          {/* --- R Shell Header --- */}
+          {/* Main Container for R Shell to enforce width */}
           <div className="r-shell-wrapper" style={{width: '100%', boxSizing: 'border-box'}}>
             
             <div style={{display: 'flex', justifyContent: 'flex-start', alignItems: 'center', marginBottom: '10px', flexWrap: 'wrap', gap: '15px'}}>
@@ -449,6 +451,7 @@ const ViewDatabasePage = () => {
               </div>
             )}
             
+   
             {analysisMode === 'multi' && (
               <div style={{backgroundColor: '#f9f9f9', padding: '10px', borderRadius: '4px', marginBottom: '10px', border: '1px solid #eee', boxSizing: 'border-box', width: '100%'}}>
                 {rVariables.map((v, idx) => (
@@ -473,6 +476,7 @@ const ViewDatabasePage = () => {
               </div>
             )}
             
+            {/* Shell Rows */}
             <div className="r-shell-container" style={{maxHeight: '200px', overflowY: 'auto', marginBottom: '10px', width: '100%', boxSizing: 'border-box'}}>
               {shellRows.map((row, index) => (
                 <div key={index} style={rowGridStyle}>
@@ -485,22 +489,12 @@ const ViewDatabasePage = () => {
                   />
                   
                   {row.expanded ? (
-                    <div style={{ ...inputStyle, padding: 0, overflow: 'auto', minHeight: '80px', backgroundColor: '#fff' }}>
-                      <CodeMirror
-                        value={row.code}
-                        height="auto"
-                        minHeight="80px"
-                        extensions={[StreamLanguage.define(r)]}
-                        onChange={(val) => updateShellRow(index, 'code', val)}
-                        basicSetup={{
-                          lineNumbers: true,
-                          foldGutter: false,
-                          highlightActiveLine: true,
-                          tabSize: 2
-                        }}
-                        style={{ fontSize: '0.85rem', textAlign: 'left' }}
-                      />
-                    </div>
+                    <textarea 
+                      placeholder="R Code"
+                      style={{...inputStyle, minHeight: '80px', resize: 'vertical'}}
+                      value={row.code}
+                      onChange={(e) => updateShellRow(index, 'code', e.target.value)}
+                    />
                   ) : (
                     <input 
                       placeholder={analysisMode === 'batch' ? "mean(vals)" : "cor(var1, var2)"}
@@ -525,6 +519,7 @@ const ViewDatabasePage = () => {
               <button className="select-button" style={{fontSize: '0.8rem', padding: '5px', flex: 1, backgroundColor: '#f0f8ff', borderColor: '#8C68CD', color: '#8C68CD'}} onClick={handleSaveRPreset}>Save Preset</button>
             </div>
 
+            {/* Presets List */}
             {rPresets.length > 0 && (
               <div style={{display: 'flex', flexWrap: 'wrap', gap: '5px', marginBottom: '10px', width: '100%'}}>
                 {rPresets.map(preset => (
@@ -540,7 +535,7 @@ const ViewDatabasePage = () => {
               {!rReady ? "Loading R..." : rLoading ? "Analyzing..." : "Run Analysis"}
             </button>
           
-          </div>
+          </div> {/* End R Shell Wrapper */}
 
           {rError && <p style={{color: 'red', fontSize: '0.8rem'}}>{rError}</p>}
 
