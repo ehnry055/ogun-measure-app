@@ -184,6 +184,13 @@ app.post('/api/select-table', async (req, res) => {
       acc[col.COLUMN_NAME] = {
         type: mapDataType(col.DATA_TYPE) // Map to Sequelize type
       };
+      
+     
+      if (col.COLUMN_NAME === 'id') {
+        acc[col.COLUMN_NAME].primaryKey = true;
+        acc[col.COLUMN_NAME].autoIncrement = true;
+      }
+      
       return acc;
     }, {});
 
@@ -455,6 +462,12 @@ app.post('/api/upload', upload.single('csv'), async (req, res) => {
     DynamicEntry = sequelize.define(tableName, 
       columns.reduce((acc, col) => {
         acc[col.COLUMN_NAME] = { type: Sequelize.TEXT };
+        
+       
+        if (col.COLUMN_NAME === 'id') {
+          acc[col.COLUMN_NAME].primaryKey = true;
+        }
+        
         return acc;
       }, {}), 
       {
