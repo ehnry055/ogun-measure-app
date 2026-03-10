@@ -11,13 +11,11 @@ import logo from "../assets/mosr.png";
 function Navbar() {
   const { isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
   const [isAdmin, setIsAdmin] = useState(false);
-  const [canManageData, setCanManageData] = useState(false);
 
   useEffect(() => {
     const setPermissionState = async () => {
       if (!isAuthenticated) {
         setIsAdmin(false);
-        setCanManageData(false);
         return;
       }
 
@@ -27,15 +25,11 @@ function Navbar() {
         const permissions = decodedToken.permissions || [];
         
         const hasAdminPermission = permissions.includes("adminView");
-        // Matches the permissions from ChangeDatabasePage
-        const hasManagePermission = hasAdminPermission || permissions.includes("registeredView");
 
         setIsAdmin(hasAdminPermission);
-        setCanManageData(hasManagePermission);
       } catch (error) {
         console.error("Unable to read admin permissions", error);
         setIsAdmin(false);
-        setCanManageData(false);
       }
     };
 
@@ -72,10 +66,10 @@ function Navbar() {
               </NavLink>
             )}
 
-            {/* NEW BUTTON: Manage Database */}
-            {!isLoading && canManageData && (
+            {/* Manage Database - NOW ADMIN ONLY */}
+            {!isLoading && isAdmin && (
               <NavLink
-                to="/changedata" /* Double check this matches your App.js route! */
+                to="/changedata" 
                 className="btn btn-outline-primary"
                 style={{ textDecoration: "none", marginLeft: "10px" }}
               >
