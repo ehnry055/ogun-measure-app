@@ -75,7 +75,7 @@ function Navbar() {
             {/* NEW BUTTON: Manage Database */}
             {!isLoading && canManageData && (
               <NavLink
-                to="/changedatabase" /* Double check this matches your App.js route! */
+                to="/changedata" /* Double check this matches your App.js route! */
                 className="btn btn-outline-primary"
                 style={{ textDecoration: "none", marginLeft: "10px" }}
               >
