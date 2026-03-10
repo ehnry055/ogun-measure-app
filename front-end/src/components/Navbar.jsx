@@ -11,11 +11,13 @@ import logo from "../assets/mosr.png";
 function Navbar() {
   const { isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
   const [isAdmin, setIsAdmin] = useState(false);
+  const [canManageData, setCanManageData] = useState(false);
 
   useEffect(() => {
     const setPermissionState = async () => {
       if (!isAuthenticated) {
         setIsAdmin(false);
+        setCanManageData(false);
         return;
       }
 
@@ -23,13 +25,17 @@ function Navbar() {
         const token = await getAccessTokenSilently();
         const decodedToken = jwtDecode(token);
         const permissions = decodedToken.permissions || [];
-        const hasAdminPermission =
-          permissions.includes("adminView");
+        
+        const hasAdminPermission = permissions.includes("adminView");
+        // Matches the permissions from ChangeDatabasePage
+        const hasManagePermission = hasAdminPermission || permissions.includes("registeredView");
 
-        setIsAdmin(Boolean(hasAdminPermission));
+        setIsAdmin(hasAdminPermission);
+        setCanManageData(hasManagePermission);
       } catch (error) {
         console.error("Unable to read admin permissions", error);
         setIsAdmin(false);
+        setCanManageData(false);
       }
     };
 
@@ -43,18 +49,18 @@ function Navbar() {
       {/* TOP BAR */}
       <div className="navbar-top">
         <div className="navbar-top-inner">
-          {/* LEFT: intentionally empty */}
+          {/* LEFT: Logo */}
           <div className="navbar-left">
              <NavLink to="/">
                 <img 
                   src={logo} 
                   alt="Logo" 
-                  style={{ height: "50px", width: "auto" }} // Adjust height as needed
+                  style={{ height: "50px", width: "auto" }} 
                 />
              </NavLink>
           </div>
 
-          {/* RIGHT: Request Data + Login / Logout */}
+          {/* RIGHT: Buttons + Login / Logout */}
           <div className="navbar-right">
             {!isLoading && !isAdmin && (
               <NavLink
@@ -65,6 +71,19 @@ function Navbar() {
                 Request Data
               </NavLink>
             )}
+
+            {/* NEW BUTTON: Manage Database */}
+            {!isLoading && canManageData && (
+              <NavLink
+                to="/changedatabase" /* Double check this matches your App.js route! */
+                className="btn btn-outline-primary"
+                style={{ textDecoration: "none", marginLeft: "10px" }}
+              >
+                Manage Database
+              </NavLink>
+            )}
+
+            {/* Review Requests */}
             {!isLoading && isAdmin && (
               <NavLink
                 to="/admin/requests"
@@ -99,7 +118,6 @@ function Navbar() {
           <NavLink to="/map" className="nav-link">
             Map
           </NavLink>
-
         </div>
       </div>
     </header>
