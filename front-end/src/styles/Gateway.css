@@ -36,11 +36,18 @@
   padding: 0;
   box-sizing: border-box;
 
-  height: calc(100vh - 60px);
-  min-height: calc(100vh - 60px);
-  max-height: calc(100vh - 60px);
+  /* Force each section to be at least the height of the screen */
+  min-height: calc(100vh - 60px); 
   position: relative;
   z-index: 1;
+  
+  /* Creates a clean line between the stacked sections */
+  border-bottom: 1px solid var(--border);
+}
+
+/* Remove the border from the very last section */
+.gateway-split:last-child {
+  border-bottom: none;
 }
 
 /* ===== LEFT ===== */

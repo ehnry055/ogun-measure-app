@@ -4,10 +4,20 @@ import heroImage from "../assets/encouraging.png";
 import { Link } from "react-router-dom";
 
 const HomePage = () => {
+  // Converted to objects to include a unique 'id' for scrolling
   const measures = [
-    "Anti-American Indian and/or Alaskan Native Measures",
-    "Multifaceted Life Course Measure of Anti-Black Structural Racism (Ogun)",
-    "Anti-Latine Measures",
+    {
+      title: "Anti-American Indian and/or Alaskan Native Measures",
+      id: "anti-indigenous"
+    },
+    {
+      title: "Multifaceted Life Course Measure of Anti-Black Structural Racism (Ogun)",
+      id: "ogun"
+    },
+    {
+      title: "Anti-Latine Measures",
+      id: "anti-latine"
+    }
   ];
 
   return (
@@ -34,10 +44,11 @@ const HomePage = () => {
           <h2 className="about-title">Measures</h2>
 
           <div className="measure-grid">
-            {measures.map((title) => (
-              <div className="measure-card" key={title}>
-                <h3 className="measure-title">{title}</h3>
-                <Link to="/gateway" className="homebtn">
+            {measures.map((measure) => (
+              <div className="measure-card" key={measure.id}>
+                <h3 className="measure-title">{measure.title}</h3>
+                {/* Updated Link to use the hash */}
+                <Link to={`/gateway#${measure.id}`} className="homebtn">
                   <span>See Measure</span>
                 </Link>
               </div>
