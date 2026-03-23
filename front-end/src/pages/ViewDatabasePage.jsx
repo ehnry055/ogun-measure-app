@@ -3,6 +3,8 @@ import '../styles/DownloadDatabasePage.css';
 import NotesList from '../components/NotesList';
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from 'axios';
+// NEW: Import CodeMirror
+import CodeMirror from '@uiw/react-codemirror';
 
 let webRInstance = null;
 
@@ -266,14 +268,14 @@ const ViewDatabasePage = () => {
     } catch (e) { setRError("Analysis failed."); } finally { setRLoading(false); }
   };
 
-  // --- GRID STYLE CONSTANTS (WIDTH FIX) ---
+  // --- GRID STYLE CONSTANTS ---
   const rowGridStyle = {
     display: 'grid',
     gridTemplateColumns: '1fr 2fr 25px 30px', 
     gap: '5px',
     marginBottom: '5px',
     alignItems: 'start',
-    width: '100%', // Enforce containment
+    width: '100%', 
     boxSizing: 'border-box'
   };
 
@@ -283,14 +285,13 @@ const ViewDatabasePage = () => {
     gap: '5px',
     marginBottom: '5px',
     alignItems: 'center',
-    width: '100%', // Enforce containment
+    width: '100%', 
     boxSizing: 'border-box'
   };
 
-  // Updated input style: Added minWidth: 0 to prevent grid blowout
   const inputStyle = {
     width: '100%', 
-    minWidth: '0', // CRITICAL FIX for Grid Overflow
+    minWidth: '0', 
     padding: '4px', 
     border: '1px solid #ccc', 
     borderRadius: '4px', 
@@ -405,7 +406,6 @@ const ViewDatabasePage = () => {
           <hr style={{width: '100%', margin: '15px 0', border: '0.5px solid #ddd'}} />
           
           {/* --- R Shell Header --- */}
-          {/* Main Container for R Shell to enforce width */}
           <div className="r-shell-wrapper" style={{width: '100%', boxSizing: 'border-box'}}>
             
             <div style={{display: 'flex', justifyContent: 'flex-start', alignItems: 'center', marginBottom: '10px', flexWrap: 'wrap', gap: '15px'}}>
@@ -451,7 +451,6 @@ const ViewDatabasePage = () => {
               </div>
             )}
             
-   
             {analysisMode === 'multi' && (
               <div style={{backgroundColor: '#f9f9f9', padding: '10px', borderRadius: '4px', marginBottom: '10px', border: '1px solid #eee', boxSizing: 'border-box', width: '100%'}}>
                 {rVariables.map((v, idx) => (
@@ -476,8 +475,8 @@ const ViewDatabasePage = () => {
               </div>
             )}
             
-            {/* Shell Rows */}
-            <div className="r-shell-container" style={{maxHeight: '200px', overflowY: 'auto', marginBottom: '10px', width: '100%', boxSizing: 'border-box'}}>
+            {/* --- NEW: CodeMirror Implementation --- */}
+            <div className="r-shell-container" style={{maxHeight: '350px', overflowY: 'auto', marginBottom: '10px', width: '100%', boxSizing: 'border-box'}}>
               {shellRows.map((row, index) => (
                 <div key={index} style={rowGridStyle}>
                   
@@ -488,21 +487,26 @@ const ViewDatabasePage = () => {
                     onChange={(e) => updateShellRow(index, 'label', e.target.value)} 
                   />
                   
-                  {row.expanded ? (
-                    <textarea 
-                      placeholder="R Code"
-                      style={{...inputStyle, minHeight: '80px', resize: 'vertical'}}
+                  {/* The CodeMirror Wrapper */}
+                  <div style={{ 
+                    border: '1px solid #ccc', 
+                    borderRadius: '4px', 
+                    overflow: 'hidden', 
+                    minWidth: '0',
+                    boxSizing: 'border-box'
+                  }}>
+                    <CodeMirror
                       value={row.code}
-                      onChange={(e) => updateShellRow(index, 'code', e.target.value)}
+                      height={row.expanded ? "150px" : "32px"}
+                      onChange={(value) => updateShellRow(index, 'code', value)}
+                      style={{ fontSize: '0.8rem', textAlign: 'left' }}
+                      basicSetup={{
+                        lineNumbers: row.expanded, // Only show line numbers when expanded!
+                        foldGutter: false,
+                        highlightActiveLine: false
+                      }}
                     />
-                  ) : (
-                    <input 
-                      placeholder={analysisMode === 'batch' ? "mean(vals)" : "cor(var1, var2)"}
-                      style={inputStyle} 
-                      value={row.code} 
-                      onChange={(e) => updateShellRow(index, 'code', e.target.value)} 
-                    />
-                  )}
+                  </div>
                   
                   <button onClick={() => toggleShellRowExpand(index)} style={{background: 'none', border: 'none', color: '#666', cursor: 'pointer', padding: '5px 0', fontSize: '0.8rem'}}>
                     {row.expanded ? '▲' : '▼'}
