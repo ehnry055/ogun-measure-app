@@ -38,7 +38,35 @@ const Gateway = () => {
         <div className="gateway-right">
           <h2 className="about-title gateway-title">Anti-American Indian / Alaskan Native Measures</h2>
           <div className="text-content">
-            <p>Description goes here...</p>
+            <p>
+              We now plan to import a new Excel file containing three different
+              sets of variables, each representing a different facet of anti-Latinx
+              structural racism, two of them measured on a county level and the other
+              on a state level. The first set, under the tab name “Education” displays
+              each US county dissimilarity index capturing the extent to which the racial
+              composition of each district deviates from the overall county-level
+              distribution. Years from 1987 to 2018 are included. Data from the 
+              National Center for Education Statistics on student enrollment by 
+              school districts, race/ethnicity was used. The second set, under 
+              the tab name “Media” displays polarity indexes based on sentiment 
+              analyses of media pieces on a state level. The data was extracted 
+              from Media Cloud using Python packages. BERT and Vader sentiment 
+              polarity measures were calculated to build the final indexes. 
+              The third set, under the tab name “Land ownership” displays the 
+              proportion of Hispanic landowners/White non-Hispanic land owners 
+              based on IPUMS data from 1900 to 2023, on a county level. 
+              A final variable, “racism_num” assigns a value of 1 to a 
+              county-year where Hispanic landownership remained markedly 
+              low relative to non-Hispanic White landownership (below the 0.06 threshold), 
+              while a value of 0 indicates a county-year where this ratio met or exceeded 0.06. 
+              The last tab of the document displays IPUMS codes for States and Counties. 
+              Me and my team will not propose export of any materials below census region/division.
+              The data sources used for this dataset can be found below:
+
+              https://nces.ed.gov/ccd/ccddata.asp
+              https://www.mediacloud.org/
+              https://usa.ipums.org/usa/
+            </p>
           </div>
         </div>
       </div>
@@ -101,7 +129,13 @@ const Gateway = () => {
         <div className="gateway-right">
           <h2 className="about-title gateway-title">Anti-Latine Measures</h2>
           <div className="text-content">
-            <p>Description goes here...</p>
+            <p>
+              Historical Land Cessions (Royce) Polygons of Native American land cessions 
+              from 1784–1894, digitized from Charles C. Royce's Indian Land Cessions in 
+              the United States (1896–97) by the U.S. Forest Service Office of 
+              Tribal Relations, accessed via the same ArcGIS viewer: 
+              usg.maps.arcgis.com/apps/webappviewer/index.html?id=eb6ca76e008543a89349ff2517db47e6
+            </p>
           </div>
         </div>
       </div>
