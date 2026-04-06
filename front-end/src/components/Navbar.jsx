@@ -40,10 +40,10 @@ function Navbar() {
 
   return (
     <header className="navbar-wrapper">
-      {/* TOP BAR */}
+     
       <div className="navbar-top">
         <div className="navbar-top-inner">
-          {/* LEFT: Logo */}
+      
           <div className="navbar-left">
              <NavLink to="/">
                 <img 
@@ -54,7 +54,7 @@ function Navbar() {
              </NavLink>
           </div>
 
-          {/* RIGHT: Buttons + Login / Logout */}
+       
           <div className="navbar-right">
             {!isLoading && !isAdmin && (
               <NavLink
@@ -66,7 +66,6 @@ function Navbar() {
               </NavLink>
             )}
 
-            {/* Manage Database - NOW ADMIN ONLY */}
             {!isLoading && isAdmin && (
               <NavLink
                 to="/changedata" 
@@ -77,7 +76,7 @@ function Navbar() {
               </NavLink>
             )}
 
-            {/* Review Requests */}
+         
             {!isLoading && isAdmin && (
               <NavLink
                 to="/admin/requests"
@@ -94,7 +93,7 @@ function Navbar() {
         </div>
       </div>
 
-      {/* BOTTOM NAV BAR */}
+ 
       <div className="navbar-bottom">
         <div className="navbar-bottom-inner">
           <NavLink to="/" end className="nav-link">

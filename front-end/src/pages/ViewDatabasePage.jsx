@@ -3,7 +3,7 @@ import '../styles/DownloadDatabasePage.css';
 import NotesList from '../components/NotesList';
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from 'axios';
-// NEW: Import CodeMirror
+
 import CodeMirror from '@uiw/react-codemirror';
 
 let webRInstance = null;
@@ -21,13 +21,13 @@ const ViewDatabasePage = () => {
   const [availableTables, setAvailableTables] = useState([]);
   const [showTableSelector, setShowTableSelector] = useState(false);
 
-  // R Analysis State
+  //r analysis
   const [rReady, setRReady] = useState(false);
   const [rLoading, setRLoading] = useState(false);
   const [rResult, setRResult] = useState(null);
   const [rError, setRError] = useState(null);
   
-  const [analysisMode, setAnalysisMode] = useState('batch'); // 'batch' or 'multi'
+  const [analysisMode, setAnalysisMode] = useState('batch'); 
   const [showHelp, setShowHelp] = useState(false);
   
   const [rVariables, setRVariables] = useState([
@@ -67,7 +67,7 @@ const ViewDatabasePage = () => {
     return () => { cancelled = true; };
   }, []);
 
-  // --- Helper Functions ---
+  //helper funcs
   const handleResetColumns = () => {
     setSelectedColumns(new Set());
     setSelectedPreset(null);
@@ -268,7 +268,7 @@ const ViewDatabasePage = () => {
     } catch (e) { setRError("Analysis failed."); } finally { setRLoading(false); }
   };
 
-  // --- GRID STYLE CONSTANTS ---
+
   const rowGridStyle = {
     display: 'grid',
     gridTemplateColumns: '1fr 2fr 25px 30px', 
@@ -405,7 +405,7 @@ const ViewDatabasePage = () => {
           
           <hr style={{width: '100%', margin: '15px 0', border: '0.5px solid #ddd'}} />
           
-          {/* --- R Shell Header --- */}
+         
           <div className="r-shell-wrapper" style={{width: '100%', boxSizing: 'border-box'}}>
             
             <div style={{display: 'flex', justifyContent: 'flex-start', alignItems: 'center', marginBottom: '10px', flexWrap: 'wrap', gap: '15px'}}>
@@ -475,7 +475,7 @@ const ViewDatabasePage = () => {
               </div>
             )}
             
-            {/* --- NEW: CodeMirror Implementation --- */}
+
             <div className="r-shell-container" style={{maxHeight: '350px', overflowY: 'auto', marginBottom: '10px', width: '100%', boxSizing: 'border-box'}}>
               {shellRows.map((row, index) => (
                 <div key={index} style={rowGridStyle}>
@@ -487,7 +487,7 @@ const ViewDatabasePage = () => {
                     onChange={(e) => updateShellRow(index, 'label', e.target.value)} 
                   />
                   
-                  {/* The CodeMirror Wrapper */}
+     
                   <div style={{ 
                     border: '1px solid #ccc', 
                     borderRadius: '4px', 
@@ -501,7 +501,7 @@ const ViewDatabasePage = () => {
                       onChange={(value) => updateShellRow(index, 'code', value)}
                       style={{ fontSize: '0.8rem', textAlign: 'left' }}
                       basicSetup={{
-                        lineNumbers: row.expanded, // Only show line numbers when expanded!
+                        lineNumbers: row.expanded, 
                         foldGutter: false,
                         highlightActiveLine: false
                       }}
@@ -523,7 +523,7 @@ const ViewDatabasePage = () => {
               <button className="select-button" style={{fontSize: '0.8rem', padding: '5px', flex: 1, backgroundColor: '#f0f8ff', borderColor: '#8C68CD', color: '#8C68CD'}} onClick={handleSaveRPreset}>Save Preset</button>
             </div>
 
-            {/* Presets List */}
+            
             {rPresets.length > 0 && (
               <div style={{display: 'flex', flexWrap: 'wrap', gap: '5px', marginBottom: '10px', width: '100%'}}>
                 {rPresets.map(preset => (
@@ -539,7 +539,7 @@ const ViewDatabasePage = () => {
               {!rReady ? "Loading R..." : rLoading ? "Analyzing..." : "Run Analysis"}
             </button>
           
-          </div> {/* End R Shell Wrapper */}
+          </div>
 
           {rError && <p style={{color: 'red', fontSize: '0.8rem'}}>{rError}</p>}
 

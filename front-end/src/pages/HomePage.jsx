@@ -4,7 +4,7 @@ import heroImage from "../assets/encouraging.png";
 import { Link } from "react-router-dom";
 
 const HomePage = () => {
-  // Converted to objects to include a unique 'id' for scrolling
+
   const measures = [
     {
       title: "Anti-American Indian and/or Alaskan Native Measures",
@@ -23,7 +23,7 @@ const HomePage = () => {
   return (
     <div className="home-page">
 
-      {/* IMAGE WITH OVERLAY TEXT */}
+   
       <div className="home-hero">
         <img src={heroImage} alt="Encouraging" />
 
@@ -38,7 +38,7 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* MEASURES */}
+ 
       <div className="home-container">
         <div className="measures-box">
           <h2 className="about-title">Measures</h2>
@@ -47,7 +47,7 @@ const HomePage = () => {
             {measures.map((measure) => (
               <div className="measure-card" key={measure.id}>
                 <h3 className="measure-title">{measure.title}</h3>
-                {/* Updated Link to use the hash */}
+             
                 <Link to={`/gateway#${measure.id}`} className="homebtn">
                   <span>See Measure</span>
                 </Link>

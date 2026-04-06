@@ -16,7 +16,6 @@ const Gateway = () => {
       const element = document.getElementById(elementId);
       if (element) {
         setTimeout(() => {
-          // Changed block: "start" to align perfectly with the navbar
           element.scrollIntoView({ behavior: "smooth", block: "start" });
         }, 100);
       }
@@ -28,7 +27,6 @@ const Gateway = () => {
   return (
     <div className="gateway-page">
       
-      {/* --- SECTION 1: Anti-Indigenous Measures --- */}
       <div id="anti-indigenous" className="gateway-split">
         <div className="gateway-left">
           <div style={{ width: '100%', height: '100%', backgroundColor: '#e0e0e0', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#666' }}>
@@ -71,7 +69,7 @@ const Gateway = () => {
         </div>
       </div>
 
-      {/* --- SECTION 2: Ogun Measure --- */}
+
       <div id="ogun" className="gateway-split">
         <div className="gateway-left">
           <img src={OGUN} alt="Ogun statue" className="ogunimg-full" />
@@ -119,7 +117,7 @@ const Gateway = () => {
         </div>
       </div>
 
-      {/* --- SECTION 3: Anti-Latine Measures --- */}
+
       <div id="anti-latine" className="gateway-split">
         <div className="gateway-left">
           <div style={{ width: '100%', height: '100%', backgroundColor: '#e0e0e0', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#666' }}>

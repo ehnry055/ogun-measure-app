@@ -1,13 +1,9 @@
-/* =========================
-   AUTH BUTTONS (LOGIN / LOGOUT)
-   ========================= */
 
-/* Base button (override Bootstrap) */
 .btn {
   padding: 0.5rem 1.25rem !important;
-  border-radius: 0 !important;              /* square corners */
-  background-color: #1f3a8a !important;     /* dark blue (mini nav bar) */
-  border: 1px solid white !important;       /* white border */
+  border-radius: 0 !important;              
+  background-color: #1f3a8a !important;     
+  border: 1px solid white !important;      
   color: white !important;
 
   font-family: "Cinzel", serif;
@@ -18,26 +14,26 @@
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-/* Hover */
+
 .btn:hover {
-  background-color: #b7dcff !important;  /* pastel blue (top bar) */
+  background-color: #b7dcff !important; 
   color: #f8fafc !important;
 }
 
-/* Click / Active */
+
 .btn:active {
   background-color: #b7dcff !important;
   color: #f8fafc !important;
 }
 
-/* Focus (keyboard users) */
+
 .btn:focus,
 .btn:focus-visible {
   outline: none !important;
   box-shadow: none !important;
 }
 
-/* Remove Bootstrap differences */
+
 .btn-primary,
 .btn-secondary {
   background-color: #1f3a8a !important;

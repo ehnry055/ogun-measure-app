@@ -299,19 +299,18 @@ app.post('/api/analyze-columns', async (req, res) => {
       return res.status(400).send("No columns selected for analysis.");
     }
 
-    // Fetch only the requested columns
+    // fetch only requested cols
     const rows = await DynamicEntry.findAll({
       limit: fetchLimit,
       attributes: columns, 
       raw: true
     });
 
-    // Reshape data: { "RSG_SV1": [1, 2, 3], "PO_LRA2": [4, 5, 6] }
     const result = {};
     columns.forEach(col => {
       result[col] = rows
         .map(r => r[col])
-        // Filter out nulls/undefined, but keep values for now (R handles the rest)
+        // filter
         .filter(v => v !== null && v !== undefined);
     });
 
