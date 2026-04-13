@@ -6,6 +6,9 @@ import { Dropdown } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import OGUN from "../assets/OGUN.jpg";
+import Headdress from "../assets/Headdress.jpg";
+import alaska from "../assets/alaska.jpg";
+
 
 const Gateway = () => {
   const location = useLocation();
@@ -29,9 +32,7 @@ const Gateway = () => {
       
       <div id="anti-indigenous" className="gateway-split">
         <div className="gateway-left">
-          <div style={{ width: '100%', height: '100%', backgroundColor: '#e0e0e0', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#666' }}>
-             Placeholder Image
-          </div>
+          <img src={alaska} alt="Alaska" className="ogunimg-full" />
         </div>
         <div className="gateway-right">
           <h2 className="about-title gateway-title">Anti-American Indian / Alaskan Native Measures</h2>
@@ -98,9 +99,7 @@ const Gateway = () => {
 
       <div id="anti-latine" className="gateway-split">
         <div className="gateway-left">
-          <div style={{ width: '100%', height: '100%', backgroundColor: '#e0e0e0', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#666' }}>
-             Placeholder Image
-          </div>
+          <img src={Headdress} alt="Headdress" className="ogunimg-full" />
         </div>
         <div className="gateway-right">
           <h2 className="about-title gateway-title">Anti-Latine Measures</h2>
