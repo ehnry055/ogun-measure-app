@@ -6,7 +6,7 @@ import { Dropdown } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import OGUN from "../assets/OGUN.jpg";
-import Headdress from "../assets/Headdress.png";
+import LATINO from "../assets/LATINO.png";
 import Alaska from "../assets/alaska.png";
 
 const Gateway = () => {
@@ -98,7 +98,7 @@ const Gateway = () => {
 
       <div id="anti-latine" className="gateway-split">
         <div className="gateway-left">
-          <img src={Headdress} alt="Headdress" className="ogunimg-full" />
+          <img src={LATINO} alt="LATINO" className="ogunimg-full" />
         </div>
         <div className="gateway-right">
           <h2 className="about-title gateway-title">Anti-Latine Measures</h2>
