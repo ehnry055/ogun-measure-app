@@ -34,7 +34,8 @@ const ChangeDatabasePage = () => {
         const decodedToken = jwtDecode(token);
         console.log("Decoded token:", decodedToken);
 
-        const hasPermission = decodedToken.permissions && decodedToken.permissions.includes("adminView") || decodedToken.permissions.includes("registeredView");
+        // FIXED: Added parentheses around the OR statement to prevent logic bugs if permissions are empty
+        const hasPermission = decodedToken.permissions && (decodedToken.permissions.includes("adminView") || decodedToken.permissions.includes("registeredView"));
         console.log("Has permission:", hasPermission);
 
         if (!hasPermission) {
@@ -135,8 +136,12 @@ const ChangeDatabasePage = () => {
       // update the state so the UI reflects the new table name
       setTableName(newTableName);
     } catch (error) {
-      console.error('Upload failed:', error);
-      alert('File upload failed');
+      // FIXED: Exposing the actual backend error to the browser console and the alert!
+      console.error('Upload failed with full details:', error.response?.data || error.message);
+      
+      // If the backend sends a specific message, show it in the alert. Otherwise, fallback to the generic message.
+      const backendMessage = error.response?.data?.error || error.response?.data?.message || typeof error.response?.data === 'string' ? error.response?.data : "Unknown database error";
+      alert(`Upload failed: ${backendMessage}\n\nCheck the browser console (Right Click -> Inspect -> Console) for more details.`);
     }
   };
     
