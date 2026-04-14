@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom"; 
+import { useLocation, Link } from "react-router-dom"; 
 import "../styles/HomePage.css";
 import "../styles/Gateway.css";
 import { Dropdown } from "react-bootstrap";
@@ -15,7 +15,6 @@ const Gateway = () => {
   const [activeLatine, setActiveLatine] = useState(null);
   const [activeIndigenous, setActiveIndigenous] = useState(null);
 
-  // Anti-Indigenous Content Bank
   const indigenousFacets = {
     royce: {
       name: "Historical Land Cessions (Royce)",
@@ -34,7 +33,6 @@ const Gateway = () => {
     }
   };
 
-  // UPDATED: Anti-Latine Content Bank
   const latineFacets = {
     education: {
       name: "Education",
@@ -81,8 +79,8 @@ const Gateway = () => {
             <p>Historical Land Cessions, Population data, and Land Ownership metrics representing Anti-Indigenous structural racism.</p>
             
             {activeIndigenous && (
-              <div className="facet-description-box" style={{ backgroundColor: '#f0f4f8', padding: '15px', borderRadius: '8px', marginTop: '10px', borderLeft: '4px solid #0056b3' }}>
-                <p><strong>{indigenousFacets[activeIndigenous].text}</strong></p>
+              <div className="facet-description-box" style={{ backgroundColor: '#f0f4f8', padding: '15px', borderRadius: '8px', marginTop: '10px', borderLeft: '4px solid #0056b3', color: '#000' }}>
+                <p style={{ color: '#000', margin: 0 }}><strong>{indigenousFacets[activeIndigenous].text}</strong></p>
               </div>
             )}
           </div>
@@ -97,12 +95,12 @@ const Gateway = () => {
               </Dropdown.Menu>
             </Dropdown>
 
-            <a 
-              href={activeIndigenous ? `/viewdata?table=${indigenousFacets[activeIndigenous].table}` : "/viewdata?table=Anti_Indigenous_Measure"} 
+            <Link 
+              to={activeIndigenous ? `/viewdata?table=${indigenousFacets[activeIndigenous].table}` : "/viewdata?table=Anti_Indigenous_Measure"} 
               className="homebtn"
             >
               <span> Generate {activeIndigenous ? indigenousFacets[activeIndigenous].name : "Indigenous"} Data </span>
-            </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -133,7 +131,7 @@ const Gateway = () => {
                 <Dropdown.Item href="/MediaMarketing">Media and Marketing</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
-            <a href="/viewdata" className="homebtn"><span> Generate Data </span></a>
+            <Link to="/viewdata" className="homebtn"><span> Generate Data </span></Link>
           </div>
         </div>
       </div>
@@ -149,8 +147,8 @@ const Gateway = () => {
             <p>Importing variables representing facets of anti-Latinx structural racism across education, media, and land ownership.</p>
             
             {activeLatine && (
-              <div className="facet-description-box" style={{ backgroundColor: '#f9f9f9', padding: '15px', borderRadius: '8px', marginTop: '10px', borderLeft: '4px solid #8C68CD' }}>
-                <p><strong>{latineFacets[activeLatine].text}</strong></p>
+              <div className="facet-description-box" style={{ backgroundColor: '#f9f9f9', padding: '15px', borderRadius: '8px', marginTop: '10px', borderLeft: '4px solid #8C68CD', color: '#000' }}>
+                <p style={{ color: '#000', margin: 0 }}><strong>{latineFacets[activeLatine].text}</strong></p>
               </div>
             )}
           </div>
@@ -165,12 +163,12 @@ const Gateway = () => {
               </Dropdown.Menu>
             </Dropdown>
 
-            <a 
-              href={activeLatine ? `/viewdata?table=${latineFacets[activeLatine].table}` : "/viewdata"} 
+            <Link 
+              to={activeLatine ? `/viewdata?table=${latineFacets[activeLatine].table}` : "/viewdata"} 
               className="homebtn"
             >
               <span> Generate {activeLatine ? latineFacets[activeLatine].name : "Latine"} Data </span>
-            </a>
+            </Link>
           </div>
         </div>
       </div>

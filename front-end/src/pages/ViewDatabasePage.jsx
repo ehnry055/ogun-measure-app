@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../styles/DownloadDatabasePage.css';
 import NotesList from '../components/NotesList';
 import { useAuth0 } from "@auth0/auth0-react";
+import { useSearchParams } from 'react-router-dom'; // Added for linking
 import axios from 'axios';
 
 import CodeMirror from '@uiw/react-codemirror';
@@ -9,7 +10,8 @@ import CodeMirror from '@uiw/react-codemirror';
 let webRInstance = null;
 
 const ViewDatabasePage = () => {
-  const { getAccessTokenSilently } = useAuth0();
+  const { getAccessTokenSilently, isAuthenticated } = useAuth0();
+  const [searchParams, setSearchParams] = useSearchParams(); // Added for linking
   
   const [entryLimit, setEntryLimit] = useState(1000);
   const [tableName, setTableName] = useState("Default Table");
@@ -40,6 +42,14 @@ const ViewDatabasePage = () => {
     { label: 'SD', code: 'sd(vals)', expanded: false }
   ]);
   const [rPresets, setRPresets] = useState([]);
+
+  // NEW LOGIC: Listen for table changes from the Gateway page
+  useEffect(() => {
+    const tableFromUrl = searchParams.get('table');
+    if (tableFromUrl && isAuthenticated) {
+      handleTableSelection(tableFromUrl);
+    }
+  }, [searchParams, isAuthenticated]);
 
   useEffect(() => {
     const savedPresets = localStorage.getItem('columnPresets');
@@ -208,6 +218,8 @@ const ViewDatabasePage = () => {
       const token = await getAccessTokenSilently();
       await axios.post(`/api/select-table`, { tableName: selectedName }, { headers: { Authorization: `Bearer ${token}` } });
       setTableName(selectedName);
+      // Update URL so refreshing stays on this table
+      setSearchParams({ table: selectedName }); 
       setShowTableSelector(false);
     } catch (error) { 
       alert(`Error setting table to ${selectedName}`); 
