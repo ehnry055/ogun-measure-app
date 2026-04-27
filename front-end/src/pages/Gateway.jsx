@@ -15,20 +15,41 @@ const Gateway = () => {
   const [activeLatine, setActiveLatine] = useState(null);
   const [activeIndigenous, setActiveIndigenous] = useState(null);
 
+  // --- UPDATED ANTI-INDIGENOUS FACETS ---
   const indigenousFacets = {
+    nation: {
+      name: "Nation",
+      text: "Nation: The name of the tribe or tribes as it appeared in the original Royce Schedule (the historical name used in the treaty or legal document). This may differ from the present-day name. Example: 'Cherokee', 'Chippewa'.",
+      table: "Anti_Indigenous_Measure"
+    },
+    nation_correct: {
+      name: "Nation_Correct",
+      text: "Nation_Correct: The present-day Indian tribe or tribes related to the historical name. This field was updated by the National NAGPRA Program to link historical names to federally recognized tribes as they exist today.",
+      table: "Anti_Indigenous_Measure"
+    },
+    link: {
+      name: "Link",
+      text: "Link: A URL pointing to the Royce Schedule entry, treaty text, or relevant federal statute. This links to digitized primary source documents at sources like the HathiTrust Digital Library or the Library of Congress.",
+      table: "Anti_Indigenous_Measure"
+    },
     royce: {
-      name: "Historical Land Cessions (Royce)",
-      text: "Polygons of Native American land cessions from 1784–1894, digitized from Charles C. Royce's Indian Land Cessions in the United States (1896–97). Source: U.S. Forest Service Office of Tribal Relations.",
+      name: "Royce Area Number",
+      text: "Royce: A unique identifier assigned by Royce to each cession, used to cross-reference the polygon on the map with the specific legal instrument. Essentially the primary key of the dataset.",
       table: "Anti_Indigenous_Measure" 
+    },
+    year: {
+      name: "Year of Cession",
+      text: "Year of Cession: The year the land was ceded, extracted from the date of the treaty, law, or executive order (Ranges from 1784 to 1894). Null values indicate the cession date was uncertain or not recorded.",
+      table: "Anti_Indigenous_Measure"
     },
     ownership: {
       name: "Population / Land Ownership",
-      text: "County-level data (1900-2023) comparing AIAN vs. non-Hispanic White land ownership proportions. Includes 'racism_num' index based on a 0.06 threshold. Source: IPUMS.",
+      text: "Ownership: County-level data (1900-2023) comparing AIAN vs. non-Hispanic White land ownership proportions. Includes 'racism_num' index based on a 0.06 threshold. Source: IPUMS.",
       table: "Anti_Indigenous_Measure"
     },
     ipums: {
       name: "IPUMS Codes",
-      text: "Reference codes for States and Counties used in the documentation and data mapping.",
+      text: "IPUMS: Reference codes for States and Counties used in the documentation and data mapping.",
       table: "Anti_Indigenous_Measure"
     }
   };
@@ -88,8 +109,12 @@ const Gateway = () => {
           <div className="gateway-dropdown-container">
             <Dropdown className="gateway-dropdown">
               <Dropdown.Toggle className="gateway-dropdown-toggle">See Facets</Dropdown.Toggle>
-              <Dropdown.Menu className="gateway-dropdown-menu">
-                <Dropdown.Item onClick={() => setActiveIndigenous('royce')}>Historical Land Cessions (Royce)</Dropdown.Item>
+              <Dropdown.Menu className="gateway-dropdown-menu" style={{ maxHeight: "300px", overflowY: "auto" }}>
+                <Dropdown.Item onClick={() => setActiveIndigenous('nation')}>Nation</Dropdown.Item>
+                <Dropdown.Item onClick={() => setActiveIndigenous('nation_correct')}>Nation_Correct</Dropdown.Item>
+                <Dropdown.Item onClick={() => setActiveIndigenous('link')}>Link</Dropdown.Item>
+                <Dropdown.Item onClick={() => setActiveIndigenous('royce')}>Royce Area Number</Dropdown.Item>
+                <Dropdown.Item onClick={() => setActiveIndigenous('year')}>Year of Cession</Dropdown.Item>
                 <Dropdown.Item onClick={() => setActiveIndigenous('ownership')}>Population / Land Ownership</Dropdown.Item>
                 <Dropdown.Item onClick={() => setActiveIndigenous('ipums')}>IPUMS Codes</Dropdown.Item>
               </Dropdown.Menu>
