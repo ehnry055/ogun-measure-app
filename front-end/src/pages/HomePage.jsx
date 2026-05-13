@@ -15,7 +15,7 @@ const HomePage = () => {
       id: "ogun"
     },
     {
-      title: "Anti-Latine RacismMeasures",
+      title: "Anti-Latine Racism Measures",
       id: "anti-latine"
     }
   ];

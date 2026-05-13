@@ -95,7 +95,7 @@ const Gateway = () => {
           <img src={Alaska} alt="Alaska" className="ogunimg-full" />
         </div>
         <div className="gateway-right">
-          <h2 className="about-title gateway-title">Anti-American Indian / Alaskan Native Measures</h2>
+          <h2 className="about-title gateway-title">Anti-American Indian / Alaskan Native Racism Measures</h2>
           <div className="text-content">
             <p>Historical Land Cessions, Population data, and Land Ownership metrics representing Anti-Indigenous structural racism.</p>
             
@@ -108,7 +108,7 @@ const Gateway = () => {
 
           <div className="gateway-dropdown-container">
             <Dropdown className="gateway-dropdown">
-              <Dropdown.Toggle className="gateway-dropdown-toggle">See Facets</Dropdown.Toggle>
+              <Dropdown.Toggle className="gateway-dropdown-toggle">See Variables</Dropdown.Toggle>
               <Dropdown.Menu className="gateway-dropdown-menu" style={{ maxHeight: "300px", overflowY: "auto" }}>
                 <Dropdown.Item className="gateway-dropdown-item" onClick={() => setActiveIndigenous('nation')}>Nation</Dropdown.Item>
                 <Dropdown.Item className="gateway-dropdown-item" onClick={() => setActiveIndigenous('nation_correct')}>Nation_Correct</Dropdown.Item>
@@ -167,7 +167,7 @@ const Gateway = () => {
           <img src={LATINO} alt="LATINO" className="ogunimg-full" />
         </div>
         <div className="gateway-right">
-          <h2 className="about-title gateway-title">Anti-Latine Measures</h2>
+          <h2 className="about-title gateway-title">Anti-Latine Racism Measures</h2>
           <div className="text-content">
             <p>Importing variables representing facets of anti-Latinx structural racism across education, media, and land ownership.</p>
             
