@@ -7,7 +7,7 @@ const HomePage = () => {
 
   const measures = [
     {
-      title: "Anti-American Indian and/or Alaskan Native Measures",
+      title: "Anti-American Indian and/or Alaskan Native Racism Measures",
       id: "anti-indigenous"
     },
     {
@@ -15,7 +15,7 @@ const HomePage = () => {
       id: "ogun"
     },
     {
-      title: "Anti-Latine Measures",
+      title: "Anti-Latine RacismMeasures",
       id: "anti-latine"
     }
   ];
