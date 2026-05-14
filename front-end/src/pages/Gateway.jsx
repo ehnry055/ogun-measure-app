@@ -15,60 +15,61 @@ const Gateway = () => {
   const [activeLatine, setActiveLatine] = useState(null);
   const [activeIndigenous, setActiveIndigenous] = useState(null);
 
-  // --- UPDATED ANTI-INDIGENOUS FACETS ---
+  // --- ANTI-INDIGENOUS FACETS ---
   const indigenousFacets = {
     nation: {
       name: "Nation",
       text: "Nation: The name of the tribe or tribes as it appeared in the original Royce Schedule (the historical name used in the treaty or legal document). This may differ from the present-day name. Example: 'Cherokee', 'Chippewa'.",
-      table: "Anti_Indigenous_Measure"
+      table: "Anti_Indigenous_Racism_Measure"
     },
     nation_correct: {
       name: "Nation_Correct",
       text: "Nation_Correct: The present-day Indian tribe or tribes related to the historical name. This field was updated by the National NAGPRA Program to link historical names to federally recognized tribes as they exist today.",
-      table: "Anti_Indigenous_Measure"
+      table: "Anti_Indigenous_Racism_Measure"
     },
     link: {
       name: "Link",
       text: "Link: A URL pointing to the Royce Schedule entry, treaty text, or relevant federal statute. This links to digitized primary source documents at sources like the HathiTrust Digital Library or the Library of Congress.",
-      table: "Anti_Indigenous_Measure"
+      table: "Anti_Indigenous_Racism_Measure"
     },
     royce: {
       name: "Royce Area Number",
       text: "Royce: A unique identifier assigned by Royce to each cession, used to cross-reference the polygon on the map with the specific legal instrument. Essentially the primary key of the dataset.",
-      table: "Anti_Indigenous_Measure" 
+      table: "Anti_Indigenous_Racism_Measure" 
     },
     year: {
       name: "Year of Cession",
       text: "Year of Cession: The year the land was ceded, extracted from the date of the treaty, law, or executive order (Ranges from 1784 to 1894). Null values indicate the cession date was uncertain or not recorded.",
-      table: "Anti_Indigenous_Measure"
+      table: "Anti_Indigenous_Racism_Measure"
     },
     ownership: {
       name: "Population / Land Ownership",
       text: "Ownership: County-level data (1900-2023) comparing AIAN vs. non-Hispanic White land ownership proportions. Includes 'racism_num' index based on a 0.06 threshold. Source: IPUMS.",
-      table: "Anti_Indigenous_Measure"
+      table: "Anti_Indigenous_Racism_Measure"
     },
     ipums: {
       name: "IPUMS Codes",
       text: "IPUMS: Reference codes for States and Counties used in the documentation and data mapping.",
-      table: "Anti_Indigenous_Measure"
+      table: "Anti_Indigenous_Racism_Measure"
     }
   };
 
+  // --- ANTI-LATINE FACETS ---
   const latineFacets = {
     education: {
       name: "Education",
       text: "Displays each US county dissimilarity index capturing the extent to which the racial composition of each district deviates from the overall county-level distribution (1987-2018). Data from the National Center for Education Statistics on student enrollment by school districts, race/ethnicity was used.",
-      table: "Anti_Latine_Measure_Education"
+      table: "Anti_Latine_Racism_Measure_Education"
     },
     media: {
       name: "Media",
       text: "Displays polarity indexes based on sentiment analyses of media pieces on a state level. The data was extracted from Media Cloud using Python packages. BERT and Vader sentiment polarity measures were calculated to build the final indexes.",
-      table: "Anti_Latine_Measure_Media"
+      table: "Anti_Latine_Racism_Measure_Media"
     },
     land: {
       name: "Land Ownership",
       text: "Displays the proportion of Hispanic landowners/White non-Hispanic land owners based on IPUMS data from 1900 to 2023, on a county level.",
-      table: "Anti_Latine_Measure_Land_Ownership"
+      table: "Anti_Latine_Racism_Measure_Land_Ownership"
     }
   };
 
@@ -121,7 +122,7 @@ const Gateway = () => {
             </Dropdown>
 
             <Link 
-              to={activeIndigenous ? `/viewdata?table=${indigenousFacets[activeIndigenous].table}` : "/viewdata?table=Anti_Indigenous_Measure"} 
+              to={activeIndigenous ? `/viewdata?table=${indigenousFacets[activeIndigenous].table}` : "/viewdata?table=Anti_Indigenous_Racism_Measure"} 
               className="homebtn"
             >
               <span> Generate {activeIndigenous ? indigenousFacets[activeIndigenous].name : "Indigenous"} Data </span>
@@ -156,7 +157,11 @@ const Gateway = () => {
                 <Dropdown.Item href="/MediaMarketing">Media and Marketing</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
-            <Link to="/viewdata" className="homebtn"><span> Generate Data </span></Link>
+            
+            {/* Updated Link to target Tertiary Dataset */}
+            <Link to="/viewdata?table=Anti_Black_Racism_Tertiary_Dataset" className="homebtn">
+              <span> Generate Data </span>
+            </Link>
           </div>
         </div>
       </div>
@@ -189,7 +194,7 @@ const Gateway = () => {
             </Dropdown>
 
             <Link 
-              to={activeLatine ? `/viewdata?table=${latineFacets[activeLatine].table}` : "/viewdata"} 
+              to={activeLatine ? `/viewdata?table=${latineFacets[activeLatine].table}` : "/viewdata?table=Anti_Latine_Racism_Measure_Education"} 
               className="homebtn"
             >
               <span> Generate {activeLatine ? latineFacets[activeLatine].name : "Latine"} Data </span>
