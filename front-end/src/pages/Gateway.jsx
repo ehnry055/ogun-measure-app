@@ -96,7 +96,7 @@ const Gateway = () => {
           <img src={Alaska} alt="Alaska" className="ogunimg-full" />
         </div>
         <div className="gateway-right">
-          <h2 className="about-title gateway-title">Anti-American Indian / Alaskan Native Measures</h2>
+          <h2 className="about-title gateway-title">Anti-American Indian / Alaskan Native Racism Measures</h2>
           <div className="text-content">
             <p>Historical Land Cessions, Population data, and Land Ownership metrics representing Anti-Indigenous structural racism.</p>
             
@@ -109,15 +109,15 @@ const Gateway = () => {
 
           <div className="gateway-dropdown-container">
             <Dropdown className="gateway-dropdown">
-              <Dropdown.Toggle className="gateway-dropdown-toggle">See Facets</Dropdown.Toggle>
+              <Dropdown.Toggle className="gateway-dropdown-toggle">See Variables</Dropdown.Toggle>
               <Dropdown.Menu className="gateway-dropdown-menu" style={{ maxHeight: "300px", overflowY: "auto" }}>
-                <Dropdown.Item onClick={() => setActiveIndigenous('nation')}>Nation</Dropdown.Item>
-                <Dropdown.Item onClick={() => setActiveIndigenous('nation_correct')}>Nation_Correct</Dropdown.Item>
-                <Dropdown.Item onClick={() => setActiveIndigenous('link')}>Link</Dropdown.Item>
-                <Dropdown.Item onClick={() => setActiveIndigenous('royce')}>Royce Area Number</Dropdown.Item>
-                <Dropdown.Item onClick={() => setActiveIndigenous('year')}>Year of Cession</Dropdown.Item>
-                <Dropdown.Item onClick={() => setActiveIndigenous('ownership')}>Population / Land Ownership</Dropdown.Item>
-                <Dropdown.Item onClick={() => setActiveIndigenous('ipums')}>IPUMS Codes</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item" onClick={() => setActiveIndigenous('nation')}>Nation</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item" onClick={() => setActiveIndigenous('nation_correct')}>Nation_Correct</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item" onClick={() => setActiveIndigenous('link')}>Link</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item" onClick={() => setActiveIndigenous('royce')}>Royce Area Number</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item" onClick={() => setActiveIndigenous('year')}>Year of Cession</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item" onClick={() => setActiveIndigenous('ownership')}>Population / Land Ownership</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item" onClick={() => setActiveIndigenous('ipums')}>IPUMS Codes</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
 
@@ -145,16 +145,16 @@ const Gateway = () => {
             <Dropdown className="gateway-dropdown">
               <Dropdown.Toggle className="gateway-dropdown-toggle">See Facets</Dropdown.Toggle>
               <Dropdown.Menu className="gateway-dropdown-menu">
-                <Dropdown.Item href="/ResidentialSegregationGentrification">Residential Segregation and Gentrification</Dropdown.Item>
-                <Dropdown.Item href="/PropertyOrganization">Property Ownership</Dropdown.Item>
-                <Dropdown.Item href="/GovernmentRepresentation">Government Representation</Dropdown.Item>
-                <Dropdown.Item href="/PolicingIncarceration">Policing and Incarceration</Dropdown.Item>
-                <Dropdown.Item href="/IncomePoverty">Income and Poverty</Dropdown.Item>
-                <Dropdown.Item href="/OccupationalSegregationUnemployment">Occupational Segregation and Unemployment</Dropdown.Item>
-                <Dropdown.Item href="/HealthcareAccess">Healthcare Access</Dropdown.Item>
-                <Dropdown.Item href="/HealthyFoodAccess">Healthy Food Access</Dropdown.Item>
-                <Dropdown.Item href="/EnvironmentalPollution">Environmental Pollution</Dropdown.Item>
-                <Dropdown.Item href="/MediaMarketing">Media and Marketing</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item" href="/ResidentialSegregationGentrification">Residential Segregation and Gentrification</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item" href="/PropertyOrganization">Property Ownership</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item" href="/GovernmentRepresentation">Government Representation</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item" href="/PolicingIncarceration">Policing and Incarceration</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item" href="/IncomePoverty">Income and Poverty</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item" href="/OccupationalSegregationUnemployment">Occupational Segregation and Unemployment</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item" href="/HealthcareAccess">Healthcare Access</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item" href="/HealthyFoodAccess">Healthy Food Access</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item" href="/EnvironmentalPollution">Environmental Pollution</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item" href="/MediaMarketing">Media and Marketing</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
             
@@ -172,7 +172,7 @@ const Gateway = () => {
           <img src={LATINO} alt="LATINO" className="ogunimg-full" />
         </div>
         <div className="gateway-right">
-          <h2 className="about-title gateway-title">Anti-Latine Measures</h2>
+          <h2 className="about-title gateway-title">Anti-Latine Racism Measures</h2>
           <div className="text-content">
             <p>Importing variables representing facets of anti-Latinx structural racism across education, media, and land ownership.</p>
             
@@ -187,9 +187,9 @@ const Gateway = () => {
             <Dropdown className="gateway-dropdown">
               <Dropdown.Toggle className="gateway-dropdown-toggle">See Facets</Dropdown.Toggle>
               <Dropdown.Menu className="gateway-dropdown-menu">
-                <Dropdown.Item onClick={() => setActiveLatine('education')}>Education</Dropdown.Item>
-                <Dropdown.Item onClick={() => setActiveLatine('media')}>Media</Dropdown.Item>
-                <Dropdown.Item onClick={() => setActiveLatine('land')}>Land Ownership</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item" onClick={() => setActiveLatine('education')}>Education</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item" onClick={() => setActiveLatine('media')}>Media</Dropdown.Item>
+                <Dropdown.Item className="gateway-dropdown-item" onClick={() => setActiveLatine('land')}>Land Ownership</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
 
