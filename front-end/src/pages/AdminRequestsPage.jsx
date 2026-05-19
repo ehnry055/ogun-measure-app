@@ -1,50 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
-import axios from "axios";
-import { useAuth0 } from "@auth0/auth0-react";
-import { useLocation } from "react-router-dom";
-import "../styles/App.css";
-
-const AdminRequestsPage = () => {
-  const { isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
-  const location = useLocation();
-
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [rows, setRows] = useState([]);
-  const [actingUserId, setActingUserId] = useState("");
-  const targetEmail = useMemo(() => {
-    const params = new URLSearchParams(location.search);
-    return (params.get("requesterEmail") || "").trim().toLowerCase();
-  }, [location.search]);
-
-  const parseRoles = (roleResponseData) => {
-    if (Array.isArray(roleResponseData)) {
-      return roleResponseData;
-    }
-
-    if (roleResponseData && typeof roleResponseData === "object") {
-      const maybeArray = Object.values(roleResponseData).find((value) => Array.isArray(value));
-      return maybeArray || [];
-    }
-
-    return [];
-  };
-
-  const getStatusFromRole = (isRegistered) => (isRegistered ? "approved" : "pending");
-  const formatDateTime = (dateValue) => {
-    if (!dateValue) {
-      return "N/A";
-    }
-
-    const parsed = new Date(dateValue);
-    if (Number.isNaN(parsed.getTime())) {
-      return "N/A";
-    }
-
-    return parsed.toLocaleString();
-  };
-
-  const fetchRequests = async () => {
+const fetchRequests = async () => {
     try {
       setLoading(true);
       setError("");
@@ -71,8 +25,12 @@ const AdminRequestsPage = () => {
         ? usersResponse.data
         : Object.values(usersResponse.data || {}).find((value) => Array.isArray(value)) || [];
 
-      const enrichedUsers = await Promise.all(
-        rawUsers.map(async (user) => {
+      const enrichedUsers = [];
+
+      // FIX: Use a sequential for...of loop instead of Promise.all
+      // This prevents rate-limiting by not spamming the API all at once.
+      for (const user of rawUsers) {
+        try {
           const roleResponse = await axios.get("/api/admin/get-user-roles", {
             params: { userId: user.user_id },
             headers: { Authorization: `Bearer ${token}` },
@@ -85,7 +43,7 @@ const AdminRequestsPage = () => {
           const requestMetadata = requestMetadataByEmail.get(normalizedEmail);
           const status = requestMetadata?.decisionStatus || getStatusFromRole(isRegistered);
 
-          return {
+          enrichedUsers.push({
             userId: user.user_id,
             name: user.name || "Unknown",
             email: user.email || "No email",
@@ -94,9 +52,12 @@ const AdminRequestsPage = () => {
             isAdmin,
             isRegistered,
             status,
-          };
-        })
-      );
+          });
+        } catch (userError) {
+          // FIX: If one user fails (e.g. rate limit), log it but don't break the whole page.
+          console.warn(`Failed to load roles for ${user.email}. Skipping user.`, userError);
+        }
+      }
 
       const requestRows = enrichedUsers
         .filter((user) => !user.isAdmin)
@@ -105,182 +66,8 @@ const AdminRequestsPage = () => {
       setRows(requestRows);
     } catch (fetchError) {
       console.error("Error loading admin requests:", fetchError);
-      setError("Could not load requests.");
+      setError("Could not load requests. Please try again later.");
     } finally {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (!isLoading && isAuthenticated) {
-      fetchRequests();
-    }
-  }, [isAuthenticated, isLoading]);
-
-  const requestSummary = useMemo(() => {
-    const approved = rows.filter((row) => row.status === "approved").length;
-    const pending = rows.filter((row) => row.status === "pending").length;
-    const rejected = rows.filter((row) => row.status === "rejected").length;
-    return { approved, pending, rejected };
-  }, [rows]);
-  const visibleRows = useMemo(() => {
-    if (!targetEmail) {
-      return rows;
-    }
-
-    return rows.filter((row) => (row.email || "").toLowerCase() === targetEmail);
-  }, [rows, targetEmail]);
-
-  const approveRequest = async (userId, rowEmail) => {
-    try {
-      setActingUserId(userId);
-      const token = await getAccessTokenSilently();
-
-      await axios.post(
-        "/api/admin/assign-registered",
-        { userId, requesterEmail: rowEmail },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      setRows((prev) =>
-        prev.map((row) =>
-          row.userId === userId
-            ? { ...row, isRegistered: true, status: "approved", decisionAt: new Date().toISOString() }
-            : row
-        )
-      );
-    } catch (actionError) {
-      console.error("Error approving request:", actionError);
-      alert("Unable to approve this request.");
-    } finally {
-      setActingUserId("");
-    }
-  };
-
-  const rejectRequest = async (userId, rowEmail) => {
-    try {
-      setActingUserId(userId);
-      const token = await getAccessTokenSilently();
-
-      await axios.delete("/api/admin/remove-registered", {
-        params: { userId, requesterEmail: rowEmail },
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      setRows((prev) =>
-        prev.map((row) =>
-          row.userId === userId
-            ? { ...row, isRegistered: false, status: "rejected", decisionAt: new Date().toISOString() }
-            : row
-        )
-      );
-    } catch (actionError) {
-      console.error("Error rejecting request:", actionError);
-      alert("Unable to reject this request.");
-    } finally {
-      setActingUserId("");
-    }
-  };
-
-  if (!isAuthenticated || isLoading) {
-    return null;
-  }
-
-  return (
-    <div className="admin-requests-page">
-      <div className="admin-requests-header">
-        <h1>Review Access Requests</h1>
-        <button className="btn btn-outline-primary" type="button" onClick={fetchRequests}>
-          Refresh
-        </button>
-      </div>
-
-      <p className="admin-requests-subtitle">
-        Pending requests are users without registered access. Approve grants registered access, reject marks the request rejected.
-      </p>
-      {targetEmail ? (
-        <p className="admin-requests-subtitle">
-          Showing request for: <strong>{targetEmail}</strong>
-        </p>
-      ) : null}
-
-      <div className="admin-requests-summary">
-        <span>Pending: {requestSummary.pending}</span>
-        <span>Approved: {requestSummary.approved}</span>
-        <span>Rejected: {requestSummary.rejected}</span>
-      </div>
-
-      {loading ? <p>Loading requests...</p> : null}
-      {error ? <p className="admin-requests-error">{error}</p> : null}
-
-      {!loading && !error ? (
-        <div className="admin-requests-table-wrap">
-          <table className="admin-requests-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Request Sent At</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {visibleRows.map((row) => {
-                const isBusy = actingUserId === row.userId;
-                const isTargeted = targetEmail && (row.email || "").toLowerCase() === targetEmail;
-
-                return (
-                  <tr key={row.userId} className={isTargeted ? "admin-requests-target-row" : ""}>
-                    <td>{row.name}</td>
-                    <td>{row.email}</td>
-                    <td>{formatDateTime(row.requestSubmittedAt)}</td>
-                    <td>
-                      <span className={`status-${row.status}`}>
-                        {row.status === "approved"
-                          ? "Approved"
-                          : row.status === "rejected"
-                          ? "Rejected"
-                          : "Pending"}
-                      </span>
-                      {row.decisionAt ? (
-                        <div className="admin-decision-time">
-                          {formatDateTime(row.decisionAt)}
-                        </div>
-                      ) : null}
-                    </td>
-                    <td className="admin-requests-actions">
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-success"
-                        disabled={isBusy || row.status === "approved"}
-                        onClick={() => approveRequest(row.userId, row.email)}
-                      >
-                        Approve
-                      </button>
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-danger"
-                        disabled={isBusy || row.status === "rejected"}
-                        onClick={() => rejectRequest(row.userId, row.email)}
-                      >
-                        Reject
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-          {targetEmail && visibleRows.length === 0 ? (
-            <p className="admin-requests-error" style={{ marginTop: "10px" }}>
-              No user matched {targetEmail}. Ask the requester to log in first so their account appears.
-            </p>
-          ) : null}
-        </div>
-      ) : null}
-    </div>
-  );
-};
-
-export default AdminRequestsPage;
