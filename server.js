@@ -546,7 +546,7 @@ app.get('/api/ogun-pages/load', async (req, res) => {
   
       const sendMailData = {
         from: process.env.EMAIL_USER, // Your verified email address
-        to: "deanelbayar@gmail.com", // Sends the email to admin (Dr. AJ)npa2629@cumc.columbia.edu
+        to: "aidenhong08@gmail.com", // Sends the email to admin (Dr. AJ)npa2629@cumc.columbia.edu
         subject: `Request for Data Access by ${name}`,
         html: `
           <p>Name: ${name}</p>
