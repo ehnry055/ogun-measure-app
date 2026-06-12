@@ -15,7 +15,6 @@ const Gateway = () => {
   const [activeLatine, setActiveLatine] = useState(null);
   const [activeIndigenous, setActiveIndigenous] = useState(null);
 
-  // --- ANTI-INDIGENOUS FACETS ---
   const indigenousFacets = {
     nation: {
       name: "Nation",
@@ -54,7 +53,7 @@ const Gateway = () => {
     }
   };
 
-  // --- ANTI-LATINE FACETS ---
+
   const latineFacets = {
     education: {
       name: "Education",
@@ -90,7 +89,7 @@ const Gateway = () => {
   return (
     <div className="gateway-page">
       
-      {/* --- ANTI-INDIGENOUS SECTION --- */}
+     
       <div id="anti-indigenous" className="gateway-split">
         <div className="gateway-left">
           <img src={Alaska} alt="Alaska" className="ogunimg-full" />
@@ -131,7 +130,7 @@ const Gateway = () => {
         </div>
       </div>
 
-      {/* --- OGUN SECTION --- */}
+
       <div id="ogun" className="gateway-split">
         <div className="gateway-left">
           <img src={OGUN} alt="Ogun statue" className="ogunimg-full" />

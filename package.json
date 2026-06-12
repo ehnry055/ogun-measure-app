@@ -2,6 +2,7 @@
   "dependencies": {
     "auth0": "^4.19.0",
     "axios": "^1.7.9",
+    "bad-words": "^4.0.0",
     "bootstrap": "^3.4.1",
     "concurrently": "^9.1.2",
     "cors": "^2.8.5",
@@ -10,6 +11,7 @@
     "express": "^4.21.2",
     "express-jwt": "^8.5.1",
     "express-oauth2-jwt-bearer": "^1.6.0",
+    "express-rate-limit": "^8.5.2",
     "fast-csv": "^5.0.2",
     "fs": "^0.0.1-security",
     "json2csv": "^6.0.0-alpha.2",
